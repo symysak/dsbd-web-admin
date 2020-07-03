@@ -25,12 +25,34 @@ export class DataService {
       });
   }
 
+  getUser(id: string): Promise<any> {
+    const data = this.afs.collection('user').doc(id);
+    return data.ref.get()
+      .then((d) => {
+        return d;
+      });
+  }
+
   getPersonalData(id: string): Promise<any> {
     const data = this.afs.collection('user').doc(id).collection('personal');
     return data.ref.get()
       .then((d) => {
         // console.log(d.data)
         return d;
+      });
+  }
+
+  registStatus(id: string, status: number) {
+    const doc = {};
+    doc['status'] = status;
+
+    const data = this.afs.collection('user').doc(id);
+    return data.ref.set(doc, {merge: true})
+      .then(() => {
+        this.afs.collection('user').doc(id)
+          .collection('personal').doc('common').set({lock: false}, {merge: true}).then(() => {
+          this.commonService.openBar("OK", 3000);
+        })
       });
   }
 }

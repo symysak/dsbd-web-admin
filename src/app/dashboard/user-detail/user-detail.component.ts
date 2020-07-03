@@ -17,6 +17,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   public id: string;
+  public status = 'None';
   public question: { base1: '', base2: '', base3: '', base4: '' };
   public agreement = false;
   public contract1: {
@@ -38,9 +39,41 @@ export class UserDetailComponent implements OnInit {
     data400: false, data410: '', data411: '', data412: '', data413: '', data414: '', data415: '', data416: '', data417: '', data418: '',
     data420: '', data421: '', data422: '', data423: '', data424: '', data500: '',
   };
+  private dataStatus = 0;
+  public registerStatus: number;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
+    this.dataService.getUser(this.id).then(doc => {
+      console.log('data: ' + doc.data());
+      if (doc.data().status % 10 == 1) {
+        this.status = 'question';
+      }
+      if (doc.data().status % 10 == 2) {
+        this.status = 'question=>check';
+      }
+      if (doc.data().status % 10 == 3) {
+        this.status = 'question=>check=>agreement';
+      }
+      if (doc.data().status % 10 == 4) {
+        this.status = 'question=>check=>agreement=>check';
+      }
+      if (doc.data().status % 10 == 5) {
+        this.status = 'question=>check=>agreement=>contract1';
+      }
+      if (doc.data().status % 10 == 6) {
+        this.status = 'question=>check=>agreement=>contract1=>check';
+      }
+      if (doc.data().status % 10 == 7) {
+        this.status = 'question=>check=>agreement=>contract1=>check=>contract2';
+      }
+      if (doc.data().status % 10 == 8) {
+        this.status = 'question=>check=>agreement=>contract1=>check=>contract2=>check';
+      }
+      console.log('status: ' + doc.data().status);
+      console.log('dataStatus: ' + doc.data().status / 10);
+      this.dataStatus = doc.data().status / 10;
+    })
     this.dataService.getPersonalData(this.id).then(doc => {
       for (let i = 0; i < doc.size; i++) {
         console.log(doc.docs[i].data().data1)
@@ -63,6 +96,13 @@ export class UserDetailComponent implements OnInit {
         }
       }
     })
+  }
+
+  pushRegisterStatus(): void {
+    console.log('d: ' + this.dataStatus + ' r: ' + this.registerStatus)
+    console.log('d: ' + Math.floor(this.dataStatus) + ' r: ' + this.registerStatus)
+    let tmp: number = parseInt(String(Math.floor(this.dataStatus) * 10)) + parseInt(String(this.registerStatus));
+    this.dataService.registStatus(this.id, tmp).then();
   }
 
 }

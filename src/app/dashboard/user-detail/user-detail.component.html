@@ -1,5 +1,19 @@
 <div class="main">
-  <h2>{{id}}</h2>
+  <h2>ID: {{id}}</h2>
+  <h3>{{status}}</h3>
+  <mat-form-field appearance="fill">
+    <mat-label>Choose an option</mat-label>
+    <mat-select [(ngModel)]="registerStatus">
+      <mat-option value=1>question</mat-option>
+      <mat-option value=3>agreement</mat-option>
+      <mat-option value=5>contact1</mat-option>
+      <mat-option value=7>contact2</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+  <button mat-raised-button (click)="pushRegisterStatus()">Status Update</button>
+  <br>
+  <br>
   <ng-container *ngIf="question">
     <mat-accordion>
       <mat-expansion-panel>
