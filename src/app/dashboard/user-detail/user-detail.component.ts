@@ -102,7 +102,7 @@ export class UserDetailComponent implements OnInit {
     console.log('d: ' + this.dataStatus + ' r: ' + this.registerStatus)
     console.log('d: ' + Math.floor(this.dataStatus) + ' r: ' + this.registerStatus)
     let tmp: number = parseInt(String(Math.floor(this.dataStatus) * 10)) + parseInt(String(this.registerStatus));
-    this.dataService.registStatus(this.id, tmp).then();
+    this.dataService.registrationStatus(this.id, tmp).then();
   }
 
 }

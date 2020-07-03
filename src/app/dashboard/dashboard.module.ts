@@ -18,6 +18,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatSelectModule} from "@angular/material/select";
+import { ServiceComponent } from './service/service.component';
 
 
 @NgModule({
@@ -25,6 +27,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
     DashboardComponent,
     UserComponent,
     UserDetailComponent,
+    ServiceComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +46,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
     FormsModule,
     MatTabsModule,
     MatExpansionModule,
+    MatSelectModule,
   ],
   exports: [
     MatCardModule,

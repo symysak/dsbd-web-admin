@@ -4,6 +4,7 @@ import {DashboardComponent} from "./dashboard.component";
 import {AuthGuard} from "../guard/auth.guard";
 import {UserComponent} from "./user/user.component";
 import {UserDetailComponent} from "./user-detail/user-detail.component";
+import {ServiceComponent} from "./service/service.component";
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
       {path: '', redirectTo: 'user', pathMatch: 'full'},
       {path: 'user', component: UserComponent},
       {path: 'user/:id', component: UserDetailComponent},
+      {path: 'user/:id/:service', component: ServiceComponent},
     ]
   }
 ];

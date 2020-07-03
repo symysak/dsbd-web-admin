@@ -42,7 +42,15 @@ export class DataService {
       });
   }
 
-  registStatus(id: string, status: number) {
+  getServiceData(id: string, serviceCode: string): Promise<any> {
+    const data = this.afs.collection('user').doc(id).collection('data').doc(serviceCode);
+    return data.ref.get()
+      .then((d) => {
+        return d;
+      });
+  }
+
+  registrationStatus(id: string, status: number) {
     const doc = {};
     doc['status'] = status;
 
@@ -51,6 +59,17 @@ export class DataService {
       .then(() => {
         this.afs.collection('user').doc(id)
           .collection('personal').doc('common').set({lock: false}, {merge: true}).then(() => {
+          this.commonService.openBar("OK", 3000);
+        })
+      });
+  }
+
+  registrationServiceData(id: string, serviceCode: string, doc: any) {
+    const data = this.afs.collection('user').doc(id).collection('data').doc(serviceCode);
+    return data.ref.set(doc, {merge: true})
+      .then(() => {
+        this.afs.collection('user').doc(id)
+          .collection('data').doc(serviceCode).set({lock: false}, {merge: true}).then(() => {
           this.commonService.openBar("OK", 3000);
         })
       });
