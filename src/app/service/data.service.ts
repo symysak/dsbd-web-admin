@@ -53,7 +53,6 @@ export class DataService {
   registrationStatus(id: string, status: number) {
     const doc = {};
     doc['status'] = status;
-    doc['lock'] = false;
 
     const data = this.afs.collection('user').doc(id);
     return data.ref.set(doc, {merge: true})
@@ -62,6 +61,26 @@ export class DataService {
         //   .collection('personal').doc('common').set({lock: false}, {merge: true}).then(() => {
         this.commonService.openBar("OK", 3000);
         // })
+      });
+  }
+
+  unlockAll(id: string) {
+    const data1 = this.afs.collection('user').doc(id).collection('personal').doc('qustion');
+    return data1.ref.set({lock: false}, {merge: true})
+      .then(() => {
+        const data2 = this.afs.collection('user').doc(id).collection('personal').doc('term');
+        return data2.ref.set({lock: false}, {merge: true})
+          .then(() => {
+            const data3 = this.afs.collection('user').doc(id).collection('personal').doc('contract1');
+            return data3.ref.set({lock: false}, {merge: true})
+              .then(() => {
+                const data4 = this.afs.collection('user').doc(id).collection('personal').doc('contract2');
+                return data4.ref.set({lock: false}, {merge: true})
+                  .then(() => {
+                    this.commonService.openBar("OK", 3000);
+                  });
+              });
+          });
       });
   }
 
