@@ -20,7 +20,7 @@ export class DataService {
     const data = this.afs.collection('user');
     return data.ref.get()
       .then((d) => {
-        // console.log(d.data)
+        // console.log(d.data())
         return d;
       });
   }
@@ -53,14 +53,15 @@ export class DataService {
   registrationStatus(id: string, status: number) {
     const doc = {};
     doc['status'] = status;
+    doc['lock'] = false;
 
     const data = this.afs.collection('user').doc(id);
     return data.ref.set(doc, {merge: true})
       .then(() => {
-        this.afs.collection('user').doc(id)
-          .collection('personal').doc('common').set({lock: false}, {merge: true}).then(() => {
-          this.commonService.openBar("OK", 3000);
-        })
+        // this.afs.collection('user').doc(id)
+        //   .collection('personal').doc('common').set({lock: false}, {merge: true}).then(() => {
+        this.commonService.openBar("OK", 3000);
+        // })
       });
   }
 
@@ -71,10 +72,10 @@ export class DataService {
     const data = this.afs.collection('user').doc(id);
     return data.ref.set(doc, {merge: true})
       .then(() => {
-        this.afs.collection('user').doc(id)
-          .collection('personal').doc('common').set({lock: false}, {merge: true}).then(() => {
-          this.commonService.openBar("OK", 3000);
-        })
+        // this.afs.collection('user').doc(id)
+        //   .collection('personal').doc('common').set({lock: false}, {merge: true}).then(() => {
+        this.commonService.openBar("OK", 3000);
+        // })
       });
   }
 
@@ -83,10 +84,10 @@ export class DataService {
     const data = this.afs.collection('user').doc(id).collection('data').doc(serviceCode);
     return data.ref.set(doc, {merge: true})
       .then(() => {
-        this.afs.collection('user').doc(id)
-          .collection('data').doc(serviceCode).set({lock: false}, {merge: true}).then(() => {
-          this.commonService.openBar("OK", 3000);
-        })
+        // this.afs.collection('user').doc(id)
+        //   .collection('data').doc(serviceCode).set({lock: false}, {merge: true}).then(() => {
+        this.commonService.openBar("OK", 3000);
+        // })
       });
   }
 }
