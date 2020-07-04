@@ -65,7 +65,7 @@ export class DataService {
   }
 
   unlockAll(id: string) {
-    const data1 = this.afs.collection('user').doc(id).collection('personal').doc('qustion');
+    const data1 = this.afs.collection('user').doc(id).collection('personal').doc('question');
     return data1.ref.set({lock: false}, {merge: true})
       .then(() => {
         const data2 = this.afs.collection('user').doc(id).collection('personal').doc('term');
