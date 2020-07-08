@@ -24,29 +24,64 @@ export class SendEmailComponent implements OnInit {
     user: new FormControl(''),
     pass: new FormControl(''),
   });
-  content = new FormControl('')
-  subject = new FormControl('');
+  contentJP = new FormControl('');
+  subjectJP = new FormControl('');
+  contentEN = new FormControl('');
+  subjectEN = new FormControl('');
+
   mail: string;
   genre: number;
 
-  //1:question 2:agreement 3:contract1 4:contract2
+  //1:question 2:agreement 3:contract1 4:contract2 5:open(WebPage) 6:(AirMail)
 
   ngOnInit(): void {
     this.mail = this.route.snapshot.paramMap.get('mail');
     this.genre = parseInt(this.route.snapshot.paramMap.get('genre'));
-    this.dataService.getMailData().then(d => {
+    this.dataService.getJPMailData().then(d => {
       if (this.genre === 1) {
-        this.content.setValue(d.data().question + '\n' + d.data().contact)
+        this.subjectJP.setValue(d.data().subject)
+        this.contentJP.setValue(d.data().question + '\n' + d.data().contact)
       } else if (this.genre === 2) {
-        this.content.setValue(d.data().agreement + '\n' + d.data().contact)
+        this.subjectJP.setValue(d.data().subject)
+        this.contentJP.setValue(d.data().agreement + '\n' + d.data().contact)
       } else if (this.genre === 3) {
-        this.content.setValue(d.data().contract1 + '\n' + d.data().contact)
+        this.subjectJP.setValue(d.data().subject)
+        this.contentJP.setValue(d.data().contract1 + '\n' + d.data().contact)
       } else if (this.genre === 4) {
-        this.content.setValue(d.data().contract2 + '\n' + d.data().contact)
+        this.subjectJP.setValue(d.data().subject)
+        this.contentJP.setValue(d.data().contract2 + '\n' + d.data().contact)
+      } else if (this.genre === 5) {
+        this.subjectJP.setValue('開通のお知らせ')
+        this.contentJP.setValue(d.data().open + '\n' + d.data().contact)
+      } else if (this.genre === 6) {
+        this.subjectJP.setValue('開通について')
+        this.contentJP.setValue(d.data().openAirmail + '\n' + d.data().contact)
       } else {
-        this.content.setValue('\n' + d.data().contact)
+        this.contentJP.setValue('\n' + d.data().contact)
       }
-      this.subject.setValue(d.data().subject)
+    })
+    this.dataService.getENMailData().then(d => {
+      if (this.genre === 1) {
+        this.subjectEN.setValue(d.data().subject)
+        this.contentEN.setValue(d.data().question + '\n' + d.data().contact)
+      } else if (this.genre === 2) {
+        this.subjectEN.setValue(d.data().subject)
+        this.contentEN.setValue(d.data().agreement + '\n' + d.data().contact)
+      } else if (this.genre === 3) {
+        this.subjectEN.setValue(d.data().subject)
+        this.contentEN.setValue(d.data().contract1 + '\n' + d.data().contact)
+      } else if (this.genre === 4) {
+        this.subjectEN.setValue(d.data().subject)
+        this.contentEN.setValue(d.data().contract2 + '\n' + d.data().contact)
+      } else if (this.genre === 5) {
+        this.subjectEN.setValue('About opening')
+        this.contentEN.setValue(d.data().open + '\n' + d.data().contact)
+      } else if (this.genre === 6) {
+        this.subjectEN.setValue('About opening')
+        this.contentEN.setValue(d.data().openAirmail + '\n' + d.data().contact)
+      } else {
+        this.contentEN.setValue('\n' + d.data().contact)
+      }
     })
   }
 
@@ -62,8 +97,8 @@ export class SendEmailComponent implements OnInit {
     };
     const body: any = {
       to: this.mail,
-      content: this.content.value,
-      subject: this.subject.value
+      content: this.contentJP.value,
+      subject: this.subjectJP.value
     };
 
     this.http.post<any>(url, body, httpOptions)
@@ -83,8 +118,8 @@ export class SendEmailComponent implements OnInit {
     };
     const body: any = {
       to: this.mail,
-      content: this.content.value,
-      subject: this.subject.value
+      content: this.contentJP.value,
+      subject: this.subjectJP.value
     };
 
     this.http.post<any>(url, body, httpOptions)

@@ -50,21 +50,38 @@ export class DataService {
       });
   }
 
-  getMailData(): Promise<any> {
-    const data = this.afs.collection('admin').doc('mail');
+  getJPMailData(): Promise<any> {
+    const data = this.afs.collection('admin').doc('mail_jp');
     return data.ref.get()
       .then((d) => {
         return d;
       });
   }
 
-  registrationMailData(doc: any): Promise<any> {
-    const data = this.afs.collection('admin').doc('mail');
+  getENMailData(): Promise<any> {
+    const data = this.afs.collection('admin').doc('mail_en');
+    return data.ref.get()
+      .then((d) => {
+        return d;
+      });
+  }
+
+  registrationJPMailData(doc: any): Promise<any> {
+    const data = this.afs.collection('admin').doc('mail_jp');
     return data.ref.set(doc, {merge: true})
       .then((d) => {
         this.commonService.openBar("OK", 3000);
       });
   }
+
+  registrationENMailData(doc: any): Promise<any> {
+    const data = this.afs.collection('admin').doc('mail_en');
+    return data.ref.set(doc, {merge: true})
+      .then((d) => {
+        this.commonService.openBar("OK", 3000);
+      });
+  }
+
 
   registrationStatus(id: string, status: number, mailCount: any) {
     const doc = {};

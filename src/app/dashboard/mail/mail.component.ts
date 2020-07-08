@@ -14,39 +14,83 @@ export class MailComponent implements OnInit {
     private dataService: DataService) {
   }
 
-  data = new FormGroup({
+  dataJP = new FormGroup({
     question: new FormControl(''),
     agreement: new FormControl(''),
     contract1: new FormControl(''),
     contract2: new FormControl(''),
     contact: new FormControl(''),
     subject: new FormControl(''),
+    open: new FormControl(''),
+    openAirmail: new FormControl(''),
+  });
+
+  dataEN = new FormGroup({
+    question: new FormControl(''),
+    agreement: new FormControl(''),
+    contract1: new FormControl(''),
+    contract2: new FormControl(''),
+    contact: new FormControl(''),
+    subject: new FormControl(''),
+    open: new FormControl(''),
+    openAirmail: new FormControl(''),
   });
 
   ngOnInit(): void {
-    this.dataService.getMailData().then(d => {
-      this.data.setValue({
+    this.dataService.getJPMailData().then(d => {
+      this.dataJP.setValue({
         question: d.data().question,
         agreement: d.data().agreement,
         contract1: d.data().contract1,
         contract2: d.data().contract2,
         contact: d.data().contact,
         subject: d.data().subject,
+        open: d.data().open,
+        openAirmail: d.data().openAirmail,
+      })
+    })
+    this.dataService.getENMailData().then(d => {
+      this.dataEN.setValue({
+        question: d.data().question,
+        agreement: d.data().agreement,
+        contract1: d.data().contract1,
+        contract2: d.data().contract2,
+        contact: d.data().contact,
+        subject: d.data().subject,
+        open: d.data().open,
+        openAirmail: d.data().openAirmail,
       })
     })
   }
 
 
-  registrationMailData() {
+  registrationJPMailData() {
     const doc = {}
-    doc['question'] = this.data.value.question;
-    doc['agreement'] = this.data.value.agreement;
-    doc['contract1'] = this.data.value.contract1;
-    doc['contract2'] = this.data.value.contract2;
-    doc['contact'] = this.data.value.contact;
-    doc['subject'] = this.data.value.subject;
+    doc['question'] = this.dataJP.value.question;
+    doc['agreement'] = this.dataJP.value.agreement;
+    doc['contract1'] = this.dataJP.value.contract1;
+    doc['contract2'] = this.dataJP.value.contract2;
+    doc['contact'] = this.dataJP.value.contact;
+    doc['subject'] = this.dataJP.value.subject;
+    doc['open'] = this.dataEN.value.subject;
+    doc['openAirmail'] = this.dataEN.value.subject;
 
-    this.dataService.registrationMailData(doc).then();
+    this.dataService.registrationJPMailData(doc).then();
+  }
+
+  registrationENMailData() {
+    const doc = {}
+    doc['question'] = this.dataEN.value.question;
+    doc['agreement'] = this.dataEN.value.agreement;
+    doc['contract1'] = this.dataEN.value.contract1;
+    doc['contract2'] = this.dataEN.value.contract2;
+    doc['contact'] = this.dataEN.value.contact;
+    doc['subject'] = this.dataEN.value.subject;
+    doc['open'] = this.dataEN.value.subject;
+    doc['openAirmail'] = this.dataEN.value.subject;
+
+
+    this.dataService.registrationENMailData(doc).then();
   }
 
 }
