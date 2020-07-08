@@ -20,6 +20,8 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatSelectModule} from "@angular/material/select";
 import { ServiceComponent } from './service/service.component';
+import { MailComponent } from './mail/mail.component';
+import { SendEmailComponent } from './send-email/send-email.component';
 
 
 @NgModule({
@@ -28,6 +30,8 @@ import { ServiceComponent } from './service/service.component';
     UserComponent,
     UserDetailComponent,
     ServiceComponent,
+    MailComponent,
+    SendEmailComponent,
   ],
   imports: [
     CommonModule,

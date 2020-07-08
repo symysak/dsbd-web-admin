@@ -50,9 +50,28 @@ export class DataService {
       });
   }
 
-  registrationStatus(id: string, status: number) {
+  getMailData(): Promise<any> {
+    const data = this.afs.collection('admin').doc('mail');
+    return data.ref.get()
+      .then((d) => {
+        return d;
+      });
+  }
+
+  registrationMailData(doc: any): Promise<any> {
+    const data = this.afs.collection('admin').doc('mail');
+    return data.ref.set(doc, {merge: true})
+      .then((d) => {
+        this.commonService.openBar("OK", 3000);
+      });
+  }
+
+  registrationStatus(id: string, status: number, mailCount: any) {
     const doc = {};
     doc['status'] = status;
+    if (mailCount !== false && typeof mailCount === 'number') {
+      doc['mailCount'] = mailCount;
+    }
 
     const data = this.afs.collection('user').doc(id);
     return data.ref.set(doc, {merge: true})
@@ -79,7 +98,6 @@ export class DataService {
         this.commonService.openBar("OK", 3000);
       });
   }
-
 
 
   registrationIdentificationName(id: string, name: number) {

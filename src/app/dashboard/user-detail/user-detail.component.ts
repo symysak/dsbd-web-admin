@@ -49,13 +49,22 @@ export class UserDetailComponent implements OnInit {
   private dataStatus = 0;
   public registerStatus: number;
   public lockLoading = true;
+  public mailCount = 0;
   identificationName = new FormControl('');
   serviceCode = new FormControl('');
+  mail: string;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.dataService.getUser(this.id).then(doc => {
       console.log('data: ' + doc.data());
+
+      this.mail = doc.data().email;
+
+      if (doc.data().name !== undefined) {
+        this.identificationName.setValue(doc.data().name);
+      }
+
       if (doc.data().status % 10 == 1) {
         this.status = 'question';
       }
@@ -79,6 +88,9 @@ export class UserDetailComponent implements OnInit {
       }
       if (doc.data().status % 10 == 8) {
         this.status = 'question=>check=>agreement=>check=>contract1=>check=>contract2=>check';
+      }
+      if (doc.data().mailCount === undefined) {
+        this.mailCount = doc.data().mailCount;
       }
       console.log('status: ' + doc.data().status);
       console.log('dataStatus: ' + doc.data().status / 10);
@@ -114,7 +126,7 @@ export class UserDetailComponent implements OnInit {
     console.log('d: ' + this.dataStatus + ' r: ' + this.registerStatus)
     console.log('d: ' + Math.floor(this.dataStatus) + ' r: ' + this.registerStatus)
     let tmp: number = parseInt(String(Math.floor(this.dataStatus) * 10)) + parseInt(String(this.registerStatus));
-    this.dataService.registrationStatus(this.id, tmp).then();
+    this.dataService.registrationStatus(this.id, tmp, false).then();
   }
 
   pushIdentificationName() {
@@ -123,5 +135,14 @@ export class UserDetailComponent implements OnInit {
 
   pageMove() {
     this.router.navigate(['/dashboard/user/' + this.id + '/' + this.serviceCode.value]).then();
+  }
+
+  pageMailMove() {
+    this.router.navigate(['/dashboard/mail/' + this.id + '/' + this.serviceCode.value]).then();
+  }
+
+  pushRegisterStatusAndSendEmail() {
+    let tmp: number = parseInt(String(Math.floor(this.dataStatus) * 10)) + parseInt(String(this.registerStatus));
+    this.dataService.registrationStatus(this.id, tmp, this.mailCount).then();
   }
 }

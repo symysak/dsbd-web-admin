@@ -1,0 +1,47 @@
+<div class="main">
+  <h1>Mail Text</h1>
+  <form class="form" [formGroup]="data">
+    <h2>Question</h2>
+    <mat-form-field class="large-width">
+      <mat-label>question</mat-label>
+      <label>
+        <textarea matInput rows="10" placeholder="text ....." formControlName="question" required></textarea>
+      </label>
+    </mat-form-field>
+    <h2>Agreement</h2>
+    <mat-form-field class="large-width">
+      <mat-label>agreement mail text</mat-label>
+      <label>
+        <textarea matInput rows="10" placeholder="text ....." formControlName="agreement" required></textarea>
+      </label>
+    </mat-form-field>
+    <h2>Contract1</h2>
+    <mat-form-field class="large-width">
+      <mat-label>contract1 mail text</mat-label>
+      <label>
+        <textarea matInput rows="10" placeholder="text ....." formControlName="contract1" required></textarea>
+      </label>
+    </mat-form-field>
+    <h2>Contract2</h2>
+    <mat-form-field class="large-width">
+      <mat-label>contract2 mail text</mat-label>
+      <label>
+        <textarea matInput rows="10" placeholder="text ....." formControlName="contract2" required></textarea>
+      </label>
+    </mat-form-field>
+    <h2>Contact</h2>
+    <mat-form-field class="large-width">
+      <mat-label>contact mail text</mat-label>
+      <label>
+        <textarea matInput rows="10" placeholder="text ....." formControlName="contact" required></textarea>
+      </label>
+    </mat-form-field>
+  </form>
+  <br>
+  <br>
+  <button mat-raised-button (click)="registrationMailData()">Update</button>
+  <br>
+  <br>
+  <br>
+
+</div>
