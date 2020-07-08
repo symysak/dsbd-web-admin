@@ -19,7 +19,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   public id: string;
-  public status = 'None';
+  public statusData = 'None';
   public question: { data1: '', data2: '', data3: '', data4: '', lock: false, };
   public agreement: { agree: false, lock: false };
   public contract1: {
@@ -49,7 +49,7 @@ export class UserDetailComponent implements OnInit {
   private dataStatus = 0;
   public registerStatus: number;
   public lockLoading = true;
-  public mailCount = 0;
+  public status = 0;
   identificationName = new FormControl('');
   serviceCode = new FormControl('');
   mail: string;
@@ -66,35 +66,33 @@ export class UserDetailComponent implements OnInit {
       }
 
       if (doc.data().status % 10 == 1) {
-        this.status = 'question';
+        this.statusData = 'question';
       }
       if (doc.data().status % 10 == 2) {
-        this.status = 'question=>check';
+        this.statusData = 'question=>check';
       }
       if (doc.data().status % 10 == 3) {
-        this.status = 'question=>check=>agreement';
+        this.statusData = 'question=>check=>agreement';
       }
       if (doc.data().status % 10 == 4) {
-        this.status = 'question=>check=>agreement=>check';
+        this.statusData = 'question=>check=>agreement=>check';
       }
       if (doc.data().status % 10 == 5) {
-        this.status = 'question=>check=>agreement=>check=>contract1';
+        this.statusData = 'question=>check=>agreement=>check=>contract1';
       }
       if (doc.data().status % 10 == 6) {
-        this.status = 'question=>check=>agreement=>check=>contract1=>check';
+        this.statusData = 'question=>check=>agreement=>check=>contract1=>check';
       }
       if (doc.data().status % 10 == 7) {
-        this.status = 'question=>check=>agreement=>check=>contract1=>check=>contract2';
+        this.statusData = 'question=>check=>agreement=>check=>contract1=>check=>contract2';
       }
       if (doc.data().status % 10 == 8) {
-        this.status = 'question=>check=>agreement=>check=>contract1=>check=>contract2=>check';
-      }
-      if (doc.data().mailCount === undefined) {
-        this.mailCount = doc.data().mailCount;
+        this.statusData = 'question=>check=>agreement=>check=>contract1=>check=>contract2=>check';
       }
       console.log('status: ' + doc.data().status);
       console.log('dataStatus: ' + doc.data().status / 10);
       this.dataStatus = doc.data().status / 10;
+      this.status = doc.data().status;
     })
     this.dataService.getPersonalData(this.id).then(doc => {
       for (let i = 0; i < doc.size; i++) {
@@ -138,11 +136,11 @@ export class UserDetailComponent implements OnInit {
   }
 
   pageMailMove() {
-    this.router.navigate(['/dashboard/mail/' + this.id + '/' + this.serviceCode.value]).then();
+    this.router.navigate(['/dashboard/sendmail/' + this.mail + '/' + String(this.status % 10)]).then();
   }
 
-  pushRegisterStatusAndSendEmail() {
-    let tmp: number = parseInt(String(Math.floor(this.dataStatus) * 10)) + parseInt(String(this.registerStatus));
-    this.dataService.registrationStatus(this.id, tmp, this.mailCount).then();
-  }
+  // pushRegisterStatusAndSendEmail() {
+  //   let tmp: number = parseInt(String(Math.floor(this.dataStatus) * 10)) + parseInt(String(this.registerStatus));
+  //   this.dataService.registrationStatus(this.id, tmp, this.mailCount).then();
+  // }
 }

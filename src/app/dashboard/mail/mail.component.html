@@ -1,6 +1,13 @@
 <div class="main">
   <h1>Mail Text</h1>
   <form class="form" [formGroup]="data">
+    <h2>Subject</h2>
+    <mat-form-field class="large-width">
+      <mat-label>subject</mat-label>
+      <label>
+        <textarea matInput placeholder="text ....." formControlName="subject" required></textarea>
+      </label>
+    </mat-form-field>
     <h2>Question</h2>
     <mat-form-field class="large-width">
       <mat-label>question</mat-label>

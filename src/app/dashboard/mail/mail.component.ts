@@ -20,6 +20,7 @@ export class MailComponent implements OnInit {
     contract1: new FormControl(''),
     contract2: new FormControl(''),
     contact: new FormControl(''),
+    subject: new FormControl(''),
   });
 
   ngOnInit(): void {
@@ -30,6 +31,7 @@ export class MailComponent implements OnInit {
         contract1: d.data().contract1,
         contract2: d.data().contract2,
         contact: d.data().contact,
+        subject: d.data().subject,
       })
     })
   }
@@ -42,6 +44,7 @@ export class MailComponent implements OnInit {
     doc['contract1'] = this.data.value.contract1;
     doc['contract2'] = this.data.value.contract2;
     doc['contact'] = this.data.value.contact;
+    doc['subject'] = this.data.value.subject;
 
     this.dataService.registrationMailData(doc).then();
   }

@@ -17,7 +17,7 @@ const routes: Routes = [
     children: [
       {path: '', redirectTo: 'user', pathMatch: 'full'},
       {path: 'mail', component: MailComponent},
-      {path: 'sendmail/:mail/:status', component: SendEmailComponent},
+      {path: 'sendmail/:mail/:genre', component: SendEmailComponent},
       {path: 'user', component: UserComponent},
       {path: 'user/:id', component: UserDetailComponent},
       {path: 'user/:id/:service', component: ServiceComponent},
