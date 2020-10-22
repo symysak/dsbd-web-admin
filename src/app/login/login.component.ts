@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "../service/auth.service";
-import {FormControl, Validators} from "@angular/forms";
+import {AuthService} from '../service/auth.service';
+import {FormControl} from '@angular/forms';
+import {CommonService} from '../service/common.service';
 
 @Component({
   selector: 'app-login',
@@ -9,30 +10,24 @@ import {FormControl, Validators} from "@angular/forms";
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private commonService: CommonService
+  ) {
   }
+
+  public hide = true;
+  public user = new FormControl();
+  public password = new FormControl();
 
 
   ngOnInit(): void {
   }
 
-  public hide = true;
-  public email = new FormControl('', [Validators.required, Validators.email]);
-  public password = new FormControl();
-
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a value';
-    }
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+  login() {
+    // if (this.user.value === '' && this.password.value === '') {
+    //   this.commonService.openBar('ユーザ又はパスワードが空です。', 5000);
+    // }
+    this.authService.login(this.user.value, this.password.value);
   }
-
-  loginMail() {
-    this.authService.loginWithMail(this.email.value, this.password.value);
-  }
-
-  loginGoogle() {
-    this.authService.loginWithGoogle();
-  }
-
 }
