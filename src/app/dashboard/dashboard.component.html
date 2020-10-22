@@ -6,12 +6,11 @@
     </mat-nav-list>
     <br>
     <mat-nav-list>
-      <a mat-list-item
-         href="https://git.bgp.ne.jp/web/dashboardadmin">GitLab</a>
+      <a mat-list-item href="https://github.com/homenoc">GitHub</a>
     </mat-nav-list>
     <br>
     <br>
-    <button mat-raised-button color="warn" class="button" (click)="this.authService.logOut(true)">LogOut</button>
+    <button mat-raised-button color="warn" class="button" (click)="this.authService.logOut()">LogOut</button>
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>

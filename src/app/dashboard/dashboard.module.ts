@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {DashboardRoutingModule} from './dashboard-routing.module';
 import {DashboardComponent} from './dashboard.component';
 import {UserComponent} from './user/user.component';
-import {UserDetailComponent} from './user-detail/user-detail.component';
+import {UserDetailComponent} from './user/user-detail/user-detail.component';
 import {MatInputModule} from '@angular/material/input';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -23,6 +23,7 @@ import {ServiceComponent} from './service/service.component';
 import {MailComponent} from './mail/mail.component';
 import {SendEmailComponent} from './send-email/send-email.component';
 import {HttpClientModule} from '@angular/common/http';
+import { GroupComponent } from './group/group.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import {HttpClientModule} from '@angular/common/http';
     ServiceComponent,
     MailComponent,
     SendEmailComponent,
+    GroupComponent,
   ],
   imports: [
     HttpClientModule,

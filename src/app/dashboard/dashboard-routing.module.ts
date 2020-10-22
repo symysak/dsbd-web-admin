@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {DashboardComponent} from './dashboard.component';
 import {AuthGuard} from '../guard/auth.guard';
 import {UserComponent} from './user/user.component';
-import {UserDetailComponent} from './user-detail/user-detail.component';
+import {UserDetailComponent} from './user/user-detail/user-detail.component';
 import {ServiceComponent} from './service/service.component';
 import {MailComponent} from './mail/mail.component';
 import {SendEmailComponent} from './send-email/send-email.component';
