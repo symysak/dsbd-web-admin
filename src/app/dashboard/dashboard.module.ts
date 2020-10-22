@@ -23,7 +23,9 @@ import {ServiceComponent} from './service/service.component';
 import {MailComponent} from './mail/mail.component';
 import {SendEmailComponent} from './send-email/send-email.component';
 import {HttpClientModule} from '@angular/common/http';
-import { GroupComponent } from './group/group.component';
+import {GroupComponent} from './group/group.component';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -46,6 +48,8 @@ import { GroupComponent } from './group/group.component';
     MatCardModule,
     MatChipsModule,
     MatIconModule,
+    MatRadioModule,
+    MatCheckboxModule,
     MatProgressBarModule,
     MatFormFieldModule,
     ReactiveFormsModule,
