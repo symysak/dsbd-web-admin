@@ -21,6 +21,10 @@
             <td>{{user.UpdatedAt}}</td>
           </tr>
           <tr>
+            <th>Group ID</th>
+            <td>{{user.g_id}}</td>
+          </tr>
+          <tr>
             <th>Name</th>
             <td>{{user.name}}</td>
           </tr>
@@ -107,101 +111,112 @@
       <mat-tab label="設定">
         <ng-template matTabContent>
           <br>
-          <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
-          <form [formGroup]="userInput">
-            <mat-form-field appearance="fill">
-              <mat-label>Name</mat-label>
-              <input matInput [type]="hide ? 'org' : 'text'" formControlName="name">
-            </mat-form-field>
-            &nbsp;
-            <mat-form-field appearance="fill">
-              <mat-label>Name(English)</mat-label>
-              <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="nameEn">
-            </mat-form-field>
+          <div class="main">
+            <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
+            <form [formGroup]="userInput">
+              <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" formControlName="name">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Name(English)</mat-label>
+                <input matInput type="text" formControlName="name_en">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>E-mail</mat-label>
+                <input matInput type="email" formControlName="email">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="pass">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Org</mat-label>
+                <input matInput type="text" formControlName="org">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>OrgEn</mat-label>
+                <input matInput type="text" formControlName="org_en">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>PostCode</mat-label>
+                <input matInput type="text" formControlName="postcode">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Address</mat-label>
+                <input matInput type="text" formControlName="address">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Address(English)</mat-label>
+                <input matInput type="text" formControlName="address_en">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Department</mat-label>
+                <input matInput type="text" formControlName="dept">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Department(English)</mat-label>
+                <input matInput type="text" formControlName="dept_en">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Position</mat-label>
+                <input matInput type="text" formControlName="pos">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Position(English)</mat-label>
+                <input matInput type="text" formControlName="pos_en">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Tel</mat-label>
+                <input matInput type="tel" formControlName="tel">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Fax</mat-label>
+                <input matInput type="tel" formControlName="fax">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Country</mat-label>
+                <input matInput type="text" formControlName="country">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Status</mat-label>
+                <input matInput type="number" formControlName="status">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Level</mat-label>
+                <input matInput type="number" formControlName="level">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Group ID</mat-label>
+                <input matInput type="text" formControlName="gid">
+              </mat-form-field>
+              <br>
+              <h3>Tech</h3>
+              <mat-checkbox formControlName="tech">Tech</mat-checkbox>
+              &nbsp;
+            </form>
             <br>
-            <mat-form-field appearance="fill">
-              <mat-label>E-mail</mat-label>
-              <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="email">
-            </mat-form-field>
-            &nbsp;
-            <mat-form-field appearance="fill">
-              <mat-label>Password</mat-label>
-              <input matInput [type]="hide ? 'org' : 'text'" formControlName="password">
-            </mat-form-field>
+            <button mat-stroked-button color="primary" (click)="update()">Update</button>
             <br>
-            <mat-form-field appearance="fill">
-              <mat-label> MailToken</mat-label>
-              <input matInput [type]="" formControlName="mailToken">
-            </mat-form-field>
-            &nbsp;
-            <mat-form-field appearance="fill">
-              <mat-label>MailVerify</mat-label>
-              <input matInput [type]="hide ? 'org' : 'text'" formControlName="malVerify">
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-              <mat-label>Org</mat-label>
-              <input matInput [type]="hide ? 'org' : 'text'" formControlName="org">
-            </mat-form-field>
-            &nbsp;
-            <mat-form-field appearance="fill">
-              <mat-label>OrgEn</mat-label>
-              <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="orgEn">
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-              <mat-label>PostCode</mat-label>
-              <input matInput [type]="hide ? 'postcode' : 'text'" formControlName="postcode">
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-              <mat-label>Address</mat-label>
-              <input matInput [type]="hide ? 'address' : 'text'" formControlName="address">
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-              <mat-label>Address(English)</mat-label>
-              <input matInput [type]="hide ? 'addressEn' : 'text'" formControlName="addressEn">
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-              <mat-label>Department</mat-label>
-              <input matInput [type]="hide ? 'dept' : 'text'" formControlName="dept">
-            </mat-form-field>
-            &nbsp;
-            <mat-form-field appearance="fill">
-              <mat-label>Department(English)</mat-label>
-              <input matInput [type]="hide ? 'deptEn' : 'text'" formControlName="deptEn">
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-              <mat-label>Position</mat-label>
-              <input matInput [type]="hide ? 'pos' : 'text'" formControlName="pos">
-            </mat-form-field>
-            &nbsp;
-            <mat-form-field appearance="fill">
-              <mat-label>Position(English)</mat-label>
-              <input matInput [type]="hide ? 'posEn' : 'text'" formControlName="posEn">
-            </mat-form-field>
-            <br>
-            <mat-form-field appearance="fill">
-              <mat-label>Tel</mat-label>
-              <input matInput [type]="hide ? 'tel' : 'text'" formControlName="tel">
-            </mat-form-field>
-            &nbsp;
-            <mat-form-field appearance="fill">
-              <mat-label>Fax</mat-label>
-              <input matInput [type]="hide ? 'fax' : 'text'" formControlName="fax">
-            </mat-form-field>
-            &nbsp;
-            <mat-form-field appearance="fill">
-              <mat-label>Country</mat-label>
-              <input matInput [type]="hide ? 'country' : 'text'" formControlName="country">
-            </mat-form-field>
-          </form>
-          <br>
-          <button mat-stroked-button color="primary" (click)="update()">Update</button>
-          <br>
+          </div>
         </ng-template>
       </mat-tab>
     </mat-tab-group>

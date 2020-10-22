@@ -18,6 +18,7 @@ export class UserComponent implements OnInit {
   }
 
   public user: any[] = new Array();
+  public loading = true;
 
 
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class UserComponent implements OnInit {
       console.log(response);
       if (response.status) {
         this.user = response.data;
+        this.loading = false;
         this.commonService.openBar('OK', 5000);
       } else {
         console.log('error: ' + JSON.stringify(response));

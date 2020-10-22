@@ -22,31 +22,30 @@ export class UserDetailComponent implements OnInit {
 
   public id: string;
   public userInput = new FormGroup({
-    g_id: new FormControl(),
+    ID: new FormControl(),
+    gid: new FormControl(),
     name: new FormControl(),
-    nameEn: new FormControl(),
-    password: new FormControl(),
-    mailToken: new FormControl(),
-    mailVerify: new FormControl(),
+    name_en: new FormControl(),
+    email: new FormControl(),
+    pass: new FormControl(),
     org: new FormControl(),
-    orgEn: new FormControl(),
+    org_en: new FormControl(),
     postcode: new FormControl(),
     address: new FormControl(),
-    addressEn: new FormControl(),
+    address_en: new FormControl(),
     dept: new FormControl(),
-    deptEn: new FormControl(),
+    dept_en: new FormControl(),
     pos: new FormControl(),
-    posEn: new FormControl(),
+    pos_en: new FormControl(),
     tel: new FormControl(),
     fax: new FormControl(),
     country: new FormControl(),
     status: new FormControl(),
     level: new FormControl(),
+    tech: new FormControl(false)
   });
   public loading = true;
   public hide = false;
-  identificationName = new FormControl('');
-  serviceCode = new FormControl('');
   public user: any;
 
   ngOnInit(): void {
@@ -55,10 +54,18 @@ export class UserDetailComponent implements OnInit {
       console.log(response);
       if (response.status) {
         this.user = response.data[0];
+        this.userInput.patchValue({
+          ID: response.data[0].ID,
+          status: response.data[0].status,
+          level: response.data[0].level,
+          gid: response.data[0].gid,
+          tech: response.data[0].tech
+        });
         this.loading = false;
         console.log(this.user);
         this.commonService.openBar('OK', 5000);
       } else {
+        this.commonService.openBar('NG', 5000);
         console.log('error: ' + JSON.stringify(response));
         return;
       }
@@ -66,5 +73,15 @@ export class UserDetailComponent implements OnInit {
   }
 
   update(): void {
+    const json = JSON.stringify(this.userInput.getRawValue());
+    console.log(json);
+    this.userService.update(this.id, json).then(response => {
+      if (response.status) {
+        this.commonService.openBar('OK', 5000);
+      } else {
+        this.commonService.openBar('NG', 5000);
+        console.log('error: ' + JSON.stringify(response));
+      }
+    });
   }
 }
