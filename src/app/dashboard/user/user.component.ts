@@ -1,15 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService} from "../../service/data.service";
-import {Router} from "@angular/router";
-
-class dataStruct {
-  id: string;
-  name: string;
-  email: string;
-  release: number;
-  isAdmin = false;
-  isTestUser = false;
-}
+import {Router} from '@angular/router';
+import {UserService} from '../../service/user.service';
+import {CommonService} from '../../service/common.service';
 
 @Component({
   selector: 'app-user',
@@ -19,52 +11,29 @@ class dataStruct {
 export class UserComponent implements OnInit {
 
   constructor(
-    private dataService: DataService,
+    private userService: UserService,
+    private commonService: CommonService,
     private router: Router,
   ) {
   }
 
-  public user: dataStruct[] = new Array();
+  public user: any[] = new Array();
 
 
   ngOnInit(): void {
-    this.getUser();
+    this.userService.getAll().then(response => {
+      console.log(response);
+      if (response.status) {
+        this.user = response.data;
+        this.commonService.openBar('OK', 5000);
+      } else {
+        console.log('error: ' + JSON.stringify(response));
+        return;
+      }
+    });
   }
 
   userPage(id): void {
     this.router.navigate(['/dashboard/user/' + id]).then();
   }
-
-  getUser(): void {
-    this.dataService.getAllUser().then(doc => {
-      // console.log(doc.data())
-      for (let i = 0; i < doc.size; i++) {
-        console.log(doc.docs[i].id);
-        // console.log(doc.docs[i].key('admin'));
-
-        let status: number;
-        let admin = false;
-        if (doc.docs[i].data().status === undefined) {
-          status = 1;
-        } else {
-          status = doc.docs[i].data().status;
-        }
-
-        if (doc.docs[i].data().admin) {
-          admin = true;
-        }
-
-        this.user.push({
-          id: doc.docs[i].id,
-          name: doc.docs[i].data().name,
-          email: doc.docs[i].data().email,
-          isTestUser: doc.docs[i].data().test,
-          release: status,
-          isAdmin: admin,
-        });
-      }
-      console.log(this.user);
-    })
-  }
-
 }

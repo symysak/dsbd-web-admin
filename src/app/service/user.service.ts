@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {AngularFireAuth} from "@angular/fire/auth";
-import {AngularFirestore} from "@angular/fire/firestore";
-import {CommonService} from "./common.service";
+import {CommonService} from './common.service';
+import {Router} from '@angular/router';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +10,104 @@ import {CommonService} from "./common.service";
 export class UserService {
 
   constructor(
-    private afAuth: AngularFireAuth,
-    public afs: AngularFirestore,
+    public router: Router,
     private commonService: CommonService,
+    private http: HttpClient
   ) {
   }
 
-  createUser(email, pass): void {
-    this.afAuth.createUserWithEmailAndPassword(email, pass)
-      .then(result => {
-        result.user.sendEmailVerification().then(d => {
-            // console.log(d.uid)
-          }
-        )
-        this.commonService.openBar('Please follow the email confirmation link.。', 10000);
-      })
-      .catch(err => this.commonService.openBar('Failed register account!!!' + err, 2000));
+  create(body): Promise<any> {
+    return this.http.post(environment.api.url + environment.api.path + '/user',
+      body, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }),
+      }).toPromise().then(r => {
+      const response: any = r;
+      console.log('response: ' + JSON.stringify(response));
+      if (response.status === true) {
+        return response;
+      } else {
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
+      }
+    }).catch(error => {
+      console.log(error);
+      return {status: false, error};
+    });
+  }
+
+  get(uid): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/user/' + uid, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      if (response.status === true) {
+        return response;
+      } else {
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
+      }
+    }).catch(error => {
+      console.log(error);
+      return {status: false, error};
+    });
+  }
+
+  getAll(): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/user', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      if (response.status === true) {
+        return response;
+      } else {
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
+      }
+    }).catch(error => {
+      console.log(error);
+      return {status: false, error};
+    });
+  }
+
+  update(uid, data): Promise<any> {
+    return this.http.put(environment.api.url + environment.api.path + '/user/' + uid,
+      data, {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }),
+      }).toPromise().then(r => {
+      const response: any = r;
+      if (response.status === true) {
+        return response;
+      } else {
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
+      }
+    }).catch(error => {
+      console.log(error);
+      return {status: false, error};
+    });
   }
 }
