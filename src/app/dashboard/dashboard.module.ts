@@ -29,6 +29,8 @@ import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
 import { ConnectionComponent } from './connection/connection.component';
 import { ConnectionDetailComponent } from './connection/connection-detail/connection-detail.component';
+import { NetworkComponent } from './network/network.component';
+import { NetworkDetailComponent } from './network/network-detail/network-detail.component';
 
 
 @NgModule({
@@ -43,6 +45,8 @@ import { ConnectionDetailComponent } from './connection/connection-detail/connec
     ChatComponent,
     ConnectionComponent,
     ConnectionDetailComponent,
+    NetworkComponent,
+    NetworkDetailComponent,
   ],
   imports: [
     HttpClientModule,

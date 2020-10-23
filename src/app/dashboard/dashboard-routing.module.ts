@@ -11,6 +11,8 @@ import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
 import {ConnectionDetailComponent} from './connection/connection-detail/connection-detail.component';
 import {ConnectionComponent} from './connection/connection.component';
+import {NetworkDetailComponent} from './network/network-detail/network-detail.component';
+import {NetworkComponent} from './network/network.component';
 
 
 const routes: Routes = [
@@ -25,6 +27,8 @@ const routes: Routes = [
       {path: 'group/:id', component: GroupDetailComponent},
       {path: 'connection', component: ConnectionComponent},
       {path: 'connection/:id', component: ConnectionDetailComponent},
+      {path: 'network', component: NetworkComponent},
+      {path: 'network/:id', component: NetworkDetailComponent},
       {path: 'support', component: SupportComponent},
       {path: 'support/:id', component: ChatComponent},
       {path: 'user', component: UserComponent},
