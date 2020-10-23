@@ -9,6 +9,8 @@ import {SendEmailComponent} from './send-email/send-email.component';
 import {GroupComponent} from './group/group.component';
 import {GroupDetailComponent} from './group/group-detail/group-detail.component';
 import {TokenComponent} from './token/token.component';
+import {SupportComponent} from './support/support.component';
+import {ChatComponent} from './support/chat/chat.component';
 
 
 const routes: Routes = [
@@ -23,6 +25,8 @@ const routes: Routes = [
       {path: 'token', component: TokenComponent},
       {path: 'group', component: GroupComponent},
       {path: 'group/:id', component: GroupDetailComponent},
+      {path: 'support', component: SupportComponent},
+      {path: 'support/:id', component: ChatComponent},
       {path: 'user', component: UserComponent},
       {path: 'user/:id', component: UserDetailComponent},
     ],

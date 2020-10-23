@@ -28,6 +28,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {GroupDetailComponent} from './group/group-detail/group-detail.component';
 import { TokenComponent } from './token/token.component';
+import { SupportComponent } from './support/support.component';
+import { ChatComponent } from './support/chat/chat.component';
 
 
 @NgModule({
@@ -41,6 +43,8 @@ import { TokenComponent } from './token/token.component';
     GroupComponent,
     GroupDetailComponent,
     TokenComponent,
+    SupportComponent,
+    ChatComponent,
   ],
   imports: [
     HttpClientModule,
