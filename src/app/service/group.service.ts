@@ -32,7 +32,7 @@ export class GroupService {
         return {
           status: false,
           error: response.error.error,
-          data: response
+          group: response
         };
       }
     }).catch(error => {
@@ -55,7 +55,7 @@ export class GroupService {
         return {
           status: false,
           error: response.error.error,
-          data: response
+          group: response
         };
       }
     }).catch(error => {
@@ -78,7 +78,7 @@ export class GroupService {
         return {
           status: false,
           error: response.error.error,
-          data: response
+          group: response
         };
       }
     }).catch(error => {
@@ -102,7 +102,7 @@ export class GroupService {
         return {
           status: false,
           error: response.error.error,
-          data: response
+          group: response
         };
       }
     }).catch(error => {
