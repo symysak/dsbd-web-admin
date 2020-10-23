@@ -27,6 +27,8 @@ import {GroupDetailComponent} from './group/group-detail/group-detail.component'
 import {TokenComponent} from './token/token.component';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
+import { ConnectionComponent } from './connection/connection.component';
+import { ConnectionDetailComponent } from './connection/connection-detail/connection-detail.component';
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import {ChatComponent} from './support/chat/chat.component';
     TokenComponent,
     SupportComponent,
     ChatComponent,
+    ConnectionComponent,
+    ConnectionDetailComponent,
   ],
   imports: [
     HttpClientModule,
