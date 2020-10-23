@@ -19,17 +19,14 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSelectModule} from '@angular/material/select';
-import {ServiceComponent} from './service/service.component';
-import {MailComponent} from './mail/mail.component';
-import {SendEmailComponent} from './send-email/send-email.component';
 import {HttpClientModule} from '@angular/common/http';
 import {GroupComponent} from './group/group.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {GroupDetailComponent} from './group/group-detail/group-detail.component';
-import { TokenComponent } from './token/token.component';
-import { SupportComponent } from './support/support.component';
-import { ChatComponent } from './support/chat/chat.component';
+import {TokenComponent} from './token/token.component';
+import {SupportComponent} from './support/support.component';
+import {ChatComponent} from './support/chat/chat.component';
 
 
 @NgModule({
@@ -37,9 +34,6 @@ import { ChatComponent } from './support/chat/chat.component';
     DashboardComponent,
     UserComponent,
     UserDetailComponent,
-    ServiceComponent,
-    MailComponent,
-    SendEmailComponent,
     GroupComponent,
     GroupDetailComponent,
     TokenComponent,
