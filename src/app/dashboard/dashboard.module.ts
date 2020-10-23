@@ -27,10 +27,12 @@ import {GroupDetailComponent} from './group/group-detail/group-detail.component'
 import {TokenComponent} from './token/token.component';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
-import { ConnectionComponent } from './connection/connection.component';
-import { ConnectionDetailComponent } from './connection/connection-detail/connection-detail.component';
-import { NetworkComponent } from './network/network.component';
-import { NetworkDetailComponent } from './network/network-detail/network-detail.component';
+import {ConnectionComponent} from './connection/connection.component';
+import {ConnectionDetailComponent} from './connection/connection-detail/connection-detail.component';
+import {NetworkComponent} from './network/network.component';
+import {NetworkDetailComponent} from './network/network-detail/network-detail.component';
+import {NoticeComponent} from './notice/notice.component';
+import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
 
 
 @NgModule({
@@ -47,6 +49,8 @@ import { NetworkDetailComponent } from './network/network-detail/network-detail.
     ConnectionDetailComponent,
     NetworkComponent,
     NetworkDetailComponent,
+    NoticeComponent,
+    NoticeDetailComponent,
   ],
   imports: [
     HttpClientModule,

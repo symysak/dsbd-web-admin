@@ -13,6 +13,8 @@ import {ConnectionDetailComponent} from './connection/connection-detail/connecti
 import {ConnectionComponent} from './connection/connection.component';
 import {NetworkDetailComponent} from './network/network-detail/network-detail.component';
 import {NetworkComponent} from './network/network.component';
+import {NoticeComponent} from './notice/notice.component';
+import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
 
 
 const routes: Routes = [
@@ -22,6 +24,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {path: '', redirectTo: 'user', pathMatch: 'full'},
+      {path: 'notice', component: NoticeComponent},
+      {path: 'notice/:id', component: NoticeDetailComponent},
       {path: 'token', component: TokenComponent},
       {path: 'group', component: GroupComponent},
       {path: 'group/:id', component: GroupDetailComponent},
