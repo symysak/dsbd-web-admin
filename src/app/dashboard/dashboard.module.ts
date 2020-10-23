@@ -26,6 +26,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {GroupComponent} from './group/group.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {GroupDetailComponent} from './group/group-detail/group-detail.component';
+import { TokenComponent } from './token/token.component';
 
 
 @NgModule({
@@ -37,6 +39,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MailComponent,
     SendEmailComponent,
     GroupComponent,
+    GroupDetailComponent,
+    TokenComponent,
   ],
   imports: [
     HttpClientModule,
