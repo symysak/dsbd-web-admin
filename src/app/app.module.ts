@@ -4,7 +4,6 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {environment} from '../environments/environment';
-import {AngularFireModule} from '@angular/fire';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginComponent} from './login/login.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -24,7 +23,6 @@ import {NotFoundComponent} from './not-found/not-found.component';
     DashboardModule,
     BrowserModule,
     RouterModule,
-    AngularFireModule.initializeApp(environment.firebase),
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
