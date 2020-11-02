@@ -23,7 +23,7 @@ export class UserDetailComponent implements OnInit {
   public id: string;
   public userInput = new FormGroup({
     ID: new FormControl(),
-    gid: new FormControl(),
+    group_id: new FormControl(),
     name: new FormControl(),
     name_en: new FormControl(),
     email: new FormControl(),
@@ -58,7 +58,7 @@ export class UserDetailComponent implements OnInit {
           ID: response.data[0].ID,
           status: response.data[0].status,
           level: response.data[0].level,
-          gid: response.data[0].gid,
+          group_id: response.data[0].group_id,
           tech: response.data[0].tech
         });
         this.loading = false;
