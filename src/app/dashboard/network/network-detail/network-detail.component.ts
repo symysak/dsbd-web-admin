@@ -22,12 +22,12 @@ export class NetworkDetailComponent implements OnInit {
   public id: string;
   public networkInput = new FormGroup({
     ID: new FormControl(),
-    asn: new FormControl(),
-    group_id: new FormControl(),
-    v4: new FormControl(),
-    v4_name: new FormControl(),
-    v6: new FormControl(),
-    v6_name: new FormControl(),
+    asn: new FormControl(''),
+    group_id: new FormControl(''),
+    v4: new FormControl(''),
+    v4_name: new FormControl(''),
+    v6: new FormControl(''),
+    v6_name: new FormControl(''),
     lock: new FormControl(),
     open: new FormControl()
   });
@@ -43,7 +43,7 @@ export class NetworkDetailComponent implements OnInit {
         this.network = response.network[0];
         this.networkInput.patchValue({
           ID: response.network[0].ID,
-          group_id:response.network[0].group_id,
+          group_id: response.network[0].group_id,
           lock: response.network[0].lock,
           open: response.network[0].open,
         });

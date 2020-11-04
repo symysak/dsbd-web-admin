@@ -22,19 +22,19 @@ export class ConnectionDetailComponent implements OnInit {
   public id: string;
   public connectionInput = new FormGroup({
     ID: new FormControl(),
-    group_id: new FormControl(),
-    user_id: new FormControl(),
+    group_id: new FormControl(''),
+    user_id: new FormControl(''),
     open: new FormControl(),
-    service: new FormControl(),
-    service_id: new FormControl(),
-    noc: new FormControl(),
-    noc_ip: new FormControl(),
-    term_ip: new FormControl(),
-    fee: new FormControl(),
-    v4_our: new FormControl(),
-    v4_your: new FormControl(),
-    v6_our: new FormControl(),
-    v6_your: new FormControl()
+    service: new FormControl(''),
+    service_id: new FormControl(''),
+    noc: new FormControl(''),
+    noc_ip: new FormControl(''),
+    term_ip: new FormControl(''),
+    fee: new FormControl(''),
+    v4_our: new FormControl(''),
+    v4_your: new FormControl(''),
+    v6_our: new FormControl(''),
+    v6_your: new FormControl('')
   });
   public loading = true;
   public hide = false;

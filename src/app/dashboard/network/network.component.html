@@ -11,6 +11,9 @@
           <ng-container *ngIf="d.open">
             <mat-chip color="primary" selected>開通</mat-chip>
           </ng-container>
+          <ng-container *ngIf="!d.open">
+            <mat-chip color="warn" selected>未開通</mat-chip>
+          </ng-container>
         </mat-chip-list>
       </mat-card-subtitle>
       <p></p>
