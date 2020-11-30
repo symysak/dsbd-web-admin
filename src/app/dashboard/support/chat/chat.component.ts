@@ -60,6 +60,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   public getName(id): string {
+    if (id === 0) {
+      return '運営';
+    }
+
     for (const u of this.user) {
       if (u.ID === id) {
         return u.name;
