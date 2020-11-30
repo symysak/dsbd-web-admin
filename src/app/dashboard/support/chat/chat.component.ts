@@ -29,6 +29,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.supportService.chatMessage = null;
     this.ticketID = +this.route.snapshot.paramMap.get('id');
     this.supportService.openWebSocket(this.ticketID);
     this.userService.getAll().then(responseUser => {
