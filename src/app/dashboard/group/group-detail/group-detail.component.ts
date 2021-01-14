@@ -20,6 +20,7 @@ export class GroupDetailComponent implements OnInit {
   }
 
   public id: string;
+  public org = '';
   public groupInput = new FormGroup({
     ID: new FormControl(),
     org: new FormControl(),
@@ -44,6 +45,7 @@ export class GroupDetailComponent implements OnInit {
           status: response.group[0].status,
           lock: response.group[0].lock,
         });
+        this.org = response.group[0].org;
         this.loading = false;
         console.log(this.group);
 
