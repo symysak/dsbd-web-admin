@@ -29,6 +29,9 @@ export class GroupDetailComponent implements OnInit {
   public loading = true;
   public hide = false;
   public group: any;
+  public users: any;
+  public networks: any;
+  public connections: any;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -43,6 +46,22 @@ export class GroupDetailComponent implements OnInit {
         });
         this.loading = false;
         console.log(this.group);
+
+        this.users = response.user;
+
+        // エラー処理の検証必要
+        if (response.network === null) {
+          this.networks = null;
+        } else {
+          this.networks = response.network;
+        }
+
+        if (response.connection === null) {
+          this.connections = null;
+        } else {
+          this.connections = response.connection;
+        }
+
         this.commonService.openBar('OK', 5000);
       } else {
         this.commonService.openBar('NG', 5000);
@@ -65,4 +84,16 @@ export class GroupDetailComponent implements OnInit {
     });
   }
 
+  userPage(id): void {
+    this.router.navigate(['/dashboard/user/' + id]).then();
+  }
+
+  connectionPage(id): void {
+    this.router.navigate(['/dashboard/connection/' + id]).then();
+  }
+
+  networkPage(id): void {
+    this.router.navigate(['/dashboard/network/' + id]).then();
+  }
 }
+
