@@ -78,6 +78,7 @@ export class UserDetailComponent implements OnInit {
     this.userService.update(this.id, json).then(response => {
       if (response.status) {
         this.commonService.openBar('OK', 5000);
+        location.reload();
       } else {
         this.commonService.openBar('NG', 5000);
         console.log('error: ' + JSON.stringify(response));

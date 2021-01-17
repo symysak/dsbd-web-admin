@@ -49,6 +49,7 @@ export class SupportComponent implements OnInit {
     this.supportService.create(json).then(response => {
       if (response.status) {
         this.commonService.openBar('OK', 5000);
+        location.reload();
       } else {
         this.commonService.openBar('NG', 5000);
         console.log('error: ' + JSON.stringify(response));
@@ -69,6 +70,7 @@ export class SupportComponent implements OnInit {
         const index = this.support.findIndex(item => item.ID === id);
         this.support[index].solved = solved;
         this.commonService.openBar('OK', 5000);
+        location.reload();
       } else {
         this.commonService.openBar('NG', 5000);
         console.log('error: ' + JSON.stringify(response));
