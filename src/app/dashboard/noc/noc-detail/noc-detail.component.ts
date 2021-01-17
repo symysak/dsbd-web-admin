@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {CommonService} from '../../../service/common.service';
+import {FormControl, FormGroup} from '@angular/forms';
+import {NocService} from '../../../service/noc.service';
 
 @Component({
   selector: 'app-noc-detail',
@@ -7,9 +11,54 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NocDetailComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+    private nocService: NocService,
+    private route: ActivatedRoute,
+    private commonService: CommonService,
+  ) {
   }
 
+  public noc: any;
+  public loading = true;
+  public id: string;
+  public nocInput = new FormGroup({
+    name: new FormControl(),
+    location: new FormControl(),
+    bandwidth: new FormControl(),
+    enable: new FormControl(),
+    comment: new FormControl(),
+  });
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.nocService.get(this.id).then(response => {
+      console.log(response);
+      this.nocInput.patchValue({
+        ID: response.noc[0].ID,
+        enable: response.noc[0].enable
+      });
+      if (response.status) {
+        this.noc = response.noc[0];
+        this.loading = false;
+        this.commonService.openBar('OK', 5000);
+      } else {
+        console.log('error: ' + JSON.stringify(response));
+        return;
+      }
+    });
+  }
+
+  update(): void {
+    const json = JSON.stringify(this.nocInput.getRawValue());
+    console.log(json);
+    this.nocService.update(this.id, json).then(response => {
+      if (response.status) {
+        this.commonService.openBar('OK', 5000);
+        location.reload();
+      } else {
+        this.commonService.openBar('NG', 5000);
+        console.log('error: ' + JSON.stringify(response));
+      }
+    });
+  }
 }
