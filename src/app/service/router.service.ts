@@ -41,6 +41,31 @@ export class RouterService {
     });
   }
 
+  delete(id): Promise<any> {
+    return this.http.delete(environment.api.url + environment.api.path + '/router/' + id,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }),
+      }).toPromise().then(r => {
+      const response: any = r;
+      console.log('response: ' + JSON.stringify(response));
+      if (response.status === true) {
+        return response;
+      } else {
+        return {
+          status: false,
+          error: response.error.error,
+          data: response
+        };
+      }
+    }).catch(error => {
+      console.log(error);
+      return {status: false, error};
+    });
+  }
+
   get(id): Promise<any> {
     return this.http.get(environment.api.url + environment.api.path + '/router/' + id, {
       headers: new HttpHeaders({
