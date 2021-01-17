@@ -9,76 +9,111 @@
         <br>
         <table>
           <tr>
-            <th colspan="2">Connection Information</th>
+            <th colspan="3">Connection Information</th>
           </tr>
           <tr>
             <th>User Create Date</th>
-            <td>{{network.CreatedAt}}</td>
+            <td colspan="2">{{network.CreatedAt}}</td>
           </tr>
           <tr>
             <th>User Update Date</th>
-            <td>{{network.UpdatedAt}}</td>
+            <td colspan="2">{{network.UpdatedAt}}</td>
           </tr>
           <tr>
             <th>Group ID</th>
-            <td>{{network.group_id}}</td>
+            <td colspan="2">{{network.group_id}}</td>
           </tr>
           <tr>
             <th>ASN</th>
-            <td>{{network.asn}}</td>
+            <td colspan="2">{{network.asn}}</td>
           </tr>
           <tr>
             <th>開通</th>
-            <td>{{network.open}}</td>
+            <td colspan="2">{{network.open}}</td>
           </tr>
           <tr>
             <th>Organization</th>
-            <td>{{network.org}}</td>
+            <td colspan="2">{{network.org}}</td>
           </tr>
           <tr>
             <th>Organization(English)</th>
-            <td>{{network.org_en}}</td>
+            <td colspan="2">{{network.org_en}}</td>
           </tr>
           <tr>
             <th>Postcode</th>
-            <td>{{network.postcode}}</td>
+            <td colspan="2">{{network.postcode}}</td>
           </tr>
           <tr>
             <th>Address</th>
-            <td>{{network.address}}</td>
+            <td colspan="2">{{network.address}}</td>
           </tr>
           <tr>
             <th>Address(English)</th>
-            <td>{{network.address_en}}</td>
+            <td colspan="2">{{network.address_en}}</td>
           </tr>
           <tr>
             <th>PIアドレス</th>
-            <td>{{network.pi}}</td>
+            <td colspan="2">{{network.pi}}</td>
           </tr>
           <tr>
             <th>Lock</th>
-            <td>{{network.lock}}</td>
+            <td colspan="2">{{network.lock}}</td>
+          </tr>
+          <tr>
+            <th colspan="3">v4 & v6</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>IPv4</th>
+            <th>IPv6</th>
           </tr>
           <tr>
             <th>Route</th>
-            <td>{{network.route}}</td>
+            <td>{{network.route_v4}}</td>
+            <td>{{network.route_v6}}</td>
           </tr>
           <tr>
-            <th>v4_Name</th>
+            <th>Name</th>
             <td>{{network.v4_name}}</td>
-          </tr>
-          <tr>
-            <th>v4</th>
-            <td>{{network.v4}}</td>
-          </tr>
-          <tr>
-            <th>v6_Name</th>
             <td>{{network.v6_name}}</td>
           </tr>
           <tr>
-            <th>v6</th>
+            <th>Address</th>
+            <td>{{network.v4}}</td>
             <td>{{network.v6}}</td>
           </tr>
+        </table>
+        <br>
+        <table>
+          <tr>
+            <th colspan="4">管理者連絡窓口</th>
+          </tr>
+          <ng-container *ngFor="let jpnic of jpnicAdmin">
+            <tr>
+              <th>ID</th>
+              <td colspan="1">{{getUser(jpnic.user_id)}}</td>
+              <th>LINK</th>
+              <td colspan="1">
+                <button mat-raised-button (click)="linkUser(jpnic.user_id)">リンク</button>
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+        <br>
+        <table>
+          <tr>
+            <th colspan="4">技術連絡担当者</th>
+          </tr>
+          <ng-container *ngFor="let jpnic of jpnicTech">
+            <tr>
+              <th>ID</th>
+              <td colspan="1">{{getUser(jpnic.user_id)}}</td>
+              <th>LINK</th>
+              <td colspan="1">
+                <button mat-raised-button (click)="linkUser(jpnic.user_id)">リンク</button>
+              </td>
+            </tr>
+          </ng-container>
         </table>
         <br>
         <mat-accordion>

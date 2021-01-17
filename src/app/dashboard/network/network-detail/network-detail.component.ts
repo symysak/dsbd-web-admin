@@ -24,6 +24,12 @@ export class NetworkDetailComponent implements OnInit {
     ID: new FormControl(),
     asn: new FormControl(''),
     group_id: new FormControl(''),
+    org: new FormControl(''),
+    org_en: new FormControl(''),
+    postcode: new FormControl(''),
+    address: new FormControl(''),
+    address_en: new FormControl(''),
+    pi: new FormControl(''),
     v4: new FormControl(''),
     v4_name: new FormControl(''),
     v6: new FormControl(''),
@@ -34,6 +40,9 @@ export class NetworkDetailComponent implements OnInit {
   public loading = true;
   public hide = false;
   public network: any;
+  public users: any;
+  public jpnicAdmin: any;
+  public jpnicTech: any;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -41,6 +50,9 @@ export class NetworkDetailComponent implements OnInit {
       console.log(response);
       if (response.status) {
         this.network = response.network[0];
+        this.users = response.user;
+        this.jpnicAdmin = response.jpnic_admin;
+        this.jpnicTech = response.jpnic_tech;
         this.networkInput.patchValue({
           ID: response.network[0].ID,
           group_id: response.network[0].group_id,
@@ -70,5 +82,14 @@ export class NetworkDetailComponent implements OnInit {
         console.log('error: ' + JSON.stringify(response));
       }
     });
+  }
+
+  getUser(id: number): string {
+    const user = this.users.find(e => e.ID === id);
+    return user.ID + ':' + user.name + ' ';
+  }
+
+  linkUser(id: number): void {
+    this.router.navigate(['/dashboard/user/' + id]).then();
   }
 }
