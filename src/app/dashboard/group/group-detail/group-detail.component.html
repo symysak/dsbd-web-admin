@@ -184,15 +184,19 @@
                   </ng-container>
                 </mat-chip-list>
               </mat-card-subtitle>
-              Admin:
-              <ng-container *ngFor="let jpnic of d.jpnic_admin">
-                {{jpnic.user_id}},
-              </ng-container>
+              管理者連絡窓口:
+              <b>
+                <ng-container *ngFor="let jpnic of d.jpnic_tech">
+                  {{getUser(jpnic.user_id)}}
+                </ng-container>
+              </b>
               <br>
-              Tech:
-              <ng-container *ngFor="let jpnic of d.jpnic_tech">
-                {{jpnic.user_id}},
-              </ng-container>
+              技術連絡担当者:
+              <b>
+                <ng-container *ngFor="let jpnic of d.jpnic_tech">
+                  {{getUser(jpnic.user_id)}}
+                </ng-container>
+              </b>
               <br>
             </mat-card-content>
             <mat-card-actions>

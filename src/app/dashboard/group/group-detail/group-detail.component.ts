@@ -120,5 +120,10 @@ export class GroupDetailComponent implements OnInit {
   networkPage(id): void {
     this.router.navigate(['/dashboard/network/' + id]).then();
   }
+
+  getUser(id: number): string {
+    const user = this.users.find(e => e.ID === id);
+    return user.ID + ':' + user.name + ' ';
+  }
 }
 
