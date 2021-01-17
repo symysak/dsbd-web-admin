@@ -22,7 +22,7 @@ export class RouterComponent implements OnInit {
   public loading = true;
   public routerInput = new FormGroup({
     noc: new FormControl(),
-    host: new FormControl(),
+    hostname: new FormControl(),
     address: new FormControl(),
     enable: new FormControl(),
   });
