@@ -15,7 +15,7 @@ export class GroupDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public groupService: GroupService,
-    private commonService: CommonService,
+    public commonService: CommonService,
   ) {
   }
 
@@ -27,6 +27,7 @@ export class GroupDetailComponent implements OnInit {
     status: new FormControl(),
     lock: new FormControl(),
   });
+  public statusInfo = '';
   public loading = true;
   public hide = false;
   public group: any;
@@ -70,7 +71,28 @@ export class GroupDetailComponent implements OnInit {
         console.log('error: ' + JSON.stringify(response));
         return;
       }
+      this.statusInfo = this.commonService.getStatus(this.group.status);
     });
+  }
+
+  updatePlusStatus(): void {
+    let status = this.group.status;
+    status++;
+    this.groupInput.patchValue({
+      ID: this.group.ID,
+      status,
+      lock: this.group.lock,
+    });
+    this.update();
+  }
+
+  updateStatus(status: number): void {
+    this.groupInput.patchValue({
+      ID: this.group.ID,
+      status,
+      lock: this.group.lock,
+    });
+    this.update();
   }
 
   update(): void {
@@ -79,6 +101,7 @@ export class GroupDetailComponent implements OnInit {
     this.groupService.update(this.id, json).then(response => {
       if (response.status) {
         this.commonService.openBar('OK', 5000);
+        location.reload();
       } else {
         this.commonService.openBar('NG', 5000);
         console.log('error: ' + JSON.stringify(response));

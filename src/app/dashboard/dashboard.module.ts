@@ -33,6 +33,7 @@ import {NetworkComponent} from './network/network.component';
 import {NetworkDetailComponent} from './network/network-detail/network-detail.component';
 import {NoticeComponent} from './notice/notice.component';
 import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.compon
     MatToolbarModule,
     MatInputModule,
     FormsModule,
+    MatMenuModule,
     MatTabsModule,
     MatExpansionModule,
     MatSelectModule,
@@ -85,6 +87,7 @@ import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.compon
     ReactiveFormsModule,
     MatToolbarModule,
     MatInputModule,
+    MatMenuModule,
     FormsModule,
   ]
 })
