@@ -30,8 +30,10 @@ export class NetworkDetailComponent implements OnInit {
     address: new FormControl(''),
     address_en: new FormControl(''),
     pi: new FormControl(''),
+    route_v4: new FormControl(''),
     v4: new FormControl(''),
     v4_name: new FormControl(''),
+    route_v6: new FormControl(''),
     v6: new FormControl(''),
     v6_name: new FormControl(''),
     lock: new FormControl(),
@@ -57,6 +59,7 @@ export class NetworkDetailComponent implements OnInit {
           ID: response.network[0].ID,
           group_id: response.network[0].group_id,
           lock: response.network[0].lock,
+          pi: response.network[0].pi,
           open: response.network[0].open,
         });
         this.loading = false;

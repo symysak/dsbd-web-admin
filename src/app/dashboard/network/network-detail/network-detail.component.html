@@ -142,10 +142,40 @@
             <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
             <form [formGroup]="networkInput">
               <mat-form-field appearance="fill">
+                <mat-label>Org</mat-label>
+                <input matInput type="text" formControlName="org">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>OrgEn</mat-label>
+                <input matInput type="text" formControlName="org_en">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>PostCode</mat-label>
+                <input matInput type="text" formControlName="postcode">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Address</mat-label>
+                <input matInput type="text" formControlName="address">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>Address(English)</mat-label>
+                <input matInput type="text" formControlName="address_en">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
                 <mat-label>ASN</mat-label>
                 <input matInput type="text" formControlName="asn">
               </mat-form-field>
               <br>
+              <mat-form-field appearance="fill">
+                <mat-label>IPv4 Route</mat-label>
+                <input matInput type="text" formControlName="route_v4">
+              </mat-form-field>
+              &nbsp;
               <mat-form-field appearance="fill">
                 <mat-label>IPv4</mat-label>
                 <input matInput type="text" formControlName="v4">
@@ -156,6 +186,11 @@
                 <input matInput type="text" formControlName="v4_name">
               </mat-form-field>
               <br>
+              <mat-form-field appearance="fill">
+                <mat-label>IPv6 Route</mat-label>
+                <input matInput type="text" formControlName="route_v6">
+              </mat-form-field>
+              &nbsp;
               <mat-form-field appearance="fill">
                 <mat-label>IPv6</mat-label>
                 <input matInput type="text" formControlName="v6">
@@ -173,6 +208,8 @@
               <br>
               <h3>各種設定</h3>
               <mat-checkbox formControlName="open">開通済み</mat-checkbox>
+              &nbsp;
+              <mat-checkbox formControlName="pi">PI</mat-checkbox>
               &nbsp;
               <mat-checkbox formControlName="lock">ロック</mat-checkbox>
               &nbsp;
