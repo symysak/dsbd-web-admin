@@ -34,6 +34,10 @@ import {NetworkDetailComponent} from './network/network-detail/network-detail.co
 import {NoticeComponent} from './notice/notice.component';
 import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
 import {MatMenuModule} from '@angular/material/menu';
+import { NocComponent } from './noc/noc.component';
+import { RouterComponent } from './router/router.component';
+import { RouterDetailComponent } from './router/router-detail/router-detail.component';
+import { NocDetailComponent } from './noc/noc-detail/noc-detail.component';
 
 
 @NgModule({
@@ -52,6 +56,10 @@ import {MatMenuModule} from '@angular/material/menu';
     NetworkDetailComponent,
     NoticeComponent,
     NoticeDetailComponent,
+    NocComponent,
+    RouterComponent,
+    RouterDetailComponent,
+    NocDetailComponent,
   ],
   imports: [
     HttpClientModule,

@@ -15,6 +15,10 @@ import {NetworkDetailComponent} from './network/network-detail/network-detail.co
 import {NetworkComponent} from './network/network.component';
 import {NoticeComponent} from './notice/notice.component';
 import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
+import {RouterComponent} from './router/router.component';
+import {NocComponent} from './noc/noc.component';
+import {RouterDetailComponent} from './router/router-detail/router-detail.component';
+import {NocDetailComponent} from './noc/noc-detail/noc-detail.component';
 
 
 const routes: Routes = [
@@ -37,6 +41,10 @@ const routes: Routes = [
       {path: 'support/:id', component: ChatComponent},
       {path: 'user', component: UserComponent},
       {path: 'user/:id', component: UserDetailComponent},
+      {path: 'noc', component: NocComponent},
+      {path: 'noc/:id', component: NocDetailComponent},
+      {path: 'router', component: RouterComponent},
+      {path: 'router/:id', component: RouterDetailComponent},
     ],
   }
 ];
