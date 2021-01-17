@@ -22,7 +22,6 @@ export class RouterDetailComponent implements OnInit {
   public loading = true;
   public id: string;
   public routerInput = new FormGroup({
-    ID: new FormControl(),
     noc: new FormControl(),
     hostname: new FormControl(),
     address: new FormControl(),

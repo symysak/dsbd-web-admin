@@ -21,7 +21,7 @@
             <td>{{routers.UpdatedAt}}</td>
           </tr>
           <tr>
-            <th>NOC</th>
+            <th>NOC ID</th>
             <td>{{routers.noc}}</td>
           </tr>
           <tr>
@@ -45,7 +45,7 @@
             <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
             <form [formGroup]="routerInput">
               <mat-form-field appearance="fill">
-                <mat-label>NOC</mat-label>
+                <mat-label>NOC ID</mat-label>
                 <input matInput type="number" formControlName="noc">
               </mat-form-field>
               <br>
