@@ -24,17 +24,19 @@ export class ConnectionDetailComponent implements OnInit {
     ID: new FormControl(),
     group_id: new FormControl(''),
     user_id: new FormControl(''),
-    open: new FormControl(),
     service: new FormControl(''),
     service_id: new FormControl(''),
     noc: new FormControl(''),
     noc_ip: new FormControl(''),
+    ntt: new FormControl(''),
     term_ip: new FormControl(''),
     fee: new FormControl(''),
-    v4_our: new FormControl(''),
-    v4_your: new FormControl(''),
-    v6_our: new FormControl(''),
-    v6_your: new FormControl('')
+    link_v4_our: new FormControl(''),
+    link_v4_your: new FormControl(''),
+    link_v6_our: new FormControl(''),
+    link_v6_your: new FormControl(''),
+    open: new FormControl(),
+    monitor: new FormControl()
   });
   public loading = true;
   public hide = false;
@@ -51,6 +53,7 @@ export class ConnectionDetailComponent implements OnInit {
           group_id: response.data[0].group_id,
           user_id: response.data[0].user_id,
           open: response.data[0].open,
+          monitor: response.data[0].monitor,
         });
         this.loading = false;
         console.log(this.connection);

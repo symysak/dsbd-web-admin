@@ -99,12 +99,17 @@
               <br>
               <mat-form-field appearance="fill">
                 <mat-label>NOC</mat-label>
-                <input matInput type="email" formControlName="noc">
+                <input matInput type="text" formControlName="noc">
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
                 <mat-label>NOC IP</mat-label>
-                <input matInput type="password" formControlName="noc_ip">
+                <input matInput type="text" formControlName="noc_ip">
+              </mat-form-field>
+              <br>
+              <mat-form-field appearance="fill">
+                <mat-label>NTT</mat-label>
+                <input matInput type="text" formControlName="ntt">
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
@@ -114,22 +119,22 @@
               <br>
               <mat-form-field appearance="fill">
                 <mat-label>Link V4 Our</mat-label>
-                <input matInput type="text" formControlName="v4_our">
+                <input matInput type="text" formControlName="link_v4_our">
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
                 <mat-label>Link V4 Your</mat-label>
-                <input matInput type="text" formControlName="v4_your">
+                <input matInput type="text" formControlName="link_v4_your">
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
                 <mat-label>Link V6 Our</mat-label>
-                <input matInput type="text" formControlName="v6_our">
+                <input matInput type="text" formControlName="link_v6_our">
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
                 <mat-label>Link V6 Your</mat-label>
-                <input matInput type="text" formControlName="v6_your">
+                <input matInput type="text" formControlName="link_v6_your">
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
@@ -147,8 +152,9 @@
                 <input matInput type="number" formControlName="user_id">
               </mat-form-field>
               <br>
-              <h3>Open</h3>
               <mat-checkbox formControlName="open">開通済み</mat-checkbox>
+              &nbsp;
+              <mat-checkbox formControlName="monitor">Monitor</mat-checkbox>
               &nbsp;
             </form>
             <br>
