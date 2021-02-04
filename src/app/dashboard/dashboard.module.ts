@@ -23,7 +23,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {GroupComponent} from './group/group.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {GroupDetailComponent} from './group/group-detail/group-detail.component';
+import {GroupDetailComponent, GroupDetailCreateNetwork} from './group/group-detail/group-detail.component';
 import {TokenComponent} from './token/token.component';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
@@ -34,10 +34,13 @@ import {NetworkDetailComponent} from './network/network-detail/network-detail.co
 import {NoticeComponent} from './notice/notice.component';
 import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
 import {MatMenuModule} from '@angular/material/menu';
-import { NocComponent } from './noc/noc.component';
-import { RouterComponent } from './router/router.component';
-import { RouterDetailComponent } from './router/router-detail/router-detail.component';
-import { NocDetailComponent } from './noc/noc-detail/noc-detail.component';
+import {NocComponent} from './noc/noc.component';
+import {RouterComponent} from './router/router.component';
+import {RouterDetailComponent} from './router/router-detail/router-detail.component';
+import {NocDetailComponent} from './noc/noc-detail/noc-detail.component';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 @NgModule({
@@ -47,6 +50,7 @@ import { NocDetailComponent } from './noc/noc-detail/noc-detail.component';
     UserDetailComponent,
     GroupComponent,
     GroupDetailComponent,
+    GroupDetailCreateNetwork,
     TokenComponent,
     SupportComponent,
     ChatComponent,
@@ -72,6 +76,9 @@ import { NocDetailComponent } from './noc/noc-detail/noc-detail.component';
     MatChipsModule,
     MatIconModule,
     MatRadioModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCheckboxModule,
     MatProgressBarModule,
     MatFormFieldModule,
@@ -97,7 +104,8 @@ import { NocDetailComponent } from './noc/noc-detail/noc-detail.component';
     MatInputModule,
     MatMenuModule,
     FormsModule,
-  ]
+  ],
+  entryComponents: [GroupDetailComponent, GroupDetailCreateNetwork],
 })
 export class DashboardModule {
 }

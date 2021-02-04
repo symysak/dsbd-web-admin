@@ -16,8 +16,8 @@ export class NetworkService {
   ) {
   }
 
-  create(body): Promise<any> {
-    return this.http.post(environment.api.url + environment.api.path + '/network',
+  create(id, body): Promise<any> {
+    return this.http.post(environment.api.url + environment.api.path + '/network/' + id,
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

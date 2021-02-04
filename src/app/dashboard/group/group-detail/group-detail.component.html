@@ -167,6 +167,8 @@
       </mat-tab>
       <mat-tab label="ネットワーク情報">
         <h2>ネットワーク一覧</h2>
+        <button mat-button color="primary" (click)="createNetworkInfo()">追加</button>
+        <br>
         <ng-container *ngFor="let d of networks">
           <mat-card class="card">
             <mat-card-header>
