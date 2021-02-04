@@ -32,7 +32,7 @@ export class SupportComponent implements OnInit {
     this.supportService.getAll().then(response => {
       console.log(response);
       if (response.status) {
-        this.support = response.support_ticket;
+        this.support = response.ticket;
         this.loading = false;
         console.log(this.support);
         this.commonService.openBar('OK', 5000);
