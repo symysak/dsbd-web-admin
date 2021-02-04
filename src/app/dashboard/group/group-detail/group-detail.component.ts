@@ -7,6 +7,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {UserService} from '../../../service/user.service';
 import {NetworkService} from '../../../service/network.service';
+import {ConnectionService} from '../../../service/connection.service';
 
 export interface DialogData {
   groupID: string;
@@ -138,6 +139,19 @@ export class GroupDetailComponent implements OnInit {
 
   createNetworkInfo() {
     const dialogRef = this.dialog.open(GroupDetailCreateNetwork, {
+      data: {
+        groupID: this.id,
+        users: this.users
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  createConnectionInfo() {
+    const dialogRef = this.dialog.open(GroupDetailCreateConnection, {
       data: {
         groupID: this.id,
         users: this.users
@@ -343,9 +357,68 @@ export class GroupDetailCreateNetwork {
 }
 
 // connection情報の追加フィールド
-// @Component({
-//   selector: 'group-detail-create-connection',
-//   templateUrl: 'group-detail-create-connection.html',
-// })
-// export class GroupDetailCreateConnection {
-// }
+@Component({
+  selector: 'group-detail-create-connection',
+  templateUrl: 'group-detail-create-connection.html',
+})
+export class GroupDetailCreateConnection {
+
+  public connection: string;
+  public connectionEtc = new FormControl();
+  public ntt: string;
+  public noc: string;
+  public termIP = new FormControl();
+  public monitor: boolean;
+  public termUser: any;
+
+
+  constructor(
+    public dialogRef: MatDialogRef<GroupDetailCreateNetwork>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private commonService: CommonService,
+    private connectionService: ConnectionService,
+    private userService: UserService,
+    private groupService: GroupService,
+    private router: Router
+  ) {
+  }
+
+
+  request() {
+    if (this.connection === 'Other') {
+      this.connection = this.connectionEtc.value;
+    }
+    if (this.connection === '' || this.ntt === '' || this.noc === '' || this.termIP.value === '') {
+      this.commonService.openBar('invalid..', 5000);
+      return;
+    }
+
+    if (this.connection === 'L2 構内接続' || this.connection === 'L3 StaticRouting 構内接続' ||
+      this.connection === 'L3 BGP 構内接続') {
+      this.ntt = '構内接続のため必要なし';
+      this.termIP.setValue('構内接続のため必要なし');
+    }
+
+    const body = {
+      user_id: parseInt(this.termUser, 10),
+      service: this.connection,
+      ntt: this.ntt,
+      noc: this.noc,
+      term_ip: this.termIP.value,
+      monitor: this.monitor
+    };
+
+    this.connectionService.create(this.data.groupID, body).then(response => {
+      console.log('---response---');
+      console.log(response.status);
+      if (response.status) {
+        this.commonService.openBar('申請完了', 5000);
+        this.router.navigate(['/dashboard/group/' + this.data.groupID]).then();
+      } else {
+        this.commonService.openBar('登録エラー。詳しくはconsoleを参照してください。', 5000);
+        console.log(response.error);
+        return;
+      }
+    });
+  }
+}

@@ -23,7 +23,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {GroupComponent} from './group/group.component';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {GroupDetailComponent, GroupDetailCreateNetwork} from './group/group-detail/group-detail.component';
+import {GroupDetailComponent, GroupDetailCreateConnection, GroupDetailCreateNetwork} from './group/group-detail/group-detail.component';
 import {TokenComponent} from './token/token.component';
 import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
@@ -51,6 +51,7 @@ import {MatNativeDateModule} from '@angular/material/core';
     GroupComponent,
     GroupDetailComponent,
     GroupDetailCreateNetwork,
+    GroupDetailCreateConnection,
     TokenComponent,
     SupportComponent,
     ChatComponent,
@@ -105,7 +106,7 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatMenuModule,
     FormsModule,
   ],
-  entryComponents: [GroupDetailComponent, GroupDetailCreateNetwork],
+  entryComponents: [GroupDetailComponent, GroupDetailCreateNetwork, GroupDetailCreateConnection],
 })
 export class DashboardModule {
 }

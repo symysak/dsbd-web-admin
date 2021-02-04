@@ -16,8 +16,8 @@ export class ConnectionService {
   ) {
   }
 
-  create(body): Promise<any> {
-    return this.http.post(environment.api.url + environment.api.path + '/connection',
+  create(id, body): Promise<any> {
+    return this.http.post(environment.api.url + environment.api.path + '/group/' + id + '/connection',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

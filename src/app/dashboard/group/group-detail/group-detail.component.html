@@ -210,6 +210,8 @@
       </mat-tab>
       <mat-tab label="接続情報">
         <h2>接続情報</h2>
+        <button mat-button color="primary" (click)="createConnectionInfo()">追加</button>
+        <br>
         <mat-tab-group>
           <mat-tab label="開通済み">
             <ng-container *ngFor="let d of connections">
