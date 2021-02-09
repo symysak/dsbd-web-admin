@@ -23,14 +23,9 @@ export class NetworkComponent implements OnInit {
   ngOnInit(): void {
     this.networkService.getAll().then(response => {
       console.log(response);
-      if (response.status) {
-        this.network = response.network;
-        this.loading = false;
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.network = response.network;
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 

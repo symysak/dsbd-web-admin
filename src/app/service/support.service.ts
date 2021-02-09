@@ -56,18 +56,10 @@ export class SupportService {
         }),
       }).toPromise().then(r => {
       const response: any = r;
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          support_ticket: response
-        };
-      }
+      return response;
     }).catch(error => {
-      console.log(error);
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 
@@ -80,18 +72,10 @@ export class SupportService {
         }),
       }).toPromise().then(r => {
       const response: any = r;
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          support_ticket: response
-        };
-      }
+      return response;
     }).catch(error => {
-      console.log(error);
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 
@@ -103,19 +87,10 @@ export class SupportService {
       })
     }).toPromise().then(r => {
       const response: any = r;
-      console.log(r);
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          data: response
-        };
-      }
+      return response;
     }).catch(error => {
-      console.log(error);
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 
@@ -128,18 +103,10 @@ export class SupportService {
       }),
     }).toPromise().then(r => {
       const response: any = r;
-      if (response.status === true) {
-        return response;
-      } else {
-        return {
-          status: false,
-          error: response.error.error,
-          support_ticket: response
-        };
-      }
+      return response;
     }).catch(error => {
-      console.log(error);
-      return {status: false, error};
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
     });
   }
 }

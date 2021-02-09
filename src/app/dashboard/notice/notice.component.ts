@@ -40,15 +40,9 @@ export class NoticeComponent implements OnInit {
     console.log('unixTime: ' + this.unixTime);
     this.noticeService.getAll().then(response => {
       console.log(response);
-      if (response.status) {
-        this.notice = response.notice;
-        this.loading = false;
-        console.log(this.notice);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.notice = response.notice;
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -68,13 +62,8 @@ export class NoticeComponent implements OnInit {
     json.start_time = startTime;
     json.ending_time = endingTime;
 
-    this.noticeService.create(json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+    this.noticeService.create(json).then(() => {
+      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -85,13 +74,8 @@ export class NoticeComponent implements OnInit {
   delete(id): void {
     this.noticeService.delete(id).then(response => {
       console.log(response);
-      if (response.status) {
-        this.notice = this.notice.filter(item => item.ID !== id);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+      this.notice = this.notice.filter(item => item.ID !== id);
+      this.commonService.openBar('OK', 5000);
     });
   }
 

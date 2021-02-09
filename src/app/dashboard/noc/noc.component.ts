@@ -33,14 +33,9 @@ export class NocComponent implements OnInit {
   ngOnInit(): void {
     this.nocService.getAll().then(response => {
       console.log(response);
-      if (response.status) {
-        this.noc = response.noc;
-        this.loading = false;
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.noc = response.noc;
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -48,14 +43,9 @@ export class NocComponent implements OnInit {
   add(): void {
     const json = JSON.stringify(this.nocInput.getRawValue());
     console.log(json);
-    this.nocService.create(json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+    this.nocService.create(json).then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 
@@ -64,7 +54,7 @@ export class NocComponent implements OnInit {
   }
 
   delete(id): void {
-    this.nocService.delete(id).then(response => {
+    this.nocService.delete(id).then(() => {
       location.reload();
     });
   }

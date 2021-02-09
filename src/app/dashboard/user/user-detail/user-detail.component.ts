@@ -52,23 +52,16 @@ export class UserDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.userService.get(this.id).then(response => {
       console.log(response);
-      if (response.status) {
-        this.user = response.data[0];
-        this.userInput.patchValue({
-          ID: response.data[0].ID,
-          status: response.data[0].status,
-          level: response.data[0].level,
-          group_id: response.data[0].group_id,
-          tech: response.data[0].tech
-        });
-        this.loading = false;
-        console.log(this.user);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.user = response.data[0];
+      this.userInput.patchValue({
+        ID: response.data[0].ID,
+        status: response.data[0].status,
+        level: response.data[0].level,
+        group_id: response.data[0].group_id,
+        tech: response.data[0].tech
+      });
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -76,13 +69,8 @@ export class UserDetailComponent implements OnInit {
     const json = JSON.stringify(this.userInput.getRawValue());
     console.log(json);
     this.userService.update(this.id, json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 }

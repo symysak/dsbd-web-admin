@@ -35,22 +35,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.userService.getAll().then(responseUser => {
       console.log(responseUser);
       const user = responseUser;
-      if (user.status) {
-        this.user = user.data;
-      } else {
-        this.commonService.openBar('no data', 5000);
-      }
+      this.user = user.data;
     });
     this.supportService.get(this.ticketID).then(response => {
       console.log(response);
       const info = response;
-      if (info.status) {
-        this.chat = info.support_chat;
-        console.log(info);
-        // this.lock = false;
-      } else {
-        this.commonService.openBar('no data', 5000);
-      }
+      this.chat = info.support_chat;
+      console.log(info);
     });
 
   }

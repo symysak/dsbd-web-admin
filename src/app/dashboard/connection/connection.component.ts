@@ -24,14 +24,9 @@ export class ConnectionComponent implements OnInit {
   ngOnInit(): void {
     this.connectionService.getAll().then(response => {
       console.log(response);
-      if (response.status) {
-        this.connection = response.data;
-        this.loading = false;
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.connection = response.data;
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 

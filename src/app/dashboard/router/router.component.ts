@@ -30,28 +30,18 @@ export class RouterComponent implements OnInit {
   ngOnInit(): void {
     this.routerService.getAll().then(response => {
       console.log(response);
-      if (response.status) {
-        this.routers = response.router;
-        this.loading = false;
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.routers = response.router;
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
   add(): void {
     const json = JSON.stringify(this.routerInput.getRawValue());
     console.log(json);
-    this.routerService.create(json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+    this.routerService.create(json).then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 
@@ -60,7 +50,7 @@ export class RouterComponent implements OnInit {
   }
 
   delete(id): void {
-    this.routerService.delete(id).then(response => {
+    this.routerService.delete(id).then(() => {
       location.reload();
     });
   }

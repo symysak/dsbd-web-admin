@@ -37,14 +37,9 @@ export class NocDetailComponent implements OnInit {
         ID: response.noc[0].ID,
         enable: response.noc[0].enable
       });
-      if (response.status) {
-        this.noc = response.noc[0];
-        this.loading = false;
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.noc = response.noc[0];
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -52,13 +47,8 @@ export class NocDetailComponent implements OnInit {
     const json = JSON.stringify(this.nocInput.getRawValue());
     console.log(json);
     this.nocService.update(this.id, json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 }

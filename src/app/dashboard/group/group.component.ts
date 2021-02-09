@@ -24,15 +24,10 @@ export class GroupComponent implements OnInit {
   ngOnInit(): void {
     this.groupService.getAll().then(response => {
       console.log(response);
-      if (response.status) {
-        this.group = response.group;
-        this.loading = false;
-        console.log(this.group);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.group = response.group;
+      this.loading = false;
+      console.log(this.group);
+      this.commonService.openBar('OK', 5000);
     });
   }
 

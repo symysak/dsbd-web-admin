@@ -50,38 +50,31 @@ export class GroupDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.groupService.get(this.id).then(response => {
       console.log(response);
-      if (response.status) {
-        this.group = response.group[0];
-        this.groupInput.patchValue({
-          ID: response.group[0].ID,
-          status: response.group[0].status,
-          lock: response.group[0].lock,
-        });
-        this.org = response.group[0].org;
-        this.loading = false;
-        console.log(this.group);
+      this.group = response.group[0];
+      this.groupInput.patchValue({
+        ID: response.group[0].ID,
+        status: response.group[0].status,
+        lock: response.group[0].lock,
+      });
+      this.org = response.group[0].org;
+      this.loading = false;
 
-        this.users = response.user;
+      this.users = response.user;
 
-        // エラー処理の検証必要
-        if (response.network === null) {
-          this.networks = null;
-        } else {
-          this.networks = response.network;
-        }
-
-        if (response.connection === null) {
-          this.connections = null;
-        } else {
-          this.connections = response.connection;
-        }
-
-        this.commonService.openBar('OK', 5000);
+      // エラー処理の検証必要
+      if (response.network === null) {
+        this.networks = null;
       } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-        return;
+        this.networks = response.network;
       }
+
+      if (response.connection === null) {
+        this.connections = null;
+      } else {
+        this.connections = response.connection;
+      }
+
+      this.commonService.openBar('OK', 5000);
       this.statusInfo = this.commonService.getStatus(this.group.status);
     });
   }
@@ -110,13 +103,8 @@ export class GroupDetailComponent implements OnInit {
     const json = JSON.stringify(this.groupInput.getRawValue());
     console.log(json);
     this.groupService.update(this.id, json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 
@@ -362,16 +350,9 @@ export class GroupDetailCreateNetwork {
     console.log(body);
 
     this.networkService.create(this.data.groupID, body).then(response => {
-      console.log('---response---');
       console.log(response);
-      if (response.status) {
-        this.commonService.openBar('申請完了', 5000);
-        this.router.navigate(['/dashboard/group/' + this.data.groupID]).then();
-      } else {
-        this.commonService.openBar('登録エラー。詳しくはconsoleを参照してください。', 5000);
-        console.log(response.error);
-        return;
-      }
+      this.commonService.openBar('申請完了', 5000);
+      this.router.navigate(['/dashboard/group/' + this.data.groupID]).then();
     });
   }
 }
@@ -431,14 +412,9 @@ export class GroupDetailCreateConnection {
     this.connectionService.create(this.data.groupID, body).then(response => {
       console.log('---response---');
       console.log(response.status);
-      if (response.status) {
-        this.commonService.openBar('申請完了', 5000);
-        this.router.navigate(['/dashboard/group/' + this.data.groupID]).then();
-      } else {
-        this.commonService.openBar('登録エラー。詳しくはconsoleを参照してください。', 5000);
-        console.log(response.error);
-        return;
-      }
+      this.commonService.openBar('申請完了', 5000);
+      this.router.navigate(['/dashboard/group/' + this.data.groupID]).then();
+
     });
   }
 }

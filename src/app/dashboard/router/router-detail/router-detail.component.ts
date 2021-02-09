@@ -37,28 +37,18 @@ export class RouterDetailComponent implements OnInit {
         noc: response.router[0].noc,
         enable: response.router[0].enable
       });
-      if (response.status) {
-        this.routers = response.router[0];
-        this.loading = false;
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.routers = response.router[0];
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
   update(): void {
     const json = JSON.stringify(this.routerInput.getRawValue());
     console.log(json);
-    this.routerService.update(this.id, json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+    this.routerService.update(this.id, json).then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 }

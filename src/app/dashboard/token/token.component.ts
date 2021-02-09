@@ -22,44 +22,28 @@ export class TokenComponent implements OnInit {
   ngOnInit(): void {
     this.tokenService.getAll().then(response => {
       console.log(response);
-      if (response.status) {
-        this.token = response.token;
-        this.loading = false;
-        console.log(this.token);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.token = response.token;
+      this.loading = false;
+      console.log(this.token);
+      this.commonService.openBar('OK', 5000);
     });
   }
 
   delete(id): void {
     this.tokenService.delete(id).then(response => {
       console.log(response);
-      if (response.status) {
-        console.log(this.token);
-        const tokenTmp = this.token.filter(item => item.ID !== id);
-        this.token = tokenTmp;
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      const tokenTmp = this.token.filter(item => item.ID !== id);
+      this.token = tokenTmp;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
   deleteAll(): void {
     this.tokenService.deleteAll().then(response => {
       console.log(response);
-      if (response.status) {
-        this.token = response.token;
-        console.log(this.token);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.token = response.token;
+      console.log(this.token);
+      this.commonService.openBar('OK', 5000);
     });
   }
 

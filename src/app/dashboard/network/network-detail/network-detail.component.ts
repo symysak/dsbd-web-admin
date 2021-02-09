@@ -48,24 +48,17 @@ export class NetworkDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.networkService.get(this.id).then(response => {
       console.log(response);
-      if (response.status) {
-        this.network = response.network[0];
-        this.users = response.user;
-        this.networkInput.patchValue({
-          ID: response.network[0].ID,
-          group_id: response.network[0].group_id,
-          lock: response.network[0].lock,
-          pi: response.network[0].pi,
-          open: response.network[0].open,
-        });
-        this.loading = false;
-        console.log(this.network);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.network = response.network[0];
+      this.users = response.user;
+      this.networkInput.patchValue({
+        ID: response.network[0].ID,
+        group_id: response.network[0].group_id,
+        lock: response.network[0].lock,
+        pi: response.network[0].pi,
+        open: response.network[0].open,
+      });
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -73,13 +66,8 @@ export class NetworkDetailComponent implements OnInit {
     const json = JSON.stringify(this.networkInput.getRawValue());
     console.log(json);
     this.networkService.update(this.id, json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 

@@ -41,27 +41,20 @@ export class NoticeDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.noticeService.get(this.id).then(response => {
       console.log(response);
-      if (response.status) {
-        this.notice = response.notice[0];
-        this.noticeInput.patchValue({
-          ID: response.notice[0].ID,
-          everyone: response.notice[0].everyone,
-          fault: response.notice[0].fault,
-          important: response.notice[0].important,
-          info: response.notice[0].info,
-          start_time: response.notice[0].start_time,
-          ending_time: response.notice[0].ending_time,
-          user_id: response.notice[0].user_id,
-          group_id: response.notice[0].group_id,
-        });
-        this.loading = false;
-        console.log(this.notice);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.notice = response.notice[0];
+      this.noticeInput.patchValue({
+        ID: response.notice[0].ID,
+        everyone: response.notice[0].everyone,
+        fault: response.notice[0].fault,
+        important: response.notice[0].important,
+        info: response.notice[0].info,
+        start_time: response.notice[0].start_time,
+        ending_time: response.notice[0].ending_time,
+        user_id: response.notice[0].user_id,
+        group_id: response.notice[0].group_id,
+      });
+      this.loading = false;
+      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -86,14 +79,9 @@ export class NoticeDetailComponent implements OnInit {
     const json = JSON.stringify(this.noticeInput.getRawValue());
     console.log(json);
 
-    this.noticeService.update(this.id, json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+    this.noticeService.update(this.id, json).then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 }

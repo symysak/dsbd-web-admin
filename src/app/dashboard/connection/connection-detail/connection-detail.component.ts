@@ -46,23 +46,17 @@ export class ConnectionDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.connectionService.get(this.id).then(response => {
       console.log(response);
-      if (response.status) {
-        this.connection = response.data[0];
-        this.connectionInput.patchValue({
-          ID: response.data[0].ID,
-          group_id: response.data[0].group_id,
-          user_id: response.data[0].user_id,
-          open: response.data[0].open,
-          monitor: response.data[0].monitor,
-        });
-        this.loading = false;
-        console.log(this.connection);
-        this.commonService.openBar('OK', 5000);
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-        return;
-      }
+      this.connection = response.data[0];
+      this.connectionInput.patchValue({
+        ID: response.data[0].ID,
+        group_id: response.data[0].group_id,
+        user_id: response.data[0].user_id,
+        open: response.data[0].open,
+        monitor: response.data[0].monitor,
+      });
+      this.loading = false;
+      console.log(this.connection);
+      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -70,13 +64,8 @@ export class ConnectionDetailComponent implements OnInit {
     const json = JSON.stringify(this.connectionInput.getRawValue());
     console.log(json);
     this.connectionService.update(this.id, json).then(response => {
-      if (response.status) {
-        this.commonService.openBar('OK', 5000);
-        location.reload();
-      } else {
-        this.commonService.openBar('NG', 5000);
-        console.log('error: ' + JSON.stringify(response));
-      }
+      this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 }
