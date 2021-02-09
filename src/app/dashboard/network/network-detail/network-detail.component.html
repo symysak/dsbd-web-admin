@@ -77,24 +77,31 @@
             <td>{{network.v4_name}}</td>
             <td>{{network.v6_name}}</td>
           </tr>
+        </table>
+        <br>
+        <table>
           <tr>
-            <th>Address</th>
-            <td>{{network.v4}}</td>
-            <td>{{network.v6}}</td>
+            <th colspan="4">IP Address</th>
           </tr>
+          <ng-container *ngFor="let ip of network.ip">
+            <tr>
+              <th>IP</th>
+              <td colspan="1">{{ip.ip}}</td>
+            </tr>
+          </ng-container>
         </table>
         <br>
         <table>
           <tr>
             <th colspan="4">管理者連絡窓口</th>
           </tr>
-          <ng-container *ngFor="let jpnic of jpnicAdmin">
+          <ng-container *ngIf="network.jpnic_admin !== null">
             <tr>
               <th>ID</th>
-              <td colspan="1">{{getUser(jpnic.user_id)}}</td>
+              <td colspan="1">{{getUser(network.jpnic_admin.user_id)}}</td>
               <th>LINK</th>
               <td colspan="1">
-                <button mat-raised-button (click)="linkUser(jpnic.user_id)">リンク</button>
+                <button mat-raised-button (click)="linkUser(network.jpnic_admin.user_id)">リンク</button>
               </td>
             </tr>
           </ng-container>
@@ -104,7 +111,7 @@
           <tr>
             <th colspan="4">技術連絡担当者</th>
           </tr>
-          <ng-container *ngFor="let jpnic of jpnicTech">
+          <ng-container *ngFor="let jpnic of network.jpnic_tech">
             <tr>
               <th>ID</th>
               <td colspan="1">{{getUser(jpnic.user_id)}}</td>

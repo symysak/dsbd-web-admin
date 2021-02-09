@@ -172,24 +172,24 @@
         <ng-container *ngFor="let d of networks">
           <mat-card class="card">
             <mat-card-header>
-              <mat-card-title>{{d.network.ID}}: {{d.network.v4_name}} / {{d.network.v6_name}}</mat-card-title>
-              <mat-card-subtitle>v4: <b>{{d.network.v4_name}}</b> v6: <b>{{d.network.v6_name}}</b></mat-card-subtitle>
+              <mat-card-title>{{d.ID}}: {{d.v4_name}} / {{d.v6_name}}</mat-card-title>
+              <mat-card-subtitle>v4: <b>{{d.v4_name}}</b> v6: <b>{{d.v6_name}}</b></mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
               <mat-card-subtitle>
                 <mat-chip-list>
-                  <ng-container *ngIf="d.network.open">
+                  <ng-container *ngIf="d.open">
                     <mat-chip color="primary" selected>開通</mat-chip>
                   </ng-container>
-                  <ng-container *ngIf="!d.network.open">
+                  <ng-container *ngIf="!d.open">
                     <mat-chip color="warn" selected>未開通</mat-chip>
                   </ng-container>
                 </mat-chip-list>
               </mat-card-subtitle>
               管理者連絡窓口:
               <b>
-                <ng-container *ngFor="let jpnic of d.jpnic_tech">
-                  {{getUser(jpnic.user_id)}}
+                <ng-container *ngIf="d.jpnic_admin !== null">
+                  {{getUser(d.jpnic_admin.user_id)}}
                 </ng-container>
               </b>
               <br>
@@ -202,7 +202,7 @@
               <br>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-button (click)="networkPage(d.network.ID)">Detail Page</button>
+              <button mat-button (click)="networkPage(d.ID)">Detail Page</button>
             </mat-card-actions>
           </mat-card>
         </ng-container>

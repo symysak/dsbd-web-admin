@@ -43,8 +43,6 @@ export class NetworkDetailComponent implements OnInit {
   public hide = false;
   public network: any;
   public users: any;
-  public jpnicAdmin: any;
-  public jpnicTech: any;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -53,8 +51,6 @@ export class NetworkDetailComponent implements OnInit {
       if (response.status) {
         this.network = response.network[0];
         this.users = response.user;
-        this.jpnicAdmin = response.jpnic_admin;
-        this.jpnicTech = response.jpnic_tech;
         this.networkInput.patchValue({
           ID: response.network[0].ID,
           group_id: response.network[0].group_id,
