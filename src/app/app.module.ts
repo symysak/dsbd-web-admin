@@ -12,12 +12,14 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {DashboardModule} from './dashboard/dashboard.module';
 import {RouterModule} from '@angular/router';
 import {NotFoundComponent} from './not-found/not-found.component';
+import {ErrorComponent} from './error/error.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NotFoundComponent,
+    ErrorComponent,
   ],
   imports: [
     DashboardModule,

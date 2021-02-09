@@ -3,12 +3,14 @@ import {Routes, RouterModule} from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {AuthGuard} from './guard/auth.guard';
 import {NotFoundComponent} from './not-found/not-found.component';
+import {ErrorComponent} from './error/error.component';
 
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: '', loadChildren: './dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard]},
+  {path: 'error', component: ErrorComponent},
   {path: '**', component: NotFoundComponent},
 ];
 
