@@ -59,8 +59,11 @@
             <th>Lock</th>
             <td colspan="2">{{network.lock}}</td>
           </tr>
+        </table>
+        <br>
+        <table>
           <tr>
-            <th colspan="3">v4 & v6</th>
+            <th colspan="3">アドレス広報方法</th>
           </tr>
           <tr>
             <th></th>
@@ -72,11 +75,6 @@
             <td>{{network.route_v4}}</td>
             <td>{{network.route_v6}}</td>
           </tr>
-          <tr>
-            <th>Name</th>
-            <td>{{network.v4_name}}</td>
-            <td>{{network.v6_name}}</td>
-          </tr>
         </table>
         <br>
         <table>
@@ -85,6 +83,8 @@
           </tr>
           <ng-container *ngFor="let ip of network.ip">
             <tr>
+              <th>Name</th>
+              <td colspan="1">{{ip.name}}</td>
               <th>IP</th>
               <td colspan="1">{{ip.ip}}</td>
             </tr>
