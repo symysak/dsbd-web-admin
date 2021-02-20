@@ -52,13 +52,13 @@ export class UserDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.userService.get(this.id).then(response => {
       console.log(response);
-      this.user = response.data[0];
+      this.user = response.user[0];
       this.userInput.patchValue({
-        ID: response.data[0].ID,
-        status: response.data[0].status,
-        level: response.data[0].level,
-        group_id: response.data[0].group_id,
-        tech: response.data[0].tech
+        ID: response.user[0].ID,
+        status: response.user[0].status,
+        level: response.user[0].level,
+        group_id: response.user[0].group_id,
+        tech: response.user[0].tech
       });
       this.loading = false;
       this.commonService.openBar('OK', 5000);
