@@ -46,13 +46,13 @@ export class ConnectionDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.connectionService.get(this.id).then(response => {
       console.log(response);
-      this.connection = response.data[0];
+      this.connection = response.connection[0];
       this.connectionInput.patchValue({
-        ID: response.data[0].ID,
-        group_id: response.data[0].group_id,
-        user_id: response.data[0].user_id,
-        open: response.data[0].open,
-        monitor: response.data[0].monitor,
+        ID: response.connection[0].ID,
+        group_id: response.connection[0].group_id,
+        user_id: response.connection[0].user_id,
+        open: response.connection[0].open,
+        monitor: response.connection[0].monitor,
       });
       this.loading = false;
       console.log(this.connection);
