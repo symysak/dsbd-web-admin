@@ -36,7 +36,9 @@ export class GroupDetailComponent implements OnInit {
     ID: new FormControl(),
     org: new FormControl(),
     status: new FormControl(),
+    expired_status: new FormControl(),
     lock: new FormControl(),
+    pass: new FormControl(),
   });
   public statusInfo = '';
   public loading = true;
@@ -59,6 +61,23 @@ export class GroupDetailComponent implements OnInit {
       this.org = response.group[0].org;
       this.loading = false;
 
+      if (this.group.expired_status === 1) {
+        this.statusInfo = 'Masterによる廃止申請';
+      } else if (this.group.expired_status === 2) {
+        this.statusInfo = '運営委員によるアカウントの廃止';
+      } else if (this.group.expired_status === 3) {
+        this.statusInfo = '審査落ち';
+      } else if (!this.group.pass) {
+        this.statusInfo = 'グループ審査中';
+      } else if (this.group.status === 1) {
+        this.statusInfo = 'ネットワーク情報　記入段階';
+      } else if (this.group.status === 2) {
+        this.statusInfo = '審査中';
+      } else if (this.group.status === 3) {
+        this.statusInfo = '接続情報　記入段階';
+      } else if (this.group.status === 4) {
+        this.statusInfo = '開通作業中';
+      }
       this.users = response.user;
 
       // エラー処理の検証必要
@@ -75,16 +94,18 @@ export class GroupDetailComponent implements OnInit {
       }
 
       this.commonService.openBar('OK', 5000);
-      this.statusInfo = this.commonService.getStatus(this.group.status);
+      // this.statusInfo = this.commonService.getStatus(this.group.status);
     });
   }
 
   updatePlusStatus(): void {
     let status = this.group.status;
     status++;
+    console.log(status);
     this.groupInput.patchValue({
       ID: this.group.ID,
       status,
+      pass: this.group.pass,
       lock: this.group.lock,
     });
     this.update();
@@ -94,6 +115,26 @@ export class GroupDetailComponent implements OnInit {
     this.groupInput.patchValue({
       ID: this.group.ID,
       status,
+      pass: this.group.pass,
+      lock: this.group.lock,
+    });
+    this.update();
+  }
+
+  updateExpiredStatus(status: number): void {
+    this.groupInput.patchValue({
+      ID: this.group.ID,
+      expired_status: status,
+      pass: this.group.pass,
+      lock: this.group.lock,
+    });
+    this.update();
+  }
+
+  updatePass(pass: boolean): void {
+    this.groupInput.patchValue({
+      ID: this.group.ID,
+      pass,
       lock: this.group.lock,
     });
     this.update();

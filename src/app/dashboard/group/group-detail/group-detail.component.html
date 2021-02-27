@@ -7,47 +7,37 @@
     <mat-tab-group>
       <mat-tab label="情報">
         <br>
-        <ng-container *ngIf="group.status === 1">
-          <button mat-raised-button color="primary" (click)="updateStatus(11)">ネットワーク情報記入</button>
+        <ng-container *ngIf="!group.pass">
+          <button mat-raised-button color="primary" (click)="updatePass(true)">申請完了</button>
         </ng-container>
-        <ng-container *ngIf="group.status % 100 === 11 ||group.status % 100 === 21||group.status % 100 === 51">
+        <ng-container *ngIf="group.status === 0">
+          <button mat-raised-button color="primary" (click)="updateStatus(1)">ネットワーク情報の追加</button>
+        </ng-container>
+        <ng-container *ngIf="group.status === 1">
           <button mat-raised-button color="primary" (click)="updatePlusStatus()">審査</button>
         </ng-container>
-        <ng-container *ngIf="group.status % 100 === 12 ||group.status % 100 === 22||group.status % 100 === 52">
+        <ng-container *ngIf="group.status === 2">
           <button mat-raised-button color="primary" (click)="updatePlusStatus()">接続情報記入</button>
         </ng-container>
-        <ng-container *ngIf="group.status % 100 === 13 ||group.status % 100 === 23||group.status % 100 === 53">
+        <ng-container *ngIf="group.status === 3">
           <button mat-raised-button color="primary" (click)="updatePlusStatus()">開通作業</button>
         </ng-container>
-        <ng-container *ngIf="group.status % 100 === 14 ||group.status % 100 === 24||group.status % 100 === 54">
-          <button mat-raised-button color="primary" (click)="updateStatus(500)">開通</button>
-        </ng-container>
-        <ng-container *ngIf="group.status === 500">
-          <button mat-raised-button [matMenuTriggerFor]="add">ネットワーク追加</button>
-          <mat-menu #add="matMenu">
-            <button mat-menu-item (click)="updateStatus(111)">当団体から割当</button>
-            <button mat-menu-item (click)="updateStatus(121)">PIアドレス</button>
-            <button mat-menu-item (click)="updateStatus(151)">イレギュラー</button>
-          </mat-menu>
-          <button mat-raised-button [matMenuTriggerFor]="change" disabled>変更</button>
-          <mat-menu #change="matMenu">
-            <button mat-menu-item (click)="updateStatus(211)">当団体から割当</button>
-            <button mat-menu-item (click)="updateStatus(221)">PIアドレス</button>
-            <button mat-menu-item (click)="updateStatus(251)">イレギュラー</button>
-          </mat-menu>
+        <ng-container *ngIf="group.status === 4">
+          <button mat-raised-button color="primary" (click)="updateStatus(0)">開通</button>
         </ng-container>
         <button mat-raised-button [matMenuTriggerFor]="abolished" color="warn">廃止</button>
         <mat-menu #abolished="matMenu">
-          <button mat-menu-item (click)="updateStatus(1000)">ユーザより廃止</button>
-          <button mat-menu-item (click)="updateStatus(1100)">運営より廃止</button>
-          <button mat-menu-item (click)="updateStatus(1500)">審査落ち</button>
+          <button mat-menu-item (click)="updateExpiredStatus(0)">廃止の解除</button>
+          <button mat-menu-item (click)="updateExpiredStatus(1)">ユーザより廃止</button>
+          <button mat-menu-item (click)="updateExpiredStatus(2)">運営委員より廃止</button>
+          <button mat-menu-item (click)="updateExpiredStatus(3)">審査落ち</button>
         </mat-menu>
         <br>
         <br>
         <br>
         <table>
           <tr>
-            <th colspan="2">User Information</th>
+            <th colspan="2">Group Information</th>
           </tr>
           <tr>
             <th>User Create Date</th>
@@ -76,6 +66,14 @@
           <tr>
             <th>Status</th>
             <td>{{group.status}}</td>
+          </tr>
+          <tr>
+            <th>ExpiredStatus</th>
+            <td>{{group.expired_status}}</td>
+          </tr>
+          <tr>
+            <th>Pass</th>
+            <td>{{group.pass}}</td>
           </tr>
           <tr>
             <th>Lock</th>
