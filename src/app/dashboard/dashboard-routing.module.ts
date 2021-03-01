@@ -19,6 +19,8 @@ import {RouterComponent} from './router/router.component';
 import {NocComponent} from './noc/noc.component';
 import {RouterDetailComponent} from './router/router-detail/router-detail.component';
 import {NocDetailComponent} from './noc/noc-detail/noc-detail.component';
+import {GatewayComponent} from './gateway/gateway.component';
+import {GatewayDetailComponent} from './gateway/gateway-detail/gateway-detail.component';
 
 
 const routes: Routes = [
@@ -45,6 +47,8 @@ const routes: Routes = [
       {path: 'noc/:id', component: NocDetailComponent},
       {path: 'router', component: RouterComponent},
       {path: 'router/:id', component: RouterDetailComponent},
+      {path: 'gateway', component: GatewayComponent},
+      {path: 'gateway/:id', component: GatewayDetailComponent},
     ],
   }
 ];

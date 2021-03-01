@@ -41,6 +41,8 @@ import {NocDetailComponent} from './noc/noc-detail/noc-detail.component';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {GatewayComponent} from './gateway/gateway.component';
+import {GatewayDetailComponent} from './gateway/gateway-detail/gateway-detail.component';
 
 
 @NgModule({
@@ -65,6 +67,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     RouterComponent,
     RouterDetailComponent,
     NocDetailComponent,
+    GatewayComponent,
+    GatewayDetailComponent,
   ],
   imports: [
     HttpClientModule,
