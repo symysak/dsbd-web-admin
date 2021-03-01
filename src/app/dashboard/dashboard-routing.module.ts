@@ -21,6 +21,8 @@ import {RouterDetailComponent} from './router/router-detail/router-detail.compon
 import {NocDetailComponent} from './noc/noc-detail/noc-detail.component';
 import {GatewayComponent} from './gateway/gateway.component';
 import {GatewayDetailComponent} from './gateway/gateway-detail/gateway-detail.component';
+import {GatewayIpComponent} from './gateway-ip/gateway-ip.component';
+import {GatewayIpDetailComponent} from './gateway-ip/gateway-ip-detail/gateway-ip-detail.component';
 
 
 const routes: Routes = [
@@ -49,6 +51,8 @@ const routes: Routes = [
       {path: 'router/:id', component: RouterDetailComponent},
       {path: 'gateway', component: GatewayComponent},
       {path: 'gateway/:id', component: GatewayDetailComponent},
+      {path: 'gateway_ip', component: GatewayIpComponent},
+      {path: 'gateway_ip/:id', component: GatewayIpDetailComponent},
     ],
   }
 ];

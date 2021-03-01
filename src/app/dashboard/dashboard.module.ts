@@ -43,6 +43,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {GatewayComponent} from './gateway/gateway.component';
 import {GatewayDetailComponent} from './gateway/gateway-detail/gateway-detail.component';
+import {GatewayIpDetailComponent} from './gateway-ip/gateway-ip-detail/gateway-ip-detail.component';
+import {GatewayIpComponent} from './gateway-ip/gateway-ip.component';
 
 
 @NgModule({
@@ -69,6 +71,8 @@ import {GatewayDetailComponent} from './gateway/gateway-detail/gateway-detail.co
     NocDetailComponent,
     GatewayComponent,
     GatewayDetailComponent,
+    GatewayIpComponent,
+    GatewayIpDetailComponent,
   ],
   imports: [
     HttpClientModule,
