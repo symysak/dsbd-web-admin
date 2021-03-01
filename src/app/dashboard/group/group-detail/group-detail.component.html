@@ -186,14 +186,14 @@
               </mat-card-subtitle>
               管理者連絡窓口:
               <b>
-                <ng-container *ngIf="d.jpnic_admin !== null">
-                  {{getUser(d.jpnic_admin.user_id)}}
+                <ng-container *ngIf="d.admin !== null">
+                  {{getUser(d.admin.user_id)}}
                 </ng-container>
               </b>
               <br>
               技術連絡担当者:
               <b>
-                <ng-container *ngFor="let jpnic of d.jpnic_tech">
+                <ng-container *ngFor="let jpnic of d.tech">
                   {{getUser(jpnic.user_id)}}
                 </ng-container>
               </b>
