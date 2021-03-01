@@ -170,8 +170,8 @@
         <ng-container *ngFor="let d of networks">
           <mat-card class="card">
             <mat-card-header>
-              <mat-card-title>{{d.ID}}: {{d.v4_name}} / {{d.v6_name}}</mat-card-title>
-              <mat-card-subtitle>v4: <b>{{d.v4_name}}</b> v6: <b>{{d.v6_name}}</b></mat-card-subtitle>
+              <mat-card-title>{{d.network_type}}{{('0000' + d.network_number).slice(-3)}}</mat-card-title>
+              <mat-card-subtitle>ID: <b>{{d.ID}}</b></mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
               <mat-card-subtitle>
@@ -216,9 +216,9 @@
               <ng-container *ngIf="d.open">
                 <mat-card class="card">
                   <mat-card-header>
-                    <mat-card-title>{{d.service_id}}</mat-card-title>
+                    <mat-card-title>{{d.connection_type}}{{('0000' + d.connection_number).slice(-3)}}</mat-card-title>
                     <mat-card-subtitle>ID:{{d.ID}}</mat-card-subtitle>
-                    <mat-card-subtitle>{{d.email}}</mat-card-subtitle>
+                    <mat-card-subtitle>{{d.noc}}</mat-card-subtitle>
                   </mat-card-header>
                   <mat-card-content>
                     <mat-card-subtitle>
@@ -242,9 +242,9 @@
               <ng-container *ngIf="!d.open">
                 <mat-card class="card">
                   <mat-card-header>
-                    <mat-card-title>{{d.service_id}}</mat-card-title>
+                    <mat-card-title>{{d.connection_type}}{{('0000' + d.connection_number).slice(-3)}}</mat-card-title>
                     <mat-card-subtitle>ID:{{d.ID}}</mat-card-subtitle>
-                    <mat-card-subtitle>{{d.email}}</mat-card-subtitle>
+                    <mat-card-subtitle>{{d.noc}}</mat-card-subtitle>
                   </mat-card-header>
                   <mat-card-content>
                     <mat-card-subtitle>

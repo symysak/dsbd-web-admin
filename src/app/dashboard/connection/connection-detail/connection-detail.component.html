@@ -4,6 +4,8 @@
     <h1>読み込み中...</h1>
   </ng-container>
   <ng-container *ngIf="!loading">
+    <h1>接続コード: {{connection.connection_type}}{{('0000' + connection.connection_number).slice(-3)}}</h1>
+    <br>
     <mat-tab-group>
       <mat-tab label="情報">
         <br>
