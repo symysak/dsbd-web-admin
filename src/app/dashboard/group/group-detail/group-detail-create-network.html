@@ -110,14 +110,6 @@
       </ng-container>
     </ng-container>
     <br>
-    <h2>(1.1.3,1.1.4項の管理責任者と技術連絡担当者の項目について)</h2>
-    <p>技術スタッフを増やしたい場合は、「設定ー＞各種手続きー＞ユーザの追加の手続きー＞ユーザの追加」より可能です。
-      <br>
-      Group Handleをご希望の方は、「設定ー＞各種手続きー＞ユーザの追加の手続きー＞グループハンドル用のユーザ追加」より可能です。</p>
-    <p>必ず本人確認メールの認証と追加したユーザの初期登録を済ませてから本ページの登録をお願いします。
-      <br>
-      初期登録が済んでいない場合は、ユーザ一覧に表示されないのでご注意ください。</p>
-    <br>
     <h2>1.1.5. IPv4ネットワークプラン</h2>
     <p>IPv4アドレスの割り当てには、JPNICの定めるIPアドレスの利用率を満たして頂く必要がございます。
       <br>
@@ -188,7 +180,7 @@
     <p>AS管理担当者連絡＝＞AS技術連絡担当者(複数人)</p>
     <br>
   </ng-container>
-  <ng-container *ngIf="networkType === '3B00' || networkType==='IP3B'">
+  <ng-container *ngIf="networkType === '3B00' || networkType==='CL3B' || networkType==='IP3B'">
     <h2>1.2. 当団体から広報する経路をお選び下さい（BGPの方のみ）</h2>
     <section>
       <mat-checkbox [(ngModel)]="routeV4Check">IPv4でBGPの経路広告を希望する</mat-checkbox>

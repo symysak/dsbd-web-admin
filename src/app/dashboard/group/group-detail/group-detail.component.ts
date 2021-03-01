@@ -384,7 +384,6 @@ export class GroupDetailCreateNetwork {
       body = {
         admin_id: parseInt(this.admin, 10),
         tech_id: tech,
-        group_id: parseInt(this.data.groupID, 10),
         network_type: this.networkType,
         network_comment: this.networkComment.value,
         org: this.jpnicJa.value.org,
@@ -430,7 +429,6 @@ export class GroupDetailCreateNetwork {
       body = {
         admin_id: parseInt(this.admin, 10),
         tech_id: tech,
-        group_id: parseInt(this.data.groupID, 10),
         network_type: this.networkType,
         network_comment: this.networkComment.value,
         org: this.jpnicJa.value.org,
@@ -450,7 +448,6 @@ export class GroupDetailCreateNetwork {
       }
       body = {
         admin_id: parseInt(this.admin, 10),
-        group_id: parseInt(this.data.groupID, 10),
         network_type: this.networkType,
         network_comment: this.networkComment.value,
       };
@@ -477,14 +474,16 @@ export class GroupDetailCreateNetwork {
 // tslint:disable-next-line:component-class-suffix
 export class GroupDetailCreateConnection {
 
-  public connection: string;
-  public connectionEtc = new FormControl();
   public ntt: string;
   public noc: string;
   public termIP = new FormControl();
   public monitor: boolean;
+  public user: any[] = [];
   public termUser: any;
-
+  public connections: any[] = [];
+  public connectionType: string;
+  public connectionComment = new FormControl();
+  public nocs: any[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<GroupDetailCreateNetwork>,
@@ -499,23 +498,10 @@ export class GroupDetailCreateConnection {
 
 
   request() {
-    if (this.connection === 'Other') {
-      this.connection = this.connectionEtc.value;
-    }
-    if (this.connection === '' || this.ntt === '' || this.noc === '' || this.termIP.value === '') {
-      this.commonService.openBar('invalid..', 5000);
-      return;
-    }
-
-    if (this.connection === 'L2 構内接続' || this.connection === 'L3 StaticRouting 構内接続' ||
-      this.connection === 'L3 BGP 構内接続') {
-      this.ntt = '構内接続のため必要なし';
-      this.termIP.setValue('構内接続のため必要なし');
-    }
-
     const body = {
       user_id: parseInt(this.termUser, 10),
-      service: this.connection,
+      connection_type: this.connectionType,
+      connection_comment: this.connectionComment.value,
       ntt: this.ntt,
       noc: this.noc,
       term_ip: this.termIP.value,
@@ -527,7 +513,6 @@ export class GroupDetailCreateConnection {
       console.log(response.status);
       this.commonService.openBar('申請完了', 5000);
       this.router.navigate(['/dashboard/group/' + this.data.groupID]).then();
-
     });
   }
 }
