@@ -27,8 +27,8 @@ export class NetworkService {
       const response: any = r;
       return response;
     }).catch(error => {
-      sessionStorage.setItem('error', JSON.stringify(error));
-      this.router.navigate(['/error']).then();
+      console.log(error);
+      this.commonService.openBar('エラーが発生しました。F12でDebugできます。', 5000);
     });
   }
 

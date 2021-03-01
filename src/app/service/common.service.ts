@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +10,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class CommonService {
 
   constructor(
+    public router: Router,
     private snackBar: MatSnackBar,
+    private http: HttpClient
   ) {
   }
 
@@ -62,5 +67,36 @@ export class CommonService {
       info = '不明 (Status: ' + status + ')';
     }
     return info;
+  }
+
+
+  getService(): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/service', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      return response;
+    }).catch(error => {
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
+    });
+  }
+
+  getNOC(): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/noc', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+      }),
+    }).toPromise().then(r => {
+      const response: any = r;
+      return response;
+    }).catch(error => {
+      sessionStorage.setItem('error', JSON.stringify(error));
+      this.router.navigate(['/error']).then();
+    });
   }
 }
