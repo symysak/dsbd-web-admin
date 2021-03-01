@@ -24,10 +24,12 @@ export class ConnectionDetailComponent implements OnInit {
     ID: new FormControl(),
     group_id: new FormControl(''),
     user_id: new FormControl(''),
-    service: new FormControl(''),
-    service_id: new FormControl(''),
+    connection_type: new FormControl(''),
+    connection_number: new FormControl(''),
+    network_id: new FormControl(''),
+    router_id: new FormControl(''),
+    gateway_ip_id: new FormControl(''),
     noc: new FormControl(''),
-    noc_ip: new FormControl(''),
     ntt: new FormControl(''),
     term_ip: new FormControl(''),
     fee: new FormControl(''),
@@ -36,6 +38,7 @@ export class ConnectionDetailComponent implements OnInit {
     link_v6_our: new FormControl(''),
     link_v6_your: new FormControl(''),
     open: new FormControl(),
+    lock: new FormControl(),
     monitor: new FormControl()
   });
   public loading = true;
@@ -51,13 +54,26 @@ export class ConnectionDetailComponent implements OnInit {
         ID: response.connection[0].ID,
         group_id: response.connection[0].group_id,
         user_id: response.connection[0].user_id,
+        network_id: response.connection[0].network_id,
+        connection_number: response.connection[0].connection_number,
+        router_id: response.connection[0].router_id,
+        gateway_ip_id: response.connection[0].gateway_ip_id,
         open: response.connection[0].open,
+        lock: response.connection[0].lock,
         monitor: response.connection[0].monitor,
       });
       this.loading = false;
       console.log(this.connection);
       this.commonService.openBar('OK', 5000);
     });
+  }
+
+  linkRouter(id: number): void {
+    this.router.navigate(['/dashboard/gateway/' + id]).then();
+  }
+
+  linkGateway(id: number): void {
+    this.router.navigate(['/dashboard/gateway/' + id]).then();
   }
 
   update(): void {

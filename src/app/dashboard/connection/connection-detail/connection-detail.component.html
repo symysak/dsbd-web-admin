@@ -11,6 +11,44 @@
         <br>
         <table>
           <tr>
+            <th colspan="4">BGP Router</th>
+          </tr>
+          <ng-container *ngIf="connection.router_id !== null">
+            <tr>
+              <th>ID</th>
+              <td colspan="1">{{connection.router_id}}</td>
+              <th>LINK</th>
+              <td colspan="1">
+                <button mat-raised-button (click)="linkRouter(connection.router_id)">リンク</button>
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+        <br>
+        <table>
+          <tr>
+            <th colspan="4">Tunnel Endpoint Router</th>
+          </tr>
+          <ng-container *ngIf="connection.gateway_ip_id !== null">
+            <tr>
+              <th>ID</th>
+              <td colspan="1">{{connection.gateway_ip_id}}</td>
+              <th>LINK</th>
+              <td colspan="1">
+                <button mat-raised-button (click)="linkGateway(connection.gateway_ip_id.ID)">リンク</button>
+              </td>
+            </tr>
+            <!--            <tr>-->
+            <!--              <th>Host</th>-->
+            <!--              <td colspan="1">{{connection.gateway_id.host}}</td>-->
+            <!--              <th>IP</th>-->
+            <!--              <td colspan="1">{{connection.gateway_id.ip}}</td>-->
+            <!--            </tr>-->
+          </ng-container>
+        </table>
+        <br>
+        <table>
+          <tr>
             <th colspan="2">Connection Information</th>
           </tr>
           <tr>
@@ -26,12 +64,20 @@
             <td>{{connection.open}}</td>
           </tr>
           <tr>
-            <th>Service ID</th>
-            <td>{{connection.service_id}}</td>
+            <th>Lock</th>
+            <td>{{connection.lock}}</td>
           </tr>
           <tr>
-            <th>Service</th>
-            <td>{{connection.service}}</td>
+            <th>Connection Type</th>
+            <td>{{connection.connection_type}}</td>
+          </tr>
+          <tr>
+            <th>connection Number</th>
+            <td>{{connection.connection_number}}</td>
+          </tr>
+          <tr>
+            <th>Network ID</th>
+            <td>{{connection.network_id}}</td>
           </tr>
           <tr>
             <th>Group ID</th>
@@ -40,6 +86,14 @@
           <tr>
             <th>User ID</th>
             <td>{{connection.user_id}}</td>
+          </tr>
+          <tr>
+            <th>BGP Router ID</th>
+            <td>{{connection.router_id}}</td>
+          </tr>
+          <tr>
+            <th>Tunnel Endpoint Router ID</th>
+            <td>{{connection.gateway_id}}</td>
           </tr>
           <tr>
             <th>Fee</th>
@@ -90,13 +144,13 @@
             <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
             <form [formGroup]="connectionInput">
               <mat-form-field appearance="fill">
-                <mat-label>Service ID</mat-label>
-                <input matInput type="text" formControlName="service_id">
+                <mat-label>Connection Type</mat-label>
+                <input matInput type="text" formControlName="connection_type">
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
-                <mat-label>Service</mat-label>
-                <input matInput type="text" formControlName="service">
+                <mat-label>Connection Number</mat-label>
+                <input matInput type="number" formControlName="connection_number">
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
@@ -105,8 +159,18 @@
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
-                <mat-label>Tunnel Endpoint Address</mat-label>
-                <input matInput type="text" formControlName="noc_ip">
+                <mat-label>Network ID</mat-label>
+                <input matInput type="number" formControlName="network_id">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Router ID(ERxx)</mat-label>
+                <input matInput type="number" formControlName="router_id">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>Gateway ID(ctepxxなど)</mat-label>
+                <input matInput type="number" formControlName="gateway_ip_id">
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
@@ -157,6 +221,8 @@
               <mat-checkbox formControlName="open">開通済み</mat-checkbox>
               &nbsp;
               <mat-checkbox formControlName="monitor">Monitor</mat-checkbox>
+              &nbsp;
+              <mat-checkbox formControlName="lock">Lock</mat-checkbox>
               &nbsp;
             </form>
             <br>
