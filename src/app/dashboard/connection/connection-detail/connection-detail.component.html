@@ -22,6 +22,12 @@
                 <button mat-raised-button (click)="linkRouter(connection.router_id)">リンク</button>
               </td>
             </tr>
+            <tr>
+              <th>HostName</th>
+              <td colspan="1">{{getRouterHostName(connection.router_id)}}</td>
+              <th>Enable</th>
+              <td colspan="1">{{getRouterEnable(connection.router_id)}}
+            </tr>
           </ng-container>
         </table>
         <br>
@@ -38,12 +44,12 @@
                 <button mat-raised-button (click)="linkGateway(connection.gateway_ip_id.ID)">リンク</button>
               </td>
             </tr>
-            <!--            <tr>-->
-            <!--              <th>Host</th>-->
-            <!--              <td colspan="1">{{connection.gateway_id.host}}</td>-->
-            <!--              <th>IP</th>-->
-            <!--              <td colspan="1">{{connection.gateway_id.ip}}</td>-->
-            <!--            </tr>-->
+            <tr>
+              <th>IP</th>
+              <td colspan="1">{{getTunnelEndpointIP(connection.gateway_ip_id)}}</td>
+              <th>Enable</th>
+              <td colspan="1">{{getTunnelEndpointEnable(connection.gateway_ip_id)}}
+            </tr>
           </ng-container>
         </table>
         <br>
@@ -104,10 +110,6 @@
             <td>{{connection.noc}}</td>
           </tr>
           <tr>
-            <th>Tunnel Endpoint Address</th>
-            <td>{{connection.noc_ip}}</td>
-          </tr>
-          <tr>
             <th>NTT</th>
             <td>{{connection.ntt}}</td>
           </tr>
@@ -164,13 +166,21 @@
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
-                <mat-label>Router ID(ERxx)</mat-label>
-                <input matInput type="number" formControlName="router_id">
+                <mat-label>RouterID (BGP)</mat-label>
+                <mat-select [(value)]="routerID" required>
+                  <ng-container *ngFor="let router of this.routers">
+                    <mat-option value="{{router.ID}}">{{router.hostname}}</mat-option>
+                  </ng-container>
+                </mat-select>
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
-                <mat-label>Gateway ID(ctepxxなど)</mat-label>
-                <input matInput type="number" formControlName="gateway_ip_id">
+                <mat-label>GatewayID (ctepxxなど)</mat-label>
+                <mat-select [(value)]="gatewayIPID" required>
+                  <ng-container *ngFor="let gatewayIP of this.gatewayIPs">
+                    <mat-option value="{{gatewayIP.ID}}">{{gatewayIP.ip}}</mat-option>
+                  </ng-container>
+                </mat-select>
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">

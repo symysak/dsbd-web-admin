@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ConnectionService} from '../../../service/connection.service';
+import {RouterService} from '../../../service/router.service';
+import {GatewayIPService} from '../../../service/gateway-ip.service';
 
 @Component({
   selector: 'app-connection-detail',
@@ -16,6 +18,8 @@ export class ConnectionDetailComponent implements OnInit {
     private router: Router,
     public connectionService: ConnectionService,
     private commonService: CommonService,
+    private routerService: RouterService,
+    private gatewayIPService: GatewayIPService,
   ) {
   }
 
@@ -44,12 +48,19 @@ export class ConnectionDetailComponent implements OnInit {
   public loading = true;
   public hide = false;
   public connection: any;
+  public routers: any;
+  public gatewayIPs: any;
+  public routerID: any;
+  public gatewayIPID: any;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.connectionService.get(this.id).then(response => {
       console.log(response);
       this.connection = response.connection[0];
+      this.routerID = response.connection[0].router_id;
+      this.gatewayIPID = response.connection[0].gateway_ip_id;
+      console.log(this.routerID);
       this.connectionInput.patchValue({
         ID: response.connection[0].ID,
         group_id: response.connection[0].group_id,
@@ -62,8 +73,17 @@ export class ConnectionDetailComponent implements OnInit {
         lock: response.connection[0].lock,
         monitor: response.connection[0].monitor,
       });
-      this.loading = false;
       console.log(this.connection);
+
+      this.routerService.getAll().then((res1) => {
+        console.log(res1);
+        this.routers = res1.router;
+        this.gatewayIPService.getAll().then((res2) => {
+          console.log(res2);
+          this.gatewayIPs = res2.gateway_ip;
+          this.loading = false;
+        });
+      });
       this.commonService.openBar('OK', 5000);
     });
   }
@@ -76,7 +96,33 @@ export class ConnectionDetailComponent implements OnInit {
     this.router.navigate(['/dashboard/gateway/' + id]).then();
   }
 
+  getRouterHostName(id: number): string {
+    const tmp = this.routers.find(item => item.ID === id);
+    return tmp.hostname;
+  }
+
+  getRouterEnable(id: number): string {
+    const tmp = this.routers.find(item => item.ID === id);
+    return tmp.enable;
+  }
+
+  getTunnelEndpointIP(id: number): string {
+    const tmp = this.gatewayIPs.find(item => item.ID === id);
+    return tmp.ip;
+  }
+
+  getTunnelEndpointEnable(id: number): string {
+    const tmp = this.gatewayIPs.find(item => item.ID === id);
+    return tmp.enable;
+  }
+
   update(): void {
+    console.log(this.routerID);
+    console.log(this.gatewayIPID);
+    this.connectionInput.patchValue({
+      router_id: parseInt(this.routerID, 10),
+      gateway_ip_id: parseInt(this.gatewayIPID, 10),
+    });
     const json = JSON.stringify(this.connectionInput.getRawValue());
     console.log(json);
     this.connectionService.update(this.id, json).then(response => {
