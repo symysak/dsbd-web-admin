@@ -57,7 +57,6 @@ export class GroupDetailComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.groupService.get(this.id).then(response => {
-      console.log(response);
       this.group = response.group[0];
       this.groupInput.patchValue({
         ID: response.group[0].ID,
@@ -91,12 +90,14 @@ export class GroupDetailComponent implements OnInit {
         this.networks = null;
       } else {
         this.networks = response.network;
+        console.log(response.network);
       }
 
       if (response.connection === null) {
         this.connections = null;
       } else {
         this.connections = response.connection;
+        console.log(response.connection);
       }
       this.commonService.openBar('OK', 5000);
     });
@@ -178,6 +179,15 @@ export class GroupDetailComponent implements OnInit {
   getUser(id: number): string {
     const user = this.users.find(e => e.ID === id);
     return user.ID + ':' + user.name + ' ';
+  }
+
+  getNetworkName(id: number) {
+    if (id === 0) {
+      return '不明';
+    } else {
+      const network = this.networks.find(e => e.ID === id);
+      return network.network_type + ('0000' + network.network_number).slice(-3);
+    }
   }
 
   createNetworkInfo() {
