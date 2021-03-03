@@ -49,23 +49,22 @@ export class ConnectionDetailComponent implements OnInit {
   public hide = false;
   public connection: any;
   public routers: any;
+  public services: any;
+  public connections: any;
+  public nocs: any;
   public gatewayIPs: any;
-  public routerID: any;
-  public gatewayIPID: any;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.connectionService.get(this.id).then(response => {
       console.log(response);
       this.connection = response.connection[0];
-      this.routerID = response.connection[0].router_id;
-      this.gatewayIPID = response.connection[0].gateway_ip_id;
-      console.log(this.routerID);
       this.connectionInput.patchValue({
         ID: response.connection[0].ID,
         group_id: response.connection[0].group_id,
         user_id: response.connection[0].user_id,
         network_id: response.connection[0].network_id,
+        connection_type: response.connection[0].connection_type,
         connection_number: response.connection[0].connection_number,
         router_id: response.connection[0].router_id,
         gateway_ip_id: response.connection[0].gateway_ip_id,
@@ -74,6 +73,7 @@ export class ConnectionDetailComponent implements OnInit {
         monitor: response.connection[0].monitor,
       });
       console.log(this.connection);
+      console.log(this.connectionInput.value);
 
       this.routerService.getAll().then((res1) => {
         console.log(res1);
@@ -81,10 +81,14 @@ export class ConnectionDetailComponent implements OnInit {
         this.gatewayIPService.getAll().then((res2) => {
           console.log(res2);
           this.gatewayIPs = res2.gateway_ip;
-          this.loading = false;
+          this.commonService.getService().then((res3) => {
+            console.log(res3);
+            this.connections = res3.connection;
+            this.loading = false;
+            this.commonService.openBar('OK', 5000);
+          });
         });
       });
-      this.commonService.openBar('OK', 5000);
     });
   }
 
@@ -117,12 +121,6 @@ export class ConnectionDetailComponent implements OnInit {
   }
 
   update(): void {
-    console.log(this.routerID);
-    console.log(this.gatewayIPID);
-    this.connectionInput.patchValue({
-      router_id: parseInt(this.routerID, 10),
-      gateway_ip_id: parseInt(this.gatewayIPID, 10),
-    });
     const json = JSON.stringify(this.connectionInput.getRawValue());
     console.log(json);
     this.connectionService.update(this.id, json).then(response => {

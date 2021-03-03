@@ -145,9 +145,17 @@
           <div class="main">
             <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
             <form [formGroup]="connectionInput">
+              <!--              <mat-form-field appearance="fill">-->
+              <!--                <mat-label>Connection Type</mat-label>-->
+              <!--                <input matInput type="text" formControlName="connection_type">-->
+              <!--              </mat-form-field>-->
               <mat-form-field appearance="fill">
                 <mat-label>Connection Type</mat-label>
-                <input matInput type="text" formControlName="connection_type">
+                <mat-select formControlName="connection_type" required>
+                  <ng-container *ngFor="let c of this.connections">
+                    <mat-option value="{{c.id}}">{{c.id}}({{c.name}})</mat-option>
+                  </ng-container>
+                </mat-select>
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
@@ -167,7 +175,7 @@
               &nbsp;
               <mat-form-field appearance="fill">
                 <mat-label>RouterID (BGP)</mat-label>
-                <mat-select [(value)]="routerID" required>
+                <mat-select formControlName="router_id" required>
                   <ng-container *ngFor="let router of this.routers">
                     <mat-option value="{{router.ID}}">{{router.hostname}}</mat-option>
                   </ng-container>
@@ -176,7 +184,7 @@
               &nbsp;
               <mat-form-field appearance="fill">
                 <mat-label>GatewayID (ctepxxなど)</mat-label>
-                <mat-select [(value)]="gatewayIPID" required>
+                <mat-select formControlName="gateway_ip_id" required>
                   <ng-container *ngFor="let gatewayIP of this.gatewayIPs">
                     <mat-option value="{{gatewayIP.ID}}">{{gatewayIP.ip}}</mat-option>
                   </ng-container>
