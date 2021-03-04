@@ -9,10 +9,7 @@
     <mat-card-content>
       <mat-card-subtitle>
         <mat-chip-list>
-          <ng-container *ngIf="d.status === 0">
-            <mat-chip color="warn" selected>未登録</mat-chip>
-          </ng-container>
-          <ng-container *ngIf="d.status === 1">
+          <ng-container *ngIf="!d.pass">
             <mat-chip color="primary" selected>審査中</mat-chip>
           </ng-container>
         </mat-chip-list>
