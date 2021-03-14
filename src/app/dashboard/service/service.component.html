@@ -1,9 +1,10 @@
-<ng-container *ngFor="let d of network">
+<ng-container *ngFor="let d of service">
   <mat-card class="card">
     <mat-card-header>
-      <mat-card-title>{{d.ID}}: {{d.v4_name}} / {{d.v6_name}}</mat-card-title>
-      <mat-card-subtitle>ID:{{d.ID}} GID:{{d.group_id}}</mat-card-subtitle>
-      <mat-card-subtitle>v4: <b>{{d.v4_name}}</b> v6: <b>{{d.v6_name}}</b></mat-card-subtitle>
+      <mat-card-title>
+        {{d.group_id}}-{{d.service_template.type}}{{('000' + d.service_number).slice(-3)}}
+      </mat-card-title>
+      <mat-card-subtitle>ID:{{d.ID}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <mat-card-subtitle>

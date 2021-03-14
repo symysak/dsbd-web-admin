@@ -2,19 +2,19 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {NetworkService} from '../../../service/network.service';
+import {ServiceService} from '../../../service/service.service';
 
 @Component({
   selector: 'app-network-detail',
-  templateUrl: './network-detail.component.html',
-  styleUrls: ['./network-detail.component.scss']
+  templateUrl: './service-detail.component.html',
+  styleUrls: ['./service-detail.component.scss']
 })
-export class NetworkDetailComponent implements OnInit {
+export class ServiceDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public networkService: NetworkService,
+    public networkService: ServiceService,
     private commonService: CommonService,
   ) {
   }
@@ -41,14 +41,14 @@ export class NetworkDetailComponent implements OnInit {
   });
   public loading = true;
   public hide = false;
-  public network: any;
+  public servicek: any;
   public users: any;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.networkService.get(this.id).then(response => {
       console.log(response);
-      this.network = response.network[0];
+      this.servicek = response.network[0];
       this.users = response.user;
       this.networkInput.patchValue({
         ID: response.network[0].ID,

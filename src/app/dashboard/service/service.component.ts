@@ -1,35 +1,35 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../../service/common.service';
 import {Router} from '@angular/router';
-import {NetworkService} from '../../service/network.service';
+import {ServiceService} from '../../service/service.service';
 
 @Component({
   selector: 'app-network',
-  templateUrl: './network.component.html',
-  styleUrls: ['./network.component.scss']
+  templateUrl: './service.component.html',
+  styleUrls: ['./service.component.scss']
 })
-export class NetworkComponent implements OnInit {
+export class ServiceComponent implements OnInit {
   constructor(
-    private networkService: NetworkService,
+    private serviceService: ServiceService,
     private commonService: CommonService,
     private router: Router,
   ) {
   }
 
-  public network: any[] = new Array();
+  public service: any[] = new Array();
   public loading = true;
 
 
   ngOnInit(): void {
-    this.networkService.getAll().then(response => {
+    this.serviceService.getAll().then(response => {
       console.log(response);
-      this.network = response.network;
+      this.service = response.service;
       this.loading = false;
       this.commonService.openBar('OK', 5000);
     });
   }
 
   detailPage(id): void {
-    this.router.navigate(['/dashboard/network/' + id]).then();
+    this.router.navigate(['/dashboard/service/' + id]).then();
   }
 }

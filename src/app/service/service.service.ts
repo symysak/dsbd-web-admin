@@ -7,7 +7,7 @@ import {environment} from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class NetworkService {
+export class ServiceService {
 
   constructor(
     public router: Router,
@@ -17,7 +17,7 @@ export class NetworkService {
   }
 
   create(id, body): Promise<any> {
-    return this.http.post(environment.api.url + environment.api.path + '/group/' + id + '/network',
+    return this.http.post(environment.api.url + environment.api.path + '/group/' + id + '/service',
       body, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export class NetworkService {
   }
 
   get(uid): Promise<any> {
-    return this.http.get(environment.api.url + environment.api.path + '/network/' + uid, {
+    return this.http.get(environment.api.url + environment.api.path + '/service/' + uid, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
@@ -48,7 +48,7 @@ export class NetworkService {
   }
 
   getAll(): Promise<any> {
-    return this.http.get(environment.api.url + environment.api.path + '/network', {
+    return this.http.get(environment.api.url + environment.api.path + '/service', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
@@ -63,7 +63,7 @@ export class NetworkService {
   }
 
   update(uid, data): Promise<any> {
-    return this.http.put(environment.api.url + environment.api.path + '/network/' + uid,
+    return this.http.put(environment.api.url + environment.api.path + '/service/' + uid,
       data, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

@@ -11,8 +11,8 @@ import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
 import {ConnectionDetailComponent} from './connection/connection-detail/connection-detail.component';
 import {ConnectionComponent} from './connection/connection.component';
-import {NetworkDetailComponent} from './network/network-detail/network-detail.component';
-import {NetworkComponent} from './network/network.component';
+import {ServiceDetailComponent} from './service/service-detail/service-detail.component';
+import {ServiceComponent} from './service/service.component';
 import {NoticeComponent} from './notice/notice.component';
 import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
 import {RouterComponent} from './router/router.component';
@@ -39,8 +39,8 @@ const routes: Routes = [
       {path: 'group/:id', component: GroupDetailComponent},
       {path: 'connection', component: ConnectionComponent},
       {path: 'connection/:id', component: ConnectionDetailComponent},
-      {path: 'network', component: NetworkComponent},
-      {path: 'network/:id', component: NetworkDetailComponent},
+      {path: 'network', component: ServiceComponent},
+      {path: 'service/:id', component: ServiceDetailComponent},
       {path: 'support', component: SupportComponent},
       {path: 'support/:id', component: ChatComponent},
       {path: 'user', component: UserComponent},

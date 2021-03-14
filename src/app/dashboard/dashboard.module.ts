@@ -29,8 +29,8 @@ import {SupportComponent} from './support/support.component';
 import {ChatComponent} from './support/chat/chat.component';
 import {ConnectionComponent} from './connection/connection.component';
 import {ConnectionDetailComponent} from './connection/connection-detail/connection-detail.component';
-import {NetworkComponent} from './network/network.component';
-import {NetworkDetailComponent} from './network/network-detail/network-detail.component';
+import {ServiceComponent} from './service/service.component';
+import {ServiceDetailComponent} from './service/service-detail/service-detail.component';
 import {NoticeComponent} from './notice/notice.component';
 import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
 import {MatMenuModule} from '@angular/material/menu';
@@ -61,8 +61,8 @@ import {GatewayIpComponent} from './gateway-ip/gateway-ip.component';
     ChatComponent,
     ConnectionComponent,
     ConnectionDetailComponent,
-    NetworkComponent,
-    NetworkDetailComponent,
+    ServiceComponent,
+    ServiceDetailComponent,
     NoticeComponent,
     NoticeDetailComponent,
     NocComponent,

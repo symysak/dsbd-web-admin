@@ -13,51 +13,51 @@
           </tr>
           <tr>
             <th>User Create Date</th>
-            <td colspan="2">{{network.CreatedAt}}</td>
+            <td colspan="2">{{servicek.CreatedAt}}</td>
           </tr>
           <tr>
             <th>User Update Date</th>
-            <td colspan="2">{{network.UpdatedAt}}</td>
+            <td colspan="2">{{servicek.UpdatedAt}}</td>
           </tr>
           <tr>
             <th>Group ID</th>
-            <td colspan="2">{{network.group_id}}</td>
+            <td colspan="2">{{servicek.group_id}}</td>
           </tr>
           <tr>
             <th>ASN</th>
-            <td colspan="2">{{network.asn}}</td>
+            <td colspan="2">{{servicek.asn}}</td>
           </tr>
           <tr>
             <th>開通</th>
-            <td colspan="2">{{network.open}}</td>
+            <td colspan="2">{{servicek.open}}</td>
           </tr>
           <tr>
             <th>Organization</th>
-            <td colspan="2">{{network.org}}</td>
+            <td colspan="2">{{servicek.org}}</td>
           </tr>
           <tr>
             <th>Organization(English)</th>
-            <td colspan="2">{{network.org_en}}</td>
+            <td colspan="2">{{servicek.org_en}}</td>
           </tr>
           <tr>
             <th>Postcode</th>
-            <td colspan="2">{{network.postcode}}</td>
+            <td colspan="2">{{servicek.postcode}}</td>
           </tr>
           <tr>
             <th>Address</th>
-            <td colspan="2">{{network.address}}</td>
+            <td colspan="2">{{servicek.address}}</td>
           </tr>
           <tr>
             <th>Address(English)</th>
-            <td colspan="2">{{network.address_en}}</td>
+            <td colspan="2">{{servicek.address_en}}</td>
           </tr>
           <tr>
             <th>PIアドレス</th>
-            <td colspan="2">{{network.pi}}</td>
+            <td colspan="2">{{servicek.pi}}</td>
           </tr>
           <tr>
             <th>Lock</th>
-            <td colspan="2">{{network.lock}}</td>
+            <td colspan="2">{{servicek.lock}}</td>
           </tr>
         </table>
         <br>
@@ -72,8 +72,8 @@
           </tr>
           <tr>
             <th>Route</th>
-            <td>{{network.route_v4}}</td>
-            <td>{{network.route_v6}}</td>
+            <td>{{servicek.route_v4}}</td>
+            <td>{{servicek.route_v6}}</td>
           </tr>
         </table>
         <br>
@@ -81,7 +81,7 @@
           <tr>
             <th colspan="4">IP Address</th>
           </tr>
-          <ng-container *ngFor="let ip of network.ip">
+          <ng-container *ngFor="let ip of servicek.ip">
             <tr>
               <th>Name</th>
               <td colspan="1">{{ip.name}}</td>
@@ -95,13 +95,13 @@
           <tr>
             <th colspan="4">管理者連絡窓口</th>
           </tr>
-          <ng-container *ngIf="network.admin !== null">
+          <ng-container *ngIf="servicek.admin !== null">
             <tr>
               <th>ID</th>
-              <td colspan="1">{{getUser(network.admin.user_id)}}</td>
+              <td colspan="1">{{getUser(servicek.admin.user_id)}}</td>
               <th>LINK</th>
               <td colspan="1">
-                <button mat-raised-button (click)="linkUser(network.admin.user_id)">リンク</button>
+                <button mat-raised-button (click)="linkUser(servicek.admin.user_id)">リンク</button>
               </td>
             </tr>
           </ng-container>
@@ -111,7 +111,7 @@
           <tr>
             <th colspan="4">技術連絡担当者</th>
           </tr>
-          <ng-container *ngFor="let jpnic of network.tech">
+          <ng-container *ngFor="let jpnic of servicek.tech">
             <tr>
               <th>ID</th>
               <td colspan="1">{{getUser(jpnic.user_id)}}</td>
@@ -128,7 +128,7 @@
             <mat-expansion-panel-header>
               <mat-panel-title>回線使用時期</mat-panel-title>
             </mat-expansion-panel-header>
-            <p>{{network.date}}</p>
+            <p>{{servicek.date}}</p>
           </mat-expansion-panel>
         </mat-accordion>
         <br>
@@ -137,7 +137,7 @@
             <mat-expansion-panel-header>
               <mat-panel-title>プラン</mat-panel-title>
             </mat-expansion-panel-header>
-            <p>{{network.plan}}</p>
+            <p>{{servicek.plan}}</p>
           </mat-expansion-panel>
         </mat-accordion>
         <br>
