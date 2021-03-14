@@ -24,7 +24,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getAll().then(response => {
       console.log(response);
-      this.user = response.user;
+      this.user = response.users;
       this.loading = false;
       this.commonService.openBar('OK', 5000);
     });

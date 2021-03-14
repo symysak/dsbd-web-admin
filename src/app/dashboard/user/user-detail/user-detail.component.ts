@@ -28,19 +28,7 @@ export class UserDetailComponent implements OnInit {
     name_en: new FormControl(),
     email: new FormControl(),
     pass: new FormControl(),
-    org: new FormControl(),
-    org_en: new FormControl(),
-    postcode: new FormControl(),
-    address: new FormControl(),
-    address_en: new FormControl(),
-    dept: new FormControl(),
-    dept_en: new FormControl(),
-    pos: new FormControl(),
-    pos_en: new FormControl(),
-    tel: new FormControl(),
-    fax: new FormControl(),
-    country: new FormControl(),
-    status: new FormControl(),
+    expired_status: new FormControl(),
     level: new FormControl(),
     tech: new FormControl(false)
   });
@@ -52,13 +40,12 @@ export class UserDetailComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.userService.get(this.id).then(response => {
       console.log(response);
-      this.user = response.user[0];
+      this.user = response.users[0];
       this.userInput.patchValue({
-        ID: response.user[0].ID,
-        status: response.user[0].status,
-        level: response.user[0].level,
-        group_id: response.user[0].group_id,
-        tech: response.user[0].tech
+        ID: response.users[0].ID,
+        expired_status: response.users[0].expired_status,
+        level: response.users[0].level,
+        group_id: response.users[0].group_id,
       });
       this.loading = false;
       this.commonService.openBar('OK', 5000);

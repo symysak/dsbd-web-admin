@@ -21,10 +21,6 @@
             <td>{{user.UpdatedAt}}</td>
           </tr>
           <tr>
-            <th>Tech</th>
-            <td>{{user.tech}}</td>
-          </tr>
-          <tr>
             <th>Group ID</th>
             <td>{{user.group_id}}</td>
           </tr>
@@ -54,57 +50,8 @@
             <td>{{user.mail_verify}}</td>
           </tr>
           <tr>
-            <th>Org</th>
-            <td>{{user.org}}</td>
-          </tr>
-          <tr>
-            <th>Org(English)</th>
-            <td>{{user.org_en}}</td>
-          </tr>
-          <tr>
-            <th>PostCode</th>
-            <td>{{user.postcode}}</td>
-          </tr>
-          <tr>
-            <th>Address</th>
-            <td>{{user.address}}</td>
-          </tr>
-          <tr>
-            <th>Address(English)</th>
-            <td>{{user.address_en}}</td>
-          </tr>
-          <tr>
-            <th>Department</th>
-            <td>{{user.dept}}</td>
-          </tr>
-          <tr>
-            <th>Department(English)</th>
-            <td>{{user.dept_en}}</td>
-          </tr>
-          <tr>
-            <th>Position</th>
-            <td>{{user.pos}}</td>
-          </tr>
-          <tr>
-            <th>Position(English)</th>
-            <td>{{user.pos_en}}</td>
-          </tr>
-          <tr>
-            <th>Tel</th>
-            <td>{{user.tel}}</td>
-          </tr>
-          <tr>
-          <tr>
-            <th>Fax</th>
-            <td>{{user.fax}}</td>
-          </tr>
-          <tr>
-            <th>Country</th>
-            <td>{{user.country}}</td>
-          </tr>
-          <tr>
-            <th>User Status</th>
-            <td>{{user.status}}</td>
+            <th>User Expired Status</th>
+            <td>{{user.expired_status}}</td>
           </tr>
           <tr>
             <th>User Level</th>
@@ -139,68 +86,8 @@
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
-                <mat-label>Org</mat-label>
-                <input matInput type="text" formControlName="org">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>OrgEn</mat-label>
-                <input matInput type="text" formControlName="org_en">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>PostCode</mat-label>
-                <input matInput type="text" formControlName="postcode">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Address</mat-label>
-                <input matInput type="text" formControlName="address">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Address(English)</mat-label>
-                <input matInput type="text" formControlName="address_en">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Department</mat-label>
-                <input matInput type="text" formControlName="dept">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>Department(English)</mat-label>
-                <input matInput type="text" formControlName="dept_en">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Position</mat-label>
-                <input matInput type="text" formControlName="pos">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>Position(English)</mat-label>
-                <input matInput type="text" formControlName="pos_en">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Tel</mat-label>
-                <input matInput type="tel" formControlName="tel">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>Fax</mat-label>
-                <input matInput type="tel" formControlName="fax">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>Country</mat-label>
-                <input matInput type="text" formControlName="country">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Status</mat-label>
-                <input matInput type="number" formControlName="status">
+                <mat-label>Expired Status</mat-label>
+                <input matInput type="number" formControlName="expired_status">
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
@@ -213,9 +100,6 @@
                 <input matInput type="number" formControlName="group_id">
               </mat-form-field>
               <br>
-              <h3>Tech</h3>
-              <mat-checkbox formControlName="tech">Tech</mat-checkbox>
-              &nbsp;
             </form>
             <br>
             <button mat-stroked-button color="primary" (click)="update()">Update</button>
