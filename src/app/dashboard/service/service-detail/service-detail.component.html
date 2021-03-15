@@ -1,63 +1,103 @@
 <div class="main">
-  <h2>ID: {{id}}</h2>
+
   <ng-container *ngIf="loading">
     <h1>読み込み中...</h1>
   </ng-container>
   <ng-container *ngIf="!loading">
+    <h2>
+      {{service.group_id}}-{{service.service_template.type}}{{('000' + service.service_number).slice(-3)}}
+    </h2>
+    <br>
+    <button mat-raised-button color="primary" (click)="openProcess()">開通/未開通処理</button>
+    <br>
     <mat-tab-group>
       <mat-tab label="情報">
         <br>
         <table>
           <tr>
-            <th colspan="3">Connection Information</th>
+            <th colspan="3">Service Information</th>
           </tr>
           <tr>
             <th>User Create Date</th>
-            <td colspan="2">{{servicek.CreatedAt}}</td>
+            <td colspan="2">{{service.CreatedAt}}</td>
           </tr>
           <tr>
             <th>User Update Date</th>
-            <td colspan="2">{{servicek.UpdatedAt}}</td>
+            <td colspan="2">{{service.UpdatedAt}}</td>
           </tr>
           <tr>
             <th>Group ID</th>
-            <td colspan="2">{{servicek.group_id}}</td>
+            <td colspan="2">{{service.group_id}}</td>
           </tr>
           <tr>
             <th>ASN</th>
-            <td colspan="2">{{servicek.asn}}</td>
+            <ng-container *ngIf="service.asn === 0">
+              <td colspan="2">ASNが登録されていません</td>
+            </ng-container>
+            <ng-container *ngIf="service.asn !== 0">
+              <td colspan="2">{{service.asn}}</td>
+            </ng-container>
+          </tr>
+          <tr>
+            <th>Fee(料金)</th>
+            <td colspan="2">{{service.fee}}円</td>
           </tr>
           <tr>
             <th>開通</th>
-            <td colspan="2">{{servicek.open}}</td>
+            <td colspan="2">{{service.open}}</td>
           </tr>
           <tr>
             <th>Organization</th>
-            <td colspan="2">{{servicek.org}}</td>
+            <td colspan="2">{{service.org}}</td>
           </tr>
           <tr>
             <th>Organization(English)</th>
-            <td colspan="2">{{servicek.org_en}}</td>
+            <td colspan="2">{{service.org_en}}</td>
           </tr>
           <tr>
             <th>Postcode</th>
-            <td colspan="2">{{servicek.postcode}}</td>
+            <td colspan="2">{{service.postcode}}</td>
           </tr>
           <tr>
             <th>Address</th>
-            <td colspan="2">{{servicek.address}}</td>
+            <td colspan="2">{{service.address}}</td>
           </tr>
           <tr>
             <th>Address(English)</th>
-            <td colspan="2">{{servicek.address_en}}</td>
+            <td colspan="2">{{service.address_en}}</td>
           </tr>
           <tr>
-            <th>PIアドレス</th>
-            <td colspan="2">{{servicek.pi}}</td>
+            <th>Add_allow(追加許可)</th>
+            <td colspan="2">{{service.add_allow}}</td>
           </tr>
           <tr>
-            <th>Lock</th>
-            <td colspan="2">{{servicek.lock}}</td>
+            <th>Open(開通)</th>
+            <td colspan="2">{{service.open}}</td>
+          </tr>
+          <tr>
+            <th>Lock(編集ロック)</th>
+            <td colspan="2">{{service.lock}}</td>
+          </tr>
+        </table>
+        <br>
+        <table>
+          <tr>
+            <th colspan="3">アドレス広報方法</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>上り</th>
+            <th>下り</th>
+          </tr>
+          <tr>
+            <th>最大</th>
+            <td>{{service.max_upstream}}</td>
+            <td>{{service.max_downstream}}</td>
+          </tr>
+          <tr>
+            <th>平均</th>
+            <td>{{service.avg_upstream}}</td>
+            <td>{{service.avg_downstream}}</td>
           </tr>
         </table>
         <br>
@@ -72,8 +112,8 @@
           </tr>
           <tr>
             <th>Route</th>
-            <td>{{servicek.route_v4}}</td>
-            <td>{{servicek.route_v6}}</td>
+            <td>{{service.route_v4}}</td>
+            <td>{{service.route_v6}}</td>
           </tr>
         </table>
         <br>
@@ -81,13 +121,30 @@
           <tr>
             <th colspan="4">IP Address</th>
           </tr>
-          <ng-container *ngFor="let ip of servicek.ip">
+          <ng-container *ngFor="let ip of service.ip">
             <tr>
               <th>Name</th>
               <td colspan="1">{{ip.name}}</td>
               <th>IP</th>
               <td colspan="1">{{ip.ip}}</td>
             </tr>
+            <tr>
+              <th>開始時期</th>
+              <td colspan="1">{{ip.start_date}}</td>
+              <th>終了時期</th>
+              <ng-container *ngIf="ip.end_date === null">
+                <td colspan="1">未定</td>
+              </ng-container>
+              <ng-container *ngIf="ip.end_date !== null">
+                <td colspan="1">{{ip.end_date}}</td>
+              </ng-container>
+            </tr>
+            <ng-container *ngIf="ip.plan.length !==0">
+              <th>Plan</th>
+              <td colspan="3">
+                {{getPlanAfter(ip.ID)}}/{{getPlanHalfYear(ip.ID)}}/{{getPlanOneYear(ip.ID)}}
+              </td>
+            </ng-container>
           </ng-container>
         </table>
         <br>
@@ -95,14 +152,59 @@
           <tr>
             <th colspan="4">管理者連絡窓口</th>
           </tr>
-          <ng-container *ngIf="servicek.admin !== null">
+          <ng-container *ngIf="service.jpnic_admin !== null">
             <tr>
               <th>ID</th>
-              <td colspan="1">{{getUser(servicek.admin.user_id)}}</td>
-              <th>LINK</th>
-              <td colspan="1">
-                <button mat-raised-button (click)="linkUser(servicek.admin.user_id)">リンク</button>
-              </td>
+              <td colspan="3">{{service.jpnic_admin.ID}}</td>
+            </tr>
+            <tr>
+              <th>Org</th>
+              <td colspan="3">{{service.jpnic_admin.org}}</td>
+            </tr>
+            <tr>
+              <th>Org(English)</th>
+              <td colspan="3">{{service.jpnic_admin.org_en}}</td>
+            </tr>
+            <tr>
+              <th>PostCode</th>
+              <td colspan="3">{{service.jpnic_admin.postcode}}</td>
+            </tr>
+            <tr>
+              <th>Address</th>
+              <td colspan="3">{{service.jpnic_admin.address}}</td>
+            </tr>
+            <tr>
+              <th>Address(English)</th>
+              <td colspan="3">{{service.jpnic_admin.address_en}}</td>
+            </tr>
+            <tr>
+              <th>Department</th>
+              <td colspan="3">{{service.jpnic_admin.dept}}</td>
+            </tr>
+            <tr>
+              <th>Department(English)</th>
+              <td colspan="3">{{service.jpnic_admin.dept_en}}</td>
+            </tr>
+            <tr>
+              <th>Position</th>
+              <td colspan="3">{{service.jpnic_admin.pos}}</td>
+            </tr>
+            <tr>
+              <th>Position(English)</th>
+              <td colspan="3">{{service.jpnic_admin.pos_en}}</td>
+            </tr>
+            <tr>
+              <th>Tel</th>
+              <td colspan="3">{{service.jpnic_admin.tel}}</td>
+            </tr>
+            <tr>
+            <tr>
+              <th>Fax</th>
+              <td colspan="3">{{service.jpnic_admin.fax}}</td>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <td colspan="3">{{service.jpnic_admin.country}}</td>
             </tr>
           </ng-container>
         </table>
@@ -111,35 +213,64 @@
           <tr>
             <th colspan="4">技術連絡担当者</th>
           </tr>
-          <ng-container *ngFor="let jpnic of servicek.tech">
-            <tr>
-              <th>ID</th>
-              <td colspan="1">{{getUser(jpnic.user_id)}}</td>
-              <th>LINK</th>
-              <td colspan="1">
-                <button mat-raised-button (click)="linkUser(jpnic.user_id)">リンク</button>
-              </td>
-            </tr>
+          <ng-container *ngIf="service.jpnic_tech !== null">
+            <ng-container *ngFor="let tmpJPNICTech of service.jpnic_tech">
+              <tr>
+                <th>ID</th>
+                <td colspan="3">{{tmpJPNICTech.ID}}</td>
+              </tr>
+              <tr>
+                <th>Org</th>
+                <td colspan="3">{{tmpJPNICTech.org}}</td>
+              </tr>
+              <tr>
+                <th>Org(English)</th>
+                <td colspan="3">{{tmpJPNICTech.org_en}}</td>
+              </tr>
+              <tr>
+                <th>PostCode</th>
+                <td colspan="3">{{tmpJPNICTech.postcode}}</td>
+              </tr>
+              <tr>
+                <th>Address</th>
+                <td colspan="3">{{tmpJPNICTech.address}}</td>
+              </tr>
+              <tr>
+                <th>Address(English)</th>
+                <td colspan="3">{{tmpJPNICTech.address_en}}</td>
+              </tr>
+              <tr>
+                <th>Department</th>
+                <td colspan="3">{{tmpJPNICTech.dept}}</td>
+              </tr>
+              <tr>
+                <th>Department(English)</th>
+                <td colspan="3">{{tmpJPNICTech.dept_en}}</td>
+              </tr>
+              <tr>
+                <th>Position</th>
+                <td colspan="3">{{tmpJPNICTech.pos}}</td>
+              </tr>
+              <tr>
+                <th>Position(English)</th>
+                <td colspan="3">{{tmpJPNICTech.pos_en}}</td>
+              </tr>
+              <tr>
+                <th>Tel</th>
+                <td colspan="3">{{tmpJPNICTech.tel}}</td>
+              </tr>
+              <tr>
+              <tr>
+                <th>Fax</th>
+                <td colspan="3">{{tmpJPNICTech.fax}}</td>
+              </tr>
+              <tr>
+                <th>Country</th>
+                <td colspan="3">{{tmpJPNICTech.country}}</td>
+              </tr>
+            </ng-container>
           </ng-container>
         </table>
-        <br>
-        <mat-accordion>
-          <mat-expansion-panel class="card">
-            <mat-expansion-panel-header>
-              <mat-panel-title>回線使用時期</mat-panel-title>
-            </mat-expansion-panel-header>
-            <p>{{servicek.date}}</p>
-          </mat-expansion-panel>
-        </mat-accordion>
-        <br>
-        <mat-accordion>
-          <mat-expansion-panel class="card">
-            <mat-expansion-panel-header>
-              <mat-panel-title>プラン</mat-panel-title>
-            </mat-expansion-panel-header>
-            <p>{{servicek.plan}}</p>
-          </mat-expansion-panel>
-        </mat-accordion>
         <br>
       </mat-tab>
       <mat-tab label="設定">
@@ -147,7 +278,7 @@
           <br>
           <div class="main">
             <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
-            <form [formGroup]="networkInput">
+            <form [formGroup]="serviceInput">
               <mat-form-field appearance="fill">
                 <mat-label>Org</mat-label>
                 <input matInput type="text" formControlName="org">

@@ -30,7 +30,7 @@ import {ChatComponent} from './support/chat/chat.component';
 import {ConnectionComponent} from './connection/connection.component';
 import {ConnectionDetailComponent} from './connection/connection-detail/connection-detail.component';
 import {ServiceComponent} from './service/service.component';
-import {ServiceDetailComponent} from './service/service-detail/service-detail.component';
+import {ServiceDetailComponent, ServiceDetailOpenProcess} from './service/service-detail/service-detail.component';
 import {NoticeComponent} from './notice/notice.component';
 import {NoticeDetailComponent} from './notice/notice-detail/notice-detail.component';
 import {MatMenuModule} from '@angular/material/menu';
@@ -63,6 +63,7 @@ import {GatewayIpComponent} from './gateway-ip/gateway-ip.component';
     ConnectionDetailComponent,
     ServiceComponent,
     ServiceDetailComponent,
+    ServiceDetailOpenProcess,
     NoticeComponent,
     NoticeDetailComponent,
     NocComponent,

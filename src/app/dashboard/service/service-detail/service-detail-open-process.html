@@ -1,0 +1,114 @@
+<div class="main">
+  <h1 mat-dialog-title>サービス開通処理</h1>
+  <mat-dialog-content>
+    <h2>
+      {{data.service.group_id}}-{{data.service.service_template.type}}{{('000' + data.service.service_number).slice(-3)}}
+    </h2>
+    <table>
+      <tr>
+        <th colspan="4">サービスの開通状況</th>
+      </tr>
+      <tr>
+        <th>サービスコード</th>
+        <th>状況</th>
+        <th>機能</th>
+      </tr>
+      <tr>
+        <td>
+          {{data.service.group_id}}-{{data.service.service_template.type}}{{('000' + data.service.service_number).slice(-3)}}
+        </td>
+        <td>
+          <mat-chip-list>
+            <ng-container *ngIf="data.service.open">
+              <mat-chip color="primary" selected>開通</mat-chip>
+            </ng-container>
+            <ng-container *ngIf="!data.service.open">
+              <mat-chip color="warn" selected>未開通</mat-chip>
+            </ng-container>
+          </mat-chip-list>
+        </td>
+        <td>
+          <ng-container *ngIf="!data.service.open">
+            <button mat-raised-button color="primary" (click)="requestServiceOpen(true)">開通</button>
+          </ng-container>
+          <ng-container *ngIf="data.service.open">
+            <button mat-raised-button color="warn" (click)="requestServiceOpen(false)">未開通</button>
+          </ng-container>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <table>
+      <tr>
+        <th colspan="4">IPアドレスの開通状況</th>
+      </tr>
+      <tr>
+        <th>IPアドレス/Subnet</th>
+        <th>ネットワーク名</th>
+        <th>状況</th>
+        <th>機能</th>
+      </tr>
+      <ng-container *ngFor="let ip of data.service.ip">
+        <tr>
+          <td>{{ip.ip}}</td>
+          <td>{{ip.name}}</td>
+          <td>
+            <mat-chip-list>
+              <ng-container *ngIf="ip.open">
+                <mat-chip color="primary" selected>開通</mat-chip>
+              </ng-container>
+              <ng-container *ngIf="!ip.open">
+                <mat-chip color="warn" selected>未開通</mat-chip>
+              </ng-container>
+            </mat-chip-list>
+          </td>
+          <td>
+            <ng-container *ngIf="!ip.open">
+              <button mat-raised-button color="primary" (click)="requestIPOpen(ip.ID,true)">開通</button>
+            </ng-container>
+            <ng-container *ngIf="ip.open">
+              <button mat-raised-button color="warn" (click)="requestIPOpen(ip.ID,false)">未開通</button>
+            </ng-container>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+    <br>
+    <table>
+      <tr>
+        <th colspan="3">接続の開通状況</th>
+      </tr>
+      <tr>
+        <th>接続コード</th>
+        <th>状況</th>
+        <th>機能</th>
+      </tr>
+      <ng-container *ngFor="let connection of data.service.connections">
+        <tr>
+          <td>
+            {{data.service.group_id}}-{{data.service.service_template.type}}{{('000' + data.service.service_number).slice(-3)}}-{{connection.connection_template.type}}{{('000' + connection.connection_number).slice(-3)}}
+          </td>
+          <td>
+            <mat-chip-list>
+              <ng-container *ngIf="connection.open">
+                <mat-chip color="primary" selected>開通</mat-chip>
+              </ng-container>
+              <ng-container *ngIf="!connection.open">
+                <mat-chip color="warn" selected>未開通</mat-chip>
+              </ng-container>
+            </mat-chip-list>
+          </td>
+          <td>
+            <ng-container *ngIf="!connection.open">
+              <button mat-raised-button color="primary" (click)="requestConnectionOpen(connection.ID,true)">開通</button>
+            </ng-container>
+            <ng-container *ngIf="connection.open">
+              <button mat-raised-button color="warn" (click)="requestConnectionOpen(connection.ID,false)">未開通</button>
+            </ng-container>
+          </td>
+        </tr>
+      </ng-container>
+    </table>
+    <br><br>
+  </mat-dialog-content>
+</div>

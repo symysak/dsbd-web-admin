@@ -62,8 +62,8 @@ export class ServiceService {
     });
   }
 
-  update(uid, data): Promise<any> {
-    return this.http.put(environment.api.url + environment.api.path + '/service/' + uid,
+  update(id, data): Promise<any> {
+    return this.http.put(environment.api.url + environment.api.path + '/service/' + id,
       data, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
