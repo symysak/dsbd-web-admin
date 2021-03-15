@@ -1,32 +1,57 @@
 <div class="main">
-  <h2>ID: {{id}}</h2>
   <ng-container *ngIf="loading">
+    <h2>ID: {{id}}</h2>
     <h1>読み込み中...</h1>
   </ng-container>
   <ng-container *ngIf="!loading">
-    <h1>接続コード: {{connection.connection_type}}{{('0000' + connection.connection_number).slice(-3)}}</h1>
+    <h1>
+      ServiceCode:
+      {{connection.service.group_id}}-{{connection.service.service_template.type}}{{('000' + connection.service.service_number).slice(-3)}}-{{connection.connection_template.type}}{{('000' + connection.connection_number).slice(-3)}}
+    </h1>
     <br>
     <mat-tab-group>
       <mat-tab label="情報">
         <br>
         <table>
           <tr>
-            <th colspan="4">BGP Router</th>
+            <th colspan="4">NOC</th>
           </tr>
-          <ng-container *ngIf="connection.router_id !== null">
+          <ng-container *ngIf="connection.noc_id !== null">
             <tr>
               <th>ID</th>
-              <td colspan="1">{{connection.router_id}}</td>
+              <td colspan="1">{{connection.noc_id}}</td>
               <th>LINK</th>
               <td colspan="1">
-                <button mat-raised-button (click)="linkRouter(connection.router_id)">リンク</button>
+                <button mat-raised-button (click)="linkNOC(connection.noc_id)">リンク</button>
+              </td>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <td colspan="1">{{connection.noc.name}}</td>
+              <th>Enable</th>
+              <td colspan="1">{{connection.noc.enable}}
+            </tr>
+          </ng-container>
+        </table>
+        <br>
+        <table>
+          <tr>
+            <th colspan="4">BGP Router</th>
+          </tr>
+          <ng-container *ngIf="connection.bgp_router_id !== 0">
+            <tr>
+              <th>ID</th>
+              <td colspan="1">{{connection.bgp_router_id}}</td>
+              <th>LINK</th>
+              <td colspan="1">
+                <button mat-raised-button (click)="linkRouter(connection.bgp_router_id)">リンク</button>
               </td>
             </tr>
             <tr>
               <th>HostName</th>
-              <td colspan="1">{{getRouterHostName(connection.router_id)}}</td>
+              <td colspan="1">{{connection.bgp_router.hostname}}</td>
               <th>Enable</th>
-              <td colspan="1">{{getRouterEnable(connection.router_id)}}
+              <td colspan="1">{{connection.bgp_router.enable}}
             </tr>
           </ng-container>
         </table>
@@ -35,20 +60,20 @@
           <tr>
             <th colspan="4">Tunnel Endpoint Router</th>
           </tr>
-          <ng-container *ngIf="connection.gateway_ip_id !== null">
+          <ng-container *ngIf="connection.tunnel_endpoint_router_ip_id !== 0">
             <tr>
               <th>ID</th>
-              <td colspan="1">{{connection.gateway_ip_id}}</td>
+              <td colspan="1">{{connection.tunnel_endpoint_router_ip_id}}</td>
               <th>LINK</th>
               <td colspan="1">
-                <button mat-raised-button (click)="linkGateway(connection.gateway_ip_id.ID)">リンク</button>
+                <button mat-raised-button (click)="linkGateway(connection.tunnel_endpoint_router_ip_id)">リンク</button>
               </td>
             </tr>
             <tr>
               <th>IP</th>
-              <td colspan="1">{{getTunnelEndpointIP(connection.gateway_ip_id)}}</td>
+              <td colspan="1">{{connection.tunnel_endpoint_router_ip.ip}}</td>
               <th>Enable</th>
-              <td colspan="1">{{getTunnelEndpointEnable(connection.gateway_ip_id)}}
+              <td colspan="1">{{connection.tunnel_endpoint_router_ip.enable}}
             </tr>
           </ng-container>
         </table>
@@ -74,44 +99,8 @@
             <td>{{connection.lock}}</td>
           </tr>
           <tr>
-            <th>Connection Type</th>
-            <td>{{connection.connection_type}}</td>
-          </tr>
-          <tr>
-            <th>connection Number</th>
-            <td>{{connection.connection_number}}</td>
-          </tr>
-          <tr>
-            <th>Network ID</th>
-            <td>{{connection.network_id}}</td>
-          </tr>
-          <tr>
-            <th>Group ID</th>
-            <td>{{connection.group_id}}</td>
-          </tr>
-          <tr>
-            <th>User ID</th>
-            <td>{{connection.user_id}}</td>
-          </tr>
-          <tr>
-            <th>BGP Router ID</th>
-            <td>{{connection.router_id}}</td>
-          </tr>
-          <tr>
-            <th>Tunnel Endpoint Router ID</th>
-            <td>{{connection.gateway_id}}</td>
-          </tr>
-          <tr>
-            <th>Fee</th>
-            <td>{{connection.fee}}</td>
-          </tr>
-          <tr>
-            <th>NOC</th>
-            <td>{{connection.noc}}</td>
-          </tr>
-          <tr>
             <th>NTT</th>
-            <td>{{connection.ntt}}</td>
+            <td>{{connection.ntt_template.name}}</td>
           </tr>
           <tr>
             <th>Term IP</th>
@@ -145,15 +134,11 @@
           <div class="main">
             <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
             <form [formGroup]="connectionInput">
-              <!--              <mat-form-field appearance="fill">-->
-              <!--                <mat-label>Connection Type</mat-label>-->
-              <!--                <input matInput type="text" formControlName="connection_type">-->
-              <!--              </mat-form-field>-->
               <mat-form-field appearance="fill">
                 <mat-label>Connection Type</mat-label>
-                <mat-select formControlName="connection_type" required>
-                  <ng-container *ngFor="let c of this.connections">
-                    <mat-option value="{{c.id}}">{{c.id}}({{c.name}})</mat-option>
+                <mat-select formControlName="connection_template_id" required>
+                  <ng-container *ngFor="let c of this.templates.connections">
+                    <mat-option [value]="c.ID">{{c.ID}}({{c.name}})</mat-option>
                   </ng-container>
                 </mat-select>
               </mat-form-field>
@@ -165,35 +150,45 @@
               <br>
               <mat-form-field appearance="fill">
                 <mat-label>NOC</mat-label>
-                <input matInput type="text" formControlName="noc">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>Network ID</mat-label>
-                <input matInput type="number" formControlName="network_id">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>RouterID (BGP)</mat-label>
-                <mat-select formControlName="router_id" required>
-                  <ng-container *ngFor="let router of this.routers">
-                    <mat-option value="{{router.ID}}">{{router.hostname}}</mat-option>
+                <mat-select formControlName="noc_id" required>
+                  <ng-container *ngFor="let noc of this.templates.nocs">
+                    <mat-option [value]="noc.ID">{{noc.ID}}({{noc.name}})</mat-option>
                   </ng-container>
                 </mat-select>
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
-                <mat-label>GatewayID (ctepxxなど)</mat-label>
-                <mat-select formControlName="gateway_ip_id" required>
-                  <ng-container *ngFor="let gatewayIP of this.gatewayIPs">
-                    <mat-option value="{{gatewayIP.ID}}">{{gatewayIP.ip}}</mat-option>
+                <mat-label>Service ID</mat-label>
+                <input matInput type="number" formControlName="service_id">
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>RouterID (BGP)</mat-label>
+                <mat-select formControlName="bgp_router_id" required>
+                  <ng-container *ngFor="let router of this.templates.bgp_router">
+                    <mat-option [value]="router.ID">{{router.hostname}}</mat-option>
                   </ng-container>
+                  <mat-option [value]="0">なし<b>(初期値0)</b></mat-option>
+                </mat-select>
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>TunnelEndPointRouter IP (ctepxxなど)</mat-label>
+                <mat-select formControlName="tunnel_endpoint_router_ip_id" required>
+                  <ng-container *ngFor="let gatewayIP of this.gatewayIPs">
+                    <mat-option [value]="gatewayIP.ID">{{gatewayIP.hostname}}<b>({{gatewayIP.ip}})</b></mat-option>
+                  </ng-container>
+                  <mat-option [value]="0">なし<b>(初期値0)</b></mat-option>
                 </mat-select>
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
                 <mat-label>NTT</mat-label>
-                <input matInput type="text" formControlName="ntt">
+                <mat-select formControlName="ntt_template_id" required>
+                  <ng-container *ngFor="let ntt of this.templates.ntts">
+                    <mat-option [value]="ntt.ID">{{ntt.name}}</mat-option>
+                  </ng-container>
+                </mat-select>
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
@@ -219,21 +214,6 @@
               <mat-form-field appearance="fill">
                 <mat-label>Link V6 Your</mat-label>
                 <input matInput type="text" formControlName="link_v6_your">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Fee</mat-label>
-                <input matInput type="text" formControlName="fee">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Group ID</mat-label>
-                <input matInput type="number" formControlName="group_id">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>User ID</mat-label>
-                <input matInput type="number" formControlName="user_id">
               </mat-form-field>
               <br>
               <mat-checkbox formControlName="open">開通済み</mat-checkbox>

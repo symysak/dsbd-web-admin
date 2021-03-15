@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConnectionService} from '../../../service/connection.service';
-import {RouterService} from '../../../service/router.service';
-import {GatewayIPService} from '../../../service/gateway-ip.service';
 
 @Component({
   selector: 'app-connection-detail',
@@ -18,25 +16,21 @@ export class ConnectionDetailComponent implements OnInit {
     private router: Router,
     public connectionService: ConnectionService,
     private commonService: CommonService,
-    private routerService: RouterService,
-    private gatewayIPService: GatewayIPService,
   ) {
   }
 
   public id: string;
   public connectionInput = new FormGroup({
     ID: new FormControl(),
-    group_id: new FormControl(''),
-    user_id: new FormControl(''),
-    connection_type: new FormControl(''),
-    connection_number: new FormControl(''),
-    network_id: new FormControl(''),
+    service_id: new FormControl(''),
+    connection_template_id: new FormControl(Validators.pattern('^[0-9]*$')),
+    connection_number: new FormControl(),
+    noc_id: new FormControl(''),
     router_id: new FormControl(''),
-    gateway_ip_id: new FormControl(''),
-    noc: new FormControl(''),
-    ntt: new FormControl(''),
+    ntt_template_id: new FormControl(''),
+    bgp_router_id: new FormControl(''),
+    tunnel_endpoint_router_ip_id: new FormControl(''),
     term_ip: new FormControl(''),
-    fee: new FormControl(''),
     link_v4_our: new FormControl(''),
     link_v4_your: new FormControl(''),
     link_v6_our: new FormControl(''),
@@ -52,7 +46,8 @@ export class ConnectionDetailComponent implements OnInit {
   public services: any;
   public connections: any;
   public nocs: any;
-  public gatewayIPs: any;
+  public gatewayIPs: any[] = [];
+  public templates: any;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -61,35 +56,44 @@ export class ConnectionDetailComponent implements OnInit {
       this.connection = response.connection[0];
       this.connectionInput.patchValue({
         ID: response.connection[0].ID,
-        group_id: response.connection[0].group_id,
-        user_id: response.connection[0].user_id,
-        network_id: response.connection[0].network_id,
-        connection_type: response.connection[0].connection_type,
-        connection_number: response.connection[0].connection_number,
+        service_id: response.connection[0].service_id,
+        connection_template_id: Number(response.connection[0].connection_template_id),
+        connection_number: Number(response.connection[0].connection_number),
+        noc_id: Number(response.connection[0].noc_id),
         router_id: response.connection[0].router_id,
-        gateway_ip_id: response.connection[0].gateway_ip_id,
+        ntt_template_id: response.connection[0].ntt_template_id,
+        bgp_router_id: response.connection[0].bgp_router_id,
+        tunnel_endpoint_router_ip_id: response.connection[0].tunnel_endpoint_router_ip_id,
         open: response.connection[0].open,
         lock: response.connection[0].lock,
         monitor: response.connection[0].monitor,
       });
-      console.log(this.connection);
-      console.log(this.connectionInput.value);
+      this.loading = false;
 
-      this.routerService.getAll().then((res1) => {
-        console.log(res1);
-        this.routers = res1.router;
-        this.gatewayIPService.getAll().then((res2) => {
-          console.log(res2);
-          this.gatewayIPs = res2.gateway_ip;
-          this.commonService.getService().then((res3) => {
-            console.log(res3);
-            this.connections = res3.connection;
-            this.loading = false;
-            this.commonService.openBar('OK', 5000);
-          });
-        });
+      this.commonService.getTemplate().then(template => {
+        this.templates = template;
+        console.log(this.templates);
+        for (const tmpNOC of this.templates.nocs) {
+          for (const tmpEndPoint of tmpNOC.tunnel_endpoint_router) {
+            for (const tmpEndPointIP of tmpEndPoint.tunnel_endpoint_router_ip) {
+              console.log(tmpNOC.ID, tmpNOC.name);
+              if (tmpNOC.enable && tmpEndPoint.enable && tmpEndPointIP.enable) {
+                this.gatewayIPs.push({
+                  ID: Number(tmpEndPointIP.ID),
+                  noc: tmpNOC.name,
+                  hostname: tmpEndPoint.hostname,
+                  ip: tmpEndPointIP.ip,
+                });
+              }
+            }
+          }
+        }
       });
     });
+  }
+
+  linkNOC(id: number): void {
+    this.router.navigate(['/dashboard/noc/' + id]).then();
   }
 
   linkRouter(id: number): void {
@@ -100,27 +104,8 @@ export class ConnectionDetailComponent implements OnInit {
     this.router.navigate(['/dashboard/gateway/' + id]).then();
   }
 
-  getRouterHostName(id: number): string {
-    const tmp = this.routers.find(item => item.ID === id);
-    return tmp.hostname;
-  }
-
-  getRouterEnable(id: number): string {
-    const tmp = this.routers.find(item => item.ID === id);
-    return tmp.enable;
-  }
-
-  getTunnelEndpointIP(id: number): string {
-    const tmp = this.gatewayIPs.find(item => item.ID === id);
-    return tmp.ip;
-  }
-
-  getTunnelEndpointEnable(id: number): string {
-    const tmp = this.gatewayIPs.find(item => item.ID === id);
-    return tmp.enable;
-  }
-
   update(): void {
+    console.log(this.connectionInput.value);
     const json = JSON.stringify(this.connectionInput.getRawValue());
     console.log(json);
     this.connectionService.update(this.id, json).then(response => {
@@ -128,4 +113,6 @@ export class ConnectionDetailComponent implements OnInit {
       location.reload();
     });
   }
+
+
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../../service/common.service';
 import {Router} from '@angular/router';
 import {ConnectionService} from '../../service/connection.service';
+import {ServiceService} from '../../service/service.service';
 
 @Component({
   selector: 'app-connection',
@@ -11,20 +12,21 @@ import {ConnectionService} from '../../service/connection.service';
 export class ConnectionComponent implements OnInit {
 
   constructor(
-    private connectionService: ConnectionService,
     private commonService: CommonService,
+    private serviceService: ServiceService,
     private router: Router,
   ) {
   }
 
-  public connection: any[] = new Array();
+  public services: any[] = new Array();
   public loading = true;
 
 
   ngOnInit(): void {
-    this.connectionService.getAll().then(response => {
+    this.serviceService.getAll().then(response => {
       console.log(response);
-      this.connection = response.connection;
+      this.services = response.service;
+      console.log(this.services)
       this.loading = false;
       this.commonService.openBar('OK', 5000);
     });
