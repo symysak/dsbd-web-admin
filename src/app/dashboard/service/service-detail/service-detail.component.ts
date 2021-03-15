@@ -114,6 +114,23 @@ export class ServiceDetailComponent implements OnInit {
     this.router.navigate(['/dashboard/user/' + id]).then();
   }
 
+  requestServiceRequestLock(lock: boolean) {
+    this.serviceService.update(this.service.ID, {lock}).then(() => {
+        this.commonService.openBar('OK', 5000);
+        location.reload();
+      }
+    );
+  }
+
+  // tslint:disable-next-line:variable-name
+  requestServiceRequestAddAllow(add_allow: boolean) {
+    this.serviceService.update(this.service.ID, {add_allow}).then(() => {
+        this.commonService.openBar('OK', 5000);
+        location.reload();
+      }
+    );
+  }
+
   openProcess() {
     const dialogRef = this.dialog.open(ServiceDetailOpenProcess, {
       data: {
