@@ -11,6 +11,7 @@
       <tr>
         <th>サービスコード</th>
         <th>状況</th>
+        <th>ASN</th>
         <th>機能</th>
       </tr>
       <tr>
@@ -26,6 +27,14 @@
               <mat-chip color="warn" selected>未開通</mat-chip>
             </ng-container>
           </mat-chip-list>
+        </td>
+        <td>
+          <form>
+            <mat-form-field appearance="fill">
+              <mat-label>ASN</mat-label>
+              <input matInput type="number" [formControl]="asn">
+            </mat-form-field>
+          </form>
         </td>
         <td>
           <ng-container *ngIf="!data.service.open">
@@ -48,26 +57,39 @@
         <th>状況</th>
         <th>機能</th>
       </tr>
-      <ng-container *ngFor="let ip of data.service.ip">
+      <ng-container *ngFor="let tmpIP of ips.controls; let i = index">
         <tr>
-          <td>{{ip.ip}}</td>
-          <td>{{ip.name}}</td>
+          <td>
+            <form>
+              <ng-container [formGroup]="tmpIP">
+                <mat-form-field appearance="fill">
+                  <mat-label>IP/Subnet</mat-label>
+                  <input matInput type="text" formControlName="ip">
+                </mat-form-field>
+              </ng-container>
+            </form>
+          </td>
+          <td>{{tmpIP.value.name}}</td>
           <td>
             <mat-chip-list>
-              <ng-container *ngIf="ip.open">
+              <ng-container *ngIf="tmpIP.value.open">
                 <mat-chip color="primary" selected>開通</mat-chip>
               </ng-container>
-              <ng-container *ngIf="!ip.open">
+              <ng-container *ngIf="!tmpIP.value.open">
                 <mat-chip color="warn" selected>未開通</mat-chip>
               </ng-container>
             </mat-chip-list>
           </td>
           <td>
-            <ng-container *ngIf="!ip.open">
-              <button mat-raised-button color="primary" (click)="requestIPOpen(ip.ID,true)">開通</button>
+            <ng-container *ngIf="!tmpIP.value.open">
+              <button mat-raised-button color="primary" (click)="requestIPOpen(tmpIP.value.id,tmpIP.value.ip,true)">
+                開通
+              </button>
             </ng-container>
-            <ng-container *ngIf="ip.open">
-              <button mat-raised-button color="warn" (click)="requestIPOpen(ip.ID,false)">未開通</button>
+            <ng-container *ngIf="tmpIP.value.open">
+              <button mat-raised-button color="warn" (click)="requestIPOpen(tmpIP.value.id,tmpIP.value.ip,false)">
+                未開通
+              </button>
             </ng-container>
           </td>
         </tr>
@@ -86,7 +108,9 @@
       <ng-container *ngFor="let connection of data.service.connections">
         <tr>
           <td>
-            {{data.service.group_id}}-{{data.service.service_template.type}}{{('000' + data.service.service_number).slice(-3)}}-{{connection.connection_template.type}}{{('000' + connection.connection_number).slice(-3)}}
+            {{data.service.group_id}}
+            -{{data.service.service_template.type}}{{('000' + data.service.service_number).slice(-3)}}
+            -{{connection.connection_template.type}}{{('000' + connection.connection_number).slice(-3)}}
           </td>
           <td>
             <mat-chip-list>

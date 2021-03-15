@@ -24,6 +24,7 @@
       <button mat-raised-button color="warn" (click)="requestServiceRequestLock(true)">ユーザ側からの編集を拒否</button>
     </ng-container>
     <br>
+    <br>
     <mat-tab-group>
       <mat-tab label="情報">
         <br>
@@ -57,10 +58,6 @@
             <td colspan="2">{{service.fee}}円</td>
           </tr>
           <tr>
-            <th>開通</th>
-            <td colspan="2">{{service.open}}</td>
-          </tr>
-          <tr>
             <th>Organization</th>
             <td colspan="2">{{service.org}}</td>
           </tr>
@@ -83,6 +80,14 @@
           <tr>
             <th>Add_allow(追加許可)</th>
             <td colspan="2">{{service.add_allow}}</td>
+          </tr>
+          <tr>
+            <th>Route_V4(経路広告方式)</th>
+            <td colspan="2">{{service.route_v4}}</td>
+          </tr>
+          <tr>
+            <th>Route_V6(経路広告方式)</th>
+            <td colspan="2">{{service.route_V6}}</td>
           </tr>
           <tr>
             <th>Open(開通)</th>
@@ -287,11 +292,44 @@
         </table>
         <br>
       </mat-tab>
-      <mat-tab label="設定">
+      <mat-tab label="接続情報">
+        <ng-template matTabContent>
+          <br>
+          <ng-container *ngFor="let d of service.connections">
+            <mat-card class="card">
+              <mat-card-header>
+                <mat-card-title>
+                  {{service.group_id}}-{{service.service_template.type}}{{('000' + service.service_number).slice(-3)}}-{{d.connection_template.type}}{{('000' + d.connection_number).slice(-3)}}
+                  ({{d.noc.name}})
+                </mat-card-title>
+                <mat-card-subtitle>ID: <b>{{d.ID}}</b></mat-card-subtitle>
+                <mat-card-subtitle>種別: <b>{{d.connection_template.name}}</b></mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-card-subtitle>
+                  <mat-chip-list>
+                    <ng-container *ngIf="d.open">
+                      <mat-chip color="primary" selected>開通</mat-chip>
+                    </ng-container>
+                    <ng-container *ngIf="!d.open">
+                      <mat-chip color="warn" selected>未開通</mat-chip>
+                    </ng-container>
+                  </mat-chip-list>
+                </mat-card-subtitle>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-button (click)="connectionPage(d.ID)">詳細</button>
+              </mat-card-actions>
+            </mat-card>
+          </ng-container>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="設定(保証しません)">
         <ng-template matTabContent>
           <br>
           <div class="main">
             <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
+            <p>この項目を設定変更する場合は、注意してください。保証しません！！！</p>
             <form [formGroup]="serviceInput">
               <mat-form-field appearance="fill">
                 <mat-label>Org</mat-label>
@@ -308,12 +346,12 @@
                 <input matInput type="text" formControlName="postcode">
               </mat-form-field>
               <br>
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" [style.width.px]=500>
                 <mat-label>Address</mat-label>
                 <input matInput type="text" formControlName="address">
               </mat-form-field>
               <br>
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" [style.width.px]=500>
                 <mat-label>Address(English)</mat-label>
                 <input matInput type="text" formControlName="address_en">
               </mat-form-field>
@@ -324,33 +362,13 @@
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
-                <mat-label>IPv4 Route</mat-label>
+                <mat-label>RouteV4(経路広告方式）</mat-label>
                 <input matInput type="text" formControlName="route_v4">
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
-                <mat-label>IPv4</mat-label>
-                <input matInput type="text" formControlName="v4">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>IPv4 Name</mat-label>
-                <input matInput type="text" formControlName="v4_name">
-              </mat-form-field>
-              <br>
-              <mat-form-field appearance="fill">
-                <mat-label>IPv6 Route</mat-label>
+                <mat-label>RouteV6(経路広告方式）</mat-label>
                 <input matInput type="text" formControlName="route_v6">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>IPv6</mat-label>
-                <input matInput type="text" formControlName="v6">
-              </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>IPv6 Name</mat-label>
-                <input matInput type="text" formControlName="v6_name">
               </mat-form-field>
               <br>
               <mat-form-field appearance="fill">
@@ -360,8 +378,6 @@
               <br>
               <h3>各種設定</h3>
               <mat-checkbox formControlName="open">開通済み</mat-checkbox>
-              &nbsp;
-              <mat-checkbox formControlName="pi">PI</mat-checkbox>
               &nbsp;
               <mat-checkbox formControlName="lock">ロック</mat-checkbox>
               &nbsp;

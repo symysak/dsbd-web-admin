@@ -1,12 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup} from '@angular/forms';
 import {ServiceService} from '../../../service/service.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ConnectionService} from '../../../service/connection.service';
-import {UserService} from '../../../service/user.service';
-import {GroupService} from '../../../service/group.service';
 import {IpService} from '../../../service/ip.service';
 
 export interface DialogData {
@@ -39,13 +37,8 @@ export class ServiceDetailComponent implements OnInit {
     postcode: new FormControl(''),
     address: new FormControl(''),
     address_en: new FormControl(''),
-    pi: new FormControl(''),
     route_v4: new FormControl(''),
-    v4: new FormControl(''),
-    v4_name: new FormControl(''),
     route_v6: new FormControl(''),
-    v6: new FormControl(''),
-    v6_name: new FormControl(''),
     lock: new FormControl(),
     open: new FormControl()
   });
@@ -131,6 +124,10 @@ export class ServiceDetailComponent implements OnInit {
     );
   }
 
+  connectionPage(id): void {
+    this.router.navigate(['/dashboard/connection/' + id]).then();
+  }
+
   openProcess() {
     const dialogRef = this.dialog.open(ServiceDetailOpenProcess, {
       data: {
@@ -156,18 +153,13 @@ export class ServiceDetailComponent implements OnInit {
   styleUrls: ['./service-detail.component.scss']
 })
 // tslint:disable-next-line:component-class-suffix
-export class ServiceDetailOpenProcess {
+export class ServiceDetailOpenProcess implements OnInit {
 
-  public ntt: string;
-  public noc: string;
-  public termIP = new FormControl();
-  public monitor: boolean;
-  public user: any[] = [];
-  public termUser: any;
+  public asn = new FormControl();
+  public ipSubnet = new FormControl([]);
   public connections: any[] = [];
-  public connectionType: string;
-  public connectionComment = new FormControl();
-  public nocs: any[] = [];
+  public ips = new FormArray([]);
+
 
   constructor(
     public dialogRef: MatDialogRef<ServiceDetailOpenProcess>,
@@ -179,8 +171,29 @@ export class ServiceDetailOpenProcess {
   ) {
   }
 
+  ngOnInit() {
+    this.asn.patchValue(this.data.service.asn);
+
+    for (const tmpIP of this.data.service.ip) {
+      this.addIP(tmpIP.ID, tmpIP.ip, tmpIP.name, tmpIP.open);
+    }
+  }
+
+  addIP(ID, ip, name, open) {
+    const control = new FormGroup({
+      id: new FormControl(ID),
+      ip: new FormControl(ip),
+      name: new FormControl(name),
+      open: new FormControl(open)
+    });
+    this.ips.push(control);
+  }
+
   requestServiceOpen(open: boolean) {
-    this.serviceService.update(this.data.service.ID, {open}).then(() => {
+    this.serviceService.update(this.data.service.ID, {
+      asn: this.asn.value,
+      open
+    }).then(() => {
         this.commonService.openBar('OK', 5000);
         location.reload();
       }
@@ -194,8 +207,8 @@ export class ServiceDetailOpenProcess {
     });
   }
 
-  requestIPOpen(id: string, open: boolean) {
-    this.ipService.updateIP(id, {ID: id, open}).then(() => {
+  requestIPOpen(id: string, ip: string, open: boolean) {
+    this.ipService.updateIP(id, {ID: id, ip, open}).then(() => {
         this.commonService.openBar('OK', 5000);
         location.reload();
       }
