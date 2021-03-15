@@ -85,16 +85,18 @@ export class CommonService {
     });
   }
 
-  getNOC(): Promise<any> {
-    return this.http.get(environment.api.url + environment.api.path + '/noc', {
+  getTemplate(): Promise<any> {
+    return this.http.get(environment.api.url + environment.api.path + '/template', {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
       }),
     }).toPromise().then(r => {
       const response: any = r;
+      console.log(r);
       return response;
     }).catch(error => {
+      console.log(error);
       sessionStorage.setItem('error', JSON.stringify(error));
       this.router.navigate(['/error']).then();
     });

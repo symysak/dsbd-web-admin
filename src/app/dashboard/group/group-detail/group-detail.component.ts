@@ -1,20 +1,16 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {GroupService} from '../../../service/group.service';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import {UserService} from '../../../service/user.service';
-import {NetworkService} from '../../../service/network.service';
+import {ServiceService} from '../../../service/service.service';
 import {ConnectionService} from '../../../service/connection.service';
 
 export interface DialogData {
-  groupID: string;
-  users: any;
-  networks: any;
-  connections: any;
-  nocs: any;
+  groups: any;
 }
 
 @Component({
@@ -39,6 +35,7 @@ export class GroupDetailComponent implements OnInit {
     ID: new FormControl(),
     org: new FormControl(),
     status: new FormControl(),
+    student: new FormControl(),
     expired_status: new FormControl(),
     lock: new FormControl(),
     pass: new FormControl(),
@@ -48,8 +45,6 @@ export class GroupDetailComponent implements OnInit {
   public hide = false;
   public group: any;
   public users: any;
-  public networks: any;
-  public connections: any;
   public connectionTemplates: any;
   public networkTemplates: any;
   public nocTemplates: any;
@@ -57,13 +52,16 @@ export class GroupDetailComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.groupService.get(this.id).then(response => {
-      this.group = response.group[0];
+      console.log(response);
+      this.group = response.group;
       this.groupInput.patchValue({
-        ID: response.group[0].ID,
-        status: response.group[0].status,
-        lock: response.group[0].lock,
+        ID: response.group.ID,
+        expired_status: response.group.expired_status,
+        status: response.group.status,
+        student: response.group.student,
+        lock: response.group.lock,
       });
-      this.org = response.group[0].org;
+      this.org = response.group.org;
       this.loading = false;
 
       if (this.group.expired_status === 1) {
@@ -83,33 +81,8 @@ export class GroupDetailComponent implements OnInit {
       } else if (this.group.status === 4) {
         this.statusInfo = '開通作業中';
       }
-      this.users = response.user;
 
-      // エラー処理の検証必要
-      if (response.network === null) {
-        this.networks = null;
-      } else {
-        this.networks = response.network;
-        console.log(response.network);
-      }
-
-      if (response.connection === null) {
-        this.connections = null;
-      } else {
-        this.connections = response.connection;
-        console.log(response.connection);
-      }
       this.commonService.openBar('OK', 5000);
-    });
-
-    this.commonService.getService().then(res => {
-      console.log(res);
-      this.connectionTemplates = res.connection;
-      this.networkTemplates = res.network;
-    });
-    this.commonService.getNOC().then(res => {
-      console.log(res);
-      this.nocTemplates = res.noc;
     });
   }
 
@@ -164,6 +137,13 @@ export class GroupDetailComponent implements OnInit {
     });
   }
 
+  requestLock(lock: boolean): void {
+    this.groupService.update(this.id, {lock}).then(() => {
+      this.commonService.openBar('OK', 5000);
+      location.reload();
+    });
+  }
+
   userPage(id): void {
     this.router.navigate(['/dashboard/user/' + id]).then();
   }
@@ -172,32 +152,14 @@ export class GroupDetailComponent implements OnInit {
     this.router.navigate(['/dashboard/connection/' + id]).then();
   }
 
-  networkPage(id): void {
-    this.router.navigate(['/dashboard/network/' + id]).then();
-  }
-
-  getUser(id: number): string {
-    const user = this.users.find(e => e.ID === id);
-    return user.ID + ':' + user.name + ' ';
-  }
-
-  getNetworkName(id: number) {
-    if (id === 0) {
-      return '不明';
-    } else {
-      const network = this.networks.find(e => e.ID === id);
-      return network.network_type + ('0000' + network.network_number).slice(-3);
-    }
+  servicePage(id): void {
+    this.router.navigate(['/dashboard/service/' + id]).then();
   }
 
   createNetworkInfo() {
-    const dialogRef = this.dialog.open(GroupDetailCreateNetwork, {
+    const dialogRef = this.dialog.open(GroupDetailCreateService, {
       data: {
-        groupID: this.id,
-        users: this.users,
-        networks: this.networkTemplates,
-        connections: this.connectionTemplates,
-        nocs: this.nocTemplates,
+        group: this.group,
       }
     });
 
@@ -209,11 +171,7 @@ export class GroupDetailComponent implements OnInit {
   createConnectionInfo() {
     const dialogRef = this.dialog.open(GroupDetailCreateConnection, {
       data: {
-        groupID: this.id,
-        users: this.users,
-        networks: this.networkTemplates,
-        connections: this.connectionTemplates,
-        nocs: this.nocTemplates,
+        group: this.group,
       }
     });
 
@@ -223,14 +181,15 @@ export class GroupDetailComponent implements OnInit {
   }
 }
 
-// network情報の追加フィールド
+// service情報の追加フィールド
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'group-detail-create-network',
-  templateUrl: 'group-detail-create-network.html',
+  selector: 'group-detail-create-service',
+  templateUrl: 'group-detail-create-service.html',
 })
 // tslint:disable-next-line:component-class-suffix
-export class GroupDetailCreateNetwork {
+export class GroupDetailCreateService implements OnInit {
+
   public ip: FormGroup;
   public routeV4: string;
   public routeV4Etc = new FormControl();
@@ -238,107 +197,95 @@ export class GroupDetailCreateNetwork {
   public routeV6Etc = new FormControl();
   public routeV4Check = false;
   public routeV6Check = false;
-  public pi = false;
   public asn = new FormControl();
-  public plan = new FormControl();
-  private planJa = '      [Subnet Number1]\n' +
-    '      目的: \n\n' +
-    '      ----使用IPアドレス----\n' +
-    '      契約後: 4\n' +
-    '      半年後: 5\n' +
-    '      １年後: 6\n\n' +
-    '      ----IPアドレスの使用率----\n' +
-    '      * この使用率はネットワークアドレスとブロードキャストアドレスも含めて計算します。\n' +
-    '      契約後: 75%\n' +
-    '      半年後: 87.5%\n' +
-    '      １年後: 100%\n\n' +
-    '      ----Other----\n' +
-    '      一時接続 :\n\n\n' +
-    '      ----デバイス一覧----\n' +
-    '      デバイス　　 契約後/半年後/１年後\n' +
-    '      ----------------------------------------------\n' +
-    '      Router     1/1/1\n' +
-    '      FW         1/1/1\n' +
-    '      WebServer  1/2/2\n' +
-    '      MailServer 1/1/2\n' +
-    '      ----------------------------------------------\n' +
-    '      全デバイス   4/5/6';
-  private planEn = '      [Subnet Number1]\n' +
-    '      Purpose of use: \n\n' +
-    '      ----Use number of ip addresses----\n' +
-    '      immediately after contract : 4\n' +
-    '      immediately after half year : 5\n' +
-    '      immediately after one year : 6\n\n' +
-    '      ----Utilization rate of ip addresses----\n' +
-    '      * The utilization rate is calculated by including the network address and broadcast address.\n' +
-    '      immediately after contract : 75%\n' +
-    '      immediately after half year : 87.5%\n' +
-    '      immediately after one year : 100%\n\n' +
-    '      ----Other----\n' +
-    '      temporary connection :\n\n\n' +
-    '      ----Device List----\n' +
-    '      device 　　after contract/half year/one year\n' +
-    '      ----------------------------------------------\n' +
-    '      Router     1/1/1\n' +
-    '      FW         1/1/1\n' +
-    '      WebServer  1/2/2\n' +
-    '      MailServer 1/1/2\n' +
-    '      ----------------------------------------------\n' +
-    '      total Device      4/5/6\n' +
-    '    Please copy and complete the format for each subnet , if you use divided subnets of IPv4 address.\n' +
-    '    According to JPNIC\'s rules, users must meet the following conditions.\n' +
-    '        immediately after contract\n' +
-    '        Over 25%\n\n' +
-    '        immediately after half year\n' +
-    '        Over 25%\n\n' +
-    '        immediately after one year\n' +
-    '        Over 50%\n\n' +
-    '     ---How to calculate the utilization rate---\n' +
-    '                                    Number of IP addresses to be used\n' +
-    '      Utilization rate = ------------------------------------------------------------------------ x100\n' +
-    '                                    Number of IP addresses to be allocated\n' +
-    '    \n' +
-    '    Please do not include private addresses in the utilization rate.\n' +
-    '    temporary connection means that the always IP address is not used. (ex Assign IP Address by DHCP.\n' +
-    '    The utilization rate is calculated by including the network address and broadcast address.\n';
-  jpnicJa = new FormGroup({
+  public jpnicJa = new FormGroup({
     org: new FormControl(''),
     postcode: new FormControl(''),
     address: new FormControl(''),
   });
-  jpnicEn = new FormGroup({
+  public jpnicEn = new FormGroup({
     org: new FormControl(''),
     address: new FormControl(''),
   });
-  checkV4 = false;
-  checkV6 = false;
-  jpnicV4 = new FormGroup({
+  public checkV4 = false;
+  public checkV6 = false;
+  public jpnicV4 = new FormGroup({
     name: new FormControl(''),
     subnet: new FormControl(''),
   });
-  jpnicV6 = new FormGroup({
+  public jpnicV6 = new FormGroup({
     name: new FormControl(''),
     subnet: new FormControl(''),
   });
-  // public users =number {data: []};
+  public bandwidth = new FormGroup({
+    aveUpstream: new FormControl(10, Validators.min(0)),
+    maxUpstream: new FormControl(100, Validators.min(0)),
+    aveDownstream: new FormControl(10, Validators.min(0)),
+    maxDownstream: new FormControl(100, Validators.min(0)),
+    asn: new FormControl()
+  });
+  public templateConnections: any[] = [];
+  public templateServices: any[] = [];
+  public users: any[] = [];
   public admin: any;
-  dateStart: string;
-  dateEnd: string;
-  dateEndUnlimited = false;
-  public networkType: string;
-  public networkComment = new FormControl();
-
+  public serviceTypeID = '0';
+  public serviceComment = new FormControl();
+  public bandwidthAs = false;
+  public dateStart: string;
+  public dateEnd: string;
+  public dateEndUnlimited = false;
+  public jpnicTech: FormGroup;
+  public plan: FormGroup;
+  public jpnicAdmin = new FormGroup({
+    group_name: new FormControl(''),
+    group_name_en: new FormControl(''),
+    org: new FormControl(''),
+    org_en: new FormControl(''),
+    postcode: new FormControl(''),
+    address: new FormControl(''),
+    address_en: new FormControl(''),
+    name: new FormControl(''),
+    name_en: new FormControl(''),
+    dept: new FormControl(''),
+    dept_en: new FormControl(''),
+    pos: new FormControl(''),
+    pos_en: new FormControl(''),
+    tel: new FormControl(''),
+    fax: new FormControl(''),
+    country: new FormControl(''),
+  });
+  public hide = false;
+  public needJPNIC = false;
+  public needGlobalAS = false;
+  public needComment = false;
+  public needRoute = false;
 
   constructor(
-    public dialogRef: MatDialogRef<GroupDetailCreateNetwork>,
+    public dialogRef: MatDialogRef<GroupDetailCreateService>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private formBuilder: FormBuilder,
     private userService: UserService,
     private groupService: GroupService,
+    private serviceService: ServiceService,
     private router: Router,
     private commonService: CommonService,
-    private networkService: NetworkService,
   ) {
+  }
+
+  ngOnInit(): void {
+    // アクセス制御
+    this.jpnicTech = this.formBuilder.group({
+      tech: this.formBuilder.array([])
+    });
+    this.plan = this.formBuilder.group({
+      v4: this.formBuilder.array([])
+    });
+
+    this.commonService.getTemplate().then(res => {
+      console.log(res);
+      this.templateConnections = res.connections;
+      this.templateServices = res.services;
+    });
   }
 
   addEventStart(event: MatDatepickerInputEvent<Date>) {
@@ -351,28 +298,232 @@ export class GroupDetailCreateNetwork {
       '-' + ('00' + (event.value.getDate())).slice(-2);
   }
 
+  get jpnicTechProcess(): FormArray {
+    return this.jpnicTech.get('tech') as FormArray;
+  }
+
+  addTechUserOptionForm() {
+    this.jpnicTechProcess.push(this.optionJPNICForm);
+  }
+
+  removeTechUserOptionForm(idx: number) {
+    this.jpnicTechProcess.removeAt(idx);
+  }
+
+  get optionJPNICForm(): FormGroup {
+    return this.formBuilder.group({
+      group_name: [''],
+      group_name_en: [''],
+      org: [''],
+      org_en: [''],
+      postcode: [''],
+      address: [''],
+      address_en: [''],
+      name: [''],
+      name_en: [''],
+      dept: [''],
+      dept_en: [''],
+      pos: [''],
+      pos_en: [''],
+      tel: [''],
+      fax: [''],
+      country: [''],
+    });
+  }
+
+  get planProcess(): FormArray {
+    return this.plan.get('v4') as FormArray;
+  }
+
+  addPlanOptionForm() {
+    this.planProcess.push(this.optionPlanForm);
+  }
+
+  removePlanOptionForm(idx: number) {
+    this.planProcess.removeAt(idx);
+  }
+
+  get optionPlanForm(): FormGroup {
+    return this.formBuilder.group({
+      name: [''],
+      after: [''],
+      half_year: [''],
+      one_year: [''],
+    });
+  }
+
+  changeStatus(jpnic, comment, globalAS, route: boolean) {
+    this.needJPNIC = jpnic;
+    this.needComment = comment;
+    this.needGlobalAS = globalAS;
+    this.needRoute = route;
+
+  }
+
   request() {
     let body: any;
+    const ip: any[] = [];
 
-    const tech: any[] = [];
-    for (const u of this.data.users) {
-      if (u.select) {
-        tech.push(u.ID);
+    if (this.bandwidth.value.aveUpstream === 0) {
+      this.commonService.openBar('平均アップロード帯域が0です。', 5000);
+      return;
+    }
+    if (this.bandwidth.value.maxUpstream === 0) {
+      this.commonService.openBar('最大アップロード帯域が0です。', 5000);
+      return;
+    }
+    if (this.bandwidth.value.aveDownstream === 0) {
+      this.commonService.openBar('平均ダウンロード帯域が0です。', 5000);
+      return;
+    }
+    if (this.bandwidth.value.maxDownstream === 0) {
+      this.commonService.openBar('最大ダウンロード帯域が0です。', 5000);
+      return;
+    }
+
+    if (this.needJPNIC || this.needGlobalAS) {
+      if (this.checkV4 && this.checkV6) {
+        this.commonService.openBar('v4とv6どちらか選択する必要があります。。', 5000);
+        return;
+      }
+      if (this.checkV4) {
+        if (this.jpnicV4.value.name === '') {
+          this.commonService.openBar('v4のネットワーク名が入力されていません。', 5000);
+          return;
+        }
+        if (this.jpnicV4.value.subnet === '') {
+          this.commonService.openBar('v4のAddress/Subnetが入力されていません。', 5000);
+          return;
+        }
+      }
+      if (this.checkV6) {
+        if (this.jpnicV6.value.name === '') {
+          this.commonService.openBar('v6のネットワーク名が入力されていません。', 5000);
+          return;
+        }
+        if (this.jpnicV6.value.subnet === '') {
+          this.commonService.openBar('v6のAddress/Subnetが入力されていません。', 5000);
+          return;
+        }
       }
     }
 
-    const ip: any[] = [];
-    if (this.networkType === '2000' || this.networkType === '3S00' || this.networkType === '3B00' ||
-      this.networkType === 'CL20' || this.networkType === 'CL3S' || this.networkType === 'CL3B') {
-      if (this.admin === '') {
-        this.commonService.openBar('no select (operation staff)', 5000);
+    if (this.needJPNIC) {
+      // 管理責任者のCheck
+      if (this.jpnicAdmin.value.org === '') {
+        this.commonService.openBar('団体名が入力されていません。', 5000);
+        return;
       }
+      if (this.jpnicAdmin.value.org_en === '') {
+        this.commonService.openBar('団体名(English)が入力されていません。', 5000);
+        return;
+      }
+      if (this.jpnicAdmin.value.postcode === '') {
+        this.commonService.openBar('郵便番号が入力されていません。', 5000);
+        return;
+      }
+      if (this.jpnicAdmin.value.address === '') {
+        this.commonService.openBar('住所が入力されていません。', 5000);
+        return;
+      }
+      if (this.jpnicAdmin.value.address_en === '') {
+        this.commonService.openBar('住所(English)が入力されていません。', 5000);
+        return;
+      }
+      if (this.jpnicAdmin.value.group_name === '') {
+        this.commonService.openBar('グループ名/個人名が入力されていません。', 5000);
+        return;
+      }
+      if (this.jpnicAdmin.value.group_name_en === '') {
+        this.commonService.openBar('グループ名/個人名(English)が入力されていません。', 5000);
+        return;
+      }
+      if (this.jpnicAdmin.value.tel === '') {
+        this.commonService.openBar('電話番号が入力されていません。', 5000);
+        return;
+      }
+      if (this.jpnicAdmin.value.country === '') {
+        this.commonService.openBar('居住国が入力されていません。', 5000);
+        return;
+      }
+      // 技術連絡担当者のCheck
+      if (this.jpnicTech.value.tech.length <= 0 || this.jpnicTech.value.tech.length > 2) {
+        this.commonService.openBar('技術連絡担当者が多い又は入力されていません。', 5000);
+        return;
+      }
+      for (const tmp of this.jpnicTech.value.tech) {
+        if (tmp.org === '') {
+          this.commonService.openBar('団体名が入力されていません。', 5000);
+          return;
+        }
+        if (tmp.org_en === '') {
+          this.commonService.openBar('団体名(English)が入力されていません。', 5000);
+          return;
+        }
+        if (tmp.postcode === '') {
+          this.commonService.openBar('郵便番号が入力されていません。', 5000);
+          return;
+        }
+        if (tmp.address === '') {
+          this.commonService.openBar('住所が入力されていません。', 5000);
+          return;
+        }
+        if (tmp.address_en === '') {
+          this.commonService.openBar('住所(English)が入力されていません。', 5000);
+          return;
+        }
+        if (tmp.group_name === '') {
+          this.commonService.openBar('グループ名/個人名が入力されていません。', 5000);
+          return;
+        }
+        if (tmp.group_name_en === '') {
+          this.commonService.openBar('グループ名/個人名(English)が入力されていません。', 5000);
+          return;
+        }
+        if (tmp.tel === '') {
+          this.commonService.openBar('電話番号が入力されていません。', 5000);
+          return;
+        }
+        if (tmp.country === '') {
+          this.commonService.openBar('居住国が入力されていません。', 5000);
+          return;
+        }
+      }
+      if (this.checkV4 && this.plan.value.v4.length === 0) {
+        this.commonService.openBar('Planが設定されていません。', 5000);
+        return;
+      }
+    }
+
+    if (this.needComment) {
+      if (this.serviceComment.value === '') {
+        this.commonService.openBar('その他の項目が入力されていません。', 5000);
+        return;
+      }
+    }
+
+    if (this.needRoute) {
+      if (this.routeV4 === '' && this.routeV6 === '') {
+        this.commonService.openBar('経路情報が選択されていません。', 5000);
+        return;
+      }
+    }
+
+    if (this.needGlobalAS) {
+      if (this.asn.value === '') {
+        this.commonService.openBar('AS番号が入力されていません。', 5000);
+        return;
+      }
+    }
+
+    // 2000 , 3S00 , 3B00
+    if (this.needJPNIC) {
       if (this.checkV4) {
         ip.push({
           version: 4,
           name: this.jpnicV4.value.name,
           ip: this.jpnicV4.value.subnet,
-          plan: this.plan.value,
+          plan: this.plan.getRawValue().v4,
           start_date: this.dateStart,
           end_date: this.dateEnd,
         });
@@ -386,16 +537,12 @@ export class GroupDetailCreateNetwork {
           end_date: this.dateEnd,
         });
       }
-      if (this.networkType === '3B00') {
-        if (!this.routeV4 && !this.routeV6) {
-          this.commonService.openBar('no data: routeV4 and routeV6', 5000);
-        }
-      }
+
       body = {
-        admin_id: parseInt(this.admin, 10),
-        tech_id: tech,
-        network_type: this.networkType,
-        network_comment: this.networkComment.value,
+        jpnic_admin: this.jpnicAdmin.getRawValue(),
+        jpnic_tech: this.jpnicTech.getRawValue().tech,
+        service_template_id: parseInt(this.serviceTypeID, 10),
+        service_comment: this.serviceComment.value,
         org: this.jpnicJa.value.org,
         org_en: this.jpnicEn.value.org,
         postcode: this.jpnicJa.value.postcode,
@@ -403,21 +550,14 @@ export class GroupDetailCreateNetwork {
         address_en: this.jpnicEn.value.address,
         route_v4: this.routeV4,
         route_v6: this.routeV6,
+        avg_upstream: this.bandwidth.value.aveUpstream,
+        max_upstream: this.bandwidth.value.maxDownstream,
+        avg_downstream: this.bandwidth.value.aveDownstream,
+        max_downstream: this.bandwidth.value.maxDownstream,
         asn: this.asn.value,
         ip,
       };
-
-      if (this.networkType === 'CL20' || this.networkType === 'CL3S' || this.networkType === 'CL3B') {
-        if (this.networkComment.value === '') {
-          this.commonService.openBar('no data: その他データ', 5000);
-        }
-      }
-    } else if (this.networkType === 'IP3B') {
-      if (this.asn.value === '') {
-        this.commonService.openBar('asn invalid..', 5000);
-        return;
-      }
-
+    } else if (this.needGlobalAS) {
       const ipv4 = this.jpnicV4.value.subnet.split(',');
       const ipv6 = this.jpnicV6.value.subnet.split(',');
       for (const tmp of ipv4) {
@@ -437,29 +577,17 @@ export class GroupDetailCreateNetwork {
         });
       }
       body = {
-        admin_id: parseInt(this.admin, 10),
-        tech_id: tech,
-        network_type: this.networkType,
-        network_comment: this.networkComment.value,
-        org: this.jpnicJa.value.org,
-        org_en: this.jpnicEn.value.org,
-        postcode: this.jpnicJa.value.postcode,
-        address: this.jpnicJa.value.address,
-        address_en: this.jpnicEn.value.address,
+        service_template_id: parseInt(this.serviceTypeID, 10),
+        service_comment: this.serviceComment.value,
         route_v4: this.routeV4,
         route_v6: this.routeV6,
+        avg_upstream: this.bandwidth.value.aveUpstream,
+        max_upstream: this.bandwidth.value.maxDownstream,
+        avg_downstream: this.bandwidth.value.aveDownstream,
+        max_downstream: this.bandwidth.value.maxDownstream,
+        bandwidth_as: this.bandwidth.value.asn,
         asn: this.asn.value,
         ip,
-      };
-    } else if (this.networkType === 'ET00') {
-      if (this.networkComment.value === '') {
-        this.commonService.openBar('Error: その他の項目が空白です。', 5000);
-        return;
-      }
-      body = {
-        admin_id: parseInt(this.admin, 10),
-        network_type: this.networkType,
-        network_comment: this.networkComment.value,
       };
     } else {
       this.commonService.openBar('Error: ServiceCode', 5000);
@@ -467,11 +595,8 @@ export class GroupDetailCreateNetwork {
     }
     console.log(body);
 
-    this.networkService.create(this.data.groupID, body).then(response => {
-      console.log(response);
-      this.commonService.openBar('申請完了', 5000);
-      this.router.navigate(['/dashboard/group/' + this.data.groupID]).then();
-    });
+    this.serviceService.create(this.data[`group`].group_id, body).then();
+    location.reload();
   }
 }
 
@@ -482,21 +607,27 @@ export class GroupDetailCreateNetwork {
   templateUrl: 'group-detail-create-connection.html',
 })
 // tslint:disable-next-line:component-class-suffix
-export class GroupDetailCreateConnection {
+export class GroupDetailCreateConnection implements OnInit {
 
-  public ntt: string;
-  public noc: string;
+  public nttID: string;
+  public nocID: string;
   public termIP = new FormControl();
+  public address = new FormControl();
   public monitor: boolean;
-  public user: any[] = [];
   public termUser: any;
+  public serviceID = 0;
   public connections: any[] = [];
   public connectionType: string;
   public connectionComment = new FormControl();
   public nocs: any[] = [];
+  public ntts: any[] = [];
+  public services: any[] = [];
+  public needInternet = false;
+  public needCrossConnect = false;
+  public needComment = false;
 
   constructor(
-    public dialogRef: MatDialogRef<GroupDetailCreateNetwork>,
+    public dialogRef: MatDialogRef<GroupDetailCreateService>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private commonService: CommonService,
     private connectionService: ConnectionService,
@@ -506,23 +637,53 @@ export class GroupDetailCreateConnection {
   ) {
   }
 
+  ngOnInit(): void {
+    this.commonService.getTemplate().then(res => {
+      this.connections = res.connections;
+      this.ntts = res.ntts;
+      this.nocs = res.nocs;
+    });
+  }
+
+
+  changeStatus(internet, crossConnect, comment: boolean) {
+    this.needInternet = internet;
+    this.needCrossConnect = crossConnect;
+    this.needComment = comment;
+  }
 
   request() {
+    if (this.needInternet) {
+      if (this.termIP.value === '') {
+        this.commonService.openBar('終端先アドレスが入力されていません。', 5000);
+        return;
+      }
+      if (this.nttID === '') {
+        this.commonService.openBar('フレッツ光に関する質問が入力されていません。。', 5000);
+        return;
+      }
+    }
+    if (this.needComment && this.connectionComment.value === '') {
+      this.commonService.openBar('その他項目が入力されていません。', 5000);
+      return;
+    }
+
     const body = {
-      user_id: parseInt(this.termUser, 10),
-      connection_type: this.connectionType,
+      address: this.address.value,
+      connection_template_id: parseInt(this.connectionType, 10),
       connection_comment: this.connectionComment.value,
-      ntt: this.ntt,
-      noc: this.noc,
+      ntt_template_id: parseInt(this.nttID, 10),
+      noc_id: parseInt(this.nocID, 10),
       term_ip: this.termIP.value,
       monitor: this.monitor
     };
+    console.log(body);
 
-    this.connectionService.create(this.data.groupID, body).then(response => {
+    this.connectionService.create(this.serviceID, body).then(() => {
       console.log('---response---');
-      console.log(response.status);
       this.commonService.openBar('申請完了', 5000);
-      this.router.navigate(['/dashboard/group/' + this.data.groupID]).then();
+      this.router.navigate(['/dashboard']).then();
+      location.reload();
     });
   }
 }

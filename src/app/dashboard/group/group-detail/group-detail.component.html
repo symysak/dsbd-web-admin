@@ -25,6 +25,12 @@
         <ng-container *ngIf="group.status === 4">
           <button mat-raised-button color="primary" (click)="updateStatus(0)">開通</button>
         </ng-container>
+        <ng-container *ngIf="group.lock">
+          <button mat-raised-button color="primary" (click)="requestLock(false)">ユーザ側からの変更を許可</button>
+        </ng-container>
+        <ng-container *ngIf="!group.lock">
+          <button mat-raised-button color="warn" (click)="requestLock(true)">ユーザ側からの変更を拒否</button>
+        </ng-container>
         <button mat-raised-button [matMenuTriggerFor]="abolished" color="warn">廃止</button>
         <mat-menu #abolished="matMenu">
           <button mat-menu-item (click)="updateExpiredStatus(0)">廃止の解除</button>
@@ -60,8 +66,12 @@
             <td>{{group.comment}}</td>
           </tr>
           <tr>
-            <th>Student</th>
+            <th>学生</th>
             <td>{{group.student}}</td>
+          </tr>
+          <tr>
+            <th>卒業予定</th>
+            <td>{{group.student_expired}}</td>
           </tr>
           <tr>
             <th>Status</th>
@@ -93,9 +103,41 @@
         <mat-accordion>
           <mat-expansion-panel class="card">
             <mat-expansion-panel-header>
-              <mat-panel-title>Bandwidth</mat-panel-title>
+              <mat-panel-title>グループ詳細情報</mat-panel-title>
             </mat-expansion-panel-header>
-            <p>{{group.bandwidth}}</p>
+            <table>
+              <tr>
+                <th colspan="2">Group Information</th>
+              </tr>
+              <tr>
+                <th>Org</th>
+                <td>{{group.org}}</td>
+              </tr>
+              <tr>
+                <th>Org(English)</th>
+                <td>{{group.org_en}}</td>
+              </tr>
+              <tr>
+                <th>PostCode</th>
+                <td>{{group.postcode}}</td>
+              </tr>
+              <tr>
+                <th>Address</th>
+                <td>{{group.address}}</td>
+              </tr>
+              <tr>
+                <th>Address(English)</th>
+                <td>{{group.address_en}}</td>
+              </tr>
+              <tr>
+                <th>Tel</th>
+                <td>{{group.tel}}</td>
+              </tr>
+              <tr>
+                <th>Country</th>
+                <td>{{group.country}}</td>
+              </tr>
+            </table>
           </mat-expansion-panel>
         </mat-accordion>
         <br>
@@ -136,7 +178,7 @@
       </mat-tab>
       <mat-tab label="ユーザ情報">
         <h2>User情報</h2>
-        <ng-container *ngFor="let d of users">
+        <ng-container *ngFor="let d of group.users">
           <mat-card class="card">
             <mat-card-header>
               <mat-card-title>{{d.name}}</mat-card-title>
@@ -163,16 +205,20 @@
         </ng-container>
         <br>
       </mat-tab>
-      <mat-tab label="ネットワーク情報">
-        <h2>ネットワーク一覧</h2>
-        <button mat-button color="primary" (click)="createNetworkInfo()">追加</button>
+      <mat-tab label="サービス情報">
+        <h2>サービス一覧</h2>
+        <button mat-button color="primary" (click)="createNetworkInfo()">サービス情報の追加</button>
+        <button mat-button color="primary" (click)="createConnectionInfo()">接続情報の追加</button>
+
         <br>
-        <ng-container *ngFor="let d of networks">
+        <ng-container *ngFor="let d of group.services">
           <mat-card class="card">
             <mat-card-header>
-              <mat-card-title>{{d.group_id}}
-                -{{d.network_type}}{{('0000' + d.network_number).slice(-3)}}</mat-card-title>
+              <mat-card-title>
+                {{d.group_id}}-{{d.service_template.type}}{{('000' + d.service_number).slice(-3)}}
+              </mat-card-title>
               <mat-card-subtitle>ID: <b>{{d.ID}}</b></mat-card-subtitle>
+              <mat-card-subtitle>種別: <b>{{d.service_template.name}}</b></mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
               <mat-card-subtitle>
@@ -185,87 +231,97 @@
                   </ng-container>
                 </mat-chip-list>
               </mat-card-subtitle>
-              管理者連絡窓口:
-              <b>
-                <ng-container *ngIf="d.admin !== null">
-                  {{getUser(d.admin.user_id)}}
-                </ng-container>
-              </b>
-              <br>
-              技術連絡担当者:
-              <b>
-                <ng-container *ngFor="let jpnic of d.tech">
-                  {{getUser(jpnic.user_id)}}
-                </ng-container>
-              </b>
-              <br>
             </mat-card-content>
             <mat-card-actions>
-              <button mat-button (click)="networkPage(d.ID)">Detail Page</button>
+              <button mat-button (click)="servicePage(d.ID)">詳細</button>
+              <p>（開通/未開通処理を行いたい場合は詳細ボタンよりできます。）</p>
             </mat-card-actions>
-          </mat-card>
-        </ng-container>
-        <br>
-      </mat-tab>
-      <mat-tab label="接続情報">
-        <h2>接続情報</h2>
-        <button mat-button color="primary" (click)="createConnectionInfo()">追加</button>
-        <br>
-        <mat-tab-group>
-          <mat-tab label="開通済み">
-            <ng-container *ngFor="let d of connections">
-              <ng-container *ngIf="d.open">
-                <mat-card class="card">
-                  <mat-card-header>
-                    <mat-card-title>{{d.group_id}}-{{getNetworkName(d.network_id)}}-{{d.connection_type}}{{('0000' + d.connection_number).slice(-3)}}</mat-card-title>
-                    <mat-card-subtitle>ID:{{d.ID}}</mat-card-subtitle>
-                    <mat-card-subtitle>{{d.noc}}</mat-card-subtitle>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <mat-card-subtitle>
+            <ng-container *ngFor="let connection of d.connections">
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <b>{{d.group_id}}-{{d.service_template.type}}{{('000' + d.service_number).slice(-3)}}-{{connection.connection_template.type}}{{('000' + connection.connection_number).slice(-3)}}
+                        ({{connection.noc.name}})
+                      </b>
+                      <br>
+                    </mat-panel-title>
+                    <mat-card-subtitle>ID:{{connection.ID}}&nbsp;&nbsp;&nbsp;</mat-card-subtitle>
+                    <mat-panel-description>
                       <mat-chip-list>
-                        <ng-container *ngIf="d.open">
+                        <ng-container *ngIf="connection.open">
                           <mat-chip color="primary" selected>開通</mat-chip>
                         </ng-container>
-                      </mat-chip-list>
-                    </mat-card-subtitle>
-                  </mat-card-content>
-                  <mat-card-actions>
-                    <button mat-button (click)="connectionPage(d.ID)">Detail Page</button>
-                  </mat-card-actions>
-                </mat-card>
-              </ng-container>
-            </ng-container>
-            <br>
-          </mat-tab>
-          <mat-tab label="未開通">
-            <ng-container *ngFor="let d of connections">
-              <ng-container *ngIf="!d.open">
-                <mat-card class="card">
-                  <mat-card-header>
-                    <mat-card-title>{{d.group_id}}-{{getNetworkName(d.network_id)}}-{{d.connection_type}}{{('0000' + d.connection_number).slice(-3)}}</mat-card-title>
-                    <mat-card-subtitle>ID:{{d.ID}}</mat-card-subtitle>
-                    <mat-card-subtitle>{{d.noc}}</mat-card-subtitle>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <mat-card-subtitle>
-                      <mat-chip-list>
-                        <ng-container *ngIf="!d.open">
+                        <ng-container *ngIf="!connection.open">
                           <mat-chip color="warn" selected>未開通</mat-chip>
                         </ng-container>
                       </mat-chip-list>
-                    </mat-card-subtitle>
-                    <p></p>
-                  </mat-card-content>
-                  <mat-card-actions>
-                    <button mat-button (click)="connectionPage(d.ID)">Detail Page</button>
-                  </mat-card-actions>
-                </mat-card>
-              </ng-container>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <br><br>
+                  <table>
+                    <tr>
+                      <th colspan="2">内容</th>
+                    </tr>
+                    <tr>
+                      <th>サービス種別</th>
+                      <td>{{d.service_template.name}}</td>
+                    </tr>
+                    <tr>
+                      <th>利用料金</th>
+                      <td>{{d.fee}}</td>
+                    </tr>
+                    <tr>
+                      <th>当団体からのIPアドレスの割当</th>
+                      <td>{{d.service_template.need_jpnic}}</td>
+                    </tr>
+                  </table>
+                  <br>
+                  <table>
+                    <tr>
+                      <th colspan="3">接続情報</th>
+                    </tr>
+                    <tr>
+                      <th>接続方式</th>
+                      <td colspan="2">{{connection.connection_template.name}}</td>
+                    </tr>
+                    <tr>
+                      <th>接続NOC</th>
+                      <td colspan="2">{{connection.noc}}</td>
+                    </tr>
+                    <tr>
+                      <th>トンネル終端アドレス（貴団体側）</th>
+                      <td colspan="2">{{connection.term_ip}}</td>
+                    </tr>
+                    <tr>
+                      <th>トンネル終端アドレス（当団体側）</th>
+                      <td colspan="2">{{connection.tunnel_endpoint_router_ip.ip}}</td>
+                    </tr>
+                    <tr>
+                      <th colspan="3">当団体との間の境界アドレス</th>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <th>IPv4アドレス</th>
+                      <th>IPv6アドレス</th>
+                    </tr>
+                    <tr>
+                      <th>当団体側</th>
+                      <td>{{connection.link_v4_our}}</td>
+                      <td>{{connection.link_v6_our}}</td>
+                    </tr>
+                    <tr>
+                      <th>貴団体側</th>
+                      <td>{{connection.link_v4_your}}</td>
+                      <td>{{connection.link_v6_your}}</td>
+                    </tr>
+                  </table>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <br>
             </ng-container>
-            <br>
-          </mat-tab>
-        </mat-tab-group>
+          </mat-card>
+        </ng-container>
         <br>
       </mat-tab>
     </mat-tab-group>
