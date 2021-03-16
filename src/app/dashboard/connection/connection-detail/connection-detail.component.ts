@@ -46,8 +46,9 @@ export class ConnectionDetailComponent implements OnInit {
   public services: any;
   public connections: any;
   public nocs: any;
-  public gatewayIPs: any[] = [];
+  public templateTunnelEndPointRouterIP: any[] = [];
   public templates: any;
+  public serviceCode: string;
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -78,7 +79,7 @@ export class ConnectionDetailComponent implements OnInit {
             for (const tmpEndPointIP of tmpEndPoint.tunnel_endpoint_router_ip) {
               console.log(tmpNOC.ID, tmpNOC.name);
               if (tmpNOC.enable && tmpEndPoint.enable && tmpEndPointIP.enable) {
-                this.gatewayIPs.push({
+                this.templateTunnelEndPointRouterIP.push({
                   ID: Number(tmpEndPointIP.ID),
                   noc: tmpNOC.name,
                   hostname: tmpEndPoint.hostname,
@@ -89,6 +90,8 @@ export class ConnectionDetailComponent implements OnInit {
           }
         }
       });
+      this.serviceCode = this.connection.service.group_id + '-' + this.connection.service.service_template.type +
+        ('000' + this.connection.service.service_number).slice(-3);
     });
   }
 

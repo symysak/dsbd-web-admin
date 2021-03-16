@@ -6,7 +6,7 @@
   <ng-container *ngIf="!loading">
     <h1>
       ServiceCode:
-      {{connection.service.group_id}}-{{connection.service.service_template.type}}{{('000' + connection.service.service_number).slice(-3)}}-{{connection.connection_template.type}}{{('000' + connection.connection_number).slice(-3)}}
+      {{serviceCode}}-{{connection.connection_template.type}}{{('000' + connection.connection_number).slice(-3)}}
     </h1>
     <br>
     <mat-tab-group>
@@ -175,7 +175,7 @@
               <mat-form-field appearance="fill">
                 <mat-label>TunnelEndPointRouter IP (ctepxxなど)</mat-label>
                 <mat-select formControlName="tunnel_endpoint_router_ip_id" required>
-                  <ng-container *ngFor="let gatewayIP of this.gatewayIPs">
+                  <ng-container *ngFor="let gatewayIP of this.templateTunnelEndPointRouterIP">
                     <mat-option [value]="gatewayIP.ID">{{gatewayIP.hostname}}<b>({{gatewayIP.ip}})</b></mat-option>
                   </ng-container>
                   <mat-option [value]="0">なし<b>(初期値0)</b></mat-option>
