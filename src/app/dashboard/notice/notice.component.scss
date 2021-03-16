@@ -1,11 +1,11 @@
 .main {
+  margin-top: 7px;
+  margin-left: 10px;
+  margin-right: 10px;
+
   .h1 {
     font-size: xx-large;
   }
-
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 20px;
 }
 
 .card {
@@ -16,6 +16,10 @@
 
 .large-width {
   width: 80%;
+}
+
+.half-width {
+  width: 50%;
 }
 
 .textarea-form {

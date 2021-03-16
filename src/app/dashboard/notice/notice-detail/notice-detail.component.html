@@ -24,8 +24,13 @@
             <td>{{notice.start_time}}</td>
           </tr>
           <tr>
-            <th>EndingTime</th>
-            <td>{{notice.ending_time}}</td>
+            <th>EndTime</th>
+            <ng-container *ngIf="notice.end_time === null">
+              <td>無期限</td>
+            </ng-container>
+            <ng-container *ngIf="notice.end_time === null">
+              <td>{{notice.end_time}}</td>
+            </ng-container>
           </tr>
           <tr>
             <th>Title</th>
@@ -67,39 +72,75 @@
           <div class="main">
             <p>Updateしたいデータを記入することで、その部分のみが更新されます。</p>
             <form [formGroup]="noticeInput">
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" class="half-width">
                 <mat-label>タイトル</mat-label>
                 <input matInput type="text" formControlName="title">
               </mat-form-field>
               <br>
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" class="textarea-form">
                 <mat-label>本文</mat-label>
-                <textarea matInput rows="10" type="text" formControlName="data"></textarea>
+                <textarea matInput cols="40" rows="20" placeholder="" type="text" formControlName="data"></textarea>
               </mat-form-field>
               <br>
-              <mat-form-field appearance="fill">
-                <mat-label>Start_Time</mat-label>
-                <input matInput type="datetime-local" formControlName="start_time">
+              <br>
+              <h2>掲示時期</h2>
+              <mat-form-field>
+                <input matInput [ngxMatDatetimePicker]="pickerStart" placeholder="掲示開始日"
+                       [formControl]="dateStartControl" [min]="minDate" [max]="maxDate">
+                <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #pickerStart [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                         [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                         [touchUi]="touchUI"
+                                         [color]="color" [enableMeridian]="enableMeridian">
+                </ngx-mat-datetime-picker>
               </mat-form-field>
-              &nbsp;
-              <mat-form-field appearance="fill">
-                <mat-label>Ending_Time</mat-label>
-                <input matInput type="datetime-local" formControlName="ending_time">
-              </mat-form-field>
+              <br>
+              <mat-checkbox [(ngModel)]="endTimeForever" [ngModelOptions]="{standalone: true}">無期限</mat-checkbox>
+              <br>
+              <ng-container *ngIf="!endTimeForever">
+                <mat-form-field>
+                  <input matInput [ngxMatDatetimePicker]="pickerEnd" placeholder="掲示終了日"
+                         [formControl]="dateEndControl" [min]="minDate" [max]="maxDate">
+                  <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                  <ngx-mat-datetime-picker #pickerEnd [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                           [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                           [touchUi]="touchUI"
+                                           [color]="color" [enableMeridian]="enableMeridian">
+                  </ngx-mat-datetime-picker>
+                </mat-form-field>
+              </ng-container>
+              <br>
+              <h2>掲示先</h2>
+              <mat-checkbox formControlName="everyone">全体に掲示</mat-checkbox>
               <br>
               <mat-form-field appearance="fill">
                 <mat-label>User ID</mat-label>
-                <input matInput type="number" formControlName="user_id">
+                <mat-select formControlName="user_id" required>
+                  <ng-container *ngFor="let user of this.users">
+                    <mat-option [value]="user.ID">{{user.ID}}: {{user.name}}({{user.org}})</mat-option>
+                  </ng-container>
+                </mat-select>
               </mat-form-field>
               &nbsp;
               <mat-form-field appearance="fill">
                 <mat-label>Group ID</mat-label>
-                <input matInput type="number" formControlName="group_id">
+                <mat-select formControlName="group_id" required>
+                  <ng-container *ngFor="let group of this.groups">
+                    <mat-option [value]="group.ID">{{group.ID}}:({{group.org}})</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+              &nbsp;
+              <mat-form-field appearance="fill">
+                <mat-label>NOC</mat-label>
+                <mat-select formControlName="noc_id" required>
+                  <ng-container *ngFor="let noc of this.nocs">
+                    <mat-option [value]="noc.ID">{{noc.ID}}:({{noc.name}})</mat-option>
+                  </ng-container>
+                </mat-select>
               </mat-form-field>
               <br>
-              <h3>各種設定</h3>
-              <mat-checkbox formControlName="everyone">全体</mat-checkbox>
-              <h3>タグ</h3>
+              <h2>タグ</h2>
               <mat-checkbox formControlName="important">重要</mat-checkbox>
               &nbsp;
               <mat-checkbox formControlName="fault">障害</mat-checkbox>

@@ -3,18 +3,22 @@ import {CommonService} from '../../service/common.service';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup} from '@angular/forms';
 import {NoticeService} from '../../service/notice.service';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
+import * as moment from 'moment';
+import {ThemePalette} from '@angular/material/core';
+import {GroupService} from '../../service/group.service';
 
 @Component({
   selector: 'app-notice',
   templateUrl: './notice.component.html',
-  styleUrls: ['./notice.component.scss']
+  styleUrls: ['./notice.component.scss'],
 })
 export class NoticeComponent implements OnInit {
-
 
   constructor(
     private noticeService: NoticeService,
     private commonService: CommonService,
+    private groupService: GroupService,
     private router: Router,
   ) {
   }
@@ -25,42 +29,89 @@ export class NoticeComponent implements OnInit {
     title: new FormControl(),
     data: new FormControl(),
     start_time: new FormControl(),
-    ending_time: new FormControl(),
-    everyone: new FormControl(),
-    fault: new FormControl(),
-    important: new FormControl(),
-    info: new FormControl(),
+    end_time: new FormControl(),
+    everyone: new FormControl(false),
+    fault: new FormControl(false),
+    important: new FormControl(false),
+    info: new FormControl(false),
+    user_id: new FormControl(),
     group_id: new FormControl(),
-    user_id: new FormControl()
+    noc_id: new FormControl(),
   });
-  public unixTime: any;
+  public showSpinners = true;
+  public showSeconds = false;
+  public touchUI = false;
+  public enableMeridian = false;
+  public minDate: moment.Moment;
+  public maxDate: moment.Moment;
+  public stepHour = 1;
+  public stepMinute = 1;
+  public stepSecond = 1;
+  public color: ThemePalette = 'primary';
+  public dateStartControl = new FormControl(new Date());
+  public dateEndControl = new FormControl(new Date());
+  public endTimeForever = false;
+  public nocs: any[] = [];
+  public users: any[] = [];
+  public groups: any[] = [];
+  public now: Date;
 
   ngOnInit(): void {
-    this.unixTime = Math.floor(new Date().getTime() / 1000);
-    console.log('unixTime: ' + this.unixTime);
+    this.now = new Date();
     this.noticeService.getAll().then(response => {
       console.log(response);
       this.notice = response.notice;
       this.loading = false;
+
+      this.commonService.getTemplate().then(template => {
+        this.nocs = template.nocs;
+      });
+      this.groupService.getAll().then(grp => {
+        console.log(grp);
+        for (const tmpGrp of grp.group) {
+          this.groups.push({ID: tmpGrp.ID, org: tmpGrp.org});
+
+          for (const tmpUser of tmpGrp.users) {
+            this.users.push({ID: tmpUser.ID, name: tmpUser.name, org: tmpGrp.org});
+          }
+        }
+      });
       this.commonService.openBar('OK', 5000);
     });
   }
 
+  toDate(date: any): Date {
+    return new Date(date);
+  }
+
   add(): void {
+    console.log(this.dateStartControl.value);
+    console.log(this.dateEndControl.value);
+
+    const startTime = this.dateStartControl.value.getFullYear() + '-' +
+      ('0' + this.dateStartControl.value.getMonth()).slice(-2) + '-' +
+      ('0' + this.dateStartControl.value.getDate()).slice(-2) + ' ' +
+      ('0' + this.dateStartControl.value.getHours()).slice(-2) + ':' +
+      ('0' + this.dateStartControl.value.getMinutes()).slice(-2) + ':' +
+      ('0' + this.dateStartControl.value.getSeconds()).slice(-2);
+
+    let endTime = null;
+
+    if (!this.endTimeForever) {
+      endTime = this.dateEndControl.value.getFullYear() + '-' +
+        ('0' + this.dateEndControl.value.getMonth()).slice(-2) + '-' +
+        ('0' + this.dateEndControl.value.getDate()).slice(-2) + ' ' +
+        ('0' + this.dateEndControl.value.getHours()).slice(-2) + ':' +
+        ('0' + this.dateEndControl.value.getMinutes()).slice(-2) + ':' +
+        ('0' + this.dateEndControl.value.getSeconds()).slice(-2);
+    }
+
     const json = this.noticeInput.getRawValue();
-    const startTime = Math.floor(+new Date(this.noticeInput.value.start_time) / 1000);
-    const endingTime = Math.floor(+new Date(this.noticeInput.value.ending_time) / 1000);
-    if (startTime === 0) {
-      this.commonService.openBar('開始時刻が書かれていません。', 5000);
-    }
-    if (endingTime === 0) {
-      this.commonService.openBar('終了時刻が書かれていません。', 5000);
-    }
-    if (startTime < endingTime) {
+    if (endTime !== null && startTime < endTime) {
       this.commonService.openBar('終了時間が開始時間よりも後になっています。', 5000);
     }
     json.start_time = startTime;
-    json.ending_time = endingTime;
+    json.end_time = endTime;
 
     this.noticeService.create(json).then(() => {
       this.commonService.openBar('OK', 5000);

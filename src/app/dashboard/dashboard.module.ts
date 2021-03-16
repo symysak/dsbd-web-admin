@@ -45,6 +45,7 @@ import {GatewayComponent} from './gateway/gateway.component';
 import {GatewayDetailComponent} from './gateway/gateway-detail/gateway-detail.component';
 import {GatewayIpDetailComponent} from './gateway-ip/gateway-ip-detail/gateway-ip-detail.component';
 import {GatewayIpComponent} from './gateway-ip/gateway-ip.component';
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from '@angular-material-components/datetime-picker';
 
 
 @NgModule({
@@ -100,6 +101,9 @@ import {GatewayIpComponent} from './gateway-ip/gateway-ip.component';
     MatTabsModule,
     MatExpansionModule,
     MatSelectModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
   exports: [
     MatCardModule,
