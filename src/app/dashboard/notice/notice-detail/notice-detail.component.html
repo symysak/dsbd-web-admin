@@ -25,12 +25,7 @@
           </tr>
           <tr>
             <th>EndTime</th>
-            <ng-container *ngIf="notice.end_time === null">
-              <td>無期限</td>
-            </ng-container>
-            <ng-container *ngIf="notice.end_time === null">
-              <td>{{notice.end_time}}</td>
-            </ng-container>
+            <td>{{notice.end_time}}</td>
           </tr>
           <tr>
             <th>Title</th>
