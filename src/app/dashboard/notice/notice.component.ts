@@ -115,6 +115,7 @@ export class NoticeComponent implements OnInit {
 
     this.noticeService.create(json).then(() => {
       this.commonService.openBar('OK', 5000);
+      location.reload();
     });
   }
 
