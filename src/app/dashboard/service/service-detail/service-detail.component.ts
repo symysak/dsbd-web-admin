@@ -39,12 +39,14 @@ export class ServiceDetailComponent implements OnInit {
     address_en: new FormControl(''),
     route_v4: new FormControl(''),
     route_v6: new FormControl(''),
+    type: new FormControl(),
     lock: new FormControl(),
     open: new FormControl()
   });
   public loading = true;
   public hide = false;
   public service: any;
+  public serviceCode: string;
   public ips: any[] = [];
 
   ngOnInit(): void {
@@ -74,6 +76,8 @@ export class ServiceDetailComponent implements OnInit {
           this.ips.push(tmp);
         }
       }
+      this.serviceCode = this.service.group_id + '-' + this.service.service_template.type + ('000' + this.service.service_number).slice(-3);
+
       this.loading = false;
       this.commonService.openBar('OK', 5000);
     });
@@ -157,8 +161,11 @@ export class ServiceDetailOpenProcess implements OnInit {
 
   public asn = new FormControl();
   public ipSubnet = new FormControl([]);
-  public connections: any[] = [];
+  public connections = new FormArray([]);
   public ips = new FormArray([]);
+  public serviceCode: string;
+  public templateTunnelEndPointRouterIP: any[] = [];
+  public bgpRouters: any[] = [];
 
 
   constructor(
@@ -175,19 +182,65 @@ export class ServiceDetailOpenProcess implements OnInit {
     this.asn.patchValue(this.data.service.asn);
 
     for (const tmpIP of this.data.service.ip) {
-      this.addIP(tmpIP.ID, tmpIP.ip, tmpIP.name, tmpIP.open);
+      this.addIP(tmpIP);
     }
+    for (const tmpConnection of this.data.service.connections) {
+      this.addConnection(tmpConnection);
+    }
+
+    this.commonService.getTemplate().then(template => {
+      this.bgpRouters = template.bgp_router;
+      console.log(this.bgpRouters);
+      for (const tmpNOC of template.nocs) {
+        for (const tmpEndPoint of tmpNOC.tunnel_endpoint_router) {
+          for (const tmpEndPointIP of tmpEndPoint.tunnel_endpoint_router_ip) {
+            console.log(tmpNOC.ID, tmpNOC.name);
+            if (tmpNOC.enable && tmpEndPoint.enable && tmpEndPointIP.enable) {
+              this.templateTunnelEndPointRouterIP.push({
+                ID: Number(tmpEndPointIP.ID),
+                noc: tmpNOC.name,
+                hostname: tmpEndPoint.hostname,
+                ip: tmpEndPointIP.ip,
+              });
+            }
+          }
+        }
+      }
+    });
+
+    this.serviceCode = this.data.service.group_id + '-' + this.data.service.service_template.type +
+      ('000' + this.data.service.service_number).slice(-3);
   }
 
-  addIP(ID, ip, name, open) {
+  addIP(tmpData: any) {
     const control = new FormGroup({
-      id: new FormControl(ID),
-      ip: new FormControl(ip),
-      name: new FormControl(name),
-      open: new FormControl(open)
+      id: new FormControl(tmpData.ID),
+      ip: new FormControl(tmpData.ip),
+      name: new FormControl(tmpData.name),
+      open: new FormControl(tmpData.open),
     });
     this.ips.push(control);
   }
+
+  addConnection(tmpData: any) {
+    const control = new FormGroup({
+      ID: new FormControl(tmpData.ID),
+      open: new FormControl(tmpData.open),
+      link_v4_our: new FormControl(tmpData.link_v4_our),
+      link_v4_your: new FormControl(tmpData.link_v4_your),
+      link_v6_our: new FormControl(tmpData.link_v6_our),
+      link_v6_your: new FormControl(tmpData.link_v6_your),
+      noc_id: new FormControl(tmpData.noc_id),
+      bgp_router_id: new FormControl(tmpData.bgp_router_id),
+      type: new FormControl(tmpData.connection_template.type),
+      number: new FormControl(tmpData.connection_number),
+      connection_template_id: new FormControl(tmpData.connection_template_id),
+      tunnel_endpoint_router_ip_id: new FormControl(tmpData.tunnel_endpoint_router_ip_id),
+      term_ip: new FormControl(tmpData.term_ip),
+    });
+    this.connections.push(control);
+  }
+
 
   requestServiceOpen(open: boolean) {
     this.serviceService.update(this.data.service.ID, {
@@ -200,8 +253,22 @@ export class ServiceDetailOpenProcess implements OnInit {
     );
   }
 
-  requestConnectionOpen(id: string, open: boolean) {
-    this.connectionService.update(id, {open}).then(() => {
+  requestConnectionOpen(index: number, open: boolean) {
+    const tmpConnection = this.connections.value[index];
+    console.log(tmpConnection);
+
+    this.connectionService.update(tmpConnection.ID, {
+      link_v4_our: tmpConnection.link_v4_our,
+      link_v4_your: tmpConnection.link_v4_your,
+      link_v6_our: tmpConnection.link_v6_our,
+      link_v6_your: tmpConnection.link_v6_your,
+      noc_id: tmpConnection.noc_id,
+      bgp_router_id: tmpConnection.bgp_router_id,
+      connection_template_id: tmpConnection.connection_template_id,
+      tunnel_endpoint_router_ip_id: tmpConnection.tunnel_endpoint_router_ip_id,
+      term_ip: tmpConnection.term_ip,
+      open,
+    }).then(() => {
       this.commonService.openBar('OK', 5000);
       location.reload();
     });

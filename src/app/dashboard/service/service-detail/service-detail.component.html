@@ -4,9 +4,7 @@
     <h1>読み込み中...</h1>
   </ng-container>
   <ng-container *ngIf="!loading">
-    <h2>
-      {{service.group_id}}-{{service.service_template.type}}{{('000' + service.service_number).slice(-3)}}
-    </h2>
+    <h2>      {{serviceCode}}    </h2>
     <br>
     <button mat-raised-button color="primary" (click)="openProcess()">開通/未開通処理</button>
     <br>
@@ -299,7 +297,7 @@
             <mat-card class="card">
               <mat-card-header>
                 <mat-card-title>
-                  {{service.group_id}}-{{service.service_template.type}}{{('000' + service.service_number).slice(-3)}}-{{d.connection_template.type}}{{('000' + d.connection_number).slice(-3)}}
+                  {{serviceCode}}-{{d.connection_template.type}}{{('000' + d.connection_number).slice(-3)}}
                   ({{d.noc.name}})
                 </mat-card-title>
                 <mat-card-subtitle>ID: <b>{{d.ID}}</b></mat-card-subtitle>
