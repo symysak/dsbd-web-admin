@@ -31,7 +31,7 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
     children: [
-      {path: '', redirectTo: 'user', pathMatch: 'full'},
+      {path: '', redirectTo: 'group', pathMatch: 'full'},
       {path: 'notice', component: NoticeComponent},
       {path: 'notice/:id', component: NoticeDetailComponent},
       {path: 'token', component: TokenComponent},
