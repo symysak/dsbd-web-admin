@@ -8,14 +8,14 @@
       <mat-tab label="情報">
         <br>
         <ng-container *ngIf="!group.pass">
-          <button mat-raised-button color="primary" (click)="updatePass(true)">申請完了</button>
+          <button mat-raised-button color="primary" (click)="updatePass(true)">審査承認(グループ)</button>
         </ng-container>
         <ng-container *ngIf="group.pass">
         <ng-container *ngIf="group.status === 0">
-          <button mat-raised-button color="primary" (click)="updateStatus(1)">ネットワーク情報の追加</button>
+          <button mat-raised-button color="primary" (click)="updateStatus(1)">サービス情報の追加</button>
         </ng-container>
         <ng-container *ngIf="group.status === 1">
-          <button mat-raised-button color="primary" (click)="updatePlusStatus()">審査</button>
+          <button mat-raised-button color="primary" (click)="updatePlusStatus()">審査承認(サービス)</button>
         </ng-container>
         <ng-container *ngIf="group.status === 2">
           <button mat-raised-button color="primary" (click)="updatePlusStatus()">接続情報記入</button>
