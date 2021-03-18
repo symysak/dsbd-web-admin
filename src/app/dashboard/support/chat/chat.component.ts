@@ -15,15 +15,15 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public comment = new FormControl();
   public ticketID: number;
-  public chat: any;
+  public ticket: any;
+  public chat: any[] = [];
   public user: any[] = [];
+  public loading = true;
   public myName = sessionStorage.getItem('name');
 
   constructor(
     public supportService: SupportService,
     private route: ActivatedRoute,
-    private commonService: CommonService,
-    private userService: UserService
   ) {
   }
 
@@ -32,13 +32,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.supportService.chatMessage = null;
     this.ticketID = +this.route.snapshot.paramMap.get('id');
     this.supportService.openWebSocket(this.ticketID);
-    this.userService.getAll().then(responseUser => {
-      this.user = responseUser.user;
-      console.log(this.user);
-      this.supportService.get(this.ticketID).then(response => {
-        this.chat = response.support_chat;
-        console.log(this.chat);
-      });
+    this.supportService.get(this.ticketID).then(response => {
+      this.ticket = response.ticket;
+      this.chat = response.ticket[0].chat;
+      this.loading = false;
     });
   }
 
@@ -46,17 +43,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.supportService.closeWebSocket();
   }
 
-  public getName(id): string {
-    if (id === 0) {
-      return '運営';
-    }
-
-    for (const u of this.user) {
-      if (u.ID === id) {
-        return u.name;
-      }
-    }
-    return 'no name';
+  getStringFromDate(before: string): string {
+    const dateJST = new Date(Date.parse(before));
+    return dateJST.getFullYear() + '-' + ('0' + (1 + dateJST.getMonth())).slice(-2) + '-' +
+      ('0' + dateJST.getDate()).slice(-2) + ' ' + ('0' + dateJST.getHours()).slice(-2) + ':' +
+      ('0' + dateJST.getMinutes()).slice(-2) + ':' + ('0' + dateJST.getSeconds()).slice(-2);
   }
 
   public sendMessage() {

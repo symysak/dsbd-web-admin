@@ -4,30 +4,34 @@
     <br>
     <h1>Chat</h1>
     <br>
-    <ng-container *ngFor="let d of chat">
-      <ng-container *ngIf="d.admin">
-        <div class="talk_right">
-          <p>(UTC){{d.CreatedAt}}:<br>------------------------------------<br>{{d.data}}</p>
-        </div>
-        <br>
-      </ng-container>
-      <ng-container *ngIf="!d.admin">
-        <div class="talk_left">
-          <p>{{this.getName(d.user_id)}} (UTC){{d.CreatedAt}}:<br>------------------------------------<br>{{d.data}}</p>
-        </div>
-        <br>
+    <ng-container *ngIf="!loading">
+      <ng-container *ngFor="let d of chat">
+        <ng-container *ngIf="d.admin">
+          <div class="talk_right">
+            <p>{{getStringFromDate(d.CreatedAt)}}:<br>------------------------------------<br>{{d.data}}</p>
+          </div>
+          <br>
+        </ng-container>
+        <ng-container *ngIf="!d.admin">
+          <div class="talk_left">
+            <p>{{d.user.name}} ({{getStringFromDate(d.CreatedAt)}}):<br>------------------------------------<br>{{d.data}}
+            </p>
+          </div>
+          <br>
+        </ng-container>
       </ng-container>
     </ng-container>
     <ng-container *ngFor="let d of this.supportService.chatMessage">
       <ng-container *ngIf="d.admin">
         <div class="talk_right">
-          <p>({{d.created_at}}):<br>------------------------------------<br>{{d.message}}</p>
+          <p>({{d.time}}):<br>------------------------------------<br>{{d.message}}</p>
         </div>
         <br>
       </ng-container>
       <ng-container *ngIf="!d.admin">
         <div class="talk_left">
-          <p>{{this.getName(d.user_id)}} ({{d.created_at}}):<br>------------------------------------<br>{{d.message}}</p>
+          <p>{{d.username}} ({{d.time}}):<br>------------------------------------<br>{{d.message}}
+          </p>
         </div>
         <br>
       </ng-container>

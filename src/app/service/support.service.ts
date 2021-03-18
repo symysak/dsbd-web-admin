@@ -32,8 +32,9 @@ export class SupportService {
       console.log(event.data);
       const json = JSON.parse(event.data);
       this.chatMessage.push({
-        created_at: json.created_at,
+        time: json.time,
         user_id: json.user_id,
+        username: json.username,
         group_id: json.group_id,
         admin: json.admin,
         message: json.message

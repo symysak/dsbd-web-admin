@@ -31,7 +31,7 @@ export class SupportComponent implements OnInit {
   ngOnInit(): void {
     this.supportService.getAll().then(response => {
       console.log(response);
-      this.support = response.ticket;
+      this.support = response.tickets;
       this.loading = false;
       this.commonService.openBar('OK', 5000);
     });
