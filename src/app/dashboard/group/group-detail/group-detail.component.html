@@ -10,6 +10,7 @@
         <ng-container *ngIf="!group.pass">
           <button mat-raised-button color="primary" (click)="updatePass(true)">申請完了</button>
         </ng-container>
+        <ng-container *ngIf="group.pass">
         <ng-container *ngIf="group.status === 0">
           <button mat-raised-button color="primary" (click)="updateStatus(1)">ネットワーク情報の追加</button>
         </ng-container>
@@ -30,6 +31,7 @@
         </ng-container>
         <ng-container *ngIf="!group.lock">
           <button mat-raised-button color="warn" (click)="requestLock(true)">ユーザ側からの変更を拒否</button>
+        </ng-container>
         </ng-container>
         <button mat-raised-button [matMenuTriggerFor]="abolished" color="warn">廃止</button>
         <mat-menu #abolished="matMenu">
