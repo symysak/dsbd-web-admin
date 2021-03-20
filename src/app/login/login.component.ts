@@ -25,9 +25,6 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    // if (this.user.value === '' && this.password.value === '') {
-    //   this.commonService.openBar('ユーザ又はパスワードが空です。', 5000);
-    // }
     this.authService.login(this.user.value, this.password.value);
   }
 }

@@ -32,6 +32,9 @@ export class AuthService {
       console.log(response);
       sessionStorage.setItem('AccessToken', response.token[0].access_token);
       this.router.navigate(['/dashboard']).then();
+    }).catch(error => {
+      console.log(error);
+      this.commonService.openBar(JSON.stringify(error.error.error), 5000);
     });
   }
 
