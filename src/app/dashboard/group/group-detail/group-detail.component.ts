@@ -73,7 +73,7 @@ export class GroupDetailComponent implements OnInit {
       } else if (!this.group.pass) {
         this.statusInfo = 'グループ審査中';
       } else if (this.group.status === 1) {
-        this.statusInfo = 'ネットワーク情報　記入段階';
+        this.statusInfo = 'サービス情報　記入段階';
       } else if (this.group.status === 2) {
         this.statusInfo = '審査中';
       } else if (this.group.status === 3) {
