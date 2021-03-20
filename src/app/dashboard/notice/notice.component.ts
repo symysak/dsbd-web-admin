@@ -88,35 +88,37 @@ export class NoticeComponent implements OnInit {
     console.log(this.dateStartControl.value);
     console.log(this.dateEndControl.value);
 
-    const startTime = this.dateStartControl.value.getFullYear() + '-' +
-      ('0' + this.dateStartControl.value.getMonth()).slice(-2) + '-' +
-      ('0' + this.dateStartControl.value.getDate()).slice(-2) + ' ' +
-      ('0' + this.dateStartControl.value.getHours()).slice(-2) + ':' +
-      ('0' + this.dateStartControl.value.getMinutes()).slice(-2) + ':' +
-      ('0' + this.dateStartControl.value.getSeconds()).slice(-2);
+    const startTime = this.timeToString(this.dateStartControl.value);
 
     let endTime = null;
 
     if (!this.endTimeForever) {
-      endTime = this.dateEndControl.value.getFullYear() + '-' +
-        ('0' + this.dateEndControl.value.getMonth()).slice(-2) + '-' +
-        ('0' + this.dateEndControl.value.getDate()).slice(-2) + ' ' +
-        ('0' + this.dateEndControl.value.getHours()).slice(-2) + ':' +
-        ('0' + this.dateEndControl.value.getMinutes()).slice(-2) + ':' +
-        ('0' + this.dateEndControl.value.getSeconds()).slice(-2);
+      endTime = this.timeToString(this.dateEndControl.value);
     }
 
     const json = this.noticeInput.getRawValue();
-    if (endTime !== null && startTime < endTime) {
+    if (endTime !== null && startTime > endTime) {
       this.commonService.openBar('終了時間が開始時間よりも後になっています。', 5000);
+      return;
     }
     json.start_time = startTime;
     json.end_time = endTime;
+
+    console.log(json);
 
     this.noticeService.create(json).then(() => {
       this.commonService.openBar('OK', 5000);
       location.reload();
     });
+  }
+
+  timeToString(date: any): string {
+    return date.getFullYear() + '-' +
+      ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+      ('0' + date.getDate()).slice(-2) + ' ' +
+      ('0' + date.getHours()).slice(-2) + ':' +
+      ('0' + date.getMinutes()).slice(-2) + ':' +
+      ('0' + date.getSeconds()).slice(-2);
   }
 
   detailPage(id): void {
