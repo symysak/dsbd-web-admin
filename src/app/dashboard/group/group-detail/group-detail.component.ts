@@ -11,6 +11,7 @@ import {ConnectionService} from '../../../service/connection.service';
 
 export interface DialogData {
   groups: any;
+  id: number;
 }
 
 @Component({
@@ -160,6 +161,7 @@ export class GroupDetailComponent implements OnInit {
     const dialogRef = this.dialog.open(GroupDetailCreateService, {
       data: {
         group: this.group,
+        id: this.id
       }
     });
 
@@ -172,6 +174,7 @@ export class GroupDetailComponent implements OnInit {
     const dialogRef = this.dialog.open(GroupDetailCreateConnection, {
       data: {
         group: this.group,
+        id: this.id
       }
     });
 
@@ -237,8 +240,6 @@ export class GroupDetailCreateService implements OnInit {
   public jpnicTech: FormGroup;
   public plan: FormGroup;
   public jpnicAdmin = new FormGroup({
-    group_name: new FormControl(''),
-    group_name_en: new FormControl(''),
     org: new FormControl(''),
     org_en: new FormControl(''),
     postcode: new FormControl(''),
@@ -312,8 +313,6 @@ export class GroupDetailCreateService implements OnInit {
 
   get optionJPNICForm(): FormGroup {
     return this.formBuilder.group({
-      group_name: [''],
-      group_name_en: [''],
       org: [''],
       org_en: [''],
       postcode: [''],
@@ -358,6 +357,25 @@ export class GroupDetailCreateService implements OnInit {
     this.needGlobalAS = globalAS;
     this.needRoute = route;
 
+  }
+
+  copyJPNIC() {
+    this.jpnicTechProcess.push(this.formBuilder.group({
+      org: [this.jpnicAdmin.value.org],
+      org_en: [this.jpnicAdmin.value.org_en],
+      postcode: [this.jpnicAdmin.value.postcode],
+      address: [this.jpnicAdmin.value.address],
+      address_en: [this.jpnicAdmin.value.address_en],
+      name: [this.jpnicAdmin.value.name],
+      name_en: [this.jpnicAdmin.value.name_en],
+      dept: [this.jpnicAdmin.value.dept],
+      dept_en: [this.jpnicAdmin.value.dept_en],
+      pos: [this.jpnicAdmin.value.pos],
+      pos_en: [this.jpnicAdmin.value.pos_en],
+      tel: [this.jpnicAdmin.value.tel],
+      fax: [this.jpnicAdmin.value.fax],
+      country: [this.jpnicAdmin.value.country],
+    }));
   }
 
   request() {
@@ -595,7 +613,7 @@ export class GroupDetailCreateService implements OnInit {
     }
     console.log(body);
 
-    this.serviceService.create(this.data[`group`].group_id, body).then();
+    this.serviceService.create(this.data.id, body).then();
     location.reload();
   }
 }
