@@ -447,7 +447,7 @@ export class GroupDetailCreateService implements OnInit {
     }
 
     if (this.needJPNIC || this.needGlobalAS) {
-      if (this.checkV4 && this.checkV6) {
+      if (!this.checkV4 && !this.checkV6) {
         this.commonService.openBar('v4とv6どちらか選択する必要があります。。', 5000);
         return;
       }
