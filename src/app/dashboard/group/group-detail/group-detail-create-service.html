@@ -126,6 +126,11 @@
         </mat-form-field>
         <br>
         <mat-form-field appearance="fill">
+          <mat-label>メールアドレス (必須)</mat-label>
+          <input matInput [type]="hide ? 'mail' : 'email'" formControlName="mail">
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
           <mat-label>郵便番号 (必須)</mat-label>
           <input matInput [type]="hide ? 'postcode' : 'text'" formControlName="postcode">
         </mat-form-field>
@@ -198,6 +203,11 @@
               <div [formGroupName]="i">
                 <input matInput [type]="hide ? 'org_en' : 'text'" formControlName="org_en">
               </div>
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill">
+              <mat-label>メールアドレス (必須)</mat-label>
+              <input matInput [type]="hide ? 'mail' : 'email'" formControlName="mail">
             </mat-form-field>
             <br>
             <mat-form-field appearance="fill">

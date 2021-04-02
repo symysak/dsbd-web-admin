@@ -291,6 +291,7 @@ export class GroupDetailCreateService implements OnInit {
   public jpnicAdmin = new FormGroup({
     org: new FormControl(''),
     org_en: new FormControl(''),
+    mail: new FormControl(''),
     postcode: new FormControl(''),
     address: new FormControl(''),
     address_en: new FormControl(''),
@@ -371,6 +372,7 @@ export class GroupDetailCreateService implements OnInit {
     return this.formBuilder.group({
       org: [''],
       org_en: [''],
+      mail: [''],
       postcode: [''],
       address: [''],
       address_en: [''],
@@ -419,6 +421,7 @@ export class GroupDetailCreateService implements OnInit {
     this.jpnicTechProcess.push(this.formBuilder.group({
       org: [this.jpnicAdmin.value.org],
       org_en: [this.jpnicAdmin.value.org_en],
+      mail: [this.jpnicAdmin.value.mail],
       postcode: [this.jpnicAdmin.value.postcode],
       address: [this.jpnicAdmin.value.address],
       address_en: [this.jpnicAdmin.value.address_en],
@@ -528,6 +531,10 @@ export class GroupDetailCreateService implements OnInit {
         this.commonService.openBar('団体名(English)が入力されていません。', 5000);
         return false;
       }
+      if (this.jpnicAdmin.value.mail === '') {
+        this.commonService.openBar('メールアドレスが入力されていません。', 5000);
+        return false;
+      }
       if (this.jpnicAdmin.value.postcode === '') {
         this.commonService.openBar('郵便番号が入力されていません。', 5000);
         return false;
@@ -568,6 +575,10 @@ export class GroupDetailCreateService implements OnInit {
         }
         if (tmp.org_en === '') {
           this.commonService.openBar('団体名(English)が入力されていません。', 5000);
+          return false;
+        }
+        if (tmp.mail === '') {
+          this.commonService.openBar('メールアドレスが入力されていません。', 5000);
           return false;
         }
         if (tmp.postcode === '') {
