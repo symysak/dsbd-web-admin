@@ -660,8 +660,15 @@ export class GroupDetailCreateService implements OnInit {
     }
     console.log(body);
 
-    this.serviceService.create(this.data.id, body).then();
-    location.reload();
+    this.serviceService.create(this.data.id, body).then(() => {
+      console.log('---response---');
+      this.commonService.openBar('申請完了', 5000);
+      this.router.navigate(['/dashboard']).then();
+      location.reload();
+    }).catch(error => {
+      console.log(error);
+      this.commonService.openBar(error.error.erorr, 10000);
+    });
   }
 }
 
@@ -749,6 +756,9 @@ export class GroupDetailCreateConnection implements OnInit {
       this.commonService.openBar('申請完了', 5000);
       this.router.navigate(['/dashboard']).then();
       location.reload();
+    }).catch(error => {
+      console.log(error);
+      this.commonService.openBar(error.error.erorr, 10000);
     });
   }
 }
