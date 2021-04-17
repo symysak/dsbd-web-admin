@@ -1,21 +1,15 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import {
-    AppBar,
-    Badge, Box, Collapse, colors,
-    Container, createMuiTheme, createStyles, ThemeProvider,
-    CssBaseline,
+    Collapse,
     Divider,
-    Drawer, Grid,
+    Drawer,
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
-    makeStyles, Paper, Theme, Toolbar,
-    Typography
 } from "@material-ui/core";
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import {Copyright, ExpandLess, ExpandMore, StarBorder} from "@material-ui/icons";
+import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
 import PeopleIcon from "@material-ui/icons/People";
@@ -26,7 +20,6 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ChatIcon from "@material-ui/icons/Chat";
 import SettingsIcon from "@material-ui/icons/Settings";
-import InvertColorsIcon from '@material-ui/icons/InvertColors';
 import useStyles from "./styles";
 import useStyles2 from "../styles";
 
@@ -34,7 +27,7 @@ export default function SideBar(props: any) {
     const classesDashboard = useStyles2();
     const classesMenu = useStyles();
 
-    
+
     // Menu Bar
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {

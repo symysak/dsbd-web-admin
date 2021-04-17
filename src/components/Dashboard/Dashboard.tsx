@@ -1,21 +1,21 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import {
     AppBar,
-    Badge, Box, Collapse, colors,
-    Container, createMuiTheme, createStyles, ThemeProvider,
+    Badge, Collapse, colors,
+    Container, createMuiTheme, ThemeProvider,
     CssBaseline,
     Divider,
-    Drawer, Grid,
+    Drawer,
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
-    makeStyles, Paper, Theme, Toolbar,
+    Toolbar,
     Typography
 } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import {Copyright, ExpandLess, ExpandMore, StarBorder} from "@material-ui/icons";
+import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
 import PeopleIcon from "@material-ui/icons/People";
