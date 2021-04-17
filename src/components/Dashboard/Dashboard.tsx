@@ -27,119 +27,25 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ChatIcon from "@material-ui/icons/Chat";
 import SettingsIcon from "@material-ui/icons/Settings";
 import InvertColorsIcon from '@material-ui/icons/InvertColors';
-import {purple} from "@material-ui/core/colors";
+import useStyles from "./styles";
+import useSideBarStyles from "./SideBar/styles";
+import SideBar from "./SideBar/SideBar";
 
-type Props = {}
-
-const drawerWidth = 240;
-
-const useDashboardStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    toolbar: {
-        paddingRight: 24, // keep right padding when drawer closed
-    },
-    toolbarIcon: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    menuButton: {
-        marginRight: 36,
-    },
-    menuButtonHidden: {
-        display: 'none',
-    },
-    title: {
-        flexGrow: 1,
-    },
-    drawerPaper: {
-        position: 'relative',
-        whiteSpace: 'nowrap',
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerPaperClose: {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
-        },
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-    },
-    paper: {
-        padding: theme.spacing(2),
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-    },
-    fixedHeight: {
-        height: 240,
-    },
-}));
-
-const useListStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-            maxWidth: 360,
-            backgroundColor: theme.palette.background.paper,
-        },
-        nested: {
-            paddingLeft: theme.spacing(4),
-        },
-    }),
-);
-
-export default function Dashboard() {
-    const classesDashboard = useDashboardStyles();
-    const classesMenu = useListStyles();
+export default function Dashboard(props: any) {
+    const classesDashboard = useStyles();
+    const classesMenu = useSideBarStyles();
     // Menu Bar
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
     const handleDrawerClose = () => {
-        setOpen(false);
         setOpenOther(false);
+        setOpen(false);
     };
     // Menu Bar (Other Button)
     const fixedHeightPaper = clsx(classesDashboard.paper, classesDashboard.fixedHeight);
-    const [openOther, setOpenOther] = React.useState(true);
+    const [openOther, setOpenOther] = React.useState(false);
     const handleClick = () => {
         setOpenOther(!openOther);
         // Menu Bar is not opened...
@@ -192,6 +98,8 @@ export default function Dashboard() {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
+                {/*<SideBar>*/}
+                {/*</SideBar>*/}
                 <Drawer
                     variant="permanent"
                     classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}
@@ -215,7 +123,7 @@ export default function Dashboard() {
                         </ListItemIcon>
                         <ListItemText primary="Notice"/>
                     </ListItem>
-
+                    {/**/}
                     <ListItem button>
                         <ListItemIcon>
                             <PeopleIcon/>
@@ -281,26 +189,16 @@ export default function Dashboard() {
                 <main className={classesDashboard.content}>
                     <div className={classesDashboard.appBarSpacer}/>
                     <Container maxWidth="lg" className={classesDashboard.container}>
-                        <Grid container spacing={3}>
-                            {/* Chart */}
-                            <Grid item xs={12} md={8} lg={9}>
-                                <Paper className={fixedHeightPaper}>
-                                    {/*<Chart/>*/}
-                                </Paper>
-                            </Grid>
-                            {/* Recent Deposits */}
-                            <Grid item xs={12} md={4} lg={3}>
-                                <Paper className={fixedHeightPaper}>
-                                    {/*<Deposits/>*/}
-                                </Paper>
-                            </Grid>
-                            {/* Recent Orders */}
-                            <Grid item xs={12}>
-                                <Paper className={classesDashboard.paper}>
-                                    {/*<Orders/>*/}
-                                </Paper>
-                            </Grid>
-                        </Grid>
+                        <Typography
+                            component="h2"
+                            variant="h5"
+                            color="inherit"
+                            noWrap
+                            className={classesDashboard.pageTitle}
+                        >
+                            {props.title}
+                        </Typography>
+                        {props.children}
                     </Container>
                 </main>
             </div>

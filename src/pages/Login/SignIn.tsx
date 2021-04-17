@@ -10,8 +10,10 @@ import {
     TextField, ThemeProvider, Typography
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import {colorTheme} from './Theme';
+import {colorTheme} from '../../components/Theme';
 import React, {FormEvent, useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import {Login} from "../../api/Auth";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
     const classes = useStyles();
+    const history = useHistory();
     const [mail, setMail] = useState("0123");
     const [password, setPassword] = useState("0123");
 
@@ -43,6 +46,14 @@ export default function SignIn() {
         console.log(mail);
         console.log(password);
         e.preventDefault();
+        Login(mail, password).then(res => {
+            if (res === "") {
+                console.log("OK");
+                history.push('/Dashboard');
+            } else {
+                console.log("NG");
+            }
+        });
     }
 
     return (
