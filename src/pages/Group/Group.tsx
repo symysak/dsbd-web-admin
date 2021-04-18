@@ -3,12 +3,14 @@ import Dashboard from "../../components/Dashboard/Dashboard";
 import useStyles from "./styles"
 import {Button, Card, CardActions, CardContent, InputBase, Paper, Typography} from "@material-ui/core";
 import {GetAll} from "../../api/Group";
+import {useHistory} from "react-router-dom";
 
 
 export default function Group() {
     const classes = useStyles();
     const [groups, setGroups] = useState([]);
     const [initGroups, setInitGroups] = useState([]);
+    const history = useHistory();
 
     useEffect(() => {
         GetAll().then(res => {
@@ -28,12 +30,15 @@ export default function Group() {
             tmp = initGroups;
         } else {
             tmp = initGroups.filter((grp: any) => {
-                return grp.org.toLowerCase().indexOf(search.toLowerCase()) === 0
+                return grp.org_en.toLowerCase().includes(search.toLowerCase())
             });
         }
         setGroups(tmp);
     };
 
+    function clickDetailPage(id: string) {
+        history.push('/dashboard/group/' + id);
+    }
 
     return (
         <Dashboard title="Group Info">
@@ -68,7 +73,7 @@ export default function Group() {
                             {/*</Typography>*/}
                         </CardContent>
                         <CardActions>
-                            <Button size="small">Detail</Button>
+                            <Button size="small" onClick={() => clickDetailPage(group.ID)}>Detail</Button>
                         </CardActions>
                     </Card>
                 )
