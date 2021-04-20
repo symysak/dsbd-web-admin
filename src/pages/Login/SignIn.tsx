@@ -38,9 +38,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
     const classes = useStyles();
     const history = useHistory();
-    const [mail, setMail] = useState("0123");
-    const [password, setPassword] = useState("0123");
-
+    const [mail, setMail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleSubmit = (e: FormEvent) => {
         console.log(mail);
@@ -49,7 +48,7 @@ export default function SignIn() {
         Login(mail, password).then(res => {
             if (res === "") {
                 console.log("OK");
-                history.push('/Dashboard');
+                history.push('/dashboard');
             } else {
                 console.log("NG");
             }
