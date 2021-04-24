@@ -7,10 +7,12 @@ import Users from "./User";
 import {
     CircularProgress, Grid
 } from "@material-ui/core";
-import {DefaultGroupDetailData} from "./interface";
+import {DefaultGroupDetailData} from "../../../interface";
 import Ticket from "./Ticket";
 import Service from "./Service";
-import {GroupProfileInfo, GroupMainMenu, GroupImportant, GroupMemo} from "./Group";
+import {GroupProfileInfo, GroupMainMenu, GroupStatus} from "./Group";
+import {useSnackbar} from "notistack";
+import {GroupMemo} from "./Memo";
 
 
 function getTitle(id: number, org: string, org_en: string, loading: boolean): string {
@@ -25,10 +27,25 @@ function getTitle(id: number, org: string, org_en: string, loading: boolean): st
 
 export default function GroupDetail() {
     const classes = useStyles();
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    const [reload, setReload] = useState(true)
     const [loading, setLoading] = useState(true)
     const [group, setGroup] = useState(DefaultGroupDetailData);
     let id: string;
     ({id} = useParams());
+
+    useEffect(() => {
+        if (reload) {
+            Get(id).then(res => {
+                if (res.error === "") {
+                    setGroup(res.data);
+                    setReload(false);
+                } else {
+                    enqueueSnackbar("" + res.error, {variant: "error"});
+                }
+            })
+        }
+    }, [reload]);
 
     useEffect(() => {
         Get(id).then(res => {
@@ -37,8 +54,9 @@ export default function GroupDetail() {
                 setGroup(res.data);
                 console.log(group);
                 setLoading(false);
+                setReload(false);
             } else {
-                //TODO: エラー処理が必要
+                enqueueSnackbar("" + res.error, {variant: "error"});
             }
         })
     }, []);
@@ -53,17 +71,17 @@ export default function GroupDetail() {
                     </div>
                 ) : (
                     <Grid container spacing={3}>
+                        <Grid item xs={3}>
+                            <GroupStatus data={group}/>
+                        </Grid>
                         <Grid item xs={2}>
-                            <GroupMainMenu data={group}/>
+                            <GroupMainMenu data={group} reload={setReload}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <GroupImportant data={group}/>
+                            <GroupMemo data={group} reload={setReload}/>
                         </Grid>
                         <Grid item xs={4}>
-                            <GroupProfileInfo data={group}/>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <GroupMemo data={group}/>
+                            <GroupProfileInfo data={group} reload={setReload}/>
                         </Grid>
                         <Grid item xs={12}>
                             <Service data={group}/>

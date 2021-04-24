@@ -1,5 +1,5 @@
 import useStyles from "./styles";
-import {GroupDetailData} from "./interface";
+import {GroupDetailData} from "../../../interface";
 import {
     Button,
     Paper,

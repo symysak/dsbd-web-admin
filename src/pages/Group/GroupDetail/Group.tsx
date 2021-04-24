@@ -1,13 +1,17 @@
 import useStyles from "./styles";
-import {GroupDetailData} from "./interface";
+import {GroupDetailData} from "../../../interface";
 import {
     Accordion, AccordionDetails, AccordionSummary,
     Button, Card,
-    CardContent, Chip, Menu, MenuItem,
+    CardContent, Chip, Grid, Menu, MenuItem,
     TextField, Typography
 } from "@material-ui/core";
-import React, {useState} from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {GroupFee, GroupStatusStr, GroupStudent} from "../../../components/Dashboard/Status/Status";
+import {GroupAbolition, GroupLockButton, GroupStatusButton} from "./GroupMenu";
+import {Put} from "../../../api/Group";
+import {useSnackbar} from "notistack";
 
 function ChipAgree(props: { agree: boolean }) {
     const {agree} = props;
@@ -30,8 +34,8 @@ function ChipAgree(props: { agree: boolean }) {
     }
 }
 
-export function GroupProfileInfo(props: { data: GroupDetailData }): any {
-    const {data} = props;
+export function GroupProfileInfo(props: { data: GroupDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
+    const {data, reload} = props;
     const classes = useStyles();
     const [lockPersonalInformation, setLockPersonalInformation] = React.useState(true);
     const [group, setGroup] = useState(data);
@@ -39,10 +43,22 @@ export function GroupProfileInfo(props: { data: GroupDetailData }): any {
     const clickPersonalInfoLock = () => {
         setLockPersonalInformation(!lockPersonalInformation);
     }
+    const {enqueueSnackbar} = useSnackbar();
+
 
     // Update Group Information
-    const update = () => {
+    const updateGroupInfo = () => {
+        Put(group.ID, group).then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                enqueueSnackbar('Request Success', {variant: "success"});
+            } else {
+                console.log(res.error);
+                enqueueSnackbar(res.error, {variant: "error"});
+            }
 
+            reload(true);
+        })
     }
 
     return (
@@ -133,7 +149,8 @@ export function GroupProfileInfo(props: { data: GroupDetailData }): any {
                             <Button size="small" color="secondary" disabled={!lockPersonalInformation}
                                     onClick={clickPersonalInfoLock}>ロック解除</Button>
                             <Button size="small">Cancel</Button>
-                            <Button size="small" color="primary" disabled={lockPersonalInformation} onClick={update}>
+                            <Button size="small" color="primary" disabled={lockPersonalInformation}
+                                    onClick={updateGroupInfo}>
                                 Save
                             </Button>
                         </div>
@@ -150,7 +167,7 @@ export function GroupProfileInfo(props: { data: GroupDetailData }): any {
                     <AccordionDetails>
                         <div className={classes.root}>
                             <div className={classes.largeHeading}>Agree</div>
-                            <ChipAgree agree={data.agree}></ChipAgree>
+                            <ChipAgree agree={data.agree}/>
                             <div className={classes.largeHeading}>Question</div>
                             <div className={classes.text}>{data.question}</div>
                             <div className={classes.largeHeading}>Contract</div>
@@ -186,130 +203,34 @@ export function GroupProfileInfo(props: { data: GroupDetailData }): any {
                     </AccordionDetails>
                 </Accordion>
                 <br/>
-                <Button size="small" color="secondary" disabled={!lockPersonalInformation}
-                        onClick={clickPersonalInfoLock}>ロック解除</Button>
+                {/*<Button size="small" color="secondary" disabled={!lockPersonalInformation}*/}
+                {/*        onClick={clickPersonalInfoLock}>ロック解除</Button>*/}
                 <Button size="small">メール送信</Button>
-                <Button size="small" color="primary" onClick={update}>
-                    メール送信
-                </Button>
+                {/*<Button size="small" color="primary" onClick={update}>*/}
+                {/*    メール送信*/}
+                {/*</Button>*/}
             </CardContent>
         </Card>
     )
-};
+}
 
-export function GroupMainMenu(props: { data: GroupDetailData }): any {
+export function GroupMainMenu(props: { data: GroupDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
     const classes = useStyles();
-    const {data} = props;
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const {data, reload} = props;
 
     return (
         <Card className={classes.root}>
             <CardContent>
                 <h3>Menu</h3>
-                <Button
-                    className={classes.button1}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                    color={"primary"}
-                    variant="contained"
-                >
-                    審査合格
-                </Button>
-                <Button
-                    className={classes.button1}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    color={"primary"}
-                    variant="outlined"
-                >
-                    変更を許可
-                </Button>
-                <Button
-                    className={classes.button1}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                    color={"secondary"}
-                    variant="outlined"
-                >
-                    廃止処理
-                </Button>
-                <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
-                </Menu>
+                <GroupStatusButton data={data} reload={reload}/>
+                <GroupLockButton data={data} reload={reload}/>
+                <GroupAbolition data={data}/>
             </CardContent>
         </Card>
     )
-};
+}
 
-export function GroupMemo(props: { data: GroupDetailData }): any {
-    const classes = useStyles();
-    const {data} = props;
-
-    const handleDelete = () => {
-        console.info('You clicked the delete icon.');
-    };
-
-    const handleClick = () => {
-        console.info('You clicked the Chip.');
-    };
-
-    return (
-        <Card className={classes.root}>
-            <CardContent>
-                <h3>Memo</h3>
-                <div className={classes.memo}>
-                    <Chip
-                        label="Memo1"
-                        clickable
-                        color="primary"
-                        onDelete={handleDelete}
-                    />
-                    <Chip
-                        label="Memo2"
-                        clickable
-                        color="primary"
-                        onDelete={handleDelete}
-                    />
-                    <Chip label="Memo3" onDelete={handleDelete} color="primary"/>
-                    <Chip
-                        label="Memo4Memo"
-                        onDelete={handleDelete}
-                        color="secondary"
-                    />
-                </div>
-                <Button
-                    className={classes.button1}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    color={"primary"}
-                    variant="outlined"
-                >
-                    Memoの追加
-                </Button>
-            </CardContent>
-        </Card>
-    );
-};
-
-export function GroupImportant(props: { data: GroupDetailData }): any {
+export function GroupStatus(props: { data: GroupDetailData }): any {
     const classes = useStyles();
     const {data} = props;
     const createDate = "作成日: " + data.CreatedAt;
@@ -326,38 +247,39 @@ export function GroupImportant(props: { data: GroupDetailData }): any {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <h3>Status</h3>
-                <Chip
-                    size="small"
-                    color="primary"
-                    label="接続情報　記入段階"
-                />
-                <h3>Student Status</h3>
-                <Chip
-                    size="small"
-                    color="primary"
-                    label="2021/01/20まで"
-                />
-                <h3>Payment</h3>
-                <Chip
-                    size="small"
-                    color="primary"
-                    label="Free"
-                />
-                <h3>Date</h3>
-                <Chip
-                    className={classes.date}
-                    size="small"
-                    color="primary"
-                    label={createDate}
-                />
-                <Chip
-                    size="small"
-                    color="primary"
-                    label={updateDate}
-                />
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <h3>Status</h3>
+                        <Chip
+                            size="small"
+                            color="primary"
+                            label={GroupStatusStr(data.status)}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <h3>Student</h3>
+                        <GroupStudent student={data.student} date={data.student_expired}/>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <h3>Payment</h3>
+                        <GroupFee fee={data.fee}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <h3>Date</h3>
+                        <Chip
+                            className={classes.date}
+                            size="small"
+                            color="primary"
+                            label={createDate}
+                        />
+                        <Chip
+                            size="small"
+                            color="primary"
+                            label={updateDate}
+                        />
+                    </Grid>
+                </Grid>
             </CardContent>
         </Card>
-    )
-        ;
-};
+    );
+}

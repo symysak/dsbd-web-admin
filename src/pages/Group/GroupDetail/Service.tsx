@@ -1,5 +1,5 @@
 import useStyles from "./styles";
-import {ConnectionDetailData, GroupDetailData, ServiceDetailData} from "./interface";
+import {ConnectionDetailData, GroupDetailData, ServiceDetailData} from "../../../interface";
 import {
     Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip,
     Collapse, IconButton, makeStyles,
