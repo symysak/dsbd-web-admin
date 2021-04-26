@@ -4,13 +4,16 @@ import useStyles from "./styles"
 import {Button, Card, CardActions, CardContent, InputBase, Paper, Typography} from "@material-ui/core";
 import {GetAll} from "../../api/Group";
 import {useHistory} from "react-router-dom";
+import {DefaultGroupDetailDataArray, GroupDetailData} from "../../interface";
+import {useSnackbar} from "notistack";
 
 
 export default function Group() {
     const classes = useStyles();
-    const [groups, setGroups] = useState([]);
-    const [initGroups, setInitGroups] = useState([]);
+    const [groups, setGroups] = useState(DefaultGroupDetailDataArray);
+    const [initGroups, setInitGroups] = useState(DefaultGroupDetailDataArray);
     const history = useHistory();
+    const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
         GetAll().then(res => {
@@ -19,24 +22,24 @@ export default function Group() {
                 setGroups(res.data);
                 setInitGroups(res.data);
             } else {
-                //TODO: エラー処理が必要
+                enqueueSnackbar("" + res.error, {variant: "error"});
             }
         })
     }, []);
 
     const handleFilter = (search: string) => {
-        let tmp: any;
+        let tmp: GroupDetailData[];
         if (search === "") {
             tmp = initGroups;
         } else {
-            tmp = initGroups.filter((grp: any) => {
+            tmp = initGroups.filter((grp: GroupDetailData) => {
                 return grp.org_en.toLowerCase().includes(search.toLowerCase())
             });
         }
         setGroups(tmp);
     };
 
-    function clickDetailPage(id: string) {
+    function clickDetailPage(id: number) {
         history.push('/dashboard/group/' + id);
     }
 
@@ -48,13 +51,12 @@ export default function Group() {
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
-                        // setSearch(event.target.value)
                         handleFilter(event.target.value)
                     }}
                 />
             </Paper>
             {
-                groups.map((group: any) =>
+                groups.map((group: GroupDetailData) => (
                     <Card className={classes.root}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -63,20 +65,15 @@ export default function Group() {
                             <Typography variant="h5" component="h2">
                                 {group.org} ({group.org_en})
                             </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                {group.user}
-                            </Typography>
-                            {/*<Typography variant="body2" component="p">*/}
-                            {/*    well meaning and kindly.*/}
-                            {/*    <br/>*/}
-                            {/*    {'"a benevolent smile"'}*/}
+                            {/*<Typography className={classes.pos} color="textSecondary">*/}
+                            {/*    {group.user}*/}
                             {/*</Typography>*/}
                         </CardContent>
                         <CardActions>
                             <Button size="small" onClick={() => clickDetailPage(group.ID)}>Detail</Button>
                         </CardActions>
                     </Card>
-                )
+                ))
             }
         </Dashboard>
     );

@@ -288,3 +288,5 @@ export const DefaultGroupDetailData: GroupDetailData = {
     tickets: undefined,
     services: undefined,
 };
+
+export const DefaultGroupDetailDataArray: GroupDetailData[] = [DefaultGroupDetailData]
