@@ -1,4 +1,4 @@
-import {Button, CardContent, Menu, MenuItem} from "@material-ui/core";
+import {Button, Menu, MenuItem} from "@material-ui/core";
 import React, {Dispatch, SetStateAction} from "react";
 import {GroupDetailData} from "../../../interface";
 import useStyles from "./styles";

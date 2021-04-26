@@ -26,7 +26,6 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ChatIcon from "@material-ui/icons/Chat";
 import SettingsIcon from "@material-ui/icons/Settings";
-import InvertColorsIcon from '@material-ui/icons/InvertColors';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import useStyles from "./styles";
 import useSideBarStyles from "./SideBar/styles";
@@ -45,7 +44,6 @@ export default function Dashboard(props: any) {
         setOpen(false);
     };
     // Menu Bar (Other Button)
-    const fixedHeightPaper = clsx(classesDashboard.paper, classesDashboard.fixedHeight);
     const [openOther, setOpenOther] = React.useState(false);
     const handleClick = () => {
         setOpenOther(!openOther);
@@ -54,18 +52,14 @@ export default function Dashboard(props: any) {
             setOpen(true);
         }
     };
-    // Change color button
-    const [darkMode, setDarkMode] = React.useState(true);
-    const changeColorClick = () => {
-        setDarkMode(!darkMode);
-    };
 
     const theme = createMuiTheme({
         palette: {
             primary: {
                 main: colors.blue[800],
             },
-            type: darkMode ? "dark" : "light",
+            type: "dark",
+            // type: darkMode ? "dark" : "light",
         },
     });
 
@@ -107,9 +101,6 @@ export default function Dashboard(props: any) {
                                     className={classesDashboard.title}>
                             AS59105 Admin Page
                         </Typography>
-                        <IconButton color="inherit" onClick={changeColorClick}>
-                            <InvertColorsIcon/>
-                        </IconButton>
                         <IconButton color="inherit">
                             <Badge badgeContent={0} color="secondary">
                                 <NotificationsIcon/>
@@ -120,8 +111,6 @@ export default function Dashboard(props: any) {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                {/*<SideBar>*/}
-                {/*</SideBar>*/}
                 <Drawer
                     variant="permanent"
                     classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}

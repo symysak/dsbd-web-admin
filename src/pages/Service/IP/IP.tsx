@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import {Enable, Open} from "../../../components/Dashboard/Open/Open";
+import {Enable} from "../../../components/Dashboard/Open/Open";
 import {PutIP, PutPlan} from "../../../api/Service";
 
 export function IPOpenButton(props: {

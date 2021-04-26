@@ -10,7 +10,7 @@ import {
     TextField,
 } from "@material-ui/core";
 import cssModule from "../Connection/ConnectionDialog.module.scss";
-import {JPNICData, ServiceDetailData} from "../../interface";
+import {ServiceDetailData} from "../../interface";
 import useStyles from "./styles";
 import {ServiceAddAllowButton, ServiceLockButton} from "./ServiceMenu";
 import {useSnackbar} from "notistack";
@@ -19,7 +19,6 @@ import {Open} from "../../components/Dashboard/Open/Open";
 import {ServiceJPNICTechBase} from "./JPNICTech/JPNICTech";
 import {ServiceJPNICAdminBase} from "./JPNICAdmin/JPNICAdmin";
 import {ServiceIPBase} from "./IP/IP";
-import {JPNICDetail} from "../../components/Dashboard/JPNIC/JPNIC";
 
 export default function ServiceGetDialogs(props: {
     service: ServiceDetailData,
@@ -27,7 +26,6 @@ export default function ServiceGetDialogs(props: {
 }) {
     const {service, reload} = props
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -41,39 +39,45 @@ export default function ServiceGetDialogs(props: {
             <Button size="small" variant="outlined" onClick={handleClickOpen}>
                 Detail
             </Button>
-            <Dialog onClose={handleClose} fullScreen={true} aria-labelledby="customized-dialog-title" open={open}>
+            <Dialog onClose={handleClose} fullScreen={true} aria-labelledby="customized-dialog-title" open={open}
+                    PaperProps={{
+                        style: {
+                            backgroundColor: "#2b2a2a",
+                        },
+                    }}>
                 <DialogTitle id="customized-dialog-title">
                     Service Dialog
                 </DialogTitle>
                 <DialogContent dividers>
                     <Grid container spacing={3}>
                         <Grid item xs={3}>
-                            <ServiceStatus key={service.ID} service={service}/>
+                            <ServiceStatus key={"ServiceStatus"} service={service}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <ServiceOpen key={service.ID} service={service} reload={reload}/>
+                            <ServiceOpen key={"ServiceOpen"} service={service} reload={reload}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <ServiceMainMenu key={service.ID} service={service} reload={reload}/>
+                            <ServiceMainMenu key={"ServiceMainMenu"} service={service} reload={reload}/>
                         </Grid>
                         <Grid item xs={6}>
                             <div className={cssModule.contract}>
-                                <ServiceEtc key={service.ID} service={service}/>
+                                <ServiceEtc key={"ServiceEtc"} service={service}/>
                             </div>
                         </Grid>
                         <Grid item xs={6}>
-                            <ServiceIPBase key={service.ID} ip={service.ip} serviceID={service.ID} reload={reload}/>
+                            <ServiceIPBase key={"ServiceIPBase"} ip={service.ip} serviceID={service.ID}
+                                           reload={reload}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <ServiceJPNICBase key={service.ID} service={service} reload={reload}/>
+                            <ServiceJPNICBase key={"ServiceJPNICBase"} service={service} reload={reload}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <ServiceJPNICAdminBase key={service.ID} serviceID={service.ID}
+                            <ServiceJPNICAdminBase key={"ServiceJPNICAdminBase"} serviceID={service.ID}
                                                    jpnic={service.jpnic_admin} reload={reload}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <ServiceJPNICTechBase key={service.ID} serviceID={service.ID} jpnic={service.jpnic_tech}
-                                                  reload={reload}/>
+                            <ServiceJPNICTechBase key={"ServiceJPNICTechBase"} serviceID={service.ID}
+                                                  jpnic={service.jpnic_tech} reload={reload}/>
                         </Grid>
                         <Grid>
                             <div className={cssModule.contract}>
@@ -145,9 +149,9 @@ export function ServiceMainMenu(props: { service: ServiceDetailData, reload: Dis
         <Card className={classes.root}>
             <CardContent>
                 <h3>Menu</h3>
-                <ServiceAddAllowButton key={service.ID} service={service} reload={reload}/>
+                <ServiceAddAllowButton key={"serviceAddAllowButton"} service={service} reload={reload}/>
                 <br/>
-                <ServiceLockButton key={service.ID} service={service} reload={reload}/>
+                <ServiceLockButton key={"serviceLockButton"} service={service} reload={reload}/>
                 <br/>
             </CardContent>
         </Card>
@@ -196,13 +200,13 @@ export function ServiceOpenButton(props: {
 export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
     const classes = useStyles();
     const {service, reload} = props;
+    const [serviceCopy, setServiceCopy] = useState(service);
     const serviceCode = service.group_id + "-" + service.service_template.type +
         ('000' + service.service_number).slice(-3);
-    const [lockInfo, setLockInfo] = React.useState(true);
-    const [serviceCopy, setServiceCopy] = useState(service);
+    const [lock, setLockInfo] = React.useState(true);
 
     const clickLockInfo = () => {
-        setLockInfo(!lockInfo);
+        setLockInfo(!lock);
     }
 
     const resetAction = () => {
@@ -228,11 +232,10 @@ export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatc
                     <TextField
                         className={classes.formVeryShort}
                         required
-                        id="outlined-number"
+                        id="outlined-required"
                         label="ASN"
-                        defaultValue={service.asn}
                         InputProps={{
-                            readOnly: lockInfo,
+                            readOnly: lock,
                         }}
                         value={serviceCopy.asn}
                         type="number"
@@ -242,9 +245,9 @@ export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatc
                         }}
                     />
                 </form>
-                <Button size="small" color="secondary" disabled={!lockInfo} onClick={clickLockInfo}>ロック解除</Button>
-                <Button size="small" disabled={lockInfo} onClick={resetAction}>Reset</Button>
-                <ServiceOpenButton service={serviceCopy} lockInfo={lockInfo} reload={reload}/>
+                <Button size="small" color="secondary" disabled={!lock} onClick={clickLockInfo}>ロック解除</Button>
+                <Button size="small" disabled={lock} onClick={resetAction}>Reset</Button>
+                <ServiceOpenButton service={serviceCopy} lockInfo={lock} reload={reload}/>
             </CardContent>
         </Card>
     );
@@ -260,6 +263,7 @@ export function ServiceEtc(props: { service: ServiceDetailData }): any {
             <CardContent>
                 <h3>Bandwidth</h3>
                 <table aria-colspan={3}>
+                    <thead>
                     <tr>
                         <th colSpan={1}/>
                         <th colSpan={1}>上り</th>
@@ -275,9 +279,11 @@ export function ServiceEtc(props: { service: ServiceDetailData }): any {
                         <td>{service.avg_upstream}Mbps</td>
                         <td>{service.avg_downstream}Mbps</td>
                     </tr>
+                    </thead>
                 </table>
                 <br/>
                 <table aria-colspan={2}>
+                    <thead>
                     <tr>
                         <th colSpan={2}>大量に通信する可能性のあるAS</th>
                     </tr>
@@ -285,9 +291,11 @@ export function ServiceEtc(props: { service: ServiceDetailData }): any {
                         <th>AS</th>
                         <td>{service.max_bandwidth_as}</td>
                     </tr>
+                    </thead>
                 </table>
                 <h3>アドレス広報方法</h3>
                 <table aria-colspan={3}>
+                    <thead>
                     <tr>
                         <th colSpan={1}/>
                         <th colSpan={1}>IPv4</th>
@@ -298,6 +306,7 @@ export function ServiceEtc(props: { service: ServiceDetailData }): any {
                         <td>{service.route_v4}</td>
                         <td>{service.route_v6}</td>
                     </tr>
+                    </thead>
                 </table>
             </CardContent>
         </Card>
@@ -324,7 +333,7 @@ export function ServiceJPNICBase(props: {
             <Card className={cssModule.contract}>
                 <CardContent>
                     <h3>JPNIC記入情報</h3>
-                    <ServiceDetail key={service.ID} service={service} reload={reload}/>
+                    <ServiceDetail key={"JPNICInfo"} service={service} reload={reload}/>
                 </CardContent>
             </Card>
         )
@@ -337,12 +346,12 @@ export function ServiceDetail(props: {
 }): any {
     const {service, reload} = props;
     const classes = useStyles();
-    const [lockInfo, setLockInfo] = React.useState(true);
+    const [lock, setLockInfo] = React.useState(true);
     const [serviceCopy, setServiceCopy] = useState(service);
     const {enqueueSnackbar} = useSnackbar();
 
     const clickLockInfo = () => {
-        setLockInfo(!lockInfo);
+        setLockInfo(!lock);
 
     }
     const resetAction = () => {
@@ -375,9 +384,8 @@ export function ServiceDetail(props: {
                     required
                     id="outlined-required"
                     label="Org"
-                    defaultValue={service.org}
                     InputProps={{
-                        readOnly: lockInfo,
+                        readOnly: lock,
                     }}
                     value={serviceCopy.org}
                     variant="outlined"
@@ -390,9 +398,8 @@ export function ServiceDetail(props: {
                     required
                     id="outlined-required"
                     label="Org(English)"
-                    defaultValue={service.org_en}
                     InputProps={{
-                        readOnly: lockInfo,
+                        readOnly: lock,
                     }}
                     value={serviceCopy.org_en}
                     variant="outlined"
@@ -406,9 +413,8 @@ export function ServiceDetail(props: {
                     required
                     id="outlined-required"
                     label="郵便番号"
-                    defaultValue={service.postcode}
                     InputProps={{
-                        readOnly: lockInfo,
+                        readOnly: lock,
                     }}
                     value={serviceCopy.postcode}
                     variant="outlined"
@@ -421,9 +427,8 @@ export function ServiceDetail(props: {
                     required
                     id="outlined-required"
                     label="住所"
-                    defaultValue={service.address}
                     InputProps={{
-                        readOnly: lockInfo,
+                        readOnly: lock,
                     }}
                     value={serviceCopy.address}
                     variant="outlined"
@@ -436,9 +441,8 @@ export function ServiceDetail(props: {
                     required
                     id="outlined-required"
                     label="住所(English)"
-                    defaultValue={service.address_en}
                     InputProps={{
-                        readOnly: lockInfo,
+                        readOnly: lock,
                     }}
                     value={serviceCopy.address_en}
                     variant="outlined"
@@ -447,10 +451,10 @@ export function ServiceDetail(props: {
                     }}
                 />
             </form>
-            <Button size="small" color="secondary" disabled={!lockInfo}
+            <Button size="small" color="secondary" disabled={!lock}
                     onClick={clickLockInfo}>ロック解除</Button>
-            <Button size="small" onClick={resetAction}>Reset</Button>
-            <Button size="small" color="primary" disabled={lockInfo}
+            <Button size="small" onClick={resetAction} disabled={lock}>Reset</Button>
+            <Button size="small" color="primary" disabled={lock}
                     onClick={updateInfo}>
                 Apply
             </Button>

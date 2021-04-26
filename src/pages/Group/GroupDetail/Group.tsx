@@ -3,7 +3,7 @@ import {GroupDetailData} from "../../../interface";
 import {
     Accordion, AccordionDetails, AccordionSummary,
     Button, Card,
-    CardContent, Chip, Grid, Menu, MenuItem,
+    CardContent, Chip, Grid,
     TextField, Typography
 } from "@material-ui/core";
 import React, {Dispatch, SetStateAction, useState} from "react";
@@ -233,14 +233,6 @@ export function GroupStatus(props: { data: GroupDetailData }): any {
     const {data} = props;
     const createDate = "作成日: " + data.CreatedAt;
     const updateDate = "更新日: " + data.UpdatedAt;
-
-    const handleDelete = () => {
-        console.info('You clicked the delete icon.');
-    };
-
-    const handleClick = () => {
-        console.info('You clicked the Chip.');
-    };
 
     return (
         <Card className={classes.root}>

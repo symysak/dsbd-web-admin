@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Dashboard from "../../../components/Dashboard/Dashboard";
-import {Get} from "../../../api/Group";
+import {Get, GetTemplate} from "../../../api/Group";
 import useStyles from "./styles";
 import Users from "./User";
 import {
     CircularProgress, Grid
 } from "@material-ui/core";
-import {DefaultGroupDetailData} from "../../../interface";
+import {DefaultGroupDetailData, DefaultTemplateData} from "../../../interface";
 import Ticket from "./Ticket";
 import Service from "./Service";
 import {GroupProfileInfo, GroupMainMenu, GroupStatus} from "./Group";
@@ -27,10 +27,11 @@ function getTitle(id: number, org: string, org_en: string, loading: boolean): st
 
 export default function GroupDetail() {
     const classes = useStyles();
-    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
     const [reload, setReload] = useState(true)
     const [loading, setLoading] = useState(true)
     const [group, setGroup] = useState(DefaultGroupDetailData);
+    const [template, setTemplate] = useState(DefaultTemplateData);
     let id: string;
     ({id} = useParams());
 
@@ -52,7 +53,6 @@ export default function GroupDetail() {
             if (res.error === "") {
                 console.log(res);
                 setGroup(res.data);
-                console.log(group);
                 setLoading(false);
                 setReload(false);
             } else {
@@ -60,6 +60,19 @@ export default function GroupDetail() {
             }
         })
     }, []);
+
+    useEffect(() => {
+        GetTemplate().then(res => {
+            if (res.error === "") {
+                console.log(res);
+                setTemplate(res.data);
+                console.log(template);
+            } else {
+                enqueueSnackbar("" + res.error, {variant: "error"});
+            }
+        })
+    }, []);
+
 
     return (
         <Dashboard title={getTitle(group.ID, group.org, group.org_en, loading)}>
@@ -84,7 +97,7 @@ export default function GroupDetail() {
                             <GroupProfileInfo key={group.ID} data={group} reload={setReload}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Service key={group.ID} data={group} reload={setReload}/>
+                            <Service key={"Service"} data={group} template={template} reload={setReload}/>
                         </Grid>
                         <Grid item xs={6}>
                             <Users key={group.ID} data={group}/>

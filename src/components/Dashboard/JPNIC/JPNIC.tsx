@@ -1,4 +1,4 @@
-import {Button, CardContent, Chip, TextField} from "@material-ui/core";
+import {Button, TextField} from "@material-ui/core";
 import React, {Dispatch, SetStateAction, useState} from "react";
 import {JPNICData} from "../../../interface";
 import useStyles from "../../../pages/Service/styles";
@@ -64,7 +64,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="JPNIC Handle"
-                    defaultValue={jpnic.jpnic_handle}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -80,7 +79,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="Org"
-                    defaultValue={jpnic.org}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -95,7 +93,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="Org(English)"
-                    defaultValue={jpnic.org_en}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -111,7 +108,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="名前"
-                    defaultValue={jpnic.name}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -126,7 +122,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="名前(English)"
-                    defaultValue={jpnic.name_en}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -142,7 +137,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="郵便番号"
-                    defaultValue={jpnic.postcode}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -158,7 +152,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="住所"
-                    defaultValue={jpnic.address}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -173,7 +166,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="住所(English)"
-                    defaultValue={jpnic.address_en}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -189,7 +181,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="Dept"
-                    defaultValue={jpnic.dept}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -204,7 +195,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="Dept(English)"
-                    defaultValue={jpnic.dept_en}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -220,7 +210,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="電話番号"
-                    defaultValue={jpnic.tel}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -235,7 +224,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="Fax"
-                    defaultValue={jpnic.fax}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -251,7 +239,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="Mail"
-                    defaultValue={jpnic.mail}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
@@ -266,7 +253,6 @@ export function JPNICDetail(props: {
                     required
                     id="outlined-required"
                     label="住居国"
-                    defaultValue={jpnic.country}
                     InputProps={{
                         readOnly: lockInfo,
                     }}
