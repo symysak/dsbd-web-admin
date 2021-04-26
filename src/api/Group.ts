@@ -43,6 +43,26 @@ export function Get(id: string): Promise<{ error: string, data: any }> {
     })
 }
 
+export function GetTemplate(): Promise<{ error: string, data: any }> {
+    return axios.get(restfulApiConfig.apiURL + "/template", {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
 export function GetAll(): Promise<{ error: string, data: any }> {
     return axios.get(restfulApiConfig.apiURL + "/group", {
         headers: {
