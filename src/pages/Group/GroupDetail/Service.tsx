@@ -11,10 +11,12 @@ import {
     TableHead,
     TableRow, Typography
 } from "@material-ui/core";
-import React from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import ConnectionGetDialogs from "../../Connection/ConnectionDialog";
+import ServiceGetDialogs from "../../Service/ServiceDialog";
 
 const useRowStyles = makeStyles({
     root: {
@@ -22,6 +24,9 @@ const useRowStyles = makeStyles({
             borderBottom: 'unset',
         },
     },
+    flex: {
+        // display: flex,
+    }
 });
 
 function ChipGet(props: { open: boolean }) {
@@ -45,10 +50,15 @@ function ChipGet(props: { open: boolean }) {
     }
 }
 
-function RowConnection(props: { service: ServiceDetailData, connection: ConnectionDetailData, groupID: number }) {
-    const {service, connection, groupID} = props;
+function RowConnection(props: {
+    service: ServiceDetailData,
+    connection: ConnectionDetailData,
+    groupID: number,
+    reload: Dispatch<SetStateAction<boolean>>
+}) {
+    const {service, connection, groupID, reload} = props;
     // const [open, setOpen] = React.useState(false);
-    // const classes = useRowStyles();
+    const classes = useRowStyles();
     const serviceCode = groupID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3) +
         "-" + connection.connection_template.type + ('000' + connection.connection_number).slice(-3);
 
@@ -64,22 +74,19 @@ function RowConnection(props: { service: ServiceDetailData, connection: Connecti
                 <ChipGet open={connection.open}/>
             </TableCell>
             <TableCell align="right">
-                <Button size="small" variant="outlined">
-                    Detail
-                </Button>
-                <Button size="small" variant="outlined">
-                    Detail
-                </Button>
+                <Box display="flex" justifyContent="flex-end">
+                    <ConnectionGetDialogs connection={connection} service={service} reload={reload}/>
+                </Box>
             </TableCell>
         </TableRow>
     );
 }
 
-function RowService(props: { row: ServiceDetailData, groupID: number }) {
-    const {row, groupID} = props;
+function RowService(props: { service: ServiceDetailData, groupID: number, reload: Dispatch<SetStateAction<boolean>> }) {
+    const {service, groupID, reload} = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
-    const serviceCode = groupID + "-" + row.service_template.type + ('000' + row.service_number).slice(-3);
+    const serviceCode = groupID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3);
 
     return (
         <React.Fragment>
@@ -90,25 +97,19 @@ function RowService(props: { row: ServiceDetailData, groupID: number }) {
                     </IconButton>
                 </TableCell>
                 <TableCell align="left">
-                    {row.ID}
+                    {service.ID}
                 </TableCell>
                 <TableCell
                     align="left">{serviceCode}</TableCell>
-                <TableCell align="left">{row.service_template.name}</TableCell>
+                <TableCell align="left">{service.service_template.name}</TableCell>
                 <TableCell align="left">
-                    <ChipGet open={row.open}/>
+                    <ChipGet open={service.open}/>
                 </TableCell>
-                <TableCell align="left">{row.asn}</TableCell>
+                <TableCell align="left">{service.asn}</TableCell>
                 <TableCell align="right">
-                    <Button size="small" variant="outlined">
-                        Detail
-                    </Button>
-                    <Button size="small" variant="outlined">
-                        Detail
-                    </Button>
-                    <Button size="small" variant="outlined">
-                        Detail
-                    </Button>
+                    <Box display="flex" justifyContent="flex-end">
+                        <ServiceGetDialogs service={service} reload={reload}/>
+                    </Box>
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -130,9 +131,13 @@ function RowService(props: { row: ServiceDetailData, groupID: number }) {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        row.connections.map((rowConnection: ConnectionDetailData) => (
-                                            <RowConnection key={rowConnection.ID} service={row}
-                                                           connection={rowConnection} groupID={groupID}/>
+                                        service.connections.map((rowConnection: ConnectionDetailData) => (
+                                            <RowConnection key={rowConnection.ID}
+                                                           service={service}
+                                                           connection={rowConnection}
+                                                           groupID={groupID}
+                                                           reload={reload}
+                                            />
                                         ))
                                     }
                                 </TableBody>
@@ -145,8 +150,8 @@ function RowService(props: { row: ServiceDetailData, groupID: number }) {
     );
 }
 
-export default function Service(props: { data: GroupDetailData }) {
-    const {data} = props;
+export default function Service(props: { data: GroupDetailData, reload: Dispatch<SetStateAction<boolean>> }) {
+    const {data, reload} = props;
     const classes = useStyles();
 
     return (
@@ -177,7 +182,7 @@ export default function Service(props: { data: GroupDetailData }) {
                         <TableBody>
                             {
                                 data.services.map((row: ServiceDetailData) => (
-                                    <RowService key={row.ID} row={row} groupID={data.ID}/>
+                                    <RowService key={row.ID} service={row} groupID={data.ID} reload={reload}/>
                                 ))
                             }
                         </TableBody>

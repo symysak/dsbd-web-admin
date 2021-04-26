@@ -72,25 +72,25 @@ export default function GroupDetail() {
                 ) : (
                     <Grid container spacing={3}>
                         <Grid item xs={3}>
-                            <GroupStatus data={group}/>
+                            <GroupStatus key={group.ID} data={group}/>
                         </Grid>
                         <Grid item xs={2}>
-                            <GroupMainMenu data={group} reload={setReload}/>
+                            <GroupMainMenu key={group.ID} data={group} reload={setReload}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <GroupMemo data={group} reload={setReload}/>
+                            <GroupMemo key={group.ID} data={group} reload={setReload}/>
                         </Grid>
                         <Grid item xs={4}>
-                            <GroupProfileInfo data={group} reload={setReload}/>
+                            <GroupProfileInfo key={group.ID} data={group} reload={setReload}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <Service data={group}/>
+                            <Service key={group.ID} data={group} reload={setReload}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Users data={group}/>
+                            <Users key={group.ID} data={group}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <Ticket data={group}/>
+                            <Ticket key={group.ID} data={group}/>
                         </Grid>
                     </Grid>
                 )

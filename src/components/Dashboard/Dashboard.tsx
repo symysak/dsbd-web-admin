@@ -27,9 +27,10 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ChatIcon from "@material-ui/icons/Chat";
 import SettingsIcon from "@material-ui/icons/Settings";
 import InvertColorsIcon from '@material-ui/icons/InvertColors';
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import useStyles from "./styles";
 import useSideBarStyles from "./SideBar/styles";
-import SideBar from "./SideBar/SideBar";
+import {useHistory} from "react-router-dom";
 
 export default function Dashboard(props: any) {
     const classesDashboard = useStyles();
@@ -68,6 +69,24 @@ export default function Dashboard(props: any) {
         },
     });
 
+    const history = useHistory();
+
+    const DashboardPage = () => {
+        history.push("/dashboard");
+    }
+    const NoticePage = () => {
+        history.push("/dashboard/notice");
+    }
+    const GroupPage = () => {
+        history.push("/dashboard/group");
+    }
+    const OrderPage = () => {
+        history.push("/dashboard/order");
+    }
+    const ChatPage = () => {
+        history.push("/dashboard/chat");
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <div className={classesDashboard.root}>
@@ -86,15 +105,18 @@ export default function Dashboard(props: any) {
                         </IconButton>
                         <Typography component="h1" variant="h6" color="inherit" noWrap
                                     className={classesDashboard.title}>
-                            Dashboard
+                            AS59105 Admin Page
                         </Typography>
                         <IconButton color="inherit" onClick={changeColorClick}>
                             <InvertColorsIcon/>
                         </IconButton>
                         <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
+                            <Badge badgeContent={0} color="secondary">
                                 <NotificationsIcon/>
                             </Badge>
+                        </IconButton>
+                        <IconButton color="inherit">
+                            <PermIdentityIcon/>
                         </IconButton>
                     </Toolbar>
                 </AppBar>
@@ -111,32 +133,31 @@ export default function Dashboard(props: any) {
                         </IconButton>
                     </div>
                     <Divider/>
-                    <ListItem button>
+                    <ListItem button onClick={DashboardPage}>
                         <ListItemIcon>
                             <DashboardIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Dashboard"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={NoticePage}>
                         <ListItemIcon>
                             <NotificationsIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Notice"/>
                     </ListItem>
-                    {/**/}
-                    <ListItem button>
+                    <ListItem button onClick={GroupPage}>
                         <ListItemIcon>
                             <PeopleIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Group"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={OrderPage}>
                         <ListItemIcon>
                             <ShoppingCartIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Orders"/>
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button onClick={ChatPage}>
                         <ListItemIcon>
                             <ChatIcon/>
                         </ListItemIcon>

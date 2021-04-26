@@ -28,7 +28,7 @@ export function GroupStatusButton(props: { data: GroupDetailData, reload: Dispat
                 console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                enqueueSnackbar(res.error, {variant: "error"});
+                enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
             handleClose();
@@ -135,7 +135,7 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
                 console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                enqueueSnackbar(res.error, {variant: "error"});
+                enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
             reload(true);
@@ -211,8 +211,4 @@ export function GroupAbolition(props: { data: GroupDetailData }): any {
             </Menu>
         </div>
     );
-}
-
-function enqueueSnackbar(arg0: string) {
-    throw new Error("Function not implemented.");
 }

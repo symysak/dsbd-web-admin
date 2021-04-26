@@ -54,7 +54,7 @@ export function GroupProfileInfo(props: { data: GroupDetailData, reload: Dispatc
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
                 console.log(res.error);
-                enqueueSnackbar(res.error, {variant: "error"});
+                enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
             reload(true);
@@ -203,12 +203,10 @@ export function GroupProfileInfo(props: { data: GroupDetailData, reload: Dispatc
                     </AccordionDetails>
                 </Accordion>
                 <br/>
-                {/*<Button size="small" color="secondary" disabled={!lockPersonalInformation}*/}
-                {/*        onClick={clickPersonalInfoLock}>ロック解除</Button>*/}
-                <Button size="small">メール送信</Button>
-                {/*<Button size="small" color="primary" onClick={update}>*/}
-                {/*    メール送信*/}
-                {/*</Button>*/}
+                <Button size="small" variant="contained" color="primary" >サービス情報の追加</Button>
+                <Button size="small" variant="contained" color="primary" className={classes.spaceLeft}>接続情報の追加</Button>
+                <br/>
+                <Button size="small" className={classes.spaceTop}>メール送信</Button>
             </CardContent>
         </Card>
     )
@@ -258,11 +256,11 @@ export function GroupStatus(props: { data: GroupDetailData }): any {
                     </Grid>
                     <Grid item xs={6}>
                         <h3>Student</h3>
-                        <GroupStudent student={data.student} date={data.student_expired}/>
+                        <GroupStudent key={data.ID} student={data.student} date={data.student_expired}/>
                     </Grid>
                     <Grid item xs={6}>
                         <h3>Payment</h3>
-                        <GroupFee fee={data.fee}/>
+                        <GroupFee key={data.ID} fee={data.fee}/>
                     </Grid>
                     <Grid item xs={12}>
                         <h3>Date</h3>

@@ -1,12 +1,23 @@
 import {makeStyles} from "@material-ui/core";
 
 export default makeStyles(theme => ({
+        rootTable: {
+            '& > *': {
+                borderBottom: 'unset',
+            },
+        },
         root: {
             width: '100%',
         },
         rootForm: {
             margin: theme.spacing(1),
             marginBottom: 20,
+        },
+        spaceLeft: {
+            marginLeft: 5,
+        },
+        spaceTop: {
+            marginTop: 5,
         },
         formVeryShort: {
             width: '20ch',
@@ -16,6 +27,10 @@ export default makeStyles(theme => ({
             width: '20ch',
             marginBottom: 10,
             marginLeft: 5
+        },
+        formVeryVeryShort: {
+            width: '10ch',
+            marginBottom: 10,
         },
         formShort: {
             width: '30ch',
@@ -56,12 +71,6 @@ export default makeStyles(theme => ({
         },
         date: {
             marginBottom: 10,
-        },
-        spaceLeft: {
-            marginLeft: 5,
-        },
-        spaceTop: {
-            marginTop: 5,
         },
         details: {
             alignItems: 'center',
