@@ -95,6 +95,7 @@ export interface ServiceTemplateData {
     ID: number,
     name: string,
     comment: string,
+    hidden: boolean,
     type: string
     need_comment: boolean,
     need_global_as: boolean,
@@ -164,6 +165,7 @@ export interface NTTTemplateData {
 }
 
 export interface IPTemplateData {
+    name: any;
     CreatedAt: string
     DeletedAt: string
     ID: number
@@ -248,6 +250,61 @@ export interface TemplateData {
     tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData[]
 }
 
+export interface ServiceAddData {
+    jpnic_admin?: ServiceAddJPNICData,
+    jpnic_tech?: ServiceAddJPNICData[],
+    service_template_id: number,
+    service_comment: string,
+    org?: string,
+    org_en?: string,
+    postcode?: string,
+    address?: string,
+    address_en?: string,
+    route_v4?: string,
+    route_v6?: string,
+    avg_upstream: number,
+    max_upstream: number,
+    avg_downstream: number,
+    max_downstream: number,
+    max_bandwidth_as?: string,
+    asn?: number,
+    ip?: ServiceAddIPData[],
+    start_date: string,
+    end_date?: string
+}
+
+export interface ServiceAddJPNICData {
+    org: string,
+    org_en: string,
+    mail: string,
+    postcode: string,
+    address: string,
+    address_en: string,
+    name: string,
+    name_en: string,
+    dept_en: string,
+    dept: string,
+    country: string,
+    tel: string,
+    fax: string,
+}
+
+export interface ServiceAddIPData {
+    version: number,
+    ip: string,
+    plan?: ServiceAddIPv4PlanData[],
+    name: string,
+    start_date: string,
+    end_date?: string
+}
+
+export interface ServiceAddIPv4PlanData {
+    name: string,
+    after: number,
+    half_year: number,
+    one_year: number,
+}
+
 export const DefaultTemplateData: TemplateData = {
     bgp_router: undefined,
     connections: undefined,
@@ -290,3 +347,48 @@ export const DefaultGroupDetailData: GroupDetailData = {
 };
 
 export const DefaultGroupDetailDataArray: GroupDetailData[] = [DefaultGroupDetailData]
+export const DefaultServiceAddData: ServiceAddData = {
+    jpnic_admin: undefined,
+    jpnic_tech: undefined,
+    service_template_id: 0,
+    service_comment: "",
+    org: undefined,
+    org_en: undefined,
+    postcode: undefined,
+    address: undefined,
+    address_en: undefined,
+    route_v4: undefined,
+    route_v6: undefined,
+    avg_upstream: 10,
+    max_upstream: 100,
+    avg_downstream: 10,
+    max_downstream: 100,
+    max_bandwidth_as: undefined,
+    asn: undefined,
+    ip: undefined,
+    start_date: "",
+    end_date: undefined
+}
+
+export const DefaultServiceAddJPNICData: ServiceAddJPNICData = {
+    org: "",
+    org_en: "",
+    mail: "",
+    postcode: "",
+    address: "",
+    address_en: "",
+    name: "",
+    name_en: "",
+    dept_en: "",
+    dept: "",
+    country: "",
+    tel: "",
+    fax: "",
+}
+
+export const DefaultServiceAddIPv4PlanData: ServiceAddIPv4PlanData= {
+    name: "",
+    after: 0,
+    half_year: 0,
+    one_year: 0,
+}

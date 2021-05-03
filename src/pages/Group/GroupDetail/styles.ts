@@ -8,8 +8,14 @@ export default makeStyles(theme => ({
             margin: theme.spacing(1),
             marginBottom: 20,
         },
+        formVeryTooShort: {
+            width: '10ch',
+            marginRight: 5,
+            marginBottom: 10,
+        },
         formVeryShort: {
             width: '20ch',
+            marginRight: 5,
             marginBottom: 10,
         },
         formVeryShort1: {
@@ -20,15 +26,18 @@ export default makeStyles(theme => ({
         formShort: {
             width: '30ch',
             marginBottom: 10,
+            marginRight: 5,
         },
         formMedium: {
             width: '35ch',
             marginBottom: 10,
+            marginRight: 5,
         },
         formLong: {
             "@media screen and (min-width:781px)": {
                 width: '60ch',
                 marginBottom: 10,
+                marginRight: 5,
             }
         },
         heading: {
@@ -59,6 +68,9 @@ export default makeStyles(theme => ({
         },
         spaceLeft: {
             marginLeft: 5,
+        },
+        spaceRight: {
+            marginRight: 5,
         },
         spaceTop: {
             marginTop: 5,

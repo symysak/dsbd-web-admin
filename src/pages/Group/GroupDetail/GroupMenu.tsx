@@ -172,8 +172,7 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
     }
 }
 
-export function GroupAbolition(props: { data: GroupDetailData }): any {
-    const {data} = props;
+export function GroupAbolition(): any {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 

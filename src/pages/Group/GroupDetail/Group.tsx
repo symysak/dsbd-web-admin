@@ -1,5 +1,5 @@
 import useStyles from "./styles";
-import {GroupDetailData} from "../../../interface";
+import {GroupDetailData, TemplateData} from "../../../interface";
 import {
     Accordion, AccordionDetails, AccordionSummary,
     Button, Card,
@@ -12,6 +12,7 @@ import {GroupFee, GroupStatusStr, GroupStudent} from "../../../components/Dashbo
 import {GroupAbolition, GroupLockButton, GroupStatusButton} from "./GroupMenu";
 import {Put} from "../../../api/Group";
 import {useSnackbar} from "notistack";
+import ServiceAddDialogs from "./ServiceAdd";
 
 function ChipAgree(props: { agree: boolean }) {
     const {agree} = props;
@@ -34,17 +35,21 @@ function ChipAgree(props: { agree: boolean }) {
     }
 }
 
-export function GroupProfileInfo(props: { data: GroupDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
-    const {data, reload} = props;
+export function GroupProfileInfo(props: {
+    data: GroupDetailData,
+    template: TemplateData,
+    reload: Dispatch<SetStateAction<boolean>>
+}): any {
+    const {data, template, reload} = props;
     const classes = useStyles();
     const [lockPersonalInformation, setLockPersonalInformation] = React.useState(true);
     const [group, setGroup] = useState(data);
+    const [openAddService, setOpenAddService] = React.useState(false);
+    const {enqueueSnackbar} = useSnackbar();
 
     const clickPersonalInfoLock = () => {
         setLockPersonalInformation(!lockPersonalInformation);
     }
-    const {enqueueSnackbar} = useSnackbar();
-
 
     // Update Group Information
     const updateGroupInfo = () => {
@@ -203,10 +208,15 @@ export function GroupProfileInfo(props: { data: GroupDetailData, reload: Dispatc
                     </AccordionDetails>
                 </Accordion>
                 <br/>
-                <Button size="small" variant="contained" color="primary" >サービス情報の追加</Button>
-                <Button size="small" variant="contained" color="primary" className={classes.spaceLeft}>接続情報の追加</Button>
+                <Button size="small" variant="contained" color="primary" className={classes.spaceRight}
+                        onClick={() => setOpenAddService(true)}>
+                    Service情報の追加
+                </Button>
+                <Button size="small" variant="contained" color="primary">接続情報の追加</Button>
                 <br/>
                 <Button size="small" className={classes.spaceTop}>メール送信</Button>
+                <ServiceAddDialogs key={"service_add_dialogs"} template={template} open={openAddService}
+                                   setOpen={setOpenAddService} reload={reload}/>
             </CardContent>
         </Card>
     )
@@ -220,9 +230,9 @@ export function GroupMainMenu(props: { data: GroupDetailData, reload: Dispatch<S
         <Card className={classes.root}>
             <CardContent>
                 <h3>Menu</h3>
-                <GroupStatusButton data={data} reload={reload}/>
-                <GroupLockButton data={data} reload={reload}/>
-                <GroupAbolition data={data}/>
+                <GroupStatusButton key={"group_status_button"} data={data} reload={reload}/>
+                <GroupLockButton key={"group_lock_button"} data={data} reload={reload}/>
+                <GroupAbolition key={"group_abolition"}/>
             </CardContent>
         </Card>
     )
