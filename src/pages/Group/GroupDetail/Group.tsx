@@ -13,6 +13,7 @@ import {GroupAbolition, GroupLockButton, GroupStatusButton} from "./GroupMenu";
 import {Put} from "../../../api/Group";
 import {useSnackbar} from "notistack";
 import ServiceAddDialogs from "./ServiceAdd";
+import ConnectionAddDialogs from "./ConnectionAdd/ConnectionAdd";
 
 function ChipAgree(props: { agree: boolean }) {
     const {agree} = props;
@@ -45,6 +46,7 @@ export function GroupProfileInfo(props: {
     const [lockPersonalInformation, setLockPersonalInformation] = React.useState(true);
     const [group, setGroup] = useState(data);
     const [openAddService, setOpenAddService] = React.useState(false);
+    const [openAddConnection, setOpenAddConnection] = React.useState(false);
     const {enqueueSnackbar} = useSnackbar();
 
     const clickPersonalInfoLock = () => {
@@ -212,11 +214,14 @@ export function GroupProfileInfo(props: {
                         onClick={() => setOpenAddService(true)}>
                     Service情報の追加
                 </Button>
-                <Button size="small" variant="contained" color="primary">接続情報の追加</Button>
+                <Button size="small" variant="contained" color="primary"
+                        onClick={() => setOpenAddConnection(true)}>接続情報の追加</Button>
                 <br/>
                 <Button size="small" className={classes.spaceTop}>メール送信</Button>
                 <ServiceAddDialogs key={"service_add_dialogs"} template={template} open={openAddService}
                                    setOpen={setOpenAddService} reload={reload}/>
+                <ConnectionAddDialogs key={"connection_add_dialogs"} baseData={data} template={template}
+                                      open={openAddConnection} setOpen={setOpenAddConnection} reload={reload}/>
             </CardContent>
         </Card>
     )

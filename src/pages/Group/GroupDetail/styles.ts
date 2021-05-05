@@ -72,6 +72,10 @@ export default makeStyles(theme => ({
         spaceRight: {
             marginRight: 5,
         },
+        formSelect: {
+            margin: theme.spacing(1),
+            minWidth: 200,
+        },
         spaceTop: {
             marginTop: 5,
         },
