@@ -211,6 +211,8 @@ export interface ConnectionTemplateData {
     need_comment: boolean
     need_cross_connect: boolean
     need_internet: boolean
+    l2: boolean
+    l3: boolean
 }
 
 export interface GroupDetailData {
@@ -305,6 +307,16 @@ export interface ServiceAddIPv4PlanData {
     one_year: number,
 }
 
+export interface ConnectionAddData {
+    address: string,
+    connection_template_id: number,
+    connection_comment: string,
+    ntt_template_id: number,
+    noc_id: number,
+    term_ip: string,
+    monitor: boolean
+}
+
 export const DefaultTemplateData: TemplateData = {
     bgp_router: undefined,
     connections: undefined,
@@ -386,9 +398,19 @@ export const DefaultServiceAddJPNICData: ServiceAddJPNICData = {
     fax: "",
 }
 
-export const DefaultServiceAddIPv4PlanData: ServiceAddIPv4PlanData= {
+export const DefaultServiceAddIPv4PlanData: ServiceAddIPv4PlanData = {
     name: "",
     after: 0,
     half_year: 0,
     one_year: 0,
+}
+
+export const DefaultConnectionAddData: ConnectionAddData = {
+    address: "",
+    connection_template_id: 0,
+    connection_comment: "",
+    ntt_template_id: 0,
+    noc_id: 0,
+    term_ip: "",
+    monitor: false
 }
