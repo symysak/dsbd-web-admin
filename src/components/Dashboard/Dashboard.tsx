@@ -80,6 +80,9 @@ export default function Dashboard(props: any) {
     const SupportPage = () => {
         history.push("/dashboard/support");
     }
+    const ServicePage = () => {
+        history.push("/dashboard/service");
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -171,7 +174,7 @@ export default function Dashboard(props: any) {
                                 <ListItemIcon>
                                     <ClassIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Service"/>
+                                <ListItemText primary="Service" onClick={ServicePage}/>
                             </ListItem>
                             <ListItem button className={classesMenu.nested}>
                                 <ListItemIcon>

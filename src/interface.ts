@@ -484,3 +484,45 @@ export const DefaultNoticeData: NoticeData = {
 }
 
 export const DefaultNoticeDataArray: NoticeData[] = [DefaultNoticeData]
+
+export const DefaultServiceDetailData: ServiceDetailData = {
+    ID: 0,
+    CreatedAt: "",
+    UpdatedAt: "",
+    group_id: 0,
+    open: false,
+    asn: 0,
+    fee: 0,
+    org: "",
+    org_en: "",
+    postcode: "",
+    address: "",
+    address_en: "",
+    route_v4: "",
+    route_v6: "",
+    avg_downstream: 0,
+    avg_upstream: 0,
+    max_downstream: 0,
+    max_upstream: 0,
+    max_bandwidth_as: 0,
+    service_number: 0,
+    lock: false,
+    add_allow: false,
+    ip: undefined,
+    jpnic_admin: undefined,
+    jpnic_tech: undefined,
+    service_template: {
+        ID: 0,
+        name: "",
+        comment: "",
+        hidden: false,
+        type: "",
+        need_comment: false,
+        need_global_as: false,
+        need_jpnic: false,
+        need_route: false
+    },
+    connections: undefined
+}
+
+export const DefaultServiceDetailDataArray: ServiceDetailData[] = [DefaultServiceDetailData]

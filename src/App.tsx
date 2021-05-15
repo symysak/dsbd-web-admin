@@ -11,6 +11,7 @@ import Order from "./pages/Order/Order";
 import GroupDetail from './pages/Group/GroupDetail/GroupDetail';
 import SupportDetail from "./pages/Support/SupportDetail/SupportDetail";
 import Support from "./pages/Support/Support";
+import Service from "./pages/Service/Service";
 
 export default class App extends React.Component {
     render() {
@@ -27,6 +28,7 @@ export default class App extends React.Component {
                     <Route exact path="/dashboard/support" component={Support}/>
                     <Route exact path="/dashboard/support/:id" component={SupportDetail}/>
                     <Route exact path="/dashboard/order" component={Order}/>
+                    <Route exact path="/dashboard/service" component={Service}/>
                 </Switch>
             </BrowserRouter>
         );
