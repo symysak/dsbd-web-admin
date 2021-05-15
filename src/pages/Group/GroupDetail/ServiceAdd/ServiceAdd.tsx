@@ -22,12 +22,12 @@ import {
     ServiceAddData,
     ServiceAddIPData, ServiceAddIPv4PlanData, ServiceAddJPNICData,
     TemplateData,
-} from "../../../interface";
+} from "../../../../interface";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import useStyles from "./styles";
+import useStyles from "../styles";
 import DateFnsUtils from "@date-io/date-fns";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {Paper} from "@material-ui/core";

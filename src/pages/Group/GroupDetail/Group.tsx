@@ -12,7 +12,7 @@ import {GroupFee, GroupStatusStr, GroupStudent} from "../../../components/Dashbo
 import {GroupAbolition, GroupLockButton, GroupStatusButton} from "./GroupMenu";
 import {Put} from "../../../api/Group";
 import {useSnackbar} from "notistack";
-import ServiceAddDialogs from "./ServiceAdd";
+import ServiceAddDialogs from "./ServiceAdd/ServiceAdd";
 import ConnectionAddDialogs from "./ConnectionAdd/ConnectionAdd";
 
 function ChipAgree(props: { agree: boolean }) {
