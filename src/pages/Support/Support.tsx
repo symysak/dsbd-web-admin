@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "./styles"
+import useStyles from "../Dashboard/styles"
 import {Button, Card, CardActions, CardContent, InputBase, Paper, Typography} from "@material-ui/core";
 import {GetAll} from "../../api/Support";
 import {useHistory} from "react-router-dom";
