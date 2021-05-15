@@ -1,7 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
 import useStyles from "../Dashboard/styles"
-import {Button, Card, CardActions, CardContent, InputBase, Paper, Typography} from "@material-ui/core";
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    FormControl, FormControlLabel,
+    InputBase,
+    Paper, Radio,
+    RadioGroup,
+    Typography
+} from "@material-ui/core";
 import {GetAll} from "../../api/Group";
 import {useHistory} from "react-router-dom";
 import {DefaultGroupDetailDataArray, GroupDetailData} from "../../interface";
@@ -14,6 +24,8 @@ export default function Group() {
     const [initGroups, setInitGroups] = useState(DefaultGroupDetailDataArray);
     const history = useHistory();
     const {enqueueSnackbar} = useSnackbar();
+    // 1:有効 2:無効
+    const [value, setValue] = React.useState(1);
 
     useEffect(() => {
         GetAll().then(res => {
@@ -26,6 +38,20 @@ export default function Group() {
             }
         })
     }, []);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(Number(event.target.value))
+    };
+
+    const checkGroup = (group: GroupDetailData) => {
+        if (value === 1) {
+            return group.expired_status === 0;
+        } else if (value === 2) {
+            return group.expired_status !== 0;
+        } else {
+            return true;
+        }
+    }
 
     const handleFilter = (search: string) => {
         let tmp: GroupDetailData[];
@@ -55,8 +81,14 @@ export default function Group() {
                     }}
                 />
             </Paper>
+            <FormControl component="fieldset">
+                <RadioGroup row aria-label="gender" name="open" value={value} onChange={handleChange}>
+                    <FormControlLabel value={1} control={<Radio color="primary"/>} label="有効"/>
+                    <FormControlLabel value={2} control={<Radio color="secondary"/>} label="無効"/>
+                </RadioGroup>
+            </FormControl>
             {
-                groups.map((group: GroupDetailData) => (
+                groups.filter(group => checkGroup(group)).map((group: GroupDetailData) => (
                     <Card className={classes.root}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
