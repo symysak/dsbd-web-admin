@@ -22,28 +22,34 @@ export default makeStyles(theme => ({
         formVeryShort: {
             width: '20ch',
             marginBottom: 10,
+            marginRight: 5,
         },
         formVeryShort1: {
             width: '20ch',
             marginBottom: 10,
-            marginLeft: 5
+            marginLeft: 5,
+            marginRight: 5,
         },
         formVeryVeryShort: {
             width: '10ch',
             marginBottom: 10,
+            marginRight: 5,
         },
         formShort: {
             width: '30ch',
             marginBottom: 10,
+            marginRight: 5,
         },
         formMedium: {
             width: '35ch',
             marginBottom: 10,
+            marginRight: 5,
         },
         formLong: {
             "@media screen and (min-width:781px)": {
                 width: '60ch',
                 marginBottom: 10,
+                marginRight: 5,
             }
         },
         heading: {
