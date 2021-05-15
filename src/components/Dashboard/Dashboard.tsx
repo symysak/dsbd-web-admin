@@ -89,6 +89,9 @@ export default function Dashboard(props: any) {
     const UserPage = () => {
         history.push("/dashboard/user");
     }
+    const TokenPage = () => {
+        history.push("/dashboard/token");
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -170,25 +173,25 @@ export default function Dashboard(props: any) {
                     </ListItem>
                     <Collapse in={openOther} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            <ListItem button className={classesMenu.nested}>
+                            <ListItem button className={classesMenu.nested} onClick={UserPage}>
                                 <ListItemIcon>
                                     <PersonIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="User" onClick={UserPage}/>
+                                <ListItemText primary="User"/>
                             </ListItem>
-                            <ListItem button className={classesMenu.nested}>
+                            <ListItem button className={classesMenu.nested} onClick={ServicePage}>
                                 <ListItemIcon>
                                     <ClassIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Service" onClick={ServicePage}/>
+                                <ListItemText primary="Service"/>
                             </ListItem>
-                            <ListItem button className={classesMenu.nested}>
+                            <ListItem button className={classesMenu.nested} onClick={ConnectionPage}>
                                 <ListItemIcon>
                                     <AccountTreeIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Connection" onClick={ConnectionPage}/>
+                                <ListItemText primary="Connection"/>
                             </ListItem>
-                            <ListItem button className={classesMenu.nested}>
+                            <ListItem button className={classesMenu.nested} onClick={TokenPage}>
                                 <ListItemIcon>
                                     <VpnKeyIcon/>
                                 </ListItemIcon>

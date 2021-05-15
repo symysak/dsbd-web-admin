@@ -14,6 +14,7 @@ import Support from "./pages/Support/Support";
 import Service from "./pages/Service/Service";
 import Connection from "./pages/Connection/Connection";
 import User from "./pages/User/User";
+import Token from "./pages/Token/Token";
 
 export default class App extends React.Component {
     render() {
@@ -33,6 +34,7 @@ export default class App extends React.Component {
                     <Route exact path="/dashboard/service" component={Service}/>
                     <Route exact path="/dashboard/connection" component={Connection}/>
                     <Route exact path="/dashboard/user" component={User}/>
+                    <Route exact path="/dashboard/token" component={Token}/>
                 </Switch>
             </BrowserRouter>
         );

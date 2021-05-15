@@ -30,7 +30,22 @@ export interface UserDetailData {
     name_en: string,
     notice?: NoticeData[],
     pass: string,
-    // tokens?:
+    tokens?: TokenDetailData[]
+}
+
+export interface TokenDetailData {
+    CreatedAt: string,
+    ID: number,
+    UpdatedAt: string,
+    access_token: string,
+    admin: boolean,
+    debug: string,
+    expired_at: string,
+    status: number,
+    tmp_token: string,
+    user?: UserDetailData,
+    user_id: number,
+    user_token: string,
 }
 
 export interface TicketDetailData {
@@ -593,5 +608,23 @@ export const DefaultUserDetailData: UserDetailData = {
     name_en: "",
     notice: undefined,
     pass: "",
+    tokens: undefined,
 }
 export const DefaultUserDetailDataArray: UserDetailData[] = [DefaultUserDetailData]
+
+export const DefaultTokenDetailData: TokenDetailData = {
+    CreatedAt: "",
+    ID: 0,
+    UpdatedAt: "",
+    access_token: "",
+    admin: false,
+    debug: "",
+    expired_at: "",
+    status: 0,
+    tmp_token: "",
+    user: undefined,
+    user_id: 0,
+    user_token: "",
+}
+
+export const DefaultTokenDetailDataArray : TokenDetailData[] = [DefaultTokenDetailData];
