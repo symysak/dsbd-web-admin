@@ -141,6 +141,7 @@ export interface ConnectionDetailData {
     noc_id: number,
     bgp_router_id: number,
     bgp_router?: BGPRouterDetailData,
+    service?: ServiceDetailData,
     connection_number: number,
     tunnel_endpoint_router_ip_id: number,
     ntt_template_id: number,
@@ -526,3 +527,44 @@ export const DefaultServiceDetailData: ServiceDetailData = {
 }
 
 export const DefaultServiceDetailDataArray: ServiceDetailData[] = [DefaultServiceDetailData]
+
+export const DefaultConnectionDetailData: ConnectionDetailData = {
+    ID: 0,
+    CreatedAt: "",
+    UpdatedAt: "",
+    address: "",
+    link_v4_our: "",
+    link_v4_your: "",
+    link_v6_our: "",
+    link_v6_your: "",
+    term_ip: "",
+    open: false,
+    monitor: false,
+    noc: undefined,
+    noc_id: 0,
+    bgp_router_id: 0,
+    bgp_router: undefined,
+    connection_number: 0,
+    tunnel_endpoint_router_ip_id: 0,
+    ntt_template_id: 0,
+    ntt_template: undefined,
+    service: undefined,
+    connection_template: {
+        CreatedAt: "",
+        DeletedAt: "",
+        ID: 0,
+        UpdatedAt: "",
+        name: "",
+        type: "",
+        comment: "",
+        need_comment: false,
+        need_cross_connect: false,
+        need_internet: false,
+        l2: false,
+        l3: false
+    },
+    tunnel_endpoint_router_ip: undefined
+}
+
+export const DefaultConnectionDetailDataArray: ConnectionDetailData[] = [DefaultConnectionDetailData]
+

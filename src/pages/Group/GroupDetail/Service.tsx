@@ -74,7 +74,7 @@ function RowConnection(props: {
             </TableCell>
             <TableCell align="right">
                 <Box display="flex" justifyContent="flex-end">
-                    <ConnectionGetDialogs key={"connection_get_dialog"} connection={connection} service={service}
+                    <ConnectionGetDialogs key={"connection_get_dialog"} connection={connection}
                                           template={template} reload={reload}/>
                 </Box>
             </TableCell>

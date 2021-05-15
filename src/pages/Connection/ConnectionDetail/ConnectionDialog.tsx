@@ -9,7 +9,6 @@ import {
 import {
     BGPRouterDetailData,
     ConnectionDetailData,
-    ServiceDetailData,
     TemplateData, TunnelEndPointRouterIPTemplateData
 } from "../../../interface";
 import classes from "./ConnectionDialog.module.scss";
@@ -20,11 +19,10 @@ import {Open} from "../../../components/Dashboard/Open/Open";
 
 export default function ConnectionGetDialogs(props: {
     connection: ConnectionDetailData,
-    service: ServiceDetailData,
     template: TemplateData,
     reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {connection, service, template, reload} = props
+    const {connection, template, reload} = props
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -51,18 +49,17 @@ export default function ConnectionGetDialogs(props: {
                 <DialogContent dividers>
                     <Grid container spacing={3}>
                         <Grid item xs={3}>
-                            <ConnectionStatus key={"connectionStatus"} service={service} connection={connection}/>
+                            <ConnectionStatus key={"connectionStatus"} connection={connection}/>
                         </Grid>
                         <Grid item xs={3}>
                             <ConnectionEtc key={"connectionETC"} connection={connection}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <ConnectionOpen key={"connectionOpen"} connection={connection} service={service}
-                                            template={template} reload={reload}/>
+                            <ConnectionOpen key={"connection_open"} connection={connection}
+                                            template={template} setReload={reload}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <ConnectionUserDisplay key={"connection_user_display"} connection={connection}
-                                                   service={service}/>
+                            <ConnectionUserDisplay key={"connection_user_display"} connection={connection}/>
                         </Grid>
                     </Grid>
                 </DialogContent>
@@ -119,11 +116,10 @@ export function ConnectionOpenButton(props: {
 
 export function ConnectionOpen(props: {
     connection: ConnectionDetailData,
-    service: ServiceDetailData,
     template: TemplateData,
-    reload: Dispatch<SetStateAction<boolean>>
+    setReload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {connection, service, template, reload} = props
+    const {connection, template, setReload} = props
     const [connectionCopy, setConnectionCopy] = useState(connection);
     const [lock, setLock] = React.useState(true);
     const classes = useStyles();
@@ -142,16 +138,15 @@ export function ConnectionOpen(props: {
             <Card className={classes.root}>
                 <CardContent>
                     <br/>
-                    <ConnectionOpenL3User key={"OpenL3User"} connection={connectionCopy}
-                                          setConnection={setConnectionCopy}
-                                          service={service} lock={lock}/>
+                    <ConnectionOpenL3User key={"connection_open_l3_user"} connection={connectionCopy}
+                                          setConnection={setConnectionCopy} lock={lock}/>
                     <ConnectionOpenVPN key={"Open_VPN"} connection={connectionCopy} setConnection={setConnectionCopy}
                                        lock={lock}/>
                     <FormControl variant="outlined" className={classes.formMedium}>
-                        <InputLabel id="demo-simple-select-outlined-label">BGP Router</InputLabel>
+                        <InputLabel id="bgp_router_input">BGP Router</InputLabel>
                         <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
+                            labelId="bgp_router_hostname"
+                            id="bgp_router_hostname"
                             label="BGP Router"
                             value={connectionCopy.bgp_router_id}
                             onChange={(event) =>
@@ -165,7 +160,7 @@ export function ConnectionOpen(props: {
                             <MenuItem value={0}>なし(初期値)</MenuItem>
                             {
                                 template.bgp_router?.map((row: BGPRouterDetailData) => (
-                                        <MenuItem value={row.ID}>{row.hostname}</MenuItem>
+                                        <MenuItem key={row.ID + row.hostname} value={row.ID}>{row.hostname}</MenuItem>
                                     )
                                 )
                             }
@@ -173,10 +168,10 @@ export function ConnectionOpen(props: {
                     </FormControl>
                     <br/>
                     <FormControl variant="outlined" className={classes.formLong}>
-                        <InputLabel id="demo-simple-select-outlined-label">Tunnel EndPoint Router IP</InputLabel>
+                        <InputLabel id="tunnel_endpoint_router_ip_input">Tunnel EndPoint Router IP</InputLabel>
                         <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
+                            labelId="tunnel_endpoint_router_ip"
+                            id="tunnel_endpoint_router_ip"
                             label="Tunnel EndPoint Router IP"
                             value={connectionCopy.tunnel_endpoint_router_ip_id}
                             onChange={(event) =>
@@ -194,7 +189,7 @@ export function ConnectionOpen(props: {
                             {
                                 template.tunnel_endpoint_router_ip?.map(
                                     (row: TunnelEndPointRouterIPTemplateData) => (
-                                        <MenuItem value={row.ID}>
+                                        <MenuItem key={row.ID + row.ip} value={row.ID}>
                                             {row.tunnel_endpoint_router.hostname}<b>({row.ip})</b>
                                         </MenuItem>
                                     )
@@ -205,7 +200,8 @@ export function ConnectionOpen(props: {
                     <br/>
                     <Button size="small" color="secondary" disabled={!lock} onClick={clickLockInfo}>ロック解除</Button>
                     <Button size="small" disabled={lock} onClick={resetAction}>Reset</Button>
-                    <ConnectionOpenButton connection={connectionCopy} lock={lock} reload={reload}/>
+                    <ConnectionOpenButton key={"connection_open_button"} connection={connectionCopy} lock={lock}
+                                          reload={setReload}/>
                 </CardContent>
             </Card>
         </div>
@@ -248,13 +244,12 @@ export function ConnectionOpenVPN(props: {
 export function ConnectionOpenL3User(props: {
     connection: ConnectionDetailData,
     setConnection: Dispatch<SetStateAction<ConnectionDetailData>>,
-    service: ServiceDetailData,
     lock: boolean,
 }) {
-    const {connection, service, setConnection, lock} = props
+    const {connection, setConnection, lock} = props
     const classes = useStyles();
 
-    if (!service.service_template.need_route) {
+    if (connection.service === undefined || !connection.service.service_template.need_route) {
         return null
     } else {
         return (
@@ -321,11 +316,12 @@ export function ConnectionOpenL3User(props: {
     }
 }
 
-export function ConnectionStatus(props: { service: ServiceDetailData, connection: ConnectionDetailData }): any {
+export function ConnectionStatus(props: { connection: ConnectionDetailData }): any {
     const classes = useStyles();
-    const {service, connection} = props;
-    const serviceCode = service.group_id + "-" + service.service_template.type + ('000' + service.service_number).slice(-3) +
-        "-" + connection.connection_template.type + ('000' + connection.connection_number).slice(-3);
+    const {connection} = props;
+    const serviceCode = connection.service?.group_id + "-" + connection.service?.service_template.type +
+        ('000' + connection.service?.service_number).slice(-3) + "-" +
+        connection.connection_template.type + ('000' + connection.connection_number).slice(-3);
     const createDate = "作成日: " + connection.CreatedAt;
     const updateDate = "更新日: " + connection.UpdatedAt;
 
@@ -442,8 +438,8 @@ export function ConnectionMonitorDisplay(props: { monitor: boolean }) {
     }
 }
 
-export function ConnectionUserDisplay(props: { connection: ConnectionDetailData, service: ServiceDetailData }) {
-    const {connection, service} = props
+export function ConnectionUserDisplay(props: { connection: ConnectionDetailData }) {
+    const {connection} = props
 
     const distinctionIPAssign = (our: boolean) => {
         if (our) {
@@ -492,11 +488,16 @@ export function ConnectionUserDisplay(props: { connection: ConnectionDetailData,
                         </tr>
                         <tr>
                             <th>利用料金</th>
-                            {getFee(service.fee)}
+                            {
+                                connection.service !== undefined && getFee(connection.service.fee)
+                            }
                         </tr>
                         <tr>
                             <th>当団体からのIPアドレスの割当</th>
-                            {distinctionIPAssign(service.service_template.need_jpnic)}
+                            {
+                                connection.service !== undefined &&
+                                distinctionIPAssign(connection.service.service_template.need_jpnic)
+                            }
                         </tr>
                         </thead>
                     </table>
