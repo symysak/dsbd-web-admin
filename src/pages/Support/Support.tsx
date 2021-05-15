@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
 import useStyles from "../Dashboard/styles"
-import {Button, Card, CardActions, CardContent, InputBase, Paper, Typography} from "@material-ui/core";
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    FormControl, FormControlLabel,
+    InputBase,
+    Paper, Radio, RadioGroup,
+    Typography
+} from "@material-ui/core";
 import {GetAll} from "../../api/Support";
 import {useHistory} from "react-router-dom";
 import {DefaultTicketDataArray, TicketDetailData} from "../../interface";
@@ -15,6 +24,7 @@ export default function Support() {
     const [initTickets, setInitTickets] = useState(DefaultTicketDataArray);
     const history = useHistory();
     const {enqueueSnackbar} = useSnackbar();
+    const [value, setValue] = React.useState(false);
 
     useEffect(() => {
         GetAll().then(res => {
@@ -27,6 +37,10 @@ export default function Support() {
             }
         })
     }, []);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(event.target.value === "true")
+    };
 
     const handleFilter = (search: string) => {
         let tmp: TicketDetailData[];
@@ -56,8 +70,14 @@ export default function Support() {
                     }}
                 />
             </Paper>
+            <FormControl component="fieldset">
+                <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+                    <FormControlLabel value={false} control={<Radio color="primary"/>} label="未解決"/>
+                    <FormControlLabel value={true} control={<Radio color="primary"/>} label="解決済"/>
+                </RadioGroup>
+            </FormControl>
             {
-                tickets.map((ticket: TicketDetailData, index) => (
+                tickets.filter(ticket => ticket.solved === value).map((ticket: TicketDetailData, index) => (
                     <Card className={classes.root}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
