@@ -31,7 +31,7 @@ export function GetAll(): Promise<{ error: string, data: any }> {
     }).then(res => {
         return {
             error: "",
-            data: res.data.service
+            data: res.data.connection
         };
     }).catch(err => {
         console.log(err);
