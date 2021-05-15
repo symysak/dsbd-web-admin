@@ -13,7 +13,6 @@ import {
     Typography
 } from "@material-ui/core";
 import {GetAll} from "../../api/Service";
-import {useHistory} from "react-router-dom";
 import {DefaultServiceDetailDataArray, ServiceDetailData} from "../../interface";
 import {useSnackbar} from "notistack";
 import ServiceGetDialogs from "./ServiceDetail/ServiceDialog";
@@ -23,9 +22,10 @@ export default function Service() {
     const classes = useStyles();
     const [services, setServices] = useState(DefaultServiceDetailDataArray);
     const [initServices, setInitServices] = useState(DefaultServiceDetailDataArray);
-    const history = useHistory();
     const [reload, setReload] = useState(true)
     const {enqueueSnackbar} = useSnackbar();
+    // 1:開通 2:未開通
+    const [value, setValue] = React.useState(1);
 
     useEffect(() => {
         if (reload) {
@@ -46,6 +46,20 @@ export default function Service() {
         return groupID + "-" + type + ('000' + serviceNumber).slice(-3)
     }
 
+    const checkConnection = (service: ServiceDetailData) => {
+        if (value === 1) {
+            return service.open
+        } else if (value === 2) {
+            return !service.open
+        } else {
+            return true;
+        }
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(Number(event.target.value))
+    };
+
     const handleFilter = (search: string) => {
         let tmp: ServiceDetailData[];
         if (search === "") {
@@ -59,10 +73,6 @@ export default function Service() {
         setServices(tmp);
     };
 
-    const clickDetailPage = (id: number) => {
-        // history.push('/dashboard/support/' + id);
-    }
-
     return (
         <Dashboard title="Service Info">
             <Paper component="form" className={classes.rootInput}>
@@ -75,9 +85,15 @@ export default function Service() {
                     }}
                 />
             </Paper>
+            <FormControl component="fieldset">
+                <RadioGroup row aria-label="gender" name="open" value={value} onChange={handleChange}>
+                    <FormControlLabel value={1} control={<Radio color="primary"/>} label="開通"/>
+                    <FormControlLabel value={2} control={<Radio color="secondary"/>} label="未開通"/>
+                </RadioGroup>
+            </FormControl>
             {
-                services.map((service: ServiceDetailData) => (
-                    <Card className={classes.root}>
+                services.filter(service => checkConnection(service)).map((service: ServiceDetailData) => (
+                    <Card key={service.ID} className={classes.root}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
                                 ID: {service.ID}
@@ -85,8 +101,6 @@ export default function Service() {
                             <Typography variant="h5" component="h2">
                                 {serviceCode(service.group_id, service.service_template.type, service.service_number)}
                             </Typography>
-                            <br/>
-                            {/*Group: {service.gr?.org}({service.group?.org_en})*/}
                         </CardContent>
                         <CardActions>
                             <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={setReload}/>
