@@ -34,7 +34,7 @@ export default function SupportDetail() {
             if (res.error === "") {
                 console.log(res.data);
                 setBaseChatData([]);
-                let tmpChat = baseChatData
+                let tmpChat = []
 
                 for (const tmp of res.data.chat) {
                     let userName = "管理者";
