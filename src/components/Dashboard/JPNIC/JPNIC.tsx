@@ -1,7 +1,7 @@
 import {Button, TextField} from "@material-ui/core";
 import React, {Dispatch, SetStateAction, useState} from "react";
 import {JPNICData} from "../../../interface";
-import useStyles from "../../../pages/Service/styles";
+import useStyles from "../../../pages/Service/ServiceDetail/styles";
 import {useSnackbar} from "notistack";
 import {PutJPNICAdmin, PutJPNICTech} from "../../../api/Service";
 

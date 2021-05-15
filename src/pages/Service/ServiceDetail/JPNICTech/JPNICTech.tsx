@@ -1,4 +1,4 @@
-import {JPNICData} from "../../../interface";
+import {JPNICData} from "../../../../interface";
 import React, {Dispatch, SetStateAction} from "react";
 import useStyles from "../styles";
 import {
@@ -14,8 +14,8 @@ import {
 } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import cssModule from "../../Connection/ConnectionDialog.module.scss";
-import {JPNICDetail} from "../../../components/Dashboard/JPNIC/JPNIC";
+import cssModule from "../../../Connection/ConnectionDialog.module.scss";
+import {JPNICDetail} from "../../../../components/Dashboard/JPNIC/JPNIC";
 
 export function ServiceJPNICTechBase(props: {
     serviceID: number,

@@ -9,13 +9,13 @@ import {
     Grid,
     TextField,
 } from "@material-ui/core";
-import cssModule from "../Connection/ConnectionDialog.module.scss";
-import {ServiceDetailData} from "../../interface";
+import cssModule from "../../Connection/ConnectionDialog.module.scss";
+import {ServiceDetailData} from "../../../interface";
 import useStyles from "./styles";
 import {ServiceAddAllowButton, ServiceLockButton} from "./ServiceMenu";
 import {useSnackbar} from "notistack";
-import {Put} from "../../api/Service";
-import {Open} from "../../components/Dashboard/Open/Open";
+import {Put} from "../../../api/Service";
+import {Open} from "../../../components/Dashboard/Open/Open";
 import {ServiceJPNICTechBase} from "./JPNICTech/JPNICTech";
 import {ServiceJPNICAdminBase} from "./JPNICAdmin/JPNICAdmin";
 import {ServiceIPBase} from "./IP/IP";

@@ -1,4 +1,4 @@
-import {IPData, PlanData} from "../../../interface";
+import {IPData, PlanData} from "../../../../interface";
 import React, {Dispatch, SetStateAction, useState} from "react";
 import useStyles from "../styles";
 import {useSnackbar} from "notistack";
@@ -15,8 +15,8 @@ import {
 } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import {Enable} from "../../../components/Dashboard/Open/Open";
-import {PutIP, PutPlan} from "../../../api/Service";
+import {Enable} from "../../../../components/Dashboard/Open/Open";
+import {PutIP, PutPlan} from "../../../../api/Service";
 
 export function IPOpenButton(props: {
     ip: IPData,

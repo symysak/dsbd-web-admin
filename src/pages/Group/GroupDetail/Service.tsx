@@ -16,7 +16,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import ConnectionGetDialogs from "../../Connection/ConnectionDialog";
-import ServiceGetDialogs from "../../Service/ServiceDialog";
+import ServiceGetDialogs from "../../Service/ServiceDetail/ServiceDialog";
 
 const useRowStyles = makeStyles({
     root: {

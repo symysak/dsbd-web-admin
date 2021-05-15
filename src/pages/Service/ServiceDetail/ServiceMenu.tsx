@@ -2,8 +2,8 @@ import {Button} from "@material-ui/core";
 import React, {Dispatch, SetStateAction} from "react";
 import useStyles from "./styles";
 import {useSnackbar} from "notistack";
-import {ServiceDetailData} from "../../interface";
-import {Put} from "../../api/Service";
+import {ServiceDetailData} from "../../../interface";
+import {Put} from "../../../api/Service";
 
 export function ServiceAddAllowButton(props: { service: ServiceDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
     const {service, reload} = props;

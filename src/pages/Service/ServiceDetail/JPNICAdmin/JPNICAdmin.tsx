@@ -1,8 +1,8 @@
-import {JPNICData} from "../../../interface";
+import {JPNICData} from "../../../../interface";
 import React, {Dispatch, SetStateAction} from "react";
 import {Card, CardContent} from "@material-ui/core";
-import cssModule from "../../Connection/ConnectionDialog.module.scss";
-import {JPNICDetail} from "../../../components/Dashboard/JPNIC/JPNIC";
+import cssModule from "../../../Connection/ConnectionDialog.module.scss";
+import {JPNICDetail} from "../../../../components/Dashboard/JPNIC/JPNIC";
 
 export function ServiceJPNICAdminBase(props: {
     serviceID: number,
