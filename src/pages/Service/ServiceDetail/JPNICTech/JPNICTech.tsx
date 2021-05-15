@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import cssModule from "../../../Connection/ConnectionDialog.module.scss";
+import cssModule from "../../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
 import {JPNICDetail} from "../../../../components/Dashboard/JPNIC/JPNIC";
 
 export function ServiceJPNICTechBase(props: {

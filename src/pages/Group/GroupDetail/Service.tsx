@@ -15,7 +15,7 @@ import React, {Dispatch, SetStateAction} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import ConnectionGetDialogs from "../../Connection/ConnectionDialog";
+import ConnectionGetDialogs from "../../Connection/ConnectionDetail/ConnectionDialog";
 import ServiceGetDialogs from "../../Service/ServiceDetail/ServiceDialog";
 
 const useRowStyles = makeStyles({

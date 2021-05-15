@@ -9,7 +9,7 @@ import {
     Grid,
     TextField,
 } from "@material-ui/core";
-import cssModule from "../../Connection/ConnectionDialog.module.scss";
+import cssModule from "../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
 import {ServiceDetailData} from "../../../interface";
 import useStyles from "./styles";
 import {ServiceAddAllowButton, ServiceLockButton} from "./ServiceMenu";

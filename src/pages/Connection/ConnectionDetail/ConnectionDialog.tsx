@@ -11,12 +11,12 @@ import {
     ConnectionDetailData,
     ServiceDetailData,
     TemplateData, TunnelEndPointRouterIPTemplateData
-} from "../../interface";
+} from "../../../interface";
 import classes from "./ConnectionDialog.module.scss";
 import {useSnackbar} from "notistack";
-import {Update} from "../../api/Connection";
+import {Update} from "../../../api/Connection";
 import useStyles from "./styles";
-import {Open} from "../../components/Dashboard/Open/Open";
+import {Open} from "../../../components/Dashboard/Open/Open";
 
 export default function ConnectionGetDialogs(props: {
     connection: ConnectionDetailData,
