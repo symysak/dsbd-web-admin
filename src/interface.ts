@@ -6,8 +6,13 @@ export interface UserDetailData {
 
 export interface TicketDetailData {
     ID: number,
+    CreatedAt: string,
+    UpdatedAt: string,
     solved: boolean,
     title: string,
+    chat?: ChatData[],
+    user?: UserDetailData,
+    group?: GroupDetailData,
 }
 
 export interface ServiceDetailData {
@@ -317,6 +322,13 @@ export interface ConnectionAddData {
     monitor: boolean
 }
 
+export interface ChatData {
+    time: string,
+    data: string,
+    user_name: string,
+    admin: boolean,
+}
+
 export const DefaultTemplateData: TemplateData = {
     bgp_router: undefined,
     connections: undefined,
@@ -414,3 +426,25 @@ export const DefaultConnectionAddData: ConnectionAddData = {
     term_ip: "",
     monitor: false
 }
+
+export const DefaultChatData: ChatData = {
+    time: "",
+    data: "",
+    user_name: "",
+    admin: false,
+}
+
+export const DefaultChatDataArray: ChatData[] = [DefaultChatData]
+
+export const DefaultTicketData: TicketDetailData = {
+    ID: 0,
+    CreatedAt: "",
+    UpdatedAt: "",
+    solved: false,
+    title: "",
+    chat: undefined,
+    user: undefined,
+    group: undefined,
+}
+
+export const DefaultTicketDataArray: TicketDetailData[] = [DefaultTicketData]

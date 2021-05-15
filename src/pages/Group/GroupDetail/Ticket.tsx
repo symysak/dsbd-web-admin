@@ -12,10 +12,17 @@ import {
     Toolbar, Typography
 } from "@material-ui/core";
 import React from "react";
+import {useHistory} from "react-router-dom";
+
 
 export default function Ticket(props: { data: GroupDetailData }): any {
     const {data} = props;
     const classes = useStyles();
+    const history = useHistory();
+
+    const clickDetailPage = (id: number) => {
+        history.push('/dashboard/support/' + id);
+    }
 
     if (data.tickets !== undefined) {
         return (
@@ -41,7 +48,7 @@ export default function Ticket(props: { data: GroupDetailData }): any {
                                 </TableCell>
                                 <TableCell align="left">{row.solved}</TableCell>
                                 <TableCell align="left">
-                                    <Button size="small" variant="outlined">
+                                    <Button size="small" variant="outlined" onClick={() => clickDetailPage(row.ID)}>
                                         Detail
                                     </Button>
                                 </TableCell>

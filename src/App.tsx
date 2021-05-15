@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Notice from './pages/Notice/Notice';
 import Order from "./pages/Order/Order";
 import GroupDetail from './pages/Group/GroupDetail/GroupDetail';
+import SupportDetail from "./pages/Support/SupportDetail/SupportDetail";
+import Support from "./pages/Support/Support";
 
 export default class App extends React.Component {
     render() {
@@ -22,6 +24,8 @@ export default class App extends React.Component {
                     <Route exact path="/dashboard/notice" component={Notice}/>
                     <Route exact path="/dashboard/group" component={Group}/>
                     <Route exact path="/dashboard/group/:id" component={GroupDetail}/>
+                    <Route exact path="/dashboard/support" component={Support}/>
+                    <Route exact path="/dashboard/support/:id" component={SupportDetail}/>
                     <Route exact path="/dashboard/order" component={Order}/>
                 </Switch>
             </BrowserRouter>

@@ -77,8 +77,8 @@ export default function Dashboard(props: any) {
     const OrderPage = () => {
         history.push("/dashboard/order");
     }
-    const ChatPage = () => {
-        history.push("/dashboard/chat");
+    const SupportPage = () => {
+        history.push("/dashboard/support");
     }
 
     return (
@@ -146,7 +146,7 @@ export default function Dashboard(props: any) {
                         </ListItemIcon>
                         <ListItemText primary="Orders"/>
                     </ListItem>
-                    <ListItem button onClick={ChatPage}>
+                    <ListItem button onClick={SupportPage}>
                         <ListItemIcon>
                             <ChatIcon/>
                         </ListItemIcon>
