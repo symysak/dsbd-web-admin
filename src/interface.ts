@@ -1,3 +1,20 @@
+export interface NoticeData {
+    ID: number,
+    CreatedAt: string,
+    UpdatedAt: string,
+    start_time: string
+    end_time: string
+    everyone: boolean
+    fault: boolean
+    important: boolean
+    info: boolean
+    title: string,
+    data: string,
+    group_id: number,
+    noc_id: number,
+    user_id: number
+}
+
 export interface UserDetailData {
     ID: number,
     name: string,
@@ -448,3 +465,22 @@ export const DefaultTicketData: TicketDetailData = {
 }
 
 export const DefaultTicketDataArray: TicketDetailData[] = [DefaultTicketData]
+
+export const DefaultNoticeData: NoticeData = {
+    CreatedAt: "",
+    ID: 0,
+    UpdatedAt: "",
+    data: "",
+    end_time: "",
+    everyone: false,
+    fault: false,
+    group_id: 0,
+    important: false,
+    info: false,
+    noc_id: 0,
+    start_time: "",
+    title: "",
+    user_id: 0
+}
+
+export const DefaultNoticeDataArray: NoticeData[] = [DefaultNoticeData]
