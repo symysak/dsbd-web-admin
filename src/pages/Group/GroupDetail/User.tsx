@@ -32,7 +32,7 @@ export default function User(props: { data: GroupDetailData }): any {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.data.users.map((row) => (
+                    {props.data.users?.map((row) => (
                         <TableRow key={row.ID}>
                             <TableCell component="th" scope="row">
                                 {row.ID}: {row.name}

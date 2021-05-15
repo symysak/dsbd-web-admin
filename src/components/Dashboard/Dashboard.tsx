@@ -86,6 +86,9 @@ export default function Dashboard(props: any) {
     const ConnectionPage = () => {
         history.push("/dashboard/connection");
     }
+    const UserPage = () => {
+        history.push("/dashboard/user");
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -171,7 +174,7 @@ export default function Dashboard(props: any) {
                                 <ListItemIcon>
                                     <PersonIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="User"/>
+                                <ListItemText primary="User" onClick={UserPage}/>
                             </ListItem>
                             <ListItem button className={classesMenu.nested}>
                                 <ListItemIcon>

@@ -16,9 +16,21 @@ export interface NoticeData {
 }
 
 export interface UserDetailData {
+    CreatedAt: string,
     ID: number,
-    name: string,
+    UpdatedAt: string,
     email: string,
+    expired_status: number,
+    group?: GroupDetailData
+    group_id: number,
+    level: number,
+    mail_token: string,
+    mail_verify: true,
+    name: string,
+    name_en: string,
+    notice?: NoticeData[],
+    pass: string,
+    // tokens?:
 }
 
 export interface TicketDetailData {
@@ -259,7 +271,7 @@ export interface GroupDetailData {
     student_expired: string,
     fee: number,
     lock: boolean,
-    users: UserDetailData[],
+    users?: UserDetailData[],
     tickets?: TicketDetailData[],
     services?: ServiceDetailData[]
 }
@@ -381,11 +393,7 @@ export const DefaultGroupDetailData: GroupDetailData = {
     student_expired: "",
     fee: 0,
     lock: false,
-    users: [{
-        ID: 0,
-        name: "",
-        email: "",
-    }],
+    users: undefined,
     tickets: undefined,
     services: undefined,
 };
@@ -570,3 +578,20 @@ export const DefaultConnectionDetailData: ConnectionDetailData = {
 
 export const DefaultConnectionDetailDataArray: ConnectionDetailData[] = [DefaultConnectionDetailData]
 
+export const DefaultUserDetailData: UserDetailData = {
+    CreatedAt: "",
+    ID: 0,
+    UpdatedAt: "",
+    email: "",
+    expired_status: 0,
+    group: undefined,
+    group_id: 0,
+    level: 0,
+    mail_token: "",
+    mail_verify: true,
+    name: "",
+    name_en: "",
+    notice: undefined,
+    pass: "",
+}
+export const DefaultUserDetailDataArray: UserDetailData[] = [DefaultUserDetailData]

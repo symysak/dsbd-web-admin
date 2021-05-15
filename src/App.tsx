@@ -13,6 +13,7 @@ import SupportDetail from "./pages/Support/SupportDetail/SupportDetail";
 import Support from "./pages/Support/Support";
 import Service from "./pages/Service/Service";
 import Connection from "./pages/Connection/Connection";
+import User from "./pages/User/User";
 
 export default class App extends React.Component {
     render() {
@@ -31,6 +32,7 @@ export default class App extends React.Component {
                     <Route exact path="/dashboard/order" component={Order}/>
                     <Route exact path="/dashboard/service" component={Service}/>
                     <Route exact path="/dashboard/connection" component={Connection}/>
+                    <Route exact path="/dashboard/user" component={User}/>
                 </Switch>
             </BrowserRouter>
         );
