@@ -6,40 +6,30 @@ import {
     DialogContent,
     DialogTitle, FormControlLabel,
     Grid,
-    TextField, useTheme,
+    TextField,
 } from "@material-ui/core";
-import Select from 'react-select';
 import {
-    DefaultNoticeRegisterData,
-    TemplateData,
+    NoticeData, TemplateData,
 } from "../../../interface";
-import useStyles, {GetSelectTheme} from "./styles";
+import useStyles from "./styles";
 import {KeyboardDateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import {Post} from "../../../api/Notice";
+import {Put} from "../../../api/Notice";
 import {useSnackbar} from "notistack";
 
-type OptionType = {
-    label: string
-    value: number
-}
-
-export default function NoticeAddDialogs(props: {
+export default function NoticeDetailDialogs(props: {
     template: TemplateData,
+    noticeData: NoticeData,
     setReload: Dispatch<SetStateAction<boolean>>
     reloadTemplate: boolean
 }) {
-    const {template, reloadTemplate, setReload} = props
+    const {noticeData, reloadTemplate, setReload} = props
     const [open, setOpen] = React.useState(false);
     const nowDate = new Date()
     const [checkBoxEndDatePermanent, setCheckBoxEndDatePermanent] = React.useState(false);
-    const [data, setData] = React.useState(DefaultNoticeRegisterData);
-    const [templateUser, setTemplateUser] = React.useState<OptionType[]>([]);
-    const [templateGroup, setTemplateGroup] = React.useState <OptionType[]>([]);
-    const [templateNOC, setTemplateNOC] = React.useState<OptionType[]>([]);
+    const [data, setData] = React.useState<NoticeData>(noticeData);
     const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
-    const tmpSelectTheme = GetSelectTheme(useTheme());
 
     useEffect(() => {
         setData({
@@ -47,26 +37,8 @@ export default function NoticeAddDialogs(props: {
                 '-' + ('00' + (nowDate.getDate())).slice(-2) + " " + nowDate.getHours() + ":" + nowDate.getMinutes() +
                 ":00"
         });
-        if (template.user !== undefined) {
-            let templateTmp: OptionType[] = []
-            for (const tmp of template.user) {
-                templateTmp.push({value: tmp.ID, label: tmp.name + "(" + tmp.name_en + ")"})
-            }
-            setTemplateUser(templateTmp);
-        }
-        if (template.group !== undefined) {
-            let templateTmp: OptionType[] = []
-            for (const tmp of template.group) {
-                templateTmp.push({value: tmp.ID, label: tmp.org + "(" + tmp.org_en + ")"})
-            }
-            setTemplateGroup(templateTmp);
-        }
-        if (template.nocs !== undefined) {
-            let templateTmp: OptionType[] = []
-            for (const tmp of template.nocs) {
-                templateTmp.push({value: tmp.ID, label: tmp.name})
-            }
-            setTemplateNOC(templateTmp);
+        if (noticeData.end_time === "9999-12-31T14:59:59Z") {
+            setCheckBoxEndDatePermanent(true);
         }
     }, [reloadTemplate]);
 
@@ -77,7 +49,6 @@ export default function NoticeAddDialogs(props: {
                     '-' + ('00' + (date.getDate())).slice(-2) + " " + ('00' + (date.getHours())).slice(-2) +
                     ":" + ('00' + (date.getMinutes())).slice(-2) + ":00"
             });
-            console.log()
         }
     };
 
@@ -94,7 +65,7 @@ export default function NoticeAddDialogs(props: {
     const handleEndDatePermanentCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCheckBoxEndDatePermanent(event.target.checked);
         if (event.target.checked) {
-            setData({...data, end_time: undefined});
+            setData({...data, end_time: ""});
         } else {
             setData({...data, end_time: ""});
         }
@@ -104,7 +75,7 @@ export default function NoticeAddDialogs(props: {
         console.log(data);
         const tmp = new Date(data.start_time);
         console.log(tmp);
-        Post(data).then(res => {
+        Put(noticeData.ID, data).then(res => {
             if (res.error === "") {
                 enqueueSnackbar("登録しました。", {variant: "success"});
             } else {
@@ -118,7 +89,7 @@ export default function NoticeAddDialogs(props: {
     return (
         <div>
             <Button size="small" variant="outlined" onClick={() => setOpen(true)}>
-                追加
+                Detail
             </Button>
             <Dialog onClose={() => setOpen(false)} fullScreen={true} aria-labelledby="customized-dialog-title"
                     open={open}
@@ -227,92 +198,14 @@ export default function NoticeAddDialogs(props: {
                         </Grid>
                         <Grid item xs={12}>
                             <h2>通知先</h2>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        color="primary"
-                                        value={data.everyone}
-                                        onChange={event => setData({...data, everyone: event.target.checked})}
-                                    />
-                                }
-                                label="全体に通知"
-                            />
-                            {
-                                !data.everyone && <div>
-                                    <div>優先度は<b>{"User > Group > NOC"}</b>の順に通知処理を行います。</div>
-                                    <br/>
-                                    <h3>ユーザ</h3>
-                                    <Select
-                                        isMulti
-                                        name="colors"
-                                        options={templateUser}
-                                        className="basic-multi-select"
-                                        classNamePrefix="user"
-                                        onChange={event => {
-                                            let tmpData: number[] = [];
-                                            for (const tmp of event) {
-                                                tmpData.push(tmp.value);
-                                            }
-                                            setData({...data, user_id: tmpData})
-                                        }}
-                                        theme={(theme) => ({
-                                            ...theme,
-                                            colors: {
-                                                ...tmpSelectTheme
-                                            },
-                                        })}
-                                    />
-                                    <h3>グループ</h3>
-                                    <Select
-                                        isMulti
-                                        name="colors"
-                                        options={templateGroup}
-                                        className="basic-multi-select"
-                                        classNamePrefix="group"
-                                        onChange={event => {
-                                            let tmpData: number[] = [];
-                                            for (const tmp of event) {
-                                                tmpData.push(tmp.value);
-                                            }
-                                            setData({...data, group_id: tmpData});
-                                        }}
-                                        theme={(theme) => ({
-                                            ...theme,
-                                            colors: {
-                                                ...tmpSelectTheme
-                                            },
-                                        })}
-                                    />
-                                    <h3>NOC</h3>
-                                    <Select
-                                        isMulti
-                                        name="colors"
-                                        options={templateNOC}
-                                        className="basic-multi-select"
-                                        classNamePrefix="noc"
-                                        onChange={event => {
-                                            let tmpData: number[] = [];
-                                            for (const tmp of event) {
-                                                tmpData.push(tmp.value);
-                                            }
-                                            setData({...data, noc_id: tmpData});
-                                        }}
-                                        theme={(theme) => ({
-                                            ...theme,
-                                            colors: {
-                                                ...tmpSelectTheme
-                                            },
-                                        })}
-                                    />
-                                </div>
-                            }
+                            <p>通知先を変更する場合は、該当通知を削除してから再追加してください。</p>
                         </Grid>
                         <Grid item xs={12}>
                             <h2>Option</h2>
                             <FormControlLabel
                                 control={<Checkbox
                                     color="secondary"
-                                    value={data.important}
+                                    checked={data.important}
                                     onChange={event => setData({...data, important: event.target.checked})}
                                 />}
                                 label="重要"
@@ -321,7 +214,7 @@ export default function NoticeAddDialogs(props: {
                             <FormControlLabel
                                 control={<Checkbox
                                     color="primary"
-                                    value={data.info}
+                                    checked={data.info}
                                     onChange={event => setData({...data, info: event.target.checked})}
                                 />}
                                 label="情報"
@@ -330,16 +223,12 @@ export default function NoticeAddDialogs(props: {
                             <FormControlLabel
                                 control={<Checkbox
                                     color="secondary"
-                                    value={data.fault}
+                                    checked={data.fault}
                                     onChange={event => setData({...data, fault: event.target.checked})}
                                 />}
                                 label="障害"
                                 labelPlacement="top"
                             />
-                        </Grid>
-                        <Grid item xs={6}>
-                        </Grid>
-                        <Grid item xs={6}>
                         </Grid>
                     </Grid>
                 </DialogContent>
@@ -348,7 +237,7 @@ export default function NoticeAddDialogs(props: {
                         Close
                     </Button>
                     <Button autoFocus onClick={() => request()} color="primary">
-                        登録
+                        更新
                     </Button>
                 </DialogActions>
             </Dialog>

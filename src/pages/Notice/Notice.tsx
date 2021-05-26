@@ -18,6 +18,7 @@ import {DefaultNoticeDataArray, DefaultTemplateData, NoticeData} from "../../int
 import {useSnackbar} from "notistack";
 import {GetTemplate} from "../../api/Group";
 import NoticeAddDialogs from "./NoticeAdd/NoticeAdd";
+import NoticeDetailDialogs from "./NoticeDetail/NoticeDetail";
 
 
 export default function Notice() {
@@ -80,10 +81,6 @@ export default function Notice() {
         setTickets(tmp);
     };
 
-    const clickDetailPage = (id: number) => {
-        history.push('/dashboard/support/' + id);
-    }
-
     const checkDate = (startTime: string, endTime: string) => {
         if (value === 1) {
             return toDate(startTime) > now
@@ -97,11 +94,10 @@ export default function Notice() {
     const getStringFromDate = (before: string): string => {
         let str = '無期限';
         if (!before.match(/9999-12-31/)) {
-            const dateNumberUTC = Date.parse(before);
-            const dateJST = new Date(dateNumberUTC + (9 * 60 * 60 * 1000));
-            str = dateJST.getFullYear() + '-' + ('0' + (1 + dateJST.getMonth())).slice(-2) + '-' +
-                ('0' + dateJST.getDate()).slice(-2) + ' ' + ('0' + dateJST.getHours()).slice(-2) + ':' +
-                ('0' + dateJST.getMinutes()).slice(-2) + ':' + ('0' + dateJST.getSeconds()).slice(-2);
+            let date = new Date(Date.parse(before));
+            str = date.getFullYear() + '-' + ('0' + (1 + date.getMonth())).slice(-2) + '-' +
+                ('0' + date.getDate()).slice(-2) + ' ' + ('0' + date.getHours()).slice(-2) + ':' +
+                ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
         }
         return str;
     }
@@ -143,7 +139,8 @@ export default function Notice() {
                             {notice.data}
                         </CardContent>
                         <CardActions>
-                            <Button size="small" onClick={() => clickDetailPage(notice.ID)}>Detail</Button>
+                            <NoticeDetailDialogs key={"notice_detail_dialogs"} setReload={setReload} template={template}
+                                                 reloadTemplate={true} noticeData={notice}/>
                         </CardActions>
                     </Card>
                 ))

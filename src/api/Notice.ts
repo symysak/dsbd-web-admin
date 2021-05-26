@@ -1,6 +1,6 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
-import {NoticeRegisterData} from "../interface";
+import {NoticeData, NoticeRegisterData} from "../interface";
 
 export function Post(data: NoticeRegisterData): Promise<{ error: string; data: any }> {
     return axios.post(restfulApiConfig.apiURL + "/notice", data, {
@@ -22,8 +22,8 @@ export function Post(data: NoticeRegisterData): Promise<{ error: string; data: a
     })
 }
 
-export function Put(id: number, data: NoticeRegisterData): Promise<{ error: string; data: any }> {
-    return axios.post(restfulApiConfig.apiURL + "/notice/" + id, data, {
+export function Put(id: number, data: NoticeData): Promise<{ error: string; data: any }> {
+    return axios.put(restfulApiConfig.apiURL + "/notice/" + id, data, {
         headers: {
             'Content-Type': 'application/json',
             ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
