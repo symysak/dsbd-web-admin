@@ -21,9 +21,10 @@ import {PutIP, PutPlan} from "../../../../api/Service";
 export function IPOpenButton(props: {
     ip: IPData,
     lockInfo: boolean,
+    setLockInfo: Dispatch<SetStateAction<boolean>>
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
-    const {ip, lockInfo, reload} = props;
+    const {ip, lockInfo, setLockInfo, reload} = props;
     const {enqueueSnackbar} = useSnackbar();
 
     // Update IP Information
@@ -38,6 +39,7 @@ export function IPOpenButton(props: {
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
+            setLockInfo(true);
             reload(true);
         })
     }
@@ -88,8 +90,6 @@ export function ServiceIP(props: {
     const {ip, serviceID, reload} = props;
     const classes = useStyles();
 
-    console.log(ip)
-
     return (
         <Card className={classes.rootTable}>
             <CardContent>
@@ -130,6 +130,7 @@ export function ServiceIPRow(props: {
     const classes = useStyles();
     const [lockInfo, setLockInfo] = React.useState(true);
     const [ipCopy, setIPCopy] = useState(ip);
+    const {enqueueSnackbar} = useSnackbar();
 
     const clickLockInfo = () => {
         setLockInfo(!lockInfo);
@@ -137,6 +138,21 @@ export function ServiceIPRow(props: {
     const resetAction = () => {
         setIPCopy(ip);
         setLockInfo(true);
+    }
+
+    const updateInfo = () => {
+        PutIP(ip).then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                enqueueSnackbar('Request Success', {variant: "success"});
+            } else {
+                console.log(res.error);
+                enqueueSnackbar(String(res.error), {variant: "error"});
+            }
+
+            setLockInfo(true);
+            reload(true);
+        })
     }
 
     return (
@@ -193,7 +209,8 @@ export function ServiceIPRow(props: {
                             <Button size="small" color="secondary" disabled={!lockInfo}
                                     onClick={clickLockInfo}>ロック解除</Button>
                             <Button size="small" disabled={lockInfo} onClick={resetAction}>Reset</Button>
-                            <IPOpenButton ip={ipCopy} lockInfo={lockInfo} reload={reload}/>
+                            <IPOpenButton ip={ipCopy} lockInfo={lockInfo} setLockInfo={setLockInfo} reload={reload}/>
+                            <Button size="small" disabled={lockInfo} onClick={updateInfo}>更新</Button>
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
@@ -268,6 +285,7 @@ export function ServiceIPPlanRow(props: {
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
+            setLockInfo(true);
             reload(true);
         })
     }

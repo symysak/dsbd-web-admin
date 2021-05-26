@@ -29,7 +29,7 @@ export function JPNICDetail(props: {
     // Update Service Information
     const updateInfo = () => {
         if (jpnicAdmin) {
-            PutJPNICAdmin(serviceID, jpnicCopy).then(res => {
+            PutJPNICAdmin(jpnicCopy.ID, jpnicCopy).then(res => {
                 if (res.error === "") {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
@@ -38,10 +38,12 @@ export function JPNICDetail(props: {
                     console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});
                 }
+
+                setLockInfo(true);
                 reload(true);
             })
         } else {
-            PutJPNICTech(serviceID, jpnicCopy).then(res => {
+            PutJPNICTech(jpnicCopy.ID, jpnicCopy).then(res => {
                 if (res.error === "") {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
@@ -50,6 +52,8 @@ export function JPNICDetail(props: {
                     console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});
                 }
+
+                setLockInfo(true);
                 reload(true);
             })
         }

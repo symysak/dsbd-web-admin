@@ -65,7 +65,7 @@ export function PutPlan(data: PlanData): Promise<{ error: string; data: any }> {
 }
 
 export function PutJPNICAdmin(id: number, data: JPNICData): Promise<{ error: string; data: any }> {
-    return axios.put(restfulApiConfig.apiURL + "/service/" + id + '/jpnic_admin', data, {
+    return axios.put(restfulApiConfig.apiURL + "/jpnic_admin/" + id, data, {
         headers: {
             'Content-Type': 'application/json',
             ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
@@ -85,7 +85,7 @@ export function PutJPNICAdmin(id: number, data: JPNICData): Promise<{ error: str
 }
 
 export function PutJPNICTech(id: number, data: JPNICData): Promise<{ error: string; data: any }> {
-    return axios.put(restfulApiConfig.apiURL + "/service/" + id + '/jpnic_tech/' + data.ID, data, {
+    return axios.put(restfulApiConfig.apiURL + "/jpnic_tech/" + id, data, {
         headers: {
             'Content-Type': 'application/json',
             ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
