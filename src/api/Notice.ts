@@ -1,6 +1,46 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
-import {GroupDetailData} from "../interface";
+import {NoticeRegisterData} from "../interface";
+
+export function Post(data: NoticeRegisterData): Promise<{ error: string; data: any }> {
+    return axios.post(restfulApiConfig.apiURL + "/notice", data, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
+export function Put(id: number, data: NoticeRegisterData): Promise<{ error: string; data: any }> {
+    return axios.post(restfulApiConfig.apiURL + "/notice/" + id, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
 
 export function GetAll(): Promise<{ error: string, data: any }> {
     return axios.get(restfulApiConfig.apiURL + "/notice", {

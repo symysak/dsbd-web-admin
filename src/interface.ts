@@ -15,6 +15,20 @@ export interface NoticeData {
     user_id: number
 }
 
+export interface NoticeRegisterData {
+    user_id: number[],
+    group_id: number[],
+    noc_id: number[],
+    start_time: string,
+    end_time?: string,
+    title: string,
+    data: string,
+    everyone: boolean,
+    important: boolean,
+    fault: boolean
+    info: boolean
+}
+
 export interface UserDetailData {
     CreatedAt: string,
     ID: number,
@@ -198,7 +212,7 @@ export interface NocTemplateData {
     UpdatedAt: string
     name: string
     bandwidth: string
-    bgp_router: BGPRouterDetailData
+    bgp_router?: BGPRouterDetailData
     comment: string
     enable: boolean
     location: string
@@ -301,6 +315,8 @@ export interface TemplateData {
     ntts?: NTTTemplateData[]
     tunnel_endpoint_router?: TunnelEndPointRouterTemplateData[]
     tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData[]
+    user?: UserDetailData[]
+    group?: GroupDetailData[]
 }
 
 export interface ServiceAddData {
@@ -384,7 +400,9 @@ export const DefaultTemplateData: TemplateData = {
     nocs: undefined,
     ntts: undefined,
     tunnel_endpoint_router: undefined,
-    tunnel_endpoint_router_ip: undefined
+    tunnel_endpoint_router_ip: undefined,
+    user: undefined,
+    group: undefined,
 }
 
 export const DefaultGroupDetailData: GroupDetailData = {
@@ -627,4 +645,33 @@ export const DefaultTokenDetailData: TokenDetailData = {
     user_token: "",
 }
 
-export const DefaultTokenDetailDataArray : TokenDetailData[] = [DefaultTokenDetailData];
+export const DefaultTokenDetailDataArray: TokenDetailData[] = [DefaultTokenDetailData];
+
+export const DefaultNoticeRegisterData: NoticeRegisterData = {
+    user_id: [],
+    group_id: [],
+    noc_id: [],
+    start_time: "",
+    end_time: undefined,
+    title: "",
+    data: "",
+    everyone: false,
+    important: false,
+    fault: false,
+    info: false
+}
+
+export const DefaultNOCTemplateData: NocTemplateData = {
+    CreatedAt: "",
+    DeletedAt: "",
+    ID: 0,
+    UpdatedAt: "",
+    name: "",
+    bandwidth: "",
+    bgp_router: undefined,
+    comment: "",
+    enable: false,
+    location: ""
+}
+
+export const DefaultNOCTemplateDataArray: NocTemplateData[] = [DefaultNOCTemplateData]

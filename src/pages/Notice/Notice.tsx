@@ -7,38 +7,58 @@ import {
     CardActions,
     CardContent,
     FormControl,
-    FormControlLabel, FormLabel,
+    FormControlLabel,
     InputBase,
     Paper, Radio, RadioGroup,
     Typography
 } from "@material-ui/core";
 import {GetAll} from "../../api/Notice";
 import {useHistory} from "react-router-dom";
-import {DefaultNoticeDataArray, NoticeData} from "../../interface";
+import {DefaultNoticeDataArray, DefaultTemplateData, NoticeData} from "../../interface";
 import {useSnackbar} from "notistack";
-import {start} from "repl";
+import {GetTemplate} from "../../api/Group";
+import NoticeAddDialogs from "./NoticeAdd/NoticeAdd";
 
 
 export default function Notice() {
     const classes = useStyles();
     const [tickets, setTickets] = useState(DefaultNoticeDataArray);
     const [initTickets, setInitTickets] = useState(DefaultNoticeDataArray);
+    const [template, setTemplate] = useState(DefaultTemplateData);
+    const [reload, setReload] = useState(true);
     const history = useHistory();
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(2);
+    const [loaded, setLoaded] = React.useState(false);
     const now = new Date();
 
     useEffect(() => {
-        GetAll().then(res => {
+        if (reload) {
+            GetAll().then(res => {
+                if (res.error === "") {
+                    console.log(res);
+                    setTickets(res.data);
+                    setInitTickets(res.data);
+                    setReload(false);
+                } else {
+                    enqueueSnackbar("" + res.error, {variant: "error"});
+                }
+            })
+        }
+    }, [reload]);
+
+    useEffect(() => {
+        GetTemplate().then(res => {
             if (res.error === "") {
                 console.log(res);
-                setTickets(res.data);
-                setInitTickets(res.data);
+                setTemplate(res.data);
+                setLoaded(true);
             } else {
                 enqueueSnackbar("" + res.error, {variant: "error"});
             }
         })
     }, []);
+
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(Number((event.target as HTMLInputElement).value));
@@ -98,6 +118,10 @@ export default function Notice() {
                     }}
                 />
             </Paper>
+            {
+                loaded && <NoticeAddDialogs key={"notice_add_dialogs"} setReload={setReload} template={template}
+                                            reloadTemplate={true}/>
+            }
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                     <FormControlLabel value={2} control={<Radio color="primary"/>} label="通知中"/>
@@ -106,8 +130,8 @@ export default function Notice() {
                 </RadioGroup>
             </FormControl>
             {
-                tickets.filter(notice => checkDate(notice.start_time, notice.end_time)).map((notice: NoticeData) => (
-                    <Card className={classes.root}>
+                tickets.filter(notice => checkDate(notice.start_time, notice.end_time)).map((notice: NoticeData, index) => (
+                    <Card key={index} className={classes.root}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
                                 ID: {notice.ID} ({getStringFromDate(notice.start_time)} - {getStringFromDate(notice.end_time)})
