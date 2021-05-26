@@ -106,12 +106,8 @@ export function ServiceJPNICTechRow(props: {
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
-                            <Card className={cssModule.contract}>
-                                <CardContent>
-                                    <JPNICDetail key={serviceID} jpnicAdmin={false} serviceID={serviceID} jpnic={jpnic}
-                                                 reload={reload}/>
-                                </CardContent>
-                            </Card>
+                            <JPNICDetail key={serviceID} jpnicAdmin={false} serviceID={serviceID} jpnic={jpnic}
+                                         reload={reload}/>
                         </Box>
                     </Collapse>
                 </TableCell>
