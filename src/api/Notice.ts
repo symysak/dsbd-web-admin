@@ -22,6 +22,26 @@ export function Post(data: NoticeRegisterData): Promise<{ error: string; data: a
     })
 }
 
+export function Delete(id: number): Promise<{ error: string; data: any }> {
+    return axios.delete(restfulApiConfig.apiURL + "/notice/" + id, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
 export function Put(id: number, data: NoticeData): Promise<{ error: string; data: any }> {
     return axios.put(restfulApiConfig.apiURL + "/notice/" + id, data, {
         headers: {

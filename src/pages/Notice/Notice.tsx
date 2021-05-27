@@ -12,8 +12,7 @@ import {
     Paper, Radio, RadioGroup,
     Typography
 } from "@material-ui/core";
-import {GetAll} from "../../api/Notice";
-import {useHistory} from "react-router-dom";
+import {Delete, GetAll} from "../../api/Notice";
 import {DefaultNoticeDataArray, DefaultTemplateData, NoticeData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {GetTemplate} from "../../api/Group";
@@ -27,7 +26,6 @@ export default function Notice() {
     const [initTickets, setInitTickets] = useState(DefaultNoticeDataArray);
     const [template, setTemplate] = useState(DefaultTemplateData);
     const [reload, setReload] = useState(true);
-    const history = useHistory();
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(2);
     const [loaded, setLoaded] = React.useState(false);
@@ -67,6 +65,19 @@ export default function Notice() {
 
     const toDate = (date: any): Date => {
         return new Date(date);
+    }
+
+    const noticeDelete = (id: number) => {
+        Delete(id).then(res => {
+            if (res.error === "") {
+                console.log(res);
+                setTemplate(res.data);
+                setReload(true);
+                enqueueSnackbar("OK", {variant: "success"});
+            } else {
+                enqueueSnackbar("" + res.error, {variant: "error"});
+            }
+        })
     }
 
     const handleFilter = (search: string) => {
@@ -141,6 +152,10 @@ export default function Notice() {
                         <CardActions>
                             <NoticeDetailDialogs key={"notice_detail_dialogs"} setReload={setReload} template={template}
                                                  reloadTemplate={true} noticeData={notice}/>
+                            <Button color="secondary" size="small" variant="outlined"
+                                    onClick={() => noticeDelete(notice.ID)}>
+                                Delete
+                            </Button>
                         </CardActions>
                     </Card>
                 ))
