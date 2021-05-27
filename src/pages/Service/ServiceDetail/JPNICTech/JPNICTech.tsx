@@ -14,17 +14,17 @@ import {
 } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import cssModule from "../../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
-import {JPNICDetail} from "../../../../components/Dashboard/JPNIC/JPNIC";
+import {JPNICDetail, JPNICTechAdd} from "../../../../components/Dashboard/JPNIC/JPNIC";
 
 export function ServiceJPNICTechBase(props: {
     serviceID: number,
-    jpnic: JPNICData[] | undefined,
+    jpnicAdmin: JPNICData | undefined,
+    jpnicTech: JPNICData[] | undefined,
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
-    const {jpnic, serviceID, reload} = props;
+    const {jpnicAdmin, jpnicTech, serviceID, reload} = props;
 
-    if (jpnic === undefined) {
+    if (jpnicTech === undefined) {
         return (
             <Card>
                 <CardContent>
@@ -35,23 +35,26 @@ export function ServiceJPNICTechBase(props: {
         )
     } else {
         return (
-            <ServiceJPNICTech key={serviceID} serviceID={serviceID} jpnic={jpnic} reload={reload}/>
+            <ServiceJPNICTech key={serviceID} serviceID={serviceID} jpnicAdmin={jpnicAdmin} jpnicTech={jpnicTech}
+                              reload={reload}/>
         )
     }
 }
 
 export function ServiceJPNICTech(props: {
     serviceID: number,
-    jpnic: JPNICData[],
+    jpnicAdmin: JPNICData | undefined,
+    jpnicTech: JPNICData[],
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
-    const {jpnic, serviceID, reload} = props;
+    const {jpnicAdmin, jpnicTech, serviceID, reload} = props;
     const classes = useStyles();
 
     return (
         <Card className={classes.rootTable}>
             <CardContent>
                 <h3>JPNIC技術連絡担当者</h3>
+                <JPNICTechAdd key={"jpnic_tech_add"} serviceID={serviceID} jpnicAdmin={jpnicAdmin} reload={reload}/>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
@@ -65,9 +68,9 @@ export function ServiceJPNICTech(props: {
                         </TableHead>
                         <TableBody>
                             {
-                                jpnic.map((row) => (
-                                    <ServiceJPNICTechRow key={row.name} serviceID={serviceID} jpnic={row}
-                                                         reload={reload}/>
+                                jpnicTech.map((row) => (
+                                    <ServiceJPNICTechRow key={"service_jpnic_tech_row_" + row.ID}
+                                                         serviceID={serviceID} jpnic={row} reload={reload}/>
                                 ))
                             }
                         </TableBody>
@@ -106,8 +109,8 @@ export function ServiceJPNICTechRow(props: {
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
-                            <JPNICDetail key={serviceID} jpnicAdmin={false} serviceID={serviceID} jpnic={jpnic}
-                                         reload={reload}/>
+                            <JPNICDetail key={"jpnic_tech_detail_" + serviceID} jpnicAdmin={false} serviceID={serviceID}
+                                         jpnic={jpnic} reload={reload}/>
                         </Box>
                     </Collapse>
                 </TableCell>

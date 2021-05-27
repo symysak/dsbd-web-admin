@@ -84,6 +84,46 @@ export function PutJPNICAdmin(id: number, data: JPNICData): Promise<{ error: str
     })
 }
 
+export function PostJPNICTech(id: number, data: JPNICData): Promise<{ error: string; data: any }> {
+    return axios.post(restfulApiConfig.apiURL + "/service/" + id + "/jpnic_tech", data, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
+export function DeleteJPNICTech(id: number): Promise<{ error: string; data: any }> {
+    return axios.delete(restfulApiConfig.apiURL + "/jpnic_tech/" + id, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
 export function PutJPNICTech(id: number, data: JPNICData): Promise<{ error: string; data: any }> {
     return axios.put(restfulApiConfig.apiURL + "/jpnic_tech/" + id, data, {
         headers: {

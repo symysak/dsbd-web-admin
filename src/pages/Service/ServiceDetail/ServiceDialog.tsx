@@ -77,7 +77,8 @@ export default function ServiceGetDialogs(props: {
                         </Grid>
                         <Grid item xs={6}>
                             <ServiceJPNICTechBase key={"ServiceJPNICTechBase"} serviceID={service.ID}
-                                                  jpnic={service.jpnic_tech} reload={reload}/>
+                                                  jpnicAdmin={service.jpnic_admin}
+                                                  jpnicTech={service.jpnic_tech} reload={reload}/>
                         </Grid>
                         <Grid>
                             <div className={cssModule.contract}>

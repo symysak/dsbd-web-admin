@@ -455,6 +455,28 @@ export const DefaultServiceAddData: ServiceAddData = {
     end_date: undefined
 }
 
+export const DefaultServiceJPNICData: JPNICData = {
+    ID: 0,
+    CreatedAt: "",
+    UpdatedAt: "",
+    DeletedAt: "",
+    address: "",
+    address_en: "",
+    country: "",
+    dept: "",
+    dept_en: "",
+    fax: "",
+    jpnic_handle: "",
+    mail: "",
+    name: "",
+    name_en: "",
+    org: "",
+    org_en: "",
+    postcode: "",
+    tel: "",
+    lock: false
+}
+
 export const DefaultServiceAddJPNICData: ServiceAddJPNICData = {
     org: "",
     org_en: "",
