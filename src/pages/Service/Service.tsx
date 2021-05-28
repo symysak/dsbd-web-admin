@@ -13,15 +13,17 @@ import {
     Typography
 } from "@material-ui/core";
 import {GetAll} from "../../api/Service";
-import {DefaultServiceDetailDataArray, ServiceDetailData} from "../../interface";
+import {DefaultServiceDetailDataArray, DefaultTemplateData, ServiceDetailData} from "../../interface";
 import {useSnackbar} from "notistack";
 import ServiceGetDialogs from "./ServiceDetail/ServiceDialog";
+import {GetTemplate} from "../../api/Group";
 
 
 export default function Service() {
     const classes = useStyles();
     const [services, setServices] = useState(DefaultServiceDetailDataArray);
     const [initServices, setInitServices] = useState(DefaultServiceDetailDataArray);
+    const [template, setTemplate] = useState(DefaultTemplateData);
     const [reload, setReload] = useState(true)
     const {enqueueSnackbar} = useSnackbar();
     // 1:開通 2:未開通
@@ -40,6 +42,18 @@ export default function Service() {
                 }
             })
         }
+    }, []);
+
+    useEffect(() => {
+        GetTemplate().then(res => {
+            if (res.error === "") {
+                console.log(res);
+                setTemplate(res.data);
+                console.log(template);
+            } else {
+                enqueueSnackbar("" + res.error, {variant: "error"});
+            }
+        })
     }, []);
 
     const serviceCode = (groupID: number, type: string, serviceNumber: number) => {
@@ -103,7 +117,8 @@ export default function Service() {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={setReload}/>
+                            <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={setReload}
+                                               template={template}/>
                         </CardActions>
                     </Card>
                 ))

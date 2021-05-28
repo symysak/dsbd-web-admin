@@ -1,11 +1,11 @@
-import {IPData, PlanData} from "../../../../interface";
-import React, {Dispatch, SetStateAction, useState} from "react";
+import {IPData, PlanData, TemplateData} from "../../../../interface";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import useStyles from "../styles";
 import {useSnackbar} from "notistack";
 import {
     Box, Button,
     Card,
-    CardContent, Collapse, IconButton, Paper,
+    CardContent, Collapse, Grid, IconButton, Paper,
     Table,
     TableBody,
     TableCell,
@@ -16,13 +16,16 @@ import {
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import {Enable} from "../../../../components/Dashboard/Open/Open";
-import {PutIP, PutPlan} from "../../../../api/Service";
+import {DeleteIP, DeletePlan, PutIP, PutPlan} from "../../../../api/Service";
+import {DeleteAlertDialog} from "../../../../components/Dashboard/Alert/Alert";
+import {AddAssignIPDialog} from "./IPAdd";
 
 export function IPOpenButton(props: {
     ip: IPData,
     lockInfo: boolean,
     setLockInfo: Dispatch<SetStateAction<boolean>>
     reload: Dispatch<SetStateAction<boolean>>
+    template: TemplateData
 }): any {
     const {ip, lockInfo, setLockInfo, reload} = props;
     const {enqueueSnackbar} = useSnackbar();
@@ -63,8 +66,9 @@ export function ServiceIPBase(props: {
     serviceID: number,
     ip: IPData[] | undefined,
     reload: Dispatch<SetStateAction<boolean>>
+    template: TemplateData
 }): any {
-    const {ip, serviceID, reload} = props;
+    const {ip, serviceID, reload, template} = props;
 
     if (ip === undefined) {
         return (
@@ -77,7 +81,7 @@ export function ServiceIPBase(props: {
         )
     } else {
         return (
-            <ServiceIP key={serviceID} serviceID={serviceID} ip={ip} reload={reload}/>
+            <ServiceIP key={serviceID} serviceID={serviceID} ip={ip} reload={reload} template={template}/>
         )
     }
 }
@@ -86,8 +90,9 @@ export function ServiceIP(props: {
     serviceID: number,
     ip: IPData[],
     reload: Dispatch<SetStateAction<boolean>>
+    template: TemplateData
 }): any {
-    const {ip, serviceID, reload} = props;
+    const {ip, serviceID, reload, template} = props;
     const classes = useStyles();
 
     return (
@@ -95,6 +100,8 @@ export function ServiceIP(props: {
             <CardContent>
                 <h3>IP</h3>
                 <TableContainer component={Paper}>
+                    <AddAssignIPDialog key={"add_assign_ip_dialog"} serviceID={serviceID} reload={reload}
+                                       template={template}/>
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
@@ -109,7 +116,7 @@ export function ServiceIP(props: {
                             {
                                 ip.map((row) => (
                                     <ServiceIPRow key={row.ID} serviceID={serviceID} ip={row}
-                                                  reload={reload}/>
+                                                  reload={reload} template={template}/>
                                 ))
                             }
                         </TableBody>
@@ -124,12 +131,14 @@ export function ServiceIPRow(props: {
     serviceID: number,
     ip: IPData,
     reload: Dispatch<SetStateAction<boolean>>
+    template: TemplateData
 }): any {
-    const {ip, serviceID, reload} = props;
+    const {ip, serviceID, reload, template} = props;
     const [open, setOpen] = React.useState(false);
     const classes = useStyles();
     const [lockInfo, setLockInfo] = React.useState(true);
     const [ipCopy, setIPCopy] = useState(ip);
+    const [deleteIP, setDeleteIP] = useState(false);
     const {enqueueSnackbar} = useSnackbar();
 
     const clickLockInfo = () => {
@@ -154,6 +163,22 @@ export function ServiceIPRow(props: {
             reload(true);
         })
     }
+
+    useEffect(() => {
+        if (deleteIP) {
+            DeleteIP(ip.ID).then(res => {
+                if (res.error === "") {
+                    console.log(res.data);
+                    enqueueSnackbar('Request Success', {variant: "success"});
+                } else {
+                    console.log(res.error);
+                    enqueueSnackbar(String(res.error), {variant: "error"});
+                }
+                reload(true);
+            })
+            setDeleteIP(false);
+        }
+    }, [deleteIP]);
 
     return (
         <React.Fragment>
@@ -206,11 +231,20 @@ export function ServiceIPRow(props: {
                                     }}
                                 />
                             </form>
-                            <Button size="small" color="secondary" disabled={!lockInfo}
-                                    onClick={clickLockInfo}>ロック解除</Button>
-                            <Button size="small" disabled={lockInfo} onClick={resetAction}>Reset</Button>
-                            <IPOpenButton ip={ipCopy} lockInfo={lockInfo} setLockInfo={setLockInfo} reload={reload}/>
-                            <Button size="small" disabled={lockInfo} onClick={updateInfo}>更新</Button>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={8}>
+                                    <Button size="small" color="secondary" disabled={!lockInfo}
+                                            onClick={clickLockInfo}>ロック解除</Button>
+                                    <Button size="small" disabled={lockInfo} onClick={resetAction}>Reset</Button>
+                                    <IPOpenButton ip={ipCopy} lockInfo={lockInfo} setLockInfo={setLockInfo}
+                                                  reload={reload} template={template}/>
+                                    <Button size="small" disabled={lockInfo} onClick={updateInfo}>更新</Button>
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <DeleteAlertDialog key={"ip_delete_alert_dialog_" + ip.ID}
+                                                       setDeleteProcess={setDeleteIP}/>
+                                </Grid>
+                            </Grid>
                             <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
@@ -264,6 +298,7 @@ export function ServiceIPPlanRow(props: {
     const classes = useStyles();
     const [lockInfo, setLockInfo] = React.useState(true);
     const [ipPlanCopy, setIPPlanCopy] = useState(plan);
+    const [deleteIPPlan, setDeleteIPPlan] = useState(false);
     const {enqueueSnackbar} = useSnackbar();
 
     const clickLockInfo = () => {
@@ -289,6 +324,23 @@ export function ServiceIPPlanRow(props: {
             reload(true);
         })
     }
+
+    useEffect(() => {
+        if (deleteIPPlan) {
+            DeletePlan(plan.ID).then(res => {
+                if (res.error === "") {
+                    console.log(res.data);
+                    enqueueSnackbar('Request Success', {variant: "success"});
+                    setLockInfo(true)
+                } else {
+                    console.log(res.error);
+                    enqueueSnackbar(String(res.error), {variant: "error"});
+                }
+                reload(true);
+            })
+            setDeleteIPPlan(false);
+        }
+    }, [deleteIPPlan]);
 
     return (
         <React.Fragment>
@@ -372,15 +424,22 @@ export function ServiceIPPlanRow(props: {
                                     }}
                                 />
                             </form>
-                            <Button size="small" color="secondary" disabled={!lockInfo}
-                                    onClick={clickLockInfo}>ロック解除</Button>
-                            <Button size="small" disabled={lockInfo} onClick={resetAction}>Reset</Button>
-                            <Button size="small" disabled={lockInfo} onClick={updateInfo}>Apply</Button>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <Button size="small" color="secondary" disabled={!lockInfo}
+                                            onClick={clickLockInfo}>ロック解除</Button>
+                                    <Button size="small" disabled={lockInfo} onClick={resetAction}>Reset</Button>
+                                    <Button size="small" disabled={lockInfo} onClick={updateInfo}>Apply</Button>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <DeleteAlertDialog key={"plan_delete_alert_dialog_" + plan.ID}
+                                                       setDeleteProcess={setDeleteIPPlan}/>
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Collapse>
                 </TableCell>
             </TableRow>
-
         </React.Fragment>
     );
 }

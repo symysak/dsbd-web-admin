@@ -10,7 +10,7 @@ import {
     TextField,
 } from "@material-ui/core";
 import cssModule from "../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
-import {ServiceDetailData} from "../../../interface";
+import {ServiceDetailData, TemplateData} from "../../../interface";
 import useStyles from "./styles";
 import {ServiceAddAllowButton, ServiceLockButton} from "./ServiceMenu";
 import {useSnackbar} from "notistack";
@@ -23,8 +23,9 @@ import {ServiceIPBase} from "./IP/IP";
 export default function ServiceGetDialogs(props: {
     service: ServiceDetailData,
     reload: Dispatch<SetStateAction<boolean>>
+    template: TemplateData
 }) {
-    const {service, reload} = props
+    const {service, reload, template} = props
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -66,7 +67,7 @@ export default function ServiceGetDialogs(props: {
                         </Grid>
                         <Grid item xs={6}>
                             <ServiceIPBase key={"ServiceIPBase"} ip={service.ip} serviceID={service.ID}
-                                           reload={reload}/>
+                                           reload={reload} template={template}/>
                         </Grid>
                         <Grid item xs={12}>
                             <ServiceJPNICBase key={"ServiceJPNICBase"} service={service} reload={reload}/>

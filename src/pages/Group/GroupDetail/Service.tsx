@@ -163,7 +163,8 @@ function RowService(props: {
                 <TableCell align="left">{service.asn}</TableCell>
                 <TableCell align="right">
                     <Box display="flex" justifyContent="flex-end">
-                        <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={reload}/>
+                        <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={reload}
+                                           template={template}/>
                     </Box>
                 </TableCell>
             </TableRow>

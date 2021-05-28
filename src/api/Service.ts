@@ -1,9 +1,49 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
-import {IPData, JPNICData, PlanData, ServiceDetailData} from "../interface";
+import {IPData, JPNICData, PlanData, ServiceAddIPData, ServiceDetailData} from "../interface";
 
 export function Put(id: number, data: ServiceDetailData): Promise<{ error: string; data: any }> {
     return axios.put(restfulApiConfig.apiURL + "/service/" + id, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
+export function DeleteIP(id: number): Promise<{ error: string; data: any }> {
+    return axios.delete(restfulApiConfig.apiURL + "/ip/" + id, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
+export function PostIP(id: number, data: ServiceAddIPData): Promise<{ error: string; data: any }> {
+    return axios.post(restfulApiConfig.apiURL + "/service/" + id + "/ip", data, {
         headers: {
             'Content-Type': 'application/json',
             ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
@@ -30,6 +70,26 @@ export function PutIP(data: IPData): Promise<{ error: string; data: any }> {
                 ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
             }
         }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
+export function DeletePlan(id: number): Promise<{ error: string; data: any }> {
+    return axios.delete(restfulApiConfig.apiURL + "/plan/" + id, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
         return {
             error: "",
             data: res.data.service

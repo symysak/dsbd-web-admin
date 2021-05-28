@@ -1,10 +1,9 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField} from "@material-ui/core";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {DefaultServiceJPNICData, JPNICData} from "../../../interface";
 import useStyles from "../../../pages/Service/ServiceDetail/styles";
 import {useSnackbar} from "notistack";
 import {DeleteJPNICTech, PostJPNICTech, PutJPNICAdmin, PutJPNICTech} from "../../../api/Service";
-import {GetAll} from "../../../api/Token";
 import {DeleteAlertDialog} from "../Alert/Alert";
 
 
@@ -286,14 +285,22 @@ export function JPNICDetail(props: {
                     }}
                 />
             </form>
-            <Button size="small" color="secondary" disabled={!lockInfo}
-                    onClick={clickLockInfo}>ロック解除</Button>
-            <Button size="small" disabled={lockInfo} onClick={resetAction}>Reset</Button>
-            <Button size="small" color={"primary"} disabled={lockInfo} onClick={updateInfo}>Apply</Button>
-            {
-                !jpnicAdmin &&
-                <DeleteAlertDialog key={"delete_alert_dialog_" + jpnicCopy.ID} setDeleteProcess={setDeleteJPNICTech}/>
-            }
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={8}>
+                    <Button size="small" color="secondary" disabled={!lockInfo}
+                            onClick={clickLockInfo}>ロック解除</Button>
+                    <Button size="small" disabled={lockInfo} onClick={resetAction}>Reset</Button>
+                    <Button size="small" color={"primary"} disabled={lockInfo} onClick={updateInfo}>Apply</Button>
+                </Grid>
+                {
+                    !jpnicAdmin &&
+                    <Grid item xs={12} sm={4}>
+                        <DeleteAlertDialog key={"delete_alert_dialog_" + jpnicCopy.ID}
+                                           setDeleteProcess={setDeleteJPNICTech}/>
+                    </Grid>
+                }
+            </Grid>
+
         </div>
     );
 }

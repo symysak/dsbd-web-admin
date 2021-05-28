@@ -697,3 +697,12 @@ export const DefaultNOCTemplateData: NocTemplateData = {
 }
 
 export const DefaultNOCTemplateDataArray: NocTemplateData[] = [DefaultNOCTemplateData]
+
+export const DefaultAddIP: ServiceAddIPData = {
+    version: 0,
+    ip: "",
+    plan: undefined,
+    name: "",
+    start_date: "",
+    end_date: undefined
+}

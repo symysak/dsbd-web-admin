@@ -10,7 +10,7 @@ const Transition = React.forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export  function DeleteAlertDialog(props: {
+export function DeleteAlertDialog(props: {
     setDeleteProcess: Dispatch<SetStateAction<boolean>>
 }) {
     const {setDeleteProcess} = props
@@ -21,7 +21,7 @@ export  function DeleteAlertDialog(props: {
     };
 
     const handleClose = (result: boolean) => {
-        if (result){
+        if (result) {
             setDeleteProcess(true)
         }
         setOpen(false);
@@ -38,17 +38,17 @@ export  function DeleteAlertDialog(props: {
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle id="alert-dialog-slide-title">{"Use Google's location service?"}</DialogTitle>
+                <DialogTitle id="alert-dialog-slide-title">削除</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
                         本当に削除しますか？
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={()=>handleClose(false)} color="primary">
+                    <Button onClick={() => handleClose(false)} color="primary">
                         いいえ
                     </Button>
-                    <Button onClick={()=>handleClose(true)} color="primary">
+                    <Button onClick={() => handleClose(true)} color="primary">
                         はい
                     </Button>
                 </DialogActions>
