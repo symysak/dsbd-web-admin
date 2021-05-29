@@ -1584,12 +1584,10 @@ export function ServiceAddJPNICTech(props: {
     )
 }
 
-export function ServiceAddDate(props:
-                                   {
-                                       data: ServiceAddData
-                                       setData: Dispatch<SetStateAction<ServiceAddData>>
-                                   }
-) {
+export function ServiceAddDate(props: {
+    data: ServiceAddData
+    setData: Dispatch<SetStateAction<ServiceAddData>>
+}) {
     const {data, setData} = props;
     const [checkBox, setCheckBox] = React.useState(data.end_date !== undefined);
     const nowDate = new Date()
