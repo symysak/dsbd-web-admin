@@ -23,6 +23,9 @@ import {
     TemplateData,
 } from "../../../../interface";
 import useStyles from "../styles";
+import {check} from "../ConnectionAdd/check";
+import {useSnackbar} from "notistack";
+import {Post} from "../../../../api/Connection";
 
 export default function ConnectionAddDialogs(props: {
     template: TemplateData,
@@ -34,12 +37,30 @@ export default function ConnectionAddDialogs(props: {
     const {template, open, setOpen, baseData, reload} = props
     const [data, setData] = React.useState(DefaultConnectionAddData);
     const [internet, setInternet] = React.useState(false);
-    const [serviceID, setServiceID] = React.useState(0);
     const [serviceCode, setServiceCode] = React.useState("");
+    const {enqueueSnackbar} = useSnackbar();
 
     const request = () => {
         console.log(data);
-        reload(true);
+        const err = check(data, template);
+        if (err === "") {
+            console.log("OK")
+            Post(baseData.ID, data).then(res => {
+                if (res.error === "") {
+                    console.log(res.data);
+                    enqueueSnackbar('Request Success', {variant: "success"});
+                    setOpen(false);
+                    reload(true);
+                } else {
+                    console.log(res.error);
+                    enqueueSnackbar(String(res.error), {variant: "error"});
+                }
+            })
+            enqueueSnackbar('OK', {variant: "success"});
+        } else {
+            console.log("NG: " + err)
+            enqueueSnackbar(err, {variant: "error"});
+        }
     }
 
     return (
@@ -56,11 +77,9 @@ export default function ConnectionAddDialogs(props: {
                 </DialogTitle>
                 <DialogContent dividers>
                     <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <ConnectionAddServiceSelect key={"connection_add_service_select"} baseData={baseData}
-                                                        data={serviceID} setData={setServiceID}
-                                                        setServiceCode={setServiceCode}/>
-                        </Grid>
+                        <ConnectionAddServiceSelect key={"connection_add_service_select"} baseData={baseData}
+                                                    data={data} setData={setData}
+                                                    setServiceCode={setServiceCode} template={template}/>
                         <br/>
                         <Grid item xs={12}>
                             <ConnectionAddType key={"connection_add_type"} template={template}
@@ -108,40 +127,107 @@ export default function ConnectionAddDialogs(props: {
 
 export function ConnectionAddServiceSelect(props: {
     baseData: GroupDetailData
-    data: number,
-    setData: Dispatch<SetStateAction<number>>
+    data: ConnectionAddData
+    setData: Dispatch<SetStateAction<ConnectionAddData>>
+    template: TemplateData,
     setServiceCode: Dispatch<SetStateAction<string>>
 }) {
-    const {baseData, data, setData, setServiceCode} = props;
+    const {baseData, template, data, setData, setServiceCode} = props;
+    const [ipBGPRoute, setIPBGPRoute] = React.useState(false);
     const classes = useStyles();
+    const {enqueueSnackbar} = useSnackbar();
+
+    const selectData = (id: number) => {
+        const dataExtra = baseData.services?.filter(item => item.ID === id);
+        console.log(dataExtra);
+        if (dataExtra !== undefined) {
+            setIPBGPRoute(dataExtra[0].service_template.need_route);
+        } else {
+            enqueueSnackbar('Templateから情報が見つかりません。', {variant: "error"});
+        }
+    }
 
     const serviceCode = (service: ServiceDetailData) => {
         setServiceCode(service.service_template.type);
-        return baseData.ID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3)
+        return baseData.ID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3);
     };
 
     return (
         <div>
-            <FormLabel component="legend">1. 接続情報を登録するサービスコードを選択してください。</FormLabel>
-            <br/>
-            <InputLabel>接続情報を登録するサービスコードを以下からお選びください。</InputLabel>
-            <FormControl className={classes.formSelect}>
-                <InputLabel>Service Code</InputLabel>
-                <Select
-                    labelId="service_code"
-                    id="service_code"
-                    value={data}
-                    onChange={(event) => {
-                        setData(Number(event.target.value))
-                    }}
-                >
-                    {
-                        baseData.services?.map((row, index) => (
-                            <MenuItem key={index} value={row.ID}>{serviceCode(row)}</MenuItem>
-                        ))
-                    }
-                </Select>
-            </FormControl>
+            <Grid item xs={12}>
+                <FormLabel component="legend">1. 接続情報を登録するサービスコードを選択してください。</FormLabel>
+                <br/>
+                <InputLabel>接続情報を登録するサービスコードを以下からお選びください。</InputLabel>
+                <FormControl className={classes.formSelect}>
+                    <InputLabel>Service Code</InputLabel>
+                    <Select
+                        labelId="service_code"
+                        id="service_code"
+                        onChange={(event) => {
+                            selectData(Number(event.target.value))
+                            setData({...data, connection_template_id: Number(event.target.value)})
+                        }}
+                    >
+                        {
+                            baseData.services?.map((row, index) => (
+                                <MenuItem key={index} value={row.ID}>{serviceCode(row)}</MenuItem>
+                            ))
+                        }
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+                <br/>
+                {
+                    ipBGPRoute &&
+                    <FormLabel component="legend">1.1. 広報するBGPの方法を選択してください。</FormLabel>
+                }
+            </Grid>
+            <Grid item xs={6}>
+                {
+                    ipBGPRoute &&
+                    <FormControl className={classes.formSelect}>
+                        <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
+                        <Select
+                            labelId="ipv4_route"
+                            id="ipv4_route"
+                            value={data.ipv4_route_template_id}
+                            onChange={(event) => {
+                                setData({...data, ipv4_route_template_id: Number(event.target.value)})
+                            }}
+                        >
+                            {
+                                template.ipv4_route?.map((row, index) => (
+                                    <MenuItem key={"ipv4_route_" + index} value={row.ID}>{row.name}</MenuItem>
+                                ))
+                            }
+                        </Select>
+                    </FormControl>
+                }
+            </Grid>
+            <Grid item xs={6}>
+                {
+                    ipBGPRoute &&
+                    <FormControl className={classes.formSelect}>
+                        <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
+                        <Select
+                            labelId="ipv6_route"
+                            id="ipv6_route"
+                            value={data.ipv6_route_template_id}
+                            onChange={(event) => {
+                                setData({...data, ipv6_route_template_id: Number(event.target.value)})
+                            }}
+                        >
+                            {
+                                template.ipv6_route?.map((row, index) => (
+                                    <MenuItem key={"ipv4_route_" + index} value={row.ID}>{row.name}</MenuItem>
+                                ))
+                            }
+                        </Select>
+                    </FormControl>
+                }
+                <br/>
+            </Grid>
         </div>
     )
 }

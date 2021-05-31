@@ -218,7 +218,7 @@ export function GroupProfileInfo(props: {
                         onClick={() => setOpenAddConnection(true)}>接続情報の追加</Button>
                 <br/>
                 <Button size="small" className={classes.spaceTop}>メール送信</Button>
-                <ServiceAddDialogs key={"service_add_dialogs"} template={template} open={openAddService}
+                <ServiceAddDialogs key={"service_add_dialogs"} baseData={data} template={template} open={openAddService}
                                    setOpen={setOpenAddService} reload={reload}/>
                 <ConnectionAddDialogs key={"connection_add_dialogs"} baseData={data} template={template}
                                       open={openAddConnection} setOpen={setOpenAddConnection} reload={reload}/>

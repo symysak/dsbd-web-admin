@@ -18,7 +18,7 @@ import {
     TextField, Typography,
 } from "@material-ui/core";
 import {
-    DefaultServiceAddData, DefaultServiceAddIPv4PlanData, DefaultServiceAddJPNICData,
+    DefaultServiceAddData, DefaultServiceAddIPv4PlanData, DefaultServiceAddJPNICData, GroupDetailData,
     ServiceAddData,
     ServiceAddIPData, ServiceAddIPv4PlanData, ServiceAddJPNICData,
     TemplateData,
@@ -28,22 +28,59 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import useStyles from "../styles";
+import {check} from "./check";
 import DateFnsUtils from "@date-io/date-fns";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {Paper} from "@material-ui/core";
 import {useSnackbar} from "notistack";
+import {Post} from "../../../../api/Service";
 
 export default function ServiceAddDialogs(props: {
     template: TemplateData,
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>
+    baseData: GroupDetailData
     reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {template, open, setOpen, reload} = props
+    const {template, baseData, open, setOpen, reload} = props
     const [data, setData] = React.useState(DefaultServiceAddData);
+    const {enqueueSnackbar} = useSnackbar();
+
+    useEffect(() => {
+        const nowDate = new Date;
+        let tmpEndDate = nowDate;
+        setData({
+            ...data, start_date: nowDate.getFullYear() + '-' + ('00' + (nowDate.getMonth() + 1)).slice(-2) +
+                '-' + ('00' + (nowDate.getDate())).slice(-2)
+        });
+        tmpEndDate.setDate(tmpEndDate.getDate() + 30);
+        setData({
+            ...data, end_date: tmpEndDate.getFullYear() + '-' + ('00' + (tmpEndDate.getMonth() + 1)).slice(-2) +
+                '-' + ('00' + (tmpEndDate.getDate())).slice(-2)
+        });
+    }, []);
 
     const request = () => {
         console.log(data);
+        const err = check(data, template);
+        if (err === "") {
+            console.log("OK")
+            Post(baseData.ID, data).then(res => {
+                if (res.error === "") {
+                    console.log(res.data);
+                    enqueueSnackbar('Request Success', {variant: "success"});
+                    setOpen(false);
+                    reload(true);
+                } else {
+                    console.log(res.error);
+                    enqueueSnackbar(String(res.error), {variant: "error"});
+                }
+            })
+            enqueueSnackbar('OK', {variant: "success"});
+        } else {
+            console.log("NG: " + err)
+            enqueueSnackbar(err, {variant: "error"});
+        }
         reload(true);
     }
 
@@ -90,7 +127,8 @@ export default function ServiceAddDialogs(props: {
                             <ServiceAddDate key={"service_add_date"} data={data} setData={setData}/>
                         </Grid>
                         <Grid item xs={6}>
-                            <ServiceAddBandwidthDialogs key={"service_add_bandwidth"} data={data} setData={setData}/>
+                            <ServiceAddBandwidthDialogs key={"service_add_bandwidth"} data={data}
+                                                        setData={setData}/>
                         </Grid>
                     </Grid>
                 </DialogContent>
@@ -322,40 +360,42 @@ export function ServiceAddAssignIP(props: {
                         }
                         label="IPv4アドレスのアサインを希望する"
                     />
-                    {checkBoxIPv4 && (
-                        <div>
-                            <br/>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formMedium}
-                                    required
-                                    id="ipv4_network_name"
-                                    label="Network名"
-                                    value={getSubnetName(4)}
-                                    variant="outlined"
-                                    inputProps={{
-                                        maxLength: 12,
-                                    }}
-                                    onChange={(event) =>
-                                        handleNetworkNameChange(event.target.value, 4)}
-                                />
-                            </form>
-                            <FormControl component="fieldset">
-                                <Select aria-label="gender" id="ipv4_subnet" value={getSubnetID(4)}
+                    {
+                        checkBoxIPv4 && (
+                            <div>
+                                <FormControl component="fieldset">
+                                    <Select aria-label="gender" id="ipv4_subnet" value={getSubnetID(4)}
+                                            onChange={(event) =>
+                                                handleSubnetChange(String(event.target.value), 4)}
+                                    >
+                                        <MenuItem value={"None"} disabled={true}>なし</MenuItem>
+                                        {
+                                            template.ipv4?.map((map, index) => (
+                                                !map.hide &&
+                                                <MenuItem key={index} value={map.subnet}>{(map.subnet)}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                                <br/>
+                                <form className={classes.rootForm} noValidate autoComplete="off">
+                                    <TextField
+                                        className={classes.formMedium}
+                                        required
+                                        id="ipv4_network_name"
+                                        label="Network名"
+                                        value={getSubnetName(4)}
+                                        variant="outlined"
+                                        inputProps={{
+                                            maxLength: 12,
+                                        }}
                                         onChange={(event) =>
-                                            handleSubnetChange(String(event.target.value), 4)}
-                                >
-                                    <MenuItem value={"None"} disabled={true}>なし</MenuItem>
-                                    {
-                                        template.ipv4?.map((map, index) => (
-                                            !map.hide &&
-                                            <MenuItem key={index} value={map.subnet}>{(map.subnet)}</MenuItem>
-                                        ))
-                                    }
-                                </Select>
-                            </FormControl>
-                        </div>
-                    )}
+                                            handleNetworkNameChange(event.target.value, 4)}
+                                    />
+                                </form>
+                            </div>
+                        )
+                    }
                     <br/>
                     <FormControlLabel
                         control={
@@ -368,40 +408,42 @@ export function ServiceAddAssignIP(props: {
                         }
                         label="IPv6アドレスのアサインを希望する"
                     />
-                    {checkBoxIPv6 && (
-                        <div>
-                            <br/>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formMedium}
-                                    required
-                                    id="ipv6_network_name"
-                                    value={getSubnetName(6)}
-                                    label="Network名"
-                                    variant="outlined"
-                                    inputProps={{
-                                        maxLength: 24,
-                                    }}
-                                    onChange={(event) =>
-                                        handleNetworkNameChange(event.target.value, 6)}
-                                />
-                            </form>
-                            <FormControl component="fieldset">
-                                <Select aria-label="gender" id="ipv6_subnet" value={getSubnetID(6)}
+                    {
+                        checkBoxIPv6 && (
+                            <div>
+                                <br/>
+                                <form className={classes.rootForm} noValidate autoComplete="off">
+                                    <TextField
+                                        className={classes.formMedium}
+                                        required
+                                        id="ipv6_network_name"
+                                        value={getSubnetName(6)}
+                                        label="Network名"
+                                        variant="outlined"
+                                        inputProps={{
+                                            maxLength: 24,
+                                        }}
                                         onChange={(event) =>
-                                            handleSubnetChange(String(event.target.value), 6)}
-                                >
-                                    <MenuItem value={"None"} disabled={true}>なし</MenuItem>
-                                    {
-                                        template.ipv6?.map((map, index) => (
-                                            !map.hide &&
-                                            <MenuItem key={index} value={map.subnet}>{(map.subnet)}</MenuItem>
-                                        ))
-                                    }
-                                </Select>
-                            </FormControl>
-                        </div>
-                    )}
+                                            handleNetworkNameChange(event.target.value, 6)}
+                                    />
+                                </form>
+                                <FormControl component="fieldset">
+                                    <Select aria-label="gender" id="ipv6_subnet" value={getSubnetID(6)}
+                                            onChange={(event) =>
+                                                handleSubnetChange(String(event.target.value), 6)}
+                                    >
+                                        <MenuItem value={"None"} disabled={true}>なし</MenuItem>
+                                        {
+                                            template.ipv6?.map((map, index) => (
+                                                !map.hide &&
+                                                <MenuItem key={index} value={map.subnet}>{(map.subnet)}</MenuItem>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        )
+                    }
                     <br/>
                 </div>
             </Grid>
@@ -506,7 +548,7 @@ export function ServiceIPForGlobalAS(props: {
                                 color="primary"
                             />
                         }
-                        label="IPv4アドレスのアサインを希望する"
+                        label="IPv4アドレス"
                     />
                     <br/>
                     {checkBoxIPv4 && (
@@ -537,7 +579,7 @@ export function ServiceIPForGlobalAS(props: {
                                 color="primary"
                             />
                         }
-                        label="IPv6アドレスのアサインを希望する"
+                        label="IPv6アドレス"
                     />
                     {checkBoxIPv6 && (
                         <div>
@@ -774,9 +816,12 @@ export function ServiceAddJPNICIPv4Plan(props: {
                                         </TableRow>
                                         <TableRow key={"min_and_max"}>
                                             <TableCell component="th" scope="row"><b>(必要最低IP数/最大IP数)</b></TableCell>
-                                            <TableCell align="right"><b>{subnetCount / 4}/{subnetCount}</b></TableCell>
-                                            <TableCell align="right"><b>{subnetCount / 4}/{subnetCount}</b></TableCell>
-                                            <TableCell align="right"><b>{subnetCount / 2}/{subnetCount}</b></TableCell>
+                                            <TableCell
+                                                align="right"><b>{subnetCount / 4}/{subnetCount}</b></TableCell>
+                                            <TableCell
+                                                align="right"><b>{subnetCount / 4}/{subnetCount}</b></TableCell>
+                                            <TableCell
+                                                align="right"><b>{subnetCount / 2}/{subnetCount}</b></TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -898,7 +943,7 @@ export function ServiceAddJPNICAdmin(props: {
                     className={classes.formVeryShort}
                     required
                     id="outlined-required"
-                    label="Org"
+                    label="組織名"
                     value={jpnic.org}
                     variant="outlined"
                     inputProps={{
@@ -913,7 +958,7 @@ export function ServiceAddJPNICAdmin(props: {
                     className={classes.formVeryShort}
                     required
                     id="outlined-required"
-                    label="Org(English)"
+                    label="組織名(English)"
                     value={jpnic.org_en}
                     variant="outlined"
                     inputProps={{
@@ -1006,7 +1051,6 @@ export function ServiceAddJPNICAdmin(props: {
                 <br/>
                 <TextField
                     className={classes.formVeryShort}
-                    required
                     id="outlined-required"
                     label="Dept"
                     value={jpnic.dept}
@@ -1021,7 +1065,6 @@ export function ServiceAddJPNICAdmin(props: {
                 />
                 <TextField
                     className={classes.formVeryShort}
-                    required
                     id="outlined-required"
                     label="Dept(English)"
                     value={jpnic.dept_en}
@@ -1051,7 +1094,6 @@ export function ServiceAddJPNICAdmin(props: {
                 />
                 <TextField
                     className={classes.formVeryShort}
-                    required
                     id="outlined-required"
                     label="Fax"
                     value={jpnic.fax}
@@ -1281,7 +1323,6 @@ export function ServiceAddJPNICTech(props: {
                         <br/>
                         <TextField
                             className={classes.formVeryShort}
-                            required
                             id="outlined-required"
                             label="Dept"
                             value={jpnic.dept}
@@ -1295,7 +1336,6 @@ export function ServiceAddJPNICTech(props: {
                         />
                         <TextField
                             className={classes.formVeryShort}
-                            required
                             id="outlined-required"
                             label="Dept(English)"
                             value={jpnic.dept_en}
@@ -1323,7 +1363,6 @@ export function ServiceAddJPNICTech(props: {
                         />
                         <TextField
                             className={classes.formVeryShort}
-                            required
                             id="outlined-required"
                             label="Fax"
                             value={jpnic.fax}
@@ -1389,7 +1428,7 @@ export function ServiceAddJPNICTech(props: {
                                         className={classes.formVeryShort}
                                         required
                                         id="outlined-required"
-                                        label="Org"
+                                        label="組織名"
                                         value={row.org}
                                         variant="outlined"
                                         inputProps={{
@@ -1403,7 +1442,7 @@ export function ServiceAddJPNICTech(props: {
                                         className={classes.formVeryShort}
                                         required
                                         id="outlined-required"
-                                        label="Org(English)"
+                                        label="組織名(English)"
                                         value={row.org_en}
                                         variant="outlined"
                                         inputProps={{
@@ -1571,7 +1610,8 @@ export function ServiceAddJPNICTech(props: {
                                         }}
                                     />
                                 </form>
-                                <Button size="small" variant="contained" color="primary" className={classes.spaceRight}
+                                <Button size="small" variant="contained" color="primary"
+                                        className={classes.spaceRight}
                                         onClick={() => changeData(index)}>変更</Button>
                                 <Button size="small" variant="contained" color="secondary"
                                         onClick={() => deleteData(index)}>削除</Button>
@@ -1589,16 +1629,9 @@ export function ServiceAddDate(props: {
     setData: Dispatch<SetStateAction<ServiceAddData>>
 }) {
     const {data, setData} = props;
-    const [checkBox, setCheckBox] = React.useState(data.end_date !== undefined);
+    const [checkBox, setCheckBox] = React.useState(false);
     const nowDate = new Date()
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(nowDate);
-
-    useEffect(() => {
-        setData({
-            ...data, start_date: nowDate.getFullYear() + '-' + ('00' + (nowDate.getMonth() + 1)).slice(-2) +
-                '-' + ('00' + (nowDate.getDate())).slice(-2)
-        });
-    }, []);
 
     const handleBeginDateChange = (date: Date | null) => {
         setSelectedDate(date);
@@ -1614,8 +1647,6 @@ export function ServiceAddDate(props: {
         setCheckBox(event.target.checked);
         if (event.target.checked) {
             setData({...data, end_date: undefined});
-        } else {
-            setData({...data, end_date: ""});
         }
     }
 
@@ -1627,6 +1658,7 @@ export function ServiceAddDate(props: {
             <br/>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
+                    required
                     margin="normal"
                     id="begin-date-picker-dialog"
                     label="接続開始日"
@@ -1655,7 +1687,10 @@ export function ServiceAddDate(props: {
                 label="接続終了日が未定"
             />
             <br/>
-            <ServiceAddBandwidthEndDateDialogs data={data} setData={setData}/>
+            {
+                !checkBox &&
+                <ServiceAddBandwidthEndDateDialogs data={data} setData={setData}/>
+            }
         </div>
     )
 }
@@ -1668,6 +1703,13 @@ export function ServiceAddBandwidthEndDateDialogs(props: {
     const nowDate = new Date()
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(nowDate);
 
+    useEffect(() => {
+        console.log("end_date segment")
+        let tmpEndDate = nowDate;
+        tmpEndDate.setDate(tmpEndDate.getDate() + 30);
+        setSelectedDate(tmpEndDate);
+    }, []);
+
     const handleEndDateChange = (date: Date | null) => {
         setSelectedDate(date);
         if (date !== null) {
@@ -1678,32 +1720,27 @@ export function ServiceAddBandwidthEndDateDialogs(props: {
         }
     };
 
-    if (data.end_date !== undefined) {
-        return (
-            <div>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <br/>
-                    <div>一時的な検証やイベントネットワークでの利用など、利用終了日が決まっている場合はお知らせください</div>
-                    <br/>
-                    <KeyboardDatePicker
-                        margin="normal"
-                        id="end-date-picker-dialog"
-                        label="接続終了日"
-                        format="yyyy/MM/dd"
-                        value={selectedDate}
-                        onChange={handleEndDateChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-                </MuiPickersUtilsProvider>
-            </div>
-        )
-    } else {
-        return (
-            <div/>
-        )
-    }
+    return (
+        <div>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <br/>
+                <div>一時的な検証やイベントネットワークでの利用など、利用終了日が決まっている場合はお知らせください</div>
+                <br/>
+                <KeyboardDatePicker
+                    required
+                    margin="normal"
+                    id="end-date-picker-dialog"
+                    label="接続終了日"
+                    format="yyyy/MM/dd"
+                    value={selectedDate}
+                    onChange={handleEndDateChange}
+                    KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                    }}
+                />
+            </MuiPickersUtilsProvider>
+        </div>
+    )
 }
 
 export function ServiceAddBandwidthDialogs(props: {

@@ -1,6 +1,46 @@
 import axios from "axios";
 import {restfulApiConfig} from "./Config";
-import {IPData, JPNICData, PlanData, ServiceAddIPData, ServiceDetailData} from "../interface";
+import {IPData, JPNICData, PlanData, ServiceAddData, ServiceAddIPData, ServiceDetailData} from "../interface";
+
+export function Post(id: number, data: ServiceAddData): Promise<{ error: string; data: any }> {
+    return axios.post(restfulApiConfig.apiURL + "/group/" + id + "/service", data, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
+
+export function Delete(id: number): Promise<{ error: string; data: any }> {
+    return axios.delete(restfulApiConfig.apiURL + "/service/" + id, {
+        headers: {
+            'Content-Type': 'application/json',
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+        }
+    }).then(res => {
+        return {
+            error: "",
+            data: res.data.service
+        };
+    }).catch(err => {
+        console.log(err);
+        return {
+            error: err,
+            data: null
+        };
+    })
+}
 
 export function Put(id: number, data: ServiceDetailData): Promise<{ error: string; data: any }> {
     return axios.put(restfulApiConfig.apiURL + "/service/" + id, data, {

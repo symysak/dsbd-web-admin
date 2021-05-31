@@ -1,9 +1,9 @@
 import useStyles from "./styles";
-import {ConnectionDetailData, GroupDetailData, ServiceDetailData, TemplateData} from "../../../interface";
+import {GroupDetailData, ServiceDetailData, TemplateData} from "../../../interface";
 import {
-    Accordion, AccordionDetails, AccordionSummary, Box, Chip,
-    Collapse, IconButton, makeStyles,
-    Paper,
+    Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip,
+    Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, makeStyles,
+    Paper, Slide,
     Table,
     TableBody,
     TableCell,
@@ -15,8 +15,11 @@ import React, {Dispatch, SetStateAction} from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import ConnectionGetDialogs from "../../Connection/ConnectionDetail/ConnectionDialog";
 import ServiceGetDialogs from "../../Service/ServiceDetail/ServiceDialog";
+import {Delete, Put} from "../../../api/Service";
+import {useSnackbar} from "notistack";
+import {TransitionProps} from "@material-ui/core/transitions";
+import {RowConnectionCheck} from "./Connection";
 
 const useRowStyles = makeStyles({
     root: {
@@ -29,105 +32,43 @@ const useRowStyles = makeStyles({
     }
 });
 
-function ChipGet(props: { open: boolean }) {
-    const {open} = props;
-    if (open) {
-        return (
-            <Chip
-                size="small"
-                color="primary"
-                label="開通"
-            />
-        )
-    } else {
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & { children?: React.ReactElement<any, any> },
+    ref: React.Ref<unknown>,
+) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+export function ChipGet(props: { open: boolean, enable: boolean }) {
+    const {open, enable} = props;
+
+    if (!enable) {
         return (
             <Chip
                 size="small"
                 color="secondary"
-                label="未開通"
+                label="無効"
             />
         )
-    }
-}
-
-function RowConnection(props: {
-    service: ServiceDetailData,
-    connection: ConnectionDetailData,
-    groupID: number,
-    template: TemplateData,
-    reload: Dispatch<SetStateAction<boolean>>
-}) {
-    const {service, connection, groupID, template, reload} = props;
-    const serviceCode = groupID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3) +
-        "-" + connection.connection_template.type + ('000' + connection.connection_number).slice(-3);
-
-    console.log(props);
-    return (
-        <TableRow key={connection.ID}>
-            <TableCell component="th" scope="row" align="left">
-                {connection.ID}
-            </TableCell>
-            <TableCell align="left">{serviceCode}</TableCell>
-            <TableCell align="left">{connection.connection_template.name}</TableCell>
-            <TableCell align="left">
-                <ChipGet open={connection.open}/>
-            </TableCell>
-            <TableCell align="right">
-                <Box display="flex" justifyContent="flex-end">
-                    <ConnectionGetDialogs key={"connection_get_dialog"} connection={connection}
-                                          template={template} reload={reload}/>
-                </Box>
-            </TableCell>
-        </TableRow>
-    );
-}
-
-function RowConnectionCheck(props: {
-    service: ServiceDetailData,
-    groupID: number,
-    template: TemplateData,
-    reload: Dispatch<SetStateAction<boolean>>
-}) {
-    const {service, groupID, template, reload} = props;
-
-    if (service.connections === undefined) {
-        return (
-            <div>
-                <p>データがありません。</p>
-            </div>
-        )
     } else {
-        return (
-            <div>
-                <Typography variant="h6" gutterBottom component="div">
-                    Connection
-                </Typography>
-                <Table size="small" aria-label="purchases">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Service Code</TableCell>
-                            <TableCell align="left">Type</TableCell>
-                            <TableCell align="left">Tag</TableCell>
-                            <TableCell align="right">Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {
-                            service.connections.map((rowConnection: ConnectionDetailData) => (
-                                <RowConnection key={rowConnection.ID}
-                                               template={template}
-                                               service={service}
-                                               connection={rowConnection}
-                                               groupID={groupID}
-                                               reload={reload}
-                                />
-                            ))
-                        }
-                    </TableBody>
-                </Table>
-            </div>
-        )
+
+        if (open) {
+            return (
+                <Chip
+                    size="small"
+                    color="primary"
+                    label="開通"
+                />
+            )
+        } else {
+            return (
+                <Chip
+                    size="small"
+                    color="secondary"
+                    label="未開通"
+                />
+            )
+        }
     }
 }
 
@@ -141,7 +82,6 @@ function RowService(props: {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const serviceCode = groupID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3);
-
 
     return (
         <React.Fragment>
@@ -158,13 +98,19 @@ function RowService(props: {
                     align="left">{serviceCode}</TableCell>
                 <TableCell align="left">{service.service_template.name}</TableCell>
                 <TableCell align="left">
-                    <ChipGet open={service.open}/>
+                    <ChipGet open={service.open} enable={service.enable}/>
                 </TableCell>
                 <TableCell align="left">{service.asn}</TableCell>
                 <TableCell align="right">
                     <Box display="flex" justifyContent="flex-end">
                         <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={reload}
                                            template={template}/>
+                        &nbsp;
+                        <DeleteDialog key={"service_delete_alert_dialog_" + service.ID} id={service.ID}
+                                      reload={reload}/>
+                        &nbsp;
+                        <EnableDialog key={"service_enable_alert_dialog_" + service.ID} service={service}
+                                      reload={reload}/>
                     </Box>
                 </TableCell>
             </TableRow>
@@ -179,6 +125,144 @@ function RowService(props: {
                 </TableCell>
             </TableRow>
         </React.Fragment>
+    );
+}
+
+function DeleteDialog(props: {
+    id: number
+    reload: Dispatch<SetStateAction<boolean>>
+}) {
+    const {id, reload} = props
+    const [open, setOpen] = React.useState(false);
+    const {enqueueSnackbar} = useSnackbar();
+
+    const deleteService = () => {
+        Delete(id).then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                enqueueSnackbar('Request Success', {variant: "success"});
+            } else {
+                console.log(res.error);
+                enqueueSnackbar(String(res.error), {variant: "error"});
+            }
+            setOpen(false);
+            reload(true);
+        })
+    }
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    return (
+        <div>
+            <Button size="small" variant="outlined" color={"secondary"} onClick={handleClickOpen}>Delete</Button>
+            <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle id="alert-dialog-slide-title">削除</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        本当に削除しますか？
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        いいえ
+                    </Button>
+                    <Button onClick={deleteService} color="primary">
+                        はい
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
+}
+
+function EnableDialog(props: {
+    service: ServiceDetailData
+    reload: Dispatch<SetStateAction<boolean>>
+}) {
+    const {service, reload} = props;
+    const [open, setOpen] = React.useState(false);
+    const {enqueueSnackbar} = useSnackbar();
+
+    const updateService = () => {
+        let tmp = service;
+        tmp.enable = !service.enable
+        Put(service.ID, tmp).then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                enqueueSnackbar('Request Success', {variant: "success"});
+            } else {
+                console.log(res.error);
+                enqueueSnackbar(String(res.error), {variant: "error"});
+            }
+            setOpen(false);
+            reload(true);
+        })
+    }
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    return (
+        <div>
+            <Button size="small" variant="outlined" onClick={handleClickOpen}>
+                {
+                    service.enable &&
+                    <div>Disable</div>
+                }
+                {
+                    !service.enable &&
+                    <div>Enable</div>
+                }
+            </Button>
+            <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle id="alert-dialog-slide-title">Enable</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        {
+                            service.enable &&
+                            <div>有効から無効に変更します。</div>
+                        }
+                        {
+                            !service.enable &&
+                            <div>無効から有効に変更します。</div>
+                        }
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        いいえ
+                    </Button>
+                    <Button onClick={updateService} color="primary">
+                        はい
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
     );
 }
 
