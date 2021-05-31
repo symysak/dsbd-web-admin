@@ -10,7 +10,8 @@ import {
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
     Toolbar,
-    Typography
+    Typography,
+    MenuItem, Menu, Fade
 } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -30,6 +31,7 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import useStyles from "./styles";
 import useSideBarStyles from "./SideBar/styles";
 import {useHistory} from "react-router-dom";
+import {Logout} from "../../api/Auth";
 
 export default function Dashboard(props: any) {
     const classesDashboard = useStyles();
@@ -118,9 +120,7 @@ export default function Dashboard(props: any) {
                                 <NotificationsIcon/>
                             </Badge>
                         </IconButton>
-                        <IconButton color="inherit">
-                            <PermIdentityIcon/>
-                        </IconButton>
+                        <UserMenu key={"user_menu"}/>
                     </Toolbar>
                 </AppBar>
                 <Drawer
@@ -225,5 +225,57 @@ export default function Dashboard(props: any) {
                 </main>
             </div>
         </ThemeProvider>
+    );
+}
+
+export function UserMenu() {
+    const classes = useStyles();
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const history = useHistory();
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const clickLogout = () => {
+        Logout().then(res => {
+                sessionStorage.removeItem('ACCESS_TOKEN');
+                history.push('/login');
+                console.log(res)
+                if (res === "") {
+                } else {
+
+                }
+            }
+        );
+    }
+
+    return (
+        <div className={classes.root}>
+            <IconButton
+                color="inherit"
+                aria-controls={open ? 'menu-list-grow' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+            >
+                <PermIdentityIcon/>
+            </IconButton>
+            <Menu
+                id="fade-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Fade}
+            >
+                {/*<MenuItem onClick={handleClose}>Profile</MenuItem>*/}
+                <MenuItem onClick={clickLogout}>Logout</MenuItem>
+            </Menu>
+        </div>
     );
 }

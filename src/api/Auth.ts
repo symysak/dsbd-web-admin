@@ -2,7 +2,7 @@ import axios from "axios";
 import {restfulApiConfig} from "./Config";
 
 export function Login(username: string, password: string): Promise<string> {
-    return axios.post(restfulApiConfig.apiURL + "/token/generate", null, {
+    return axios.post(restfulApiConfig.apiURL + "/login", null, {
         headers: {
             'Content-Type': 'application/json',
             'USER': username,
@@ -14,7 +14,23 @@ export function Login(username: string, password: string): Promise<string> {
         return "";
     }).catch(err => {
         console.log(err);
-        return err;    })
+        return err;
+    })
+}
+
+export function Logout(): Promise<string> {
+    return axios.post(restfulApiConfig.apiURL + "/logout", {}, {
+        headers: {
+            'Content-Type': 'application/json',
+            'ACCESS_TOKEN': sessionStorage.getItem('ACCESS_TOKEN'),
+        }
+    }).then(res => {
+        console.log(res.data.token[0]);
+        return "";
+    }).catch(err => {
+        console.log(err);
+        return err;
+    })
 }
 
 // export const login = Login
