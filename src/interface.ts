@@ -94,6 +94,7 @@ export interface ServiceDetailData {
     max_upstream: number,
     max_bandwidth_as: number,
     service_number: number,
+    enable: boolean,
     lock: boolean,
     add_allow: boolean,
     ip?: IPData[],
@@ -176,6 +177,7 @@ export interface ConnectionDetailData {
     link_v6_our: string,
     link_v6_your: string,
     term_ip: string,
+    enable: boolean,
     open: boolean,
     monitor: boolean,
     noc?: NocTemplateData,
@@ -315,8 +317,17 @@ export interface TemplateData {
     ntts?: NTTTemplateData[]
     tunnel_endpoint_router?: TunnelEndPointRouterTemplateData[]
     tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData[]
+    ipv4_route?: IPRouteData[]
+    ipv6_route?: IPRouteData[]
     user?: UserDetailData[]
     group?: GroupDetailData[]
+}
+
+export interface IPRouteData {
+    ID: number,
+    CreatedAt: string,
+    UpdatedAt: string,
+    name: string
 }
 
 export interface ServiceAddData {
@@ -378,6 +389,8 @@ export interface ConnectionAddData {
     address: string,
     connection_template_id: number,
     connection_comment: string,
+    ipv4_route_template_id?: number,
+    ipv6_route_template_id?: number,
     ntt_template_id: number,
     noc_id: number,
     term_ip: string,
@@ -573,6 +586,7 @@ export const DefaultServiceDetailData: ServiceDetailData = {
     max_bandwidth_as: 0,
     service_number: 0,
     lock: false,
+    enable: false,
     add_allow: false,
     ip: undefined,
     jpnic_admin: undefined,
@@ -604,6 +618,7 @@ export const DefaultConnectionDetailData: ConnectionDetailData = {
     link_v6_your: "",
     term_ip: "",
     open: false,
+    enable: false,
     monitor: false,
     noc: undefined,
     noc_id: 0,
