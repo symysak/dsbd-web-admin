@@ -450,7 +450,6 @@ export function JPNICTechAdd(props: {
                         <br/>
                         <TextField
                             className={classes.formVeryShort}
-                            required
                             id="outlined-required"
                             label="Dept"
                             value={jpnic.dept}
@@ -461,7 +460,6 @@ export function JPNICTechAdd(props: {
                         />
                         <TextField
                             className={classes.formVeryShort}
-                            required
                             id="outlined-required"
                             label="Dept(English)"
                             value={jpnic.dept_en}
@@ -484,7 +482,6 @@ export function JPNICTechAdd(props: {
                         />
                         <TextField
                             className={classes.formVeryShort}
-                            required
                             id="outlined-required"
                             label="Fax"
                             value={jpnic.fax}
