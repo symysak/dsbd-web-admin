@@ -6,7 +6,7 @@ export function Post(id: number, data: MemoAddData): Promise<{ error: string; da
     return axios.post(restfulApiConfig.apiURL + "/memo", data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -25,7 +25,7 @@ export function Delete(id: number): Promise<{ error: string; data: any }> {
     return axios.delete(restfulApiConfig.apiURL + "/memo/" + id, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {

@@ -22,7 +22,7 @@ export function Logout(): Promise<string> {
     return axios.post(restfulApiConfig.apiURL + "/logout", {}, {
         headers: {
             'Content-Type': 'application/json',
-            'ACCESS_TOKEN': sessionStorage.getItem('ACCESS_TOKEN'),
+            'ACCESS_TOKEN': sessionStorage.getItem('ACCESS_TOKEN')!,
         }
     }).then(res => {
         console.log(res.data.token[0]);

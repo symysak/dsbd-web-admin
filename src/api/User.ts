@@ -5,7 +5,7 @@ export function GetAll(): Promise<{ error: string, data: any }> {
     return axios.get(restfulApiConfig.apiURL + "/user", {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         console.log(res.data);

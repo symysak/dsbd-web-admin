@@ -6,7 +6,7 @@ export function Post(id: number, data: ConnectionAddData): Promise<{ error: stri
     return axios.post(restfulApiConfig.apiURL + "/service/" + id + "/connection", data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -26,7 +26,7 @@ export function Delete(id: number): Promise<{ error: string; data: any }> {
     return axios.delete(restfulApiConfig.apiURL + "/connection/" + id, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -46,7 +46,7 @@ export function Put(id: number, data: ConnectionDetailData): Promise<{ error: st
     return axios.put(restfulApiConfig.apiURL + "/connection/" + id, data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -66,7 +66,7 @@ export function Update(data: ConnectionDetailData): Promise<{ error: string; dat
     return axios.put(restfulApiConfig.apiURL + "/connection/" + data.ID, data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -86,7 +86,7 @@ export function GetAll(): Promise<{ error: string, data: any }> {
     return axios.get(restfulApiConfig.apiURL + "/connection", {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {

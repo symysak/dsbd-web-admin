@@ -6,7 +6,7 @@ export function Post(data: NoticeRegisterData): Promise<{ error: string; data: a
     return axios.post(restfulApiConfig.apiURL + "/notice", data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -26,7 +26,7 @@ export function Delete(id: number): Promise<{ error: string; data: any }> {
     return axios.delete(restfulApiConfig.apiURL + "/notice/" + id, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -46,7 +46,7 @@ export function Put(id: number, data: NoticeData): Promise<{ error: string; data
     return axios.put(restfulApiConfig.apiURL + "/notice/" + id, data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -66,7 +66,7 @@ export function GetAll(): Promise<{ error: string, data: any }> {
     return axios.get(restfulApiConfig.apiURL + "/notice", {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         console.log(res.data);

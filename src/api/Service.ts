@@ -6,7 +6,7 @@ export function Post(id: number, data: ServiceAddData): Promise<{ error: string;
     return axios.post(restfulApiConfig.apiURL + "/group/" + id + "/service", data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -26,7 +26,7 @@ export function Delete(id: number): Promise<{ error: string; data: any }> {
     return axios.delete(restfulApiConfig.apiURL + "/service/" + id, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -46,7 +46,7 @@ export function Put(id: number, data: ServiceDetailData): Promise<{ error: strin
     return axios.put(restfulApiConfig.apiURL + "/service/" + id, data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -66,7 +66,7 @@ export function DeleteIP(id: number): Promise<{ error: string; data: any }> {
     return axios.delete(restfulApiConfig.apiURL + "/ip/" + id, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -86,7 +86,7 @@ export function PostIP(id: number, data: ServiceAddIPData): Promise<{ error: str
     return axios.post(restfulApiConfig.apiURL + "/service/" + id + "/ip", data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -107,7 +107,7 @@ export function PutIP(data: IPData): Promise<{ error: string; data: any }> {
         data, {
             headers: {
                 'Content-Type': 'application/json',
-                ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+                ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
             }
         }).then(res => {
         return {
@@ -127,7 +127,7 @@ export function DeletePlan(id: number): Promise<{ error: string; data: any }> {
     return axios.delete(restfulApiConfig.apiURL + "/plan/" + id, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -148,7 +148,7 @@ export function PutPlan(data: PlanData): Promise<{ error: string; data: any }> {
         data, {
             headers: {
                 'Content-Type': 'application/json',
-                ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+                ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
             }
         }).then(res => {
         return {
@@ -168,7 +168,7 @@ export function PostJPNICAdmin(serviceID: number, data: JPNICData): Promise<{ er
     return axios.post(restfulApiConfig.apiURL + "/service/" + serviceID + "/jpnic_admin", data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -188,7 +188,7 @@ export function PutJPNICAdmin(id: number, data: JPNICData): Promise<{ error: str
     return axios.put(restfulApiConfig.apiURL + "/jpnic_admin/" + id, data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -208,7 +208,7 @@ export function PostJPNICTech(id: number, data: JPNICData): Promise<{ error: str
     return axios.post(restfulApiConfig.apiURL + "/service/" + id + "/jpnic_tech", data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -228,7 +228,7 @@ export function DeleteJPNICTech(id: number): Promise<{ error: string; data: any 
     return axios.delete(restfulApiConfig.apiURL + "/jpnic_tech/" + id, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -248,7 +248,7 @@ export function PutJPNICTech(id: number, data: JPNICData): Promise<{ error: stri
     return axios.put(restfulApiConfig.apiURL + "/jpnic_tech/" + id, data, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -268,7 +268,7 @@ export function Get(id: string): Promise<{ error: string, data: any }> {
     return axios.get(restfulApiConfig.apiURL + "/service/" + id, {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
@@ -288,7 +288,7 @@ export function GetAll(): Promise<{ error: string, data: any }> {
     return axios.get(restfulApiConfig.apiURL + "/service", {
         headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: sessionStorage.getItem('AccessToken'),
+            ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
         return {
