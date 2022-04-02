@@ -1,6 +1,6 @@
 import {JPNICData} from "../../../../interface";
 import React, {Dispatch, SetStateAction} from "react";
-import {Card, CardContent} from "@material-ui/core";
+import {Card, CardContent} from "@mui/material";
 import cssModule from "../../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
 import {JPNICDetail} from "../../../../components/Dashboard/JPNIC/JPNIC";
 

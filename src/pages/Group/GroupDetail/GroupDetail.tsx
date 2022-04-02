@@ -1,12 +1,11 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Dashboard from "../../../components/Dashboard/Dashboard";
 import {Get, GetTemplate} from "../../../api/Group";
-import useStyles from "./styles";
 import Users from "./User";
 import {
     CircularProgress, Grid
-} from "@material-ui/core";
+} from "@mui/material";
 import {DefaultGroupDetailData, DefaultTemplateData} from "../../../interface";
 import Ticket from "../../../components/Dashboard/Ticket/Ticket";
 import Request from "../../../components/Dashboard/Request/Request";
@@ -15,6 +14,7 @@ import {GroupProfileInfo, GroupMainMenu, GroupStatus} from "./Group";
 import {useSnackbar} from "notistack";
 import {GroupMemo} from "./Memo";
 import {MailAutoSendDialogs, MailSendDialogs} from "../Mail";
+import {StyledDivRoot1} from "../../../style";
 
 
 function getTitle(id: number, org: string, org_en: string, loading: boolean): string {
@@ -28,7 +28,6 @@ function getTitle(id: number, org: string, org_en: string, loading: boolean): st
 }
 
 export default function GroupDetail() {
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
     const [reload, setReload] = useState(true)
     const [loading, setLoading] = useState(true)
@@ -37,12 +36,12 @@ export default function GroupDetail() {
     const [openMailSendDialog, setOpenMailSendDialog] = useState(false);
     const [openMailAutoSendDialog, setOpenMailAutoSendDialog] = useState("");
     const [sendAutoEmail, setSendAutoEmail] = useState("");
-    let id: string;
+    let id: string | undefined;
     ({id} = useParams());
 
     useEffect(() => {
         if (reload) {
-            Get(id).then(res => {
+            Get(id!).then(res => {
                 if (res.error === "") {
                     setGroup(res.data);
                     setReload(false);
@@ -54,7 +53,7 @@ export default function GroupDetail() {
     }, [reload]);
 
     useEffect(() => {
-        Get(id).then(res => {
+        Get(id!).then(res => {
             if (res.error === "") {
                 console.log(res);
                 setGroup(res.data);
@@ -92,10 +91,10 @@ export default function GroupDetail() {
         <Dashboard title={getTitle(group.ID, group.org, group.org_en, loading)}>
             {
                 loading ? (
-                    <div className={classes.root}>
+                    <StyledDivRoot1>
                         <CircularProgress/>
                         <div>loading</div>
-                    </div>
+                    </StyledDivRoot1>
                 ) : (
                     <Grid container spacing={3}>
                         <Grid item xs={3}>

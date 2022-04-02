@@ -1,42 +1,66 @@
 import React from 'react';
-import clsx from 'clsx';
 import {
-    AppBar,
-    Badge, Collapse, colors,
-    Container, createMuiTheme, ThemeProvider,
+    Badge, Collapse,
+    ThemeProvider,
     CssBaseline,
     Divider,
     Drawer,
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
-    Toolbar,
-    Typography,
-    MenuItem, Menu, Fade
-} from "@material-ui/core";
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import PersonIcon from "@material-ui/icons/Person";
-import PeopleIcon from "@material-ui/icons/People";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import LayersIcon from "@material-ui/icons/Layers";
-import ClassIcon from '@material-ui/icons/Class';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import ChatIcon from "@material-ui/icons/Chat";
-import SettingsIcon from "@material-ui/icons/Settings";
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import useStyles from "./styles";
-import useSideBarStyles from "./SideBar/styles";
-import {useHistory} from "react-router-dom";
+    MenuItem, Menu, Fade, styled
+} from "@mui/material";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonIcon from "@mui/icons-material/Person";
+import PeopleIcon from "@mui/icons-material/People";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import LayersIcon from "@mui/icons-material/Layers";
+import ClassIcon from '@mui/icons-material/Class';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import ChatIcon from "@mui/icons-material/Chat";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import {
+    StyledDivDashboardToolBarIcon,
+    StyledDivDashboardRoot,
+    StyledToolBarDashboardRoot,
+    StyledTypographyPageTitle, StyledMainContent, StyledDivAppBarShift, StyledContainer1, StyledListItemSideBarNested
+} from "./styles";
+import {useNavigate} from "react-router-dom";
 import {Logout} from "../../api/Auth";
+import {muiColorTheme} from "../Theme";
+import {StyledTypographyTitle} from "../../style";
+
+const drawerWidth = 240;
+
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
+
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+    transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: `${drawerWidth}px`,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
 
 export default function Dashboard(props: any) {
-    const classesDashboard = useStyles();
-    const classesMenu = useSideBarStyles();
     // Menu Bar
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
@@ -56,87 +80,84 @@ export default function Dashboard(props: any) {
         }
     };
 
-    const theme = createMuiTheme({
-        palette: {
-            primary: {
-                main: colors.blue[800],
-            },
-            type: "dark",
-            // type: darkMode ? "dark" : "light",
-        },
-    });
-
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const DashboardPage = () => {
-        history.push("/dashboard");
+        navigate("/dashboard");
     }
     const NoticePage = () => {
-        history.push("/dashboard/notice");
+        navigate("/dashboard/notice");
     }
     const GroupPage = () => {
-        history.push("/dashboard/group");
+        navigate("/dashboard/group");
     }
     const JPNICPage = () => {
-        history.push("/dashboard/jpnic");
+        navigate("/dashboard/jpnic");
     }
     const OrderPage = () => {
-        history.push("/dashboard/order");
+        navigate("/dashboard/order");
     }
     const SupportPage = () => {
-        history.push("/dashboard/support");
+        navigate("/dashboard/support");
     }
     const ServicePage = () => {
-        history.push("/dashboard/service");
+        navigate("/dashboard/service");
     }
     const ConnectionPage = () => {
-        history.push("/dashboard/connection");
+        navigate("/dashboard/connection");
     }
     const UserPage = () => {
-        history.push("/dashboard/user");
+        navigate("/dashboard/user");
     }
     const TokenPage = () => {
-        history.push("/dashboard/token");
+        navigate("/dashboard/token");
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <div className={classesDashboard.root}>
+        <ThemeProvider theme={muiColorTheme}>
+            <StyledDivDashboardRoot>
                 <CssBaseline/>
-                <AppBar position="absolute"
-                        className={clsx(classesDashboard.appBar, open && classesDashboard.appBarShift)}>
-                    <Toolbar className={classesDashboard.toolbar}>
+                <AppBar position="fixed" open={open}>
+                    <StyledToolBarDashboardRoot>
                         <IconButton
                             edge="start"
                             color="inherit"
                             aria-label="open drawer"
                             onClick={handleDrawerOpen}
-                            className={clsx(classesDashboard.menuButton, open && classesDashboard.menuButtonHidden)}
+                            // className={clsx(classesDashboard.menuButton, open && classesDashboard.menuButtonHidden)}
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <Typography component="h1" variant="h6" color="inherit" noWrap
-                                    className={classesDashboard.title}>
+                        <StyledTypographyTitle variant="h6" color="inherit" noWrap>
                             AS59105 Admin Page
-                        </Typography>
+                        </StyledTypographyTitle>
                         <IconButton color="inherit">
                             <Badge badgeContent={0} color="secondary">
                                 <NotificationsIcon/>
                             </Badge>
                         </IconButton>
                         <UserMenu key={"user_menu"}/>
-                    </Toolbar>
+                    </StyledToolBarDashboardRoot>
                 </AppBar>
                 <Drawer
-                    variant="permanent"
-                    classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}
+                    sx={{
+                        width: drawerWidth,
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                        },
+                    }}
+                    variant="persistent"
+                    anchor="left"
+                    // classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}
                     open={open}
                 >
-                    <div className={classesDashboard.toolbarIcon}>
+                    <StyledDivDashboardToolBarIcon>
                         <IconButton onClick={handleDrawerClose}>
                             <ChevronLeftIcon/>
                         </IconButton>
-                    </div>
+                    </StyledDivDashboardToolBarIcon>
                     <Divider/>
                     <ListItem button onClick={DashboardPage}>
                         <ListItemIcon>
@@ -183,30 +204,30 @@ export default function Dashboard(props: any) {
                     </ListItem>
                     <Collapse in={openOther} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            <ListItem button className={classesMenu.nested} onClick={UserPage}>
+                            <StyledListItemSideBarNested onClick={UserPage}>
                                 <ListItemIcon>
                                     <PersonIcon/>
                                 </ListItemIcon>
                                 <ListItemText primary="User"/>
-                            </ListItem>
-                            <ListItem button className={classesMenu.nested} onClick={ServicePage}>
+                            </StyledListItemSideBarNested>
+                            <StyledListItemSideBarNested onClick={ServicePage}>
                                 <ListItemIcon>
                                     <ClassIcon/>
                                 </ListItemIcon>
                                 <ListItemText primary="Service"/>
-                            </ListItem>
-                            <ListItem button className={classesMenu.nested} onClick={ConnectionPage}>
+                            </StyledListItemSideBarNested>
+                            <StyledListItemSideBarNested onClick={ConnectionPage}>
                                 <ListItemIcon>
                                     <AccountTreeIcon/>
                                 </ListItemIcon>
                                 <ListItemText primary="Connection"/>
-                            </ListItem>
-                            <ListItem button className={classesMenu.nested} onClick={TokenPage}>
+                            </StyledListItemSideBarNested>
+                            <StyledListItemSideBarNested onClick={TokenPage}>
                                 <ListItemIcon>
                                     <VpnKeyIcon/>
                                 </ListItemIcon>
                                 <ListItemText primary="Token"/>
-                            </ListItem>
+                            </StyledListItemSideBarNested>
                         </List>
                     </Collapse>
                     <ListItem button>
@@ -218,31 +239,29 @@ export default function Dashboard(props: any) {
                     <Divider/>
                     {/*<List>{secondaryList}</List>*/}
                 </Drawer>
-                <main className={classesDashboard.content}>
-                    <div className={classesDashboard.appBarSpacer}/>
-                    <Container maxWidth="lg" className={classesDashboard.container}>
-                        <Typography
-                            component="h2"
+                <StyledMainContent>
+                    <StyledDivAppBarShift/>
+                    <StyledContainer1 maxWidth="lg">
+                        <StyledTypographyPageTitle
+                            // component="h2"
                             variant="h5"
                             color="inherit"
                             noWrap
-                            className={classesDashboard.pageTitle}
                         >
                             {props.title}
-                        </Typography>
+                        </StyledTypographyPageTitle>
                         {props.children}
-                    </Container>
-                </main>
-            </div>
+                    </StyledContainer1>
+                </StyledMainContent>
+            </StyledDivDashboardRoot>
         </ThemeProvider>
     );
 }
 
 export function UserMenu() {
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -255,7 +274,7 @@ export function UserMenu() {
     const clickLogout = () => {
         Logout().then(res => {
                 sessionStorage.removeItem('ACCESS_TOKEN');
-                history.push('/login');
+                navigate('/login');
                 console.log(res)
                 if (res === "") {
                 } else {
@@ -266,7 +285,7 @@ export function UserMenu() {
     }
 
     return (
-        <div className={classes.root}>
+        <StyledDivDashboardRoot>
             <IconButton
                 color="inherit"
                 aria-controls={open ? 'menu-list-grow' : undefined}
@@ -286,6 +305,7 @@ export function UserMenu() {
                 {/*<MenuItem onClick={handleClose}>Profile</MenuItem>*/}
                 <MenuItem onClick={clickLogout}>Logout</MenuItem>
             </Menu>
-        </div>
+        </StyledDivDashboardRoot>
     );
 }
+

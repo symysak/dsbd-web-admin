@@ -5,20 +5,19 @@ import {
     ServiceAddIPv4PlanData, TemplateData
 } from "../../../../interface";
 import React, {Dispatch, SetStateAction} from "react";
-import useStyles from "../../../Group/GroupDetail/styles";
 import {useSnackbar} from "notistack";
 import {
     Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel,
     FormLabel, Grid, MenuItem,
     Paper, Select,
-    Table, TableBody,
+    TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
-    TextField
-} from "@material-ui/core";
+} from "@mui/material";
 import {PostIP} from "../../../../api/Service";
+import {StyledRootForm, StyledTableRoot, StyledTextFieldMedium, StyledTextFieldTooVeryShort} from "../../../../style";
 
 export function AddAssignIPDialog(props: {
     serviceID: number
@@ -29,7 +28,6 @@ export function AddAssignIPDialog(props: {
     const [checkBoxIPv4, setCheckBoxIPv4] = React.useState(false);
     const [data, setData] = React.useState(DefaultAddIP);
     const [ipv4PlanSubnetCount, setIPv4PlanSubnetCount] = React.useState(0);
-    const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const {enqueueSnackbar} = useSnackbar();
 
@@ -123,9 +121,8 @@ export function AddAssignIPDialog(props: {
                                     checkBoxIPv4 && (
                                         <div>
                                             <br/>
-                                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                                <TextField
-                                                    className={classes.formMedium}
+                                            <StyledRootForm noValidate autoComplete="off">
+                                                <StyledTextFieldMedium
                                                     required
                                                     id="ipv4_network_name"
                                                     label="Network名"
@@ -137,7 +134,7 @@ export function AddAssignIPDialog(props: {
                                                     onChange={(event) =>
                                                         setData({...data, name: event.target.value})}
                                                 />
-                                            </form>
+                                            </StyledRootForm>
                                             <FormControl component="fieldset">
                                                 <Select aria-label="gender" id="ipv4_subnet" value={getSubnetID(4)}
                                                         onChange={(event) => {
@@ -165,9 +162,8 @@ export function AddAssignIPDialog(props: {
                                     !checkBoxIPv4 && (
                                         <div>
                                             <br/>
-                                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                                <TextField
-                                                    className={classes.formMedium}
+                                            <StyledRootForm noValidate autoComplete="off">
+                                                <StyledTextFieldMedium
                                                     required
                                                     id="ipv6_network_name"
                                                     value={data.name}
@@ -179,7 +175,7 @@ export function AddAssignIPDialog(props: {
                                                     onChange={(event) =>
                                                         setData({...data, name: event.target.value})}
                                                 />
-                                            </form>
+                                            </StyledRootForm>
                                             <FormControl component="fieldset">
                                                 <Select aria-label="gender" id="ipv6_subnet" value={getSubnetID(6)}
                                                         onChange={(event) =>
@@ -226,7 +222,6 @@ export function AddJPNICIPv4Plan(props: {
     const {data, setData, subnetCount} = props;
     const [inputPlan, setInputPlan] = React.useState(DefaultServiceAddIPv4PlanData);
     const [planSum, setPlanSum] = React.useState(DefaultServiceAddIPv4PlanData);
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
 
@@ -291,9 +286,8 @@ export function AddJPNICIPv4Plan(props: {
                     <div>最低でも割り当てから3カ月以内に25%、6カ月以内に25%、1年以内に50％をご利用いただく必要があります。</div>
                     <div>以下のフォームにIPアドレスの利用計画をご記入ください。</div>
                     <br/>
-                    <form className={classes.rootForm} noValidate autoComplete="off">
-                        <TextField
-                            className={classes.formMedium}
+                    <StyledRootForm noValidate autoComplete="off">
+                        <StyledTextFieldMedium
                             required
                             id="outlined-required"
                             label="Name"
@@ -303,8 +297,7 @@ export function AddJPNICIPv4Plan(props: {
                                 setInputPlan({...inputPlan, name: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryTooShort}
+                        <StyledTextFieldTooVeryShort
                             required
                             id="outlined-required"
                             label="直後"
@@ -315,8 +308,7 @@ export function AddJPNICIPv4Plan(props: {
                                 setInputPlan({...inputPlan, after: parseInt(event.target.value)});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryTooShort}
+                        <StyledTextFieldTooVeryShort
                             required
                             id="outlined-required"
                             label="半年後"
@@ -327,8 +319,7 @@ export function AddJPNICIPv4Plan(props: {
                                 setInputPlan({...inputPlan, half_year: parseInt(event.target.value)});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryTooShort}
+                        <StyledTextFieldTooVeryShort
                             required
                             id="outlined-required"
                             label="1年後"
@@ -341,9 +332,9 @@ export function AddJPNICIPv4Plan(props: {
                         />
                         <br/>
                         <Button size="small" variant="contained" color="primary" onClick={add}>追加</Button>
-                    </form>
+                    </StyledRootForm>
                     <TableContainer component={Paper}>
-                        <Table className={classes.table} size="small" aria-label="a dense table">
+                        <StyledTableRoot size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Name</TableCell>
@@ -381,7 +372,7 @@ export function AddJPNICIPv4Plan(props: {
                                     <TableCell align="right"><b>{subnetCount / 2}/{subnetCount}</b></TableCell>
                                 </TableRow>
                             </TableBody>
-                        </Table>
+                        </StyledTableRoot>
                     </TableContainer>
                 </div>
             }

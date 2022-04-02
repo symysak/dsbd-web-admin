@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from "../Dashboard/styles"
 import {
-    Card,
     CardActions,
     CardContent,
     FormControl,
     FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
+    Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll} from "../../api/Token";
 import {
     DefaultTokenDetailDataArray,
@@ -20,7 +18,6 @@ import {useSnackbar} from "notistack";
 
 
 export default function Token() {
-    const classes = useStyles();
     const [tokens, setTokens] = useState(DefaultTokenDetailDataArray);
     const [initTokens, setInitTokens] = useState(DefaultTokenDetailDataArray);
     const {enqueueSnackbar} = useSnackbar();
@@ -70,16 +67,15 @@ export default function Token() {
 
     return (
         <Dashboard title="Token Info">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                     <FormControlLabel value={1} control={<Radio color="primary"/>} label="管理側"/>
@@ -88,11 +84,11 @@ export default function Token() {
             </FormControl>
             {
                 tokens.filter(token => checkToken(token)).map((token: TokenDetailData) => (
-                    <Card className={classes.root}>
+                    <StyledCard>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {token.ID}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 AccessToken: {token.access_token}
                                 <br/>
@@ -105,7 +101,7 @@ export default function Token() {
                         <CardActions>
                             {/*<Button size="small" onClick={() => clickDetailPage(notice.ID)}>Detail</Button>*/}
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

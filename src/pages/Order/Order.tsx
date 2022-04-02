@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles";
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from "../Dashboard/styles"
 import {
     PaymentDetailData
 } from "../../interface";
@@ -8,19 +8,16 @@ import {useSnackbar} from "notistack";
 import {GetAll, Refund} from "../../api/Payment";
 import {
     Button,
-    Card, CardActions,
+    CardActions,
     CardContent, Chip,
     FormControl,
     FormControlLabel,
-    InputBase,
-    Paper,
     Radio,
     RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 
 export default function Order() {
-    const classes = useStyles();
     const [payments, setPayments] = useState<PaymentDetailData[]>();
     const [initPayments, setInitPayments] = useState<PaymentDetailData[]>();
     const {enqueueSnackbar} = useSnackbar();
@@ -92,16 +89,15 @@ export default function Order() {
     return (
         <Dashboard title="Payment Info">
             <h3>合計金額: {money}円</h3>
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="open" value={value} onChange={handleChange}>
                     <FormControlLabel value={1} control={<Radio color="primary"/>} label="支払済"/>
@@ -110,11 +106,11 @@ export default function Order() {
             </FormControl>
             {
                 payments?.filter(payment => checkPayment(payment)).map((payment: PaymentDetailData) => (
-                    <Card className={classes.root}>
+                    <StyledCard>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {payment.ID} ({payment.payment_intent_id})
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {
                                     payment.is_membership &&
@@ -179,7 +175,7 @@ export default function Order() {
                             <Button size="small" color={"secondary"}
                                     onClick={() => handleRefundProcess(payment.ID)}>返金</Button>
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

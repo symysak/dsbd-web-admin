@@ -1,22 +1,34 @@
-import useStyles from "./styles";
 import {GroupDetailData, TemplateData} from "../../../interface";
 import {
     Accordion, AccordionDetails, AccordionSummary,
-    Button, Card,
-    CardContent, Chip, FormControl, Grid, InputLabel, MenuItem, PropTypes, Select,
-    TextField, Typography
-} from "@material-ui/core";
+    Button,
+    CardContent, Chip, FormControl, Grid, InputLabel, MenuItem, PropTypes, Select, SelectChangeEvent, TextField,
+    Typography
+} from "@mui/material";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {GroupStatusStr} from "../../../components/Dashboard/Status/Status";
 import {GroupAbolition, GroupLockButton, GroupStatusButton} from "./GroupMenu";
 import {DeleteSubscription, Put} from "../../../api/Group";
 import {useSnackbar} from "notistack";
 import ServiceAddDialogs from "./ServiceAdd/ServiceAdd";
 import ConnectionAddDialogs from "./ConnectionAdd/ConnectionAdd";
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import DatePicker from '@mui/lab/DatePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import JPNICRegistrationDialog from "./JPNIC";
+import {
+    StyledButtonSpaceRight, StyledButtonSpaceTop,
+    StyledCardRoot1,
+    StyledChip1, StyledDivLargeHeading,
+    StyledDivRoot1, StyledDivText,
+    StyledFormControlFormSelect,
+    StyledFormControlFormShort,
+    StyledRootForm,
+    StyledTextFieldMedium,
+    StyledTextFieldVeryShort1,
+    StyledTypographyHeading
+} from "../../../style";
+import {LocalizationProvider} from "@mui/lab";
 
 function ChipAgree(props: { agree: boolean }) {
     const {agree} = props;
@@ -46,7 +58,6 @@ export function GroupProfileInfo(props: {
     setReload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {data, template, setOpenMailSendDialog, setReload} = props;
-    const classes = useStyles();
     const [lockPersonalInformation, setLockPersonalInformation] = React.useState(true);
     const [group, setGroup] = useState(data);
     const [openAddService, setOpenAddService] = React.useState(false);
@@ -112,10 +123,10 @@ export function GroupProfileInfo(props: {
                 '-' + ('00' + (date.getDate())).slice(-2) + 'T09:00:00Z');
         }
     };
-    const handleChangeMembershipPlan = (event: React.ChangeEvent<{ value: any }>) => {
+    const handleChangeMembershipPlan = (event: SelectChangeEvent<any>) => {
         setMembershipPlan(event.target.value as number);
     };
-    const handleChangeCoupon = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleChangeCoupon = (event: SelectChangeEvent<any>) => {
         setPaymentCoupon(event.target.value as number);
         const coupon = template.payment_coupon_template?.filter(coupon => coupon.ID === event.target.value as number)
         if (coupon != null) {
@@ -147,7 +158,7 @@ export function GroupProfileInfo(props: {
     }
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot1>
             <CardContent>
                 <Accordion>
                     <AccordionSummary
@@ -155,100 +166,97 @@ export function GroupProfileInfo(props: {
                         aria-controls="panel1a-content"
                         id="group-info"
                     >
-                        <Typography className={classes.heading}>グループ情報(住所、電話番号など)</Typography>
+                        <StyledTypographyHeading>グループ情報(住所、電話番号など)</StyledTypographyHeading>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <div className={classes.root}>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formVeryShort}
-                                    required
-                                    id="postcode"
-                                    label="郵便番号"
-                                    defaultValue={data.postcode}
-                                    InputProps={{
-                                        readOnly: lockPersonalInformation,
-                                    }}
-                                    variant="outlined"
-                                    onChange={event => {
-                                        setGroup({...data, postcode: event.target.value});
-                                    }}
-                                />
-                                <TextField
-                                    className={classes.formMedium}
-                                    required
-                                    id="address"
-                                    label="住所"
-                                    defaultValue={data.address}
-                                    InputProps={{
-                                        readOnly: lockPersonalInformation,
-                                    }}
-                                    variant="outlined"
-                                    onChange={event => {
-                                        setGroup({...data, address: event.target.value});
-                                    }}
-                                />
-                                <TextField
-                                    className={classes.formMedium}
-                                    required
-                                    id="address_english"
-                                    label="住所(English)"
-                                    defaultValue={data.address_en}
-                                    InputProps={{
-                                        readOnly: lockPersonalInformation,
-                                    }}
-                                    variant="outlined"
-                                    onChange={event => {
-                                        setGroup({...data, address_en: event.target.value});
-                                    }}
-                                />
-                                <TextField
-                                    className={classes.formVeryShort}
-                                    required
-                                    id="tel"
-                                    label="電話番号"
-                                    defaultValue={data.tel}
-                                    InputProps={{
-                                        readOnly: lockPersonalInformation,
-                                    }}
-                                    variant="outlined"
-                                    onChange={event => {
-                                        setGroup({...data, tel: event.target.value});
-                                    }}
-                                />
-                                <TextField
-                                    className={classes.formVeryShort}
-                                    required
-                                    id="country"
-                                    label="住居国"
-                                    defaultValue={data.country}
-                                    InputProps={{
-                                        readOnly: lockPersonalInformation,
-                                    }}
-                                    variant="outlined"
-                                    onChange={event => {
-                                        setGroup({...data, country: event.target.value});
-                                    }}
-                                />
-                            </form>
-                            <Button
-                                size="small"
-                                color="secondary"
-                                disabled={!lockPersonalInformation}
-                                onClick={clickPersonalInfoLock}
-                            >
-                                ロック解除
-                            </Button>
-                            <Button size="small">Cancel</Button>
-                            <Button
-                                size="small"
-                                color="primary"
-                                disabled={lockPersonalInformation}
-                                onClick={updateGroupInfo}
-                            >
-                                Save
-                            </Button>
-                        </div>
+                        <FormControl sx={{width: "100%"}}>
+                            <StyledDivRoot1>
+                                <StyledRootForm noValidate autoComplete="off">
+                                    <StyledTextFieldVeryShort1
+                                        required
+                                        id="postcode"
+                                        label="郵便番号"
+                                        defaultValue={data.postcode}
+                                        InputProps={{
+                                            readOnly: lockPersonalInformation,
+                                        }}
+                                        variant="outlined"
+                                        onChange={event => {
+                                            setGroup({...data, postcode: event.target.value});
+                                        }}
+                                    />
+                                    <StyledTextFieldMedium
+                                        required
+                                        id="address"
+                                        label="住所"
+                                        defaultValue={data.address}
+                                        InputProps={{
+                                            readOnly: lockPersonalInformation,
+                                        }}
+                                        variant="outlined"
+                                        onChange={event => {
+                                            setGroup({...data, address: event.target.value});
+                                        }}
+                                    />
+                                    <StyledTextFieldMedium
+                                        required
+                                        id="address_english"
+                                        label="住所(English)"
+                                        defaultValue={data.address_en}
+                                        InputProps={{
+                                            readOnly: lockPersonalInformation,
+                                        }}
+                                        variant="outlined"
+                                        onChange={event => {
+                                            setGroup({...data, address_en: event.target.value});
+                                        }}
+                                    />
+                                    <StyledTextFieldVeryShort1
+                                        required
+                                        id="tel"
+                                        label="電話番号"
+                                        defaultValue={data.tel}
+                                        InputProps={{
+                                            readOnly: lockPersonalInformation,
+                                        }}
+                                        variant="outlined"
+                                        onChange={event => {
+                                            setGroup({...data, tel: event.target.value});
+                                        }}
+                                    />
+                                    <StyledTextFieldVeryShort1
+                                        required
+                                        id="country"
+                                        label="住居国"
+                                        defaultValue={data.country}
+                                        InputProps={{
+                                            readOnly: lockPersonalInformation,
+                                        }}
+                                        variant="outlined"
+                                        onChange={event => {
+                                            setGroup({...data, country: event.target.value});
+                                        }}
+                                    />
+                                </StyledRootForm>
+                                <Button
+                                    size="small"
+                                    color="secondary"
+                                    disabled={!lockPersonalInformation}
+                                    onClick={clickPersonalInfoLock}
+                                >
+                                    ロック解除
+                                </Button>
+                                <Button size="small">Cancel</Button>
+                                <Button
+                                    size="small"
+                                    color="primary"
+                                    disabled={lockPersonalInformation}
+                                    onClick={updateGroupInfo}
+                                >
+                                    Save
+                                </Button>
+                            </StyledDivRoot1>
+                        </FormControl>
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>
@@ -257,17 +265,19 @@ export function GroupProfileInfo(props: {
                         aria-controls="question"
                         id="question"
                     >
-                        <Typography className={classes.heading}>Agree & Question & Contract</Typography>
+                        <StyledTypographyHeading>Agree & Question & Contract</StyledTypographyHeading>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <div className={classes.root}>
-                            <div className={classes.largeHeading}>Agree</div>
-                            <ChipAgree agree={data.agree}/>
-                            <div className={classes.largeHeading}>Question</div>
-                            <div className={classes.text}>{data.question}</div>
-                            <div className={classes.largeHeading}>Contract</div>
-                            <div className={classes.text}>{data.contract}</div>
-                        </div>
+                        <FormControl sx={{width: "100%"}}>
+                            <StyledDivRoot1>
+                                <StyledDivLargeHeading>Agree</StyledDivLargeHeading>
+                                <ChipAgree agree={data.agree}/>
+                                <StyledDivLargeHeading>Question</StyledDivLargeHeading>
+                                <StyledDivText>{data.question}</StyledDivText>
+                                <StyledDivLargeHeading>Contract</StyledDivLargeHeading>
+                                <StyledDivText>{data.contract}</StyledDivText>
+                            </StyledDivRoot1>
+                        </FormControl>
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>
@@ -276,64 +286,74 @@ export function GroupProfileInfo(props: {
                         aria-controls="payment"
                         id="payment"
                     >
-                        <Typography className={classes.heading}>学生会員・支払い</Typography>
+                        <StyledTypographyHeading>学生会員・支払い</StyledTypographyHeading>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <FormControl variant="filled" className={classes.formSelect}>
-                            <InputLabel id="membership-plan-label">Membership Plan</InputLabel>
-                            <Select
-                                labelId="membership-plan-label"
-                                id="membership-plan"
-                                value={membershipPlan}
-                                onChange={handleChangeMembershipPlan}
-                            >
-                                <option key={"membership_template_0"} value={0}>自動課金無効</option>
-                                {
-                                    template.payment_membership_template?.map(tmp =>
-                                        <option
-                                            key={"membership_template_" + tmp.ID}
-                                            value={tmp.ID}
-                                        >
-                                            {tmp.plan}
-                                        </option>
-                                    )
-                                }
-                            </Select>
-                        </FormControl>
-                        <FormControl variant="filled" className={classes.formShort}>
+                        <StyledFormControlFormSelect variant="filled">
+                            <FormControl sx={{width: "100%"}}>
+                                <InputLabel id="membership-plan-label">Membership Plan</InputLabel>
+                                <Select
+                                    labelId="membership-plan-label"
+                                    id="membership-plan"
+                                    value={membershipPlan}
+                                    onChange={handleChangeMembershipPlan}
+                                >
+                                    <option key={"membership_template_0"} value={0}>自動課金無効</option>
+                                    {
+                                        template.payment_membership_template?.map(tmp =>
+                                            <option
+                                                key={"membership_template_" + tmp.ID}
+                                                value={tmp.ID}
+                                            >
+                                                {tmp.plan}
+                                            </option>
+                                        )
+                                    }
+                                </Select>
+                            </FormControl>
+                        </StyledFormControlFormSelect>
+                        <StyledFormControlFormShort variant="filled">
                             <InputLabel id="payment-coupon">Coupon</InputLabel>
-                            <Select
-                                labelId="payment-label"
-                                id="payment-coupon"
-                                value={paymentCoupon}
-                                onChange={handleChangeCoupon}
-                            >
-                                <MenuItem value={0}>割引なし(0%割引)</MenuItem>
-                                {
-                                    template.payment_coupon_template?.map(coupon =>
-                                        <MenuItem
-                                            key={"payment_coupon_template_" + coupon.ID}
-                                            value={coupon.ID}
-                                        >
-                                            {coupon.title}({coupon.discount_rate}%割引)
-                                        </MenuItem>
-                                    )
-                                }
-                            </Select>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDatePicker
-                                    required
-                                    margin="normal"
-                                    id="membership-date-picker-dialog"
-                                    label="Membership期限"
-                                    format="yyyy/MM/dd"
-                                    value={selectedDate}
-                                    onChange={handleBeginDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                />
-                            </MuiPickersUtilsProvider>
+                            <FormControl sx={{width: "100%"}}>
+                                <Select
+                                    labelId="payment-label"
+                                    id="payment-coupon"
+                                    value={paymentCoupon}
+                                    onChange={handleChangeCoupon}
+                                >
+                                    <MenuItem value={0}>割引なし(0%割引)</MenuItem>
+                                    {
+                                        template.payment_coupon_template?.map(coupon =>
+                                            <FormControl
+                                                key={"payment_coupon_template_form_" + coupon.ID}
+                                                sx={{width: "100%"}}
+                                            >
+                                                <MenuItem
+                                                    key={"payment_coupon_template_" + coupon.ID}
+                                                    value={coupon.ID}
+                                                >
+                                                    {coupon.title}({coupon.discount_rate}%割引)
+                                                </MenuItem>
+                                            </FormControl>
+                                        )
+                                    }
+                                </Select>
+                            </FormControl>
+                            <br/>
+                            <FormControl sx={{width: "100%"}}>
+                                <LocalizationProvider key={"membership-localization-provider"} dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        label="Membership期限"
+                                        key="membership-date-picker-dialog"
+                                        value={selectedDate}
+                                        inputFormat="yyyy/MM/dd"
+                                        onChange={handleBeginDateChange}
+                                        renderInput={(params) => (
+                                            <TextField key="membership-date-picker-dialog-text" {...params} helperText={params?.inputProps?.placeholder} />
+                                        )}
+                                    />
+                                </LocalizationProvider>
+                            </FormControl>
                             <br/>
                             <Grid container spacing={3}>
                                 <Grid item xs={6}>
@@ -343,27 +363,25 @@ export function GroupProfileInfo(props: {
                                     <b>{yearly - (discountRate / 100) * yearly}円/年</b>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Button
+                                    <StyledButtonSpaceRight
                                         size="small"
                                         variant="contained"
                                         color="primary"
-                                        className={classes.spaceRight}
                                         onClick={membershipUpdate}
                                     >
                                         Update
-                                    </Button>
-                                    <Button
+                                    </StyledButtonSpaceRight>
+                                    <StyledButtonSpaceRight
                                         size="small"
                                         variant="contained"
                                         color={"secondary"}
-                                        className={classes.spaceRight}
                                         onClick={cancelSubscription}
                                     >
                                         解約
-                                    </Button>
+                                    </StyledButtonSpaceRight>
                                 </Grid>
                             </Grid>
-                        </FormControl>
+                        </StyledFormControlFormShort>
                     </AccordionDetails>
                 </Accordion>
                 <Accordion>
@@ -372,7 +390,7 @@ export function GroupProfileInfo(props: {
                         aria-controls="other"
                         id="other"
                     >
-                        <Typography className={classes.heading}>その他</Typography>
+                        <StyledTypographyHeading>その他</StyledTypographyHeading>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
@@ -380,15 +398,14 @@ export function GroupProfileInfo(props: {
                     </AccordionDetails>
                 </Accordion>
                 <br/>
-                <Button
+                <StyledButtonSpaceRight
                     size="small"
                     variant="contained"
                     color="primary"
-                    className={classes.spaceRight}
                     onClick={() => setOpenAddService(true)}
                 >
                     Service情報の追加
-                </Button>
+                </StyledButtonSpaceRight>
                 <Button
                     size="small"
                     variant="contained"
@@ -398,8 +415,8 @@ export function GroupProfileInfo(props: {
                     接続情報の追加
                 </Button>
                 <br/>
-                <Button size="small" className={classes.spaceTop}
-                        onClick={() => setOpenMailSendDialog(true)}>メール送信</Button>
+                <StyledButtonSpaceTop size="small"
+                                      onClick={() => setOpenMailSendDialog(true)}>メール送信</StyledButtonSpaceTop>
                 <Button
                     size="small"
                     variant="contained"
@@ -432,7 +449,7 @@ export function GroupProfileInfo(props: {
                     setReload={setReload}
                 />
             </CardContent>
-        </Card>
+        </StyledCardRoot1>
     )
 }
 
@@ -441,18 +458,17 @@ export function GroupMainMenu(props: {
     autoMail: Dispatch<SetStateAction<string>>,
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
-    const classes = useStyles();
     const {data, autoMail, reload} = props;
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot1>
             <CardContent>
                 <h3>Menu</h3>
                 <GroupStatusButton key={"group_status_button"} data={data} autoMail={autoMail} reload={reload}/>
                 <GroupLockButton key={"group_lock_button"} data={data} reload={reload}/>
                 <GroupAbolition key={"group_abolition"}/>
             </CardContent>
-        </Card>
+        </StyledCardRoot1>
     )
 }
 
@@ -460,7 +476,6 @@ export function GroupStatus(props: {
     data: GroupDetailData
     reload: boolean
 }): any {
-    const classes = useStyles();
     const {data, reload} = props;
     const createDate = "作成日: " + data.CreatedAt;
     const updateDate = "更新日: " + data.UpdatedAt;
@@ -523,7 +538,7 @@ export function GroupStatus(props: {
     }, [reload]);
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot1>
             <CardContent>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
@@ -542,8 +557,7 @@ export function GroupStatus(props: {
                     </Grid>
                     <Grid item xs={12}>
                         <h3>Date</h3>
-                        <Chip
-                            className={classes.date}
+                        <StyledChip1
                             size="small"
                             color="primary"
                             label={createDate}
@@ -556,6 +570,6 @@ export function GroupStatus(props: {
                     </Grid>
                 </Grid>
             </CardContent>
-        </Card>
+        </StyledCardRoot1>
     );
 }

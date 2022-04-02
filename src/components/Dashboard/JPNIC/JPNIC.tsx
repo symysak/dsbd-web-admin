@@ -1,10 +1,16 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField} from "@mui/material";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {DefaultServiceJPNICData, JPNICData} from "../../../interface";
-import useStyles from "../../../pages/Service/ServiceDetail/styles";
 import {useSnackbar} from "notistack";
 import {DeleteJPNICTech, PostJPNICAdmin, PostJPNICTech, PutJPNICAdmin, PutJPNICTech} from "../../../api/Service";
 import {DeleteAlertDialog} from "../Alert/Alert";
+import {
+    StyledDivRoot2,
+    StyledRootForm,
+    StyledTextFieldMedium,
+    StyledTextFieldShort,
+    StyledTextFieldVeryShort1
+} from "../../../style";
 
 
 export function JPNICDetail(props: {
@@ -14,7 +20,6 @@ export function JPNICDetail(props: {
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {jpnic, jpnicAdmin, serviceID, reload} = props;
-    const classes = useStyles();
     const [lockInfo, setLockInfo] = React.useState(true);
     const [jpnicCopy, setJPNICCopy] = useState(jpnic);
     const [deleteJPNICTech, setDeleteJPNICTech] = useState(false);
@@ -96,10 +101,9 @@ export function JPNICDetail(props: {
     }, [deleteJPNICTech]);
 
     return (
-        <div className={classes.root}>
-            <form className={classes.rootForm} noValidate autoComplete="off">
-                <TextField
-                    className={classes.formVeryShort}
+        <StyledDivRoot2>
+            <StyledRootForm noValidate autoComplete="off">
+                <StyledTextFieldVeryShort1
                     required
                     id="tech_v4_jpnic_handle"
                     label="JPNIC Handle(IPv4)"
@@ -112,8 +116,7 @@ export function JPNICDetail(props: {
                         setJPNICCopy({...jpnicCopy, v4_jpnic_handle: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="tech_v6_jpnic_handle"
                     label="JPNIC Handle(IPv6)"
@@ -127,8 +130,7 @@ export function JPNICDetail(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="Org"
@@ -141,8 +143,7 @@ export function JPNICDetail(props: {
                         setJPNICCopy({...jpnicCopy, org: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="Org(English)"
@@ -156,8 +157,7 @@ export function JPNICDetail(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="名前"
@@ -170,8 +170,7 @@ export function JPNICDetail(props: {
                         setJPNICCopy({...jpnicCopy, name: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="名前(English)"
@@ -185,8 +184,7 @@ export function JPNICDetail(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="郵便番号"
@@ -200,8 +198,7 @@ export function JPNICDetail(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="住所"
@@ -214,8 +211,7 @@ export function JPNICDetail(props: {
                         setJPNICCopy({...jpnicCopy, address: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="住所(English)"
@@ -229,8 +225,7 @@ export function JPNICDetail(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="Dept"
@@ -243,8 +238,7 @@ export function JPNICDetail(props: {
                         setJPNICCopy({...jpnicCopy, dept: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="Dept(English)"
@@ -258,8 +252,7 @@ export function JPNICDetail(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="電話番号"
@@ -272,8 +265,7 @@ export function JPNICDetail(props: {
                         setJPNICCopy({...jpnicCopy, tel: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="Fax"
@@ -287,8 +279,7 @@ export function JPNICDetail(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formShort}
+                <StyledTextFieldShort
                     required
                     id="outlined-required"
                     label="Mail"
@@ -301,8 +292,7 @@ export function JPNICDetail(props: {
                         setJPNICCopy({...jpnicCopy, mail: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="住居国"
@@ -315,7 +305,7 @@ export function JPNICDetail(props: {
                         setJPNICCopy({...jpnicCopy, country: event.target.value});
                     }}
                 />
-            </form>
+            </StyledRootForm>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={8}>
                     <Button size="small" color="secondary" disabled={!lockInfo}
@@ -332,7 +322,7 @@ export function JPNICDetail(props: {
                 }
             </Grid>
 
-        </div>
+        </StyledDivRoot2>
     );
 }
 
@@ -342,7 +332,6 @@ export function JPNICTechAdd(props: {
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {jpnicAdmin, serviceID, reload} = props;
-    const classes = useStyles();
     const [jpnic, setJPNIC] = useState(DefaultServiceJPNICData);
     const [open, setOpen] = useState(false);
     const {enqueueSnackbar} = useSnackbar();
@@ -370,7 +359,7 @@ export function JPNICTechAdd(props: {
     }
 
     return (
-        <div className={classes.root}>
+        <StyledRootForm>
             <Button size="small" variant="outlined" onClick={() => setOpen(true)}>
                 Add
             </Button>
@@ -385,9 +374,8 @@ export function JPNICTechAdd(props: {
                     JPNIC管理連絡窓口の追加
                 </DialogTitle>
                 <DialogContent dividers>
-                    <form className={classes.rootForm} noValidate autoComplete="off">
-                        <TextField
-                            className={classes.formVeryShort}
+                    <StyledRootForm noValidate autoComplete="off">
+                        <StyledTextFieldVeryShort1
                             required
                             id="v4_jpnic_jandle"
                             label="JPNIC Handle(IPv4)"
@@ -397,8 +385,7 @@ export function JPNICTechAdd(props: {
                                 setJPNIC({...jpnic, v4_jpnic_handle: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="v6_jpnic_jandle"
                             label="JPNIC Handle(IPv6)"
@@ -409,8 +396,7 @@ export function JPNICTechAdd(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="outlined-required"
                             label="Org"
@@ -420,8 +406,7 @@ export function JPNICTechAdd(props: {
                                 setJPNIC({...jpnic, org: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="outlined-required"
                             label="Org(English)"
@@ -432,8 +417,7 @@ export function JPNICTechAdd(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="outlined-required"
                             label="名前"
@@ -443,8 +427,7 @@ export function JPNICTechAdd(props: {
                                 setJPNIC({...jpnic, name: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="outlined-required"
                             label="名前(English)"
@@ -455,8 +438,7 @@ export function JPNICTechAdd(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="outlined-required"
                             label="郵便番号"
@@ -467,8 +449,7 @@ export function JPNICTechAdd(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formMedium}
+                        <StyledTextFieldMedium
                             required
                             id="outlined-required"
                             label="住所"
@@ -478,8 +459,7 @@ export function JPNICTechAdd(props: {
                                 setJPNIC({...jpnic, address: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formMedium}
+                        <StyledTextFieldMedium
                             required
                             id="outlined-required"
                             label="住所(English)"
@@ -490,8 +470,7 @@ export function JPNICTechAdd(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             id="outlined-required"
                             label="Dept"
                             value={jpnic.dept}
@@ -500,8 +479,7 @@ export function JPNICTechAdd(props: {
                                 setJPNIC({...jpnic, dept: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             id="outlined-required"
                             label="Dept(English)"
                             value={jpnic.dept_en}
@@ -511,8 +489,7 @@ export function JPNICTechAdd(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="outlined-required"
                             label="電話番号"
@@ -522,8 +499,7 @@ export function JPNICTechAdd(props: {
                                 setJPNIC({...jpnic, tel: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             id="outlined-required"
                             label="Fax"
                             value={jpnic.fax}
@@ -533,8 +509,7 @@ export function JPNICTechAdd(props: {
                             }}
                         />
                         <br/>
-                        <TextField
-                            className={classes.formShort}
+                        <StyledTextFieldShort
                             required
                             id="outlined-required"
                             label="Mail"
@@ -544,8 +519,7 @@ export function JPNICTechAdd(props: {
                                 setJPNIC({...jpnic, mail: event.target.value});
                             }}
                         />
-                        <TextField
-                            className={classes.formVeryShort}
+                        <StyledTextFieldVeryShort1
                             required
                             id="outlined-required"
                             label="住居国"
@@ -555,7 +529,7 @@ export function JPNICTechAdd(props: {
                                 setJPNIC({...jpnic, country: event.target.value});
                             }}
                         />
-                    </form>
+                    </StyledRootForm>
                     <Button size="small" onClick={sameJPNICAdminAction}>JPNIC管理者連絡窓口のコピー</Button>
                     <Button size="small" color={"primary"} onClick={addInfo}>Apply</Button>
                 </DialogContent>
@@ -565,7 +539,7 @@ export function JPNICTechAdd(props: {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </StyledRootForm>
     );
 }
 

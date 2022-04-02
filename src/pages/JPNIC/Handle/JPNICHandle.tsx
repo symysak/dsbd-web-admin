@@ -1,12 +1,12 @@
 import React, {useEffect} from "react";
 import {
-    Card, CardActions, CardContent, Chip,
+    CardActions, CardContent, Chip,
     Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
     JPNICGetHandleData,
 } from "../../../interface";
-import useStyles from "../../Dashboard/styles";
+import {StyledCard, StyledTypographyTitle} from "../../Dashboard/styles";
 import cssModule from "../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
 import {useSnackbar} from "notistack";
 import Dashboard from "../../../components/Dashboard/Dashboard";
@@ -15,14 +15,13 @@ import {GetHandle} from "../../../api/JPNIC";
 
 export default function JPNICHandle() {
     const [data, setData] = React.useState<JPNICGetHandleData>();
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
-    let handle: string;
+    let handle: string | undefined;
     ({handle} = useParams());
 
     useEffect(() => {
         console.log(handle)
-        GetHandle(handle).then(res => {
+        GetHandle(handle!).then(res => {
             if (res.error === "") {
                 console.log(res);
                 setData(res.data);
@@ -36,11 +35,11 @@ export default function JPNICHandle() {
         <Dashboard title="JPNIC/Group Handle Detail Info">
             {
                 data !== undefined &&
-                <Card className={classes.root}>
+                <StyledCard>
                     <CardContent>
-                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        <StyledTypographyTitle color="textSecondary" gutterBottom>
                             {data?.org}({data?.org_en})
-                        </Typography>
+                        </StyledTypographyTitle>
                         <Typography variant="h5" component="h2">
                             {data?.jpnic_handle}
                         </Typography>
@@ -133,7 +132,7 @@ export default function JPNICHandle() {
                         {/*<Button size="small" color={"secondary"}*/}
                         {/*        onClick={() => handleRefundProcess(payment.ID)}>返金</Button>*/}
                     </CardActions>
-                </Card>
+                </StyledCard>
             }
         </Dashboard>
     );

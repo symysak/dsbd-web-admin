@@ -1,28 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from "../Dashboard/styles"
 import {
     Button,
-    Card,
     CardActions,
     CardContent,
     FormControl, FormControlLabel,
-    InputBase,
-    Paper, Radio,
+    Radio,
     RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll} from "../../api/Group";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {DefaultGroupDetailDataArray, GroupDetailData} from "../../interface";
 import {useSnackbar} from "notistack";
 
 
 export default function Group() {
-    const classes = useStyles();
     const [groups, setGroups] = useState(DefaultGroupDetailDataArray);
     const [initGroups, setInitGroups] = useState(DefaultGroupDetailDataArray);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
     // 1:有効 2:無効
     const [value, setValue] = React.useState(1);
@@ -66,21 +63,20 @@ export default function Group() {
     };
 
     function clickDetailPage(id: number) {
-        history.push('/dashboard/group/' + id);
+        navigate('/dashboard/group/' + id);
     }
 
     return (
         <Dashboard title="Group Info">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="open" value={value} onChange={handleChange}>
                     <FormControlLabel value={1} control={<Radio color="primary"/>} label="有効"/>
@@ -89,11 +85,11 @@ export default function Group() {
             </FormControl>
             {
                 groups.filter(group => checkGroup(group)).map((group: GroupDetailData) => (
-                    <Card className={classes.root}>
+                    <StyledCard>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {group.ID}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {group.org} ({group.org_en})
                             </Typography>
@@ -104,7 +100,7 @@ export default function Group() {
                         <CardActions>
                             <Button size="small" onClick={() => clickDetailPage(group.ID)}>Detail</Button>
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

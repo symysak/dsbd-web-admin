@@ -1,6 +1,5 @@
 import {IPData, PlanData, TemplateData} from "../../../../interface";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import useStyles from "../styles";
 import {useSnackbar} from "notistack";
 import {
     Box, Button,
@@ -11,14 +10,21 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField,
-} from "@material-ui/core";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+    TableRow,
+} from "@mui/material";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {Enable} from "../../../../components/Dashboard/Open/Open";
 import {DeleteIP, DeletePlan, PutIP, PutPlan} from "../../../../api/Service";
 import {DeleteAlertDialog} from "../../../../components/Dashboard/Alert/Alert";
 import {AddAssignIPDialog} from "./IPAdd";
+import {
+    StyledCardRoot2,
+    StyledRootForm,
+    StyledTableRowRoot,
+    StyledTextFieldShort,
+    StyledTextFieldTooVeryShort
+} from "../../../../style";
 
 export function IPOpenButton(props: {
     ip: IPData,
@@ -33,7 +39,7 @@ export function IPOpenButton(props: {
     // Update IP Information
     const updateInfo = (open: boolean) => {
         ip.open = open;
-        PutIP(ip).then(res => {
+        PutIP(ip).then((res) => {
             if (res.error === "") {
                 console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
@@ -93,10 +99,9 @@ export function ServiceIP(props: {
     template: TemplateData
 }): any {
     const {ip, serviceID, reload, template} = props;
-    const classes = useStyles();
 
     return (
-        <Card className={classes.rootTable}>
+        <StyledCardRoot2>
             <CardContent>
                 <h3>IP</h3>
                 <TableContainer component={Paper}>
@@ -123,7 +128,7 @@ export function ServiceIP(props: {
                     </Table>
                 </TableContainer>
             </CardContent>
-        </Card>
+        </StyledCardRoot2>
     );
 }
 
@@ -135,7 +140,6 @@ export function ServiceIPRow(props: {
 }): any {
     const {ip, serviceID, reload, template} = props;
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
     const [lockInfo, setLockInfo] = React.useState(true);
     const [ipCopy, setIPCopy] = useState(ip);
     const [deleteIP, setDeleteIP] = useState(false);
@@ -150,7 +154,7 @@ export function ServiceIPRow(props: {
     }
 
     const updateInfo = () => {
-        PutIP(ip).then(res => {
+        PutIP(ip).then((res) => {
             if (res.error === "") {
                 console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
@@ -182,7 +186,7 @@ export function ServiceIPRow(props: {
 
     return (
         <React.Fragment>
-            <TableRow className={classes.rootTable}>
+            <StyledTableRowRoot>
                 <TableCell>
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -196,14 +200,13 @@ export function ServiceIPRow(props: {
                 <TableCell align="right">
                     <Enable open={ip.open}/>
                 </TableCell>
-            </TableRow>
+            </StyledTableRowRoot>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formShort}
+                            <StyledRootForm noValidate autoComplete="off">
+                                <StyledTextFieldShort
                                     required
                                     id="outlined-required"
                                     label="Name"
@@ -216,8 +219,7 @@ export function ServiceIPRow(props: {
                                         setIPCopy({...ipCopy, name: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formShort}
+                                <StyledTextFieldShort
                                     required
                                     id="outlined-required"
                                     label="IP"
@@ -230,7 +232,7 @@ export function ServiceIPRow(props: {
                                         setIPCopy({...ipCopy, ip: event.target.value});
                                     }}
                                 />
-                            </form>
+                            </StyledRootForm>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={8}>
                                     <Button size="small" color="secondary" disabled={!lockInfo}
@@ -295,7 +297,6 @@ export function ServiceIPPlanRow(props: {
 }): any {
     const {plan, reload} = props;
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
     const [lockInfo, setLockInfo] = React.useState(true);
     const [ipPlanCopy, setIPPlanCopy] = useState(plan);
     const [deleteIPPlan, setDeleteIPPlan] = useState(false);
@@ -311,7 +312,7 @@ export function ServiceIPPlanRow(props: {
 
     // Update Plan Information
     const updateInfo = () => {
-        PutPlan(ipPlanCopy).then(res => {
+        PutPlan(ipPlanCopy).then((res) => {
             if (res.error === "") {
                 console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
@@ -327,7 +328,7 @@ export function ServiceIPPlanRow(props: {
 
     useEffect(() => {
         if (deleteIPPlan) {
-            DeletePlan(plan.ID).then(res => {
+            DeletePlan(plan.ID).then((res) => {
                 if (res.error === "") {
                     console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
@@ -344,7 +345,7 @@ export function ServiceIPPlanRow(props: {
 
     return (
         <React.Fragment>
-            <TableRow className={classes.rootTable}>
+            <StyledTableRowRoot>
                 <TableCell>
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -357,14 +358,13 @@ export function ServiceIPPlanRow(props: {
                 <TableCell align="right">{plan.after}</TableCell>
                 <TableCell align="right">{plan.half_year}</TableCell>
                 <TableCell align="right">{plan.one_year}</TableCell>
-            </TableRow>
+            </StyledTableRowRoot>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formShort}
+                            <StyledRootForm noValidate autoComplete="off">
+                                <StyledTextFieldShort
                                     required
                                     id="outlined-required"
                                     label="Name"
@@ -378,8 +378,7 @@ export function ServiceIPPlanRow(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryVeryShort}
+                                <StyledTextFieldTooVeryShort
                                     required
                                     id="outlined-required"
                                     label="直後"
@@ -393,8 +392,7 @@ export function ServiceIPPlanRow(props: {
                                         setIPPlanCopy({...ipPlanCopy, after: Number(event.target.value)});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryVeryShort}
+                                <StyledTextFieldTooVeryShort
                                     required
                                     id="outlined-required"
                                     label="半年後"
@@ -408,8 +406,7 @@ export function ServiceIPPlanRow(props: {
                                         setIPPlanCopy({...ipPlanCopy, half_year: Number(event.target.value)});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryVeryShort}
+                                <StyledTextFieldTooVeryShort
                                     required
                                     id="outlined-required"
                                     label="1年後"
@@ -423,7 +420,7 @@ export function ServiceIPPlanRow(props: {
                                         setIPPlanCopy({...ipPlanCopy, one_year: Number(event.target.value)});
                                     }}
                                 />
-                            </form>
+                            </StyledRootForm>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <Button size="small" color="secondary" disabled={!lockInfo}

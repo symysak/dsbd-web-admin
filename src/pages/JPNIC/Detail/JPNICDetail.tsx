@@ -1,30 +1,29 @@
 import React, {useEffect} from "react";
 import {
-    Button, Card, CardActions, CardContent,
+    Button, CardActions, CardContent,
     Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
     DefaultJPNICReturnData,
     JPNICGetDetailData,
 } from "../../../interface";
-import useStyles from "../../Dashboard/styles";
+import {StyledCard, StyledTypographyTitle} from "../../Dashboard/styles";
 import cssModule from "../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
 import {useSnackbar} from "notistack";
 import Dashboard from "../../../components/Dashboard/Dashboard";
 import {Get, ReturnAddress} from "../../../api/JPNIC";
-import {useHistory, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {restfulApiConfig} from "../../../api/Config";
 
 export default function JPNICDetail() {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [data, setData] = React.useState<JPNICGetDetailData>();
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
-    let url: string;
+    let url: string | undefined;
     ({url} = useParams());
 
     useEffect(() => {
-        Get(url).then(res => {
+        Get(url!).then(res => {
             if (res.error === "") {
                 setData(res.data);
             } else {
@@ -35,7 +34,7 @@ export default function JPNICDetail() {
 
     const handleReturnProcess = () => {
         let returnData = DefaultJPNICReturnData;
-        returnData.version = Number(url.substr(0, 1));
+        returnData.version = Number(url!.substr(0, 1));
         if (data?.ip_address !== undefined) {
             returnData.address[0] = data.ip_address;
         }
@@ -47,7 +46,7 @@ export default function JPNICDetail() {
         ReturnAddress(returnData).then(res => {
             if (res.error === "") {
                 enqueueSnackbar("" + res.error, {variant: "error"});
-                history.push('/dashboard/jpnic');
+                navigate('/dashboard/jpnic');
             } else {
                 enqueueSnackbar("" + res.error, {variant: "error"});
             }
@@ -55,14 +54,14 @@ export default function JPNICDetail() {
     }
 
     const clickHandlePage = (handleURL: string) => {
-        const version = url.substr(0, 1);
+        const version = url!.substr(0, 1);
         url = "/dashboard/jpnic/handle/" + handleURL.replace(/entryinfo_handle.do\?jpnic_hdl=/g, version);
 
-        history.push(url);
+        navigate(url);
     }
 
     const getVersion = () => {
-        const version = url.substr(0, 1);
+        const version = url!.substr(0, 1);
         if (version === "4") {
             return "IPv4";
         } else if (version === "6") {
@@ -75,11 +74,11 @@ export default function JPNICDetail() {
         <Dashboard title="JPNIC Detail Info">
             {
                 data !== undefined &&
-                <Card className={classes.root}>
+                <StyledCard>
                     <CardContent>
-                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                        <StyledTypographyTitle color="textSecondary" gutterBottom>
                             {data?.org}({data?.org_en})
-                        </Typography>
+                        </StyledTypographyTitle>
                         <Typography variant="h5" component="h2">
                             {data?.network_name}({data?.ip_address})
                         </Typography>
@@ -165,7 +164,7 @@ export default function JPNICDetail() {
                     <CardActions>
                         <Button size="small" color={"secondary"} onClick={() => handleReturnProcess()}>アドレスの返却</Button>
                     </CardActions>
-                </Card>
+                </StyledCard>
             }
         </Dashboard>
     );

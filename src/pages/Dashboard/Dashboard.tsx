@@ -10,7 +10,7 @@ import {
     TemplateData,
     TicketDetailData
 } from "../../interface";
-import {Grid} from "@material-ui/core";
+import {Grid} from "@mui/material";
 import Ticket from "../../components/Dashboard/Ticket/Ticket";
 import Request from "../../components/Dashboard/Request/Request";
 import {GetTemplate} from "../../api/Group";

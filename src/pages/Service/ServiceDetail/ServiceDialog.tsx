@@ -7,17 +7,22 @@ import {
     DialogContent,
     DialogTitle,
     Grid,
-    TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import cssModule from "../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
 import {ServiceDetailData, TemplateData} from "../../../interface";
-import useStyles from "./styles";
 import {ServiceAddAllowButton, ServiceLockButton} from "./ServiceMenu";
 import {useSnackbar} from "notistack";
 import {Put} from "../../../api/Service";
 import {ServiceJPNICTechBase} from "./JPNICTech/JPNICTech";
 import {ServiceJPNICAdminBase} from "./JPNICAdmin/JPNICAdmin";
 import {ServiceIPBase} from "./IP/IP";
+import {
+    StyledCardRoot1, StyledChip1,
+    StyledDivRoot1,
+    StyledRootForm,
+    StyledTextFieldMedium,
+    StyledTextFieldVeryShort1
+} from "../../../style";
 
 export default function ServiceGetDialogs(props: {
     service: ServiceDetailData,
@@ -26,7 +31,6 @@ export default function ServiceGetDialogs(props: {
 }) {
     const {service, reload, template} = props
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -61,7 +65,7 @@ export default function ServiceGetDialogs(props: {
                             <ServiceMainMenu key={"ServiceMainMenu"} service={service} reload={reload}/>
                         </Grid>
                         <Grid item xs={3}>
-                            <Card className={classes.root}>
+                            <StyledCardRoot1>
                                 <CardContent>
                                     <h3>Help</h3>
                                     <h4>開通に向けて手順</h4>
@@ -70,7 +74,7 @@ export default function ServiceGetDialogs(props: {
                                     <div>3. 接続情報を元に、開通作業を行う</div>
                                     <div>4. 開通が完了すれば、接続情報からステータスを開通にする。</div>
                                 </CardContent>
-                            </Card>
+                            </StyledCardRoot1>
                         </Grid>
                         <Grid item xs={6}>
                             <div className={cssModule.contract}>
@@ -110,13 +114,12 @@ export default function ServiceGetDialogs(props: {
 }
 
 export function ServiceStatus(props: { service: ServiceDetailData }): any {
-    const classes = useStyles();
     const {service} = props;
     const createDate = "作成日: " + service.CreatedAt;
     const updateDate = "更新日: " + service.UpdatedAt;
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot1>
             <CardContent>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
@@ -137,8 +140,7 @@ export function ServiceStatus(props: { service: ServiceDetailData }): any {
                     </Grid>
                     <Grid item xs={12}>
                         <h3>Date</h3>
-                        <Chip
-                            className={classes.date}
+                        <StyledChip1
                             size="small"
                             color="primary"
                             label={createDate}
@@ -151,16 +153,15 @@ export function ServiceStatus(props: { service: ServiceDetailData }): any {
                     </Grid>
                 </Grid>
             </CardContent>
-        </Card>
+        </StyledCardRoot1>
     );
 }
 
 export function ServiceMainMenu(props: { service: ServiceDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
-    const classes = useStyles();
     const {service, reload} = props;
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot1>
             <CardContent>
                 <h3>Menu</h3>
                 <ServiceAddAllowButton key={"serviceAddAllowButton"} service={service} reload={reload}/>
@@ -168,7 +169,7 @@ export function ServiceMainMenu(props: { service: ServiceDetailData, reload: Dis
                 <ServiceLockButton key={"serviceLockButton"} service={service} reload={reload}/>
                 <br/>
             </CardContent>
-        </Card>
+        </StyledCardRoot1>
     )
 }
 
@@ -212,7 +213,6 @@ export function ServiceOpenButton(props: {
 }
 
 export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
-    const classes = useStyles();
     const {service, reload} = props;
     const [serviceCopy, setServiceCopy] = useState(service);
     const serviceCode = service.group_id + "-" + service.service_template.type +
@@ -229,7 +229,7 @@ export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatc
     }
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot1>
             <CardContent>
                 <h3>ServiceCode</h3>
                 <Chip
@@ -257,9 +257,8 @@ export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatc
                 }
                 <br/>
                 <br/>
-                <form className={classes.rootForm} noValidate autoComplete="off">
-                    <TextField
-                        className={classes.formVeryShort}
+                <StyledRootForm noValidate autoComplete="off">
+                    <StyledTextFieldVeryShort1
                         required
                         id="outlined-required"
                         label="ASN"
@@ -273,22 +272,21 @@ export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatc
                             setServiceCopy({...serviceCopy, asn: parseInt(event.target.value)});
                         }}
                     />
-                </form>
+                </StyledRootForm>
                 <Button size="small" color="secondary" disabled={!lock} onClick={clickLockInfo}>ロック解除</Button>
                 <Button size="small" disabled={lock} onClick={resetAction}>Reset</Button>
                 <ServiceOpenButton service={serviceCopy} lockInfo={lock} reload={reload}/>
             </CardContent>
-        </Card>
+        </StyledCardRoot1>
     );
 }
 
 
 export function ServiceEtc(props: { service: ServiceDetailData }): any {
-    const classes = useStyles();
     const {service} = props;
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot1>
             <CardContent>
                 <h3>Bandwidth</h3>
                 <table aria-colspan={3}>
@@ -323,7 +321,7 @@ export function ServiceEtc(props: { service: ServiceDetailData }): any {
                     </thead>
                 </table>
             </CardContent>
-        </Card>
+        </StyledCardRoot1>
     );
 }
 
@@ -359,7 +357,6 @@ export function ServiceDetail(props: {
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {service, reload} = props;
-    const classes = useStyles();
     const [lock, setLockInfo] = React.useState(true);
     const [serviceCopy, setServiceCopy] = useState(service);
     const {enqueueSnackbar} = useSnackbar();
@@ -391,10 +388,9 @@ export function ServiceDetail(props: {
 
 
     return (
-        <div className={classes.root}>
-            <form className={classes.rootForm} noValidate autoComplete="off">
-                <TextField
-                    className={classes.formMedium}
+        <StyledDivRoot1>
+            <StyledRootForm noValidate autoComplete="off">
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="Org"
@@ -407,8 +403,7 @@ export function ServiceDetail(props: {
                         setServiceCopy({...serviceCopy, org: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="Org(English)"
@@ -422,8 +417,7 @@ export function ServiceDetail(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formVeryShort}
+                <StyledTextFieldVeryShort1
                     required
                     id="outlined-required"
                     label="郵便番号"
@@ -436,8 +430,7 @@ export function ServiceDetail(props: {
                         setServiceCopy({...serviceCopy, postcode: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="住所"
@@ -450,8 +443,7 @@ export function ServiceDetail(props: {
                         setServiceCopy({...serviceCopy, address: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="住所(English)"
@@ -464,7 +456,7 @@ export function ServiceDetail(props: {
                         setServiceCopy({...serviceCopy, address_en: event.target.value});
                     }}
                 />
-            </form>
+            </StyledRootForm>
             <Button size="small" color="secondary" disabled={!lock}
                     onClick={clickLockInfo}>ロック解除</Button>
             <Button size="small" onClick={resetAction} disabled={lock}>Reset</Button>
@@ -472,6 +464,6 @@ export function ServiceDetail(props: {
                     onClick={updateInfo}>
                 Apply
             </Button>
-        </div>
+        </StyledDivRoot1>
     );
 }

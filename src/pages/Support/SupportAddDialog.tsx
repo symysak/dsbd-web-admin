@@ -1,21 +1,19 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel,
     Grid, InputLabel, MenuItem, Radio, RadioGroup, Select,
-    TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import {DefaultTemplateData, DefaultTicketAddData, TemplateData} from "../../interface";
 import {useSnackbar} from "notistack";
-import useStyles from "./style";
 import {Post} from "../../api/Support";
 import {GetTemplate} from "../../api/Group";
 import {MailAutoSendDialogs} from "../Group/Mail";
+import {StyledFormControl, StyledTextFieldVeryLong} from "../Dashboard/styles";
 
 export function SupportAddDialog(props: {
     setReload: Dispatch<SetStateAction<boolean>>
 }) {
     const {setReload} = props
-    const classes = useStyles();
     const [data, setData] = React.useState(DefaultTicketAddData);
     const [open, setOpen] = React.useState(false);
     const [template, setTemplate] = React.useState<TemplateData>(DefaultTemplateData);
@@ -105,7 +103,7 @@ export function SupportAddDialog(props: {
                             <br/>
                             {
                                 data.is_group &&
-                                <FormControl className={classes.formSelect}>
+                                <StyledFormControl>
                                     <InputLabel>Group指定</InputLabel>
                                     <Select
                                         labelId="group_id"
@@ -134,11 +132,11 @@ export function SupportAddDialog(props: {
                                             ))
                                         }
                                     </Select>
-                                </FormControl>
+                                </StyledFormControl>
                             }
                             {
                                 !data.is_group &&
-                                <FormControl className={classes.formSelect}>
+                                <StyledFormControl>
                                     <InputLabel>User指定</InputLabel>
                                     <Select
                                         labelId="user_id"
@@ -158,11 +156,10 @@ export function SupportAddDialog(props: {
                                             ))
                                         }
                                     </Select>
-                                </FormControl>
+                                </StyledFormControl>
                             }
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="title"
                                 label="Title"
                                 multiline
@@ -172,8 +169,7 @@ export function SupportAddDialog(props: {
                                 variant="outlined"
                             />
                             <br/>
-                            <TextField
-                                className={classes.formVeryLong}
+                            <StyledTextFieldVeryLong
                                 id="data"
                                 label="内容"
                                 multiline

@@ -1,8 +1,6 @@
 import {DefaultMemoAddData, GroupDetailData, MemoData} from "../../../interface";
-import useStyles from "./styles";
 import {
     Button,
-    Card,
     CardContent,
     Chip,
     Dialog,
@@ -10,16 +8,16 @@ import {
     DialogContent,
     DialogTitle, FormControl, FormControlLabel, FormLabel,
     Grid, Radio, RadioGroup, TextField
-} from "@material-ui/core";
+} from "@mui/material";
 import React, {Dispatch, SetStateAction} from "react";
 import {useSnackbar} from "notistack";
 import {Delete, Post} from "../../../api/Memo";
+import {StyledButton1, StyledCardRoot1, StyledDivMemo} from "../../../style";
 
 export function GroupMemo(props: {
     data: GroupDetailData,
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
-    const classes = useStyles();
     const [detailOpenMemoDialog, setDetailOpenMemoDialog] = React.useState(false);
     const [openAddMemoDialog, setAddOpenMemoDialog] = React.useState(false);
     const [memoData, setMemoData] = React.useState<MemoData>();
@@ -56,10 +54,10 @@ export function GroupMemo(props: {
     }
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot1>
             <CardContent>
                 <h3>Memo</h3>
-                <div className={classes.memo}>
+                <StyledDivMemo>
                     {
                         data.memos?.map(memo => (
                                 <Chip
@@ -73,18 +71,17 @@ export function GroupMemo(props: {
                             )
                         )
                     }
-                </div>
+                </StyledDivMemo>
                 <br/>
-                <Button
+                <StyledButton1
                     size="small"
-                    className={classes.button1}
                     aria-haspopup="true"
                     color={"primary"}
                     variant={"contained"}
                     onClick={() => setAddOpenMemoDialog(true)}
                 >
                     Memoの追加
-                </Button>
+                </StyledButton1>
                 <MemoAddDialogs
                     key={"memo_add_dialog"}
                     open={openAddMemoDialog}
@@ -102,7 +99,7 @@ export function GroupMemo(props: {
                     />
                 }
             </CardContent>
-        </Card>
+        </StyledCardRoot1>
     );
 }
 

@@ -1,9 +1,9 @@
-import {Button, Menu, MenuItem} from "@material-ui/core";
+import {Menu, MenuItem} from "@mui/material";
 import React, {Dispatch, SetStateAction} from "react";
 import {GroupDetailData} from "../../../interface";
-import useStyles from "./styles";
 import {Put} from "../../../api/Group";
 import {useSnackbar} from "notistack";
+import {StyledButton1} from "../../../style";
 
 export function GroupStatusButton(props: {
     data: GroupDetailData,
@@ -11,7 +11,6 @@ export function GroupStatusButton(props: {
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {data, autoMail, reload} = props;
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const handleClose = () => {
@@ -54,8 +53,7 @@ export function GroupStatusButton(props: {
         <div>
             {
                 !data.pass &&
-                <Button
-                    className={classes.button1}
+                <StyledButton1
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={() => changePassStatus(true)}
@@ -63,12 +61,11 @@ export function GroupStatusButton(props: {
                     variant="contained"
                 >
                     審査OK
-                </Button>
+                </StyledButton1>
             }
             {
                 !data.add_allow &&
-                <Button
-                    className={classes.button1}
+                <StyledButton1
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={() => changeAddAllowStatus(true)}
@@ -76,12 +73,11 @@ export function GroupStatusButton(props: {
                     variant="contained"
                 >
                     サービス申請許可
-                </Button>
+                </StyledButton1>
             }
             {
                 data.add_allow &&
-                <Button
-                    className={classes.button1}
+                <StyledButton1
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={() => changeAddAllowStatus(false)}
@@ -89,7 +85,7 @@ export function GroupStatusButton(props: {
                     variant="outlined"
                 >
                     サービス新規申請を禁止
-                </Button>
+                </StyledButton1>
             }
         </div>
     )
@@ -97,7 +93,6 @@ export function GroupStatusButton(props: {
 
 export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
     const {data, reload} = props;
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     const changeLock = (lock: boolean) => {
@@ -118,8 +113,7 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
 
     if (data.lock) {
         return (
-            <Button
-                className={classes.button1}
+            <StyledButton1
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={() => changeLock(false)}
@@ -127,12 +121,11 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
                 variant="outlined"
             >
                 変更を禁止
-            </Button>
+            </StyledButton1>
         )
     } else {
         return (
-            <Button
-                className={classes.button1}
+            <StyledButton1
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={() => changeLock(true)}
@@ -140,13 +133,12 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
                 variant="outlined"
             >
                 変更を許可
-            </Button>
+            </StyledButton1>
         )
     }
 }
 
 export function GroupAbolition(): any {
-    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
 
@@ -160,8 +152,7 @@ export function GroupAbolition(): any {
 
     return (
         <div>
-            <Button
-                className={classes.button1}
+            <StyledButton1
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={handleClick}
@@ -169,7 +160,7 @@ export function GroupAbolition(): any {
                 variant="outlined"
             >
                 廃止処理
-            </Button>
+            </StyledButton1>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}

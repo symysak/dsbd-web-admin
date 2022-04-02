@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from "../Dashboard/styles"
 import {
-    Card,
     CardActions,
     CardContent,
     FormControl,
     FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
+    Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll} from "../../api/Service";
 import {DefaultServiceDetailDataArray, DefaultTemplateData, ServiceDetailData} from "../../interface";
 import {useSnackbar} from "notistack";
@@ -19,7 +17,6 @@ import {GetTemplate} from "../../api/Group";
 
 
 export default function Service() {
-    const classes = useStyles();
     const [services, setServices] = useState(DefaultServiceDetailDataArray);
     const [initServices, setInitServices] = useState(DefaultServiceDetailDataArray);
     const [template, setTemplate] = useState(DefaultTemplateData);
@@ -88,16 +85,15 @@ export default function Service() {
 
     return (
         <Dashboard title="Service Info">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="open" value={value} onChange={handleChange}>
                     <FormControlLabel value={1} control={<Radio color="primary"/>} label="開通"/>
@@ -106,11 +102,11 @@ export default function Service() {
             </FormControl>
             {
                 services.filter(service => checkConnection(service)).map((service: ServiceDetailData) => (
-                    <Card key={service.ID} className={classes.root}>
+                    <StyledCard key={service.ID}>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {service.ID}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {serviceCode(service.group_id, service.service_template.type, service.service_number)}
                             </Typography>
@@ -119,7 +115,7 @@ export default function Service() {
                             <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={setReload}
                                                template={template}/>
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

@@ -1,43 +1,24 @@
-import useStyles from "./styles";
 import {GroupDetailData, ServiceDetailData, TemplateData} from "../../../interface";
 import {
-    Accordion, AccordionDetails, AccordionSummary, Box, Button, Chip,
-    Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, makeStyles,
-    Paper, Slide,
+    Accordion, AccordionSummary, Box, Button, Chip,
+    Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton,
+    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, Typography
-} from "@material-ui/core";
+    TableRow
+} from "@mui/material";
 import React, {Dispatch, SetStateAction} from "react";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ServiceGetDialogs from "../../Service/ServiceDetail/ServiceDialog";
 import {Delete, Put} from "../../../api/Service";
 import {useSnackbar} from "notistack";
-import {TransitionProps} from "@material-ui/core/transitions";
 import {RowConnectionCheck} from "./Connection";
-
-const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-        },
-    },
-    flex: {
-        // display: flex,
-    }
-});
-
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children?: React.ReactElement<any, any> },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+import {StyledAccordionDetails, StyledDiv1, StyledTableRowRoot, StyledTypographyHeading} from "../../../style";
 
 export function ChipGet(props: {
     open: boolean,
@@ -84,12 +65,11 @@ function RowService(props: {
 }) {
     const {service, autoMail, groupID, template, reload} = props;
     const [open, setOpen] = React.useState(false);
-    const classes = useRowStyles();
     const serviceCode = groupID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3);
 
     return (
         <React.Fragment>
-            <TableRow className={classes.root}>
+            <StyledTableRowRoot>
                 <TableCell align="left">
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -146,7 +126,7 @@ function RowService(props: {
                         />
                     </Box>
                 </TableCell>
-            </TableRow>
+            </StyledTableRowRoot>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={7}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
@@ -207,7 +187,6 @@ export function ExaminationDialog(props: {
             <Button size="small" variant="outlined" color={"primary"} onClick={handleClickOpen}>審査OK</Button>
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-examination-title"
@@ -267,7 +246,6 @@ export function DeleteDialog(props: {
             <Button size="small" variant="outlined" color={"secondary"} onClick={handleClickOpen}>Delete</Button>
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
                 aria-labelledby="alert-delete-dialog-title"
@@ -336,7 +314,6 @@ export function EnableDialog(props: {
             </Button>
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
                 aria-labelledby="enable dialog"
@@ -373,7 +350,6 @@ export default function Service(props: {
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {data, autoMail, template, reload} = props;
-    const classes = useStyles();
 
     if (data.services !== undefined) {
         return (
@@ -383,11 +359,11 @@ export default function Service(props: {
                     aria-controls="panel1c-content"
                     id="panel1c-header"
                 >
-                    <div className={classes.column}>
-                        <Typography className={classes.heading}>Service</Typography>
-                    </div>
+                    <StyledDiv1>
+                        <StyledTypographyHeading>Service</StyledTypographyHeading>
+                    </StyledDiv1>
                 </AccordionSummary>
-                <AccordionDetails className={classes.details}>
+                <StyledAccordionDetails>
                     <TableContainer component={Paper}>
                         <Table aria-label="collapsible table">
                             <TableHead>
@@ -416,7 +392,7 @@ export default function Service(props: {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </AccordionDetails>
+                </StyledAccordionDetails>
             </Accordion>
         )
     }

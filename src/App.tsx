@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import './App.css';
 import SignIn from './pages/Login/SignIn';
 import Group from "./pages/Group/Group";
@@ -21,24 +21,24 @@ export default class App extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <Switch>
-                    <Redirect from="/" to="/login" exact/>
-                    <Route exact path="/login" component={SignIn}/>
-                    <Route exact path="/dashboard" component={Dashboard}/>
-                    <Route exact path="/dashboard/notice" component={Notice}/>
-                    <Route exact path="/dashboard/group" component={Group}/>
-                    <Route exact path="/dashboard/group/:id" component={GroupDetail}/>
-                    <Route exact path="/dashboard/support" component={Support}/>
-                    <Route exact path="/dashboard/support/:id" component={SupportDetail}/>
-                    <Route exact path="/dashboard/order" component={Order}/>
-                    <Route exact path="/dashboard/service" component={Service}/>
-                    <Route exact path="/dashboard/connection" component={Connection}/>
-                    <Route exact path="/dashboard/user" component={User}/>
-                    <Route exact path="/dashboard/token" component={Token}/>
-                    <Route exact path="/dashboard/jpnic" component={JPNIC}/>
-                    <Route exact path="/dashboard/jpnic/:url" component={JPNICDetail}/>
-                    <Route exact path="/dashboard/jpnic/handle/:handle" component={JPNICHandle}/>
-                </Switch>
+                <Routes>
+                    <Route path='/' element={<SignIn/>}/> {}
+                    <Route path="/login" element={<SignIn/>}/>
+                    <Route path="/dashboard" element={<Dashboard/>}/>
+                    <Route path="/dashboard/notice" element={<Notice/>}/>
+                    <Route path="/dashboard/group" element={<Group/>}/>
+                    <Route path="/dashboard/group/:id" element={<GroupDetail/>}/>
+                    <Route path="/dashboard/support" element={<Support/>}/>
+                    <Route path="/dashboard/support/:id" element={<SupportDetail/>}/>
+                    <Route path="/dashboard/order" element={<Order/>}/>
+                    <Route path="/dashboard/service" element={<Service/>}/>
+                    <Route path="/dashboard/connection" element={<Connection/>}/>
+                    <Route path="/dashboard/user" element={<User/>}/>
+                    <Route path="/dashboard/token" element={<Token/>}/>
+                    <Route path="/dashboard/jpnic" element={<JPNIC/>}/>
+                    <Route path="/dashboard/jpnic/:url" element={<JPNICDetail/>}/>
+                    <Route path="/dashboard/jpnic/handle/:handle" element={<JPNICHandle/>}/>
+                </Routes>
             </BrowserRouter>
         );
     }

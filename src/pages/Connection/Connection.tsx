@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from "../Dashboard/styles"
 import {
-    Card,
     CardActions,
     CardContent, FormControl, FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
+    Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll} from "../../api/Connection";
 import {useSnackbar} from "notistack";
 import ConnectionGetDialogs from "./ConnectionDetail/ConnectionDialog";
@@ -21,7 +19,6 @@ import {GetTemplate} from "../../api/Group";
 
 
 export default function Connection() {
-    const classes = useStyles();
     const [connections, setConnections] = useState(DefaultConnectionDetailDataArray);
     const [template, setTemplate] = useState(DefaultTemplateData);
     const [initConnections, setInitConnections] = useState(DefaultConnectionDetailDataArray);
@@ -89,16 +86,15 @@ export default function Connection() {
 
     return (
         <Dashboard title="Connection Info">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="open" value={value} onChange={handleChange}>
                     <FormControlLabel value={1} control={<Radio color="primary"/>} label="開通"/>
@@ -107,11 +103,11 @@ export default function Connection() {
             </FormControl>
             {
                 connections.filter(connection => checkConnection(connection)).map((connection: ConnectionDetailData) => (
-                    <Card key={connection.ID} className={classes.root}>
+                    <StyledCard key={connection.ID}>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {connection.ID}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {serviceCode(connection)}
                             </Typography>
@@ -126,7 +122,7 @@ export default function Connection() {
                                                       service={connection.service}/>
                             }
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

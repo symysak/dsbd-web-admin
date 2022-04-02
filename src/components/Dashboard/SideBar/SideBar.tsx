@@ -1,33 +1,27 @@
 import React from 'react';
-import clsx from 'clsx';
 import {
     Collapse,
     Divider,
     Drawer,
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
-} from "@material-ui/core";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import {ExpandLess, ExpandMore} from "@material-ui/icons";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import PersonIcon from "@material-ui/icons/Person";
-import PeopleIcon from "@material-ui/icons/People";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import LayersIcon from "@material-ui/icons/Layers";
-import ClassIcon from '@material-ui/icons/Class';
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import ChatIcon from "@material-ui/icons/Chat";
-import SettingsIcon from "@material-ui/icons/Settings";
-import useStyles from "./styles";
-import useStyles2 from "../styles";
+} from "@mui/material";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonIcon from "@mui/icons-material/Person";
+import PeopleIcon from "@mui/icons-material/People";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import LayersIcon from "@mui/icons-material/Layers";
+import ClassIcon from '@mui/icons-material/Class';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import ChatIcon from "@mui/icons-material/Chat";
+import SettingsIcon from "@mui/icons-material/Settings";
+import {StyledDivDashboardToolBarIcon, StyledListItemSideBarNested} from "../styles";
 
 export default function SideBar() {
-    const classesDashboard = useStyles2();
-    const classesMenu = useStyles();
-
-
     // Menu Bar
     const [open, setOpen] = React.useState(false);
     const handleDrawerClose = () => {
@@ -47,14 +41,14 @@ export default function SideBar() {
     return (
         <Drawer
             variant="permanent"
-            classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}
+            // classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}
             open={open}
         >
-            <div className={classesDashboard.toolbarIcon}>
+            <StyledDivDashboardToolBarIcon>
                 <IconButton onClick={handleDrawerClose}>
                     <ChevronLeftIcon/>
                 </IconButton>
-            </div>
+            </StyledDivDashboardToolBarIcon>
             <Divider/>
             <ListItem button>
                 <ListItemIcon>
@@ -96,30 +90,30 @@ export default function SideBar() {
             </ListItem>
             <Collapse in={openOther} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItem button className={classesMenu.nested}>
+                    <StyledListItemSideBarNested>
                         <ListItemIcon>
                             <PersonIcon/>
                         </ListItemIcon>
                         <ListItemText primary="User"/>
-                    </ListItem>
-                    <ListItem button className={classesMenu.nested}>
+                    </StyledListItemSideBarNested>
+                    <StyledListItemSideBarNested>
                         <ListItemIcon>
                             <ClassIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Service"/>
-                    </ListItem>
-                    <ListItem button className={classesMenu.nested}>
+                    </StyledListItemSideBarNested>
+                    <StyledListItemSideBarNested>
                         <ListItemIcon>
                             <AccountTreeIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Connection"/>
-                    </ListItem>
-                    <ListItem button className={classesMenu.nested}>
+                    </StyledListItemSideBarNested>
+                    <StyledListItemSideBarNested>
                         <ListItemIcon>
                             <VpnKeyIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Token"/>
-                    </ListItem>
+                    </StyledListItemSideBarNested>
                 </List>
             </Collapse>
             <ListItem button>

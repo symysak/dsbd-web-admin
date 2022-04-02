@@ -5,21 +5,20 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle, FormControlLabel,
-    Grid,
-    TextField, useTheme,
-} from "@material-ui/core";
+    Grid, TextField,
+} from "@mui/material";
 import Select from 'react-select';
 import {
     ConnectionDetailData,
     DefaultNoticeRegisterData,
     TemplateData,
 } from "../../../interface";
-import useStyles, {GetSelectTheme} from "./styles";
-import {KeyboardDateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import {Post} from "../../../api/Notice";
 import {useSnackbar} from "notistack";
 import {MailAutoNoticeSendDialogs} from "../../Group/Mail";
+import {StyledTextFieldWrap, StyledTextFieldWrapTitle} from "../../../style";
+import {DateTimePicker, LocalizationProvider} from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
 type OptionType = {
     label: string
@@ -42,9 +41,7 @@ export default function NoticeAddDialogs(props: {
     const [templateUser, setTemplateUser] = React.useState<OptionType[]>([]);
     const [templateGroup, setTemplateGroup] = React.useState <OptionType[]>([]);
     const [templateNOC, setTemplateNOC] = React.useState<OptionType[]>([]);
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
-    const tmpSelectTheme = GetSelectTheme(useTheme());
 
     useEffect(() => {
         if (template !== undefined) {
@@ -141,7 +138,7 @@ export default function NoticeAddDialogs(props: {
                             const serviceCode = tmpUser[0].group_id + "-" + tmpConnection.service?.service_template.type + ('000' + tmpConnection.service?.service_number).slice(-3) +
                                 "-" + tmpConnection.connection_template?.type + ('000' + tmpConnection.connection_number).slice(-3);
                             const tmpGroup = template.group?.filter(d => d.ID === tmpUser[0].group_id);
-                            if (tmpGroup !== undefined){
+                            if (tmpGroup !== undefined) {
                                 console.log(tmpUser[0].name + "," + tmpUser[0].email + "," + tmpGroup[0].org + "," + serviceCode);
                             }
                         }
@@ -225,11 +222,10 @@ export default function NoticeAddDialogs(props: {
                 <DialogContent dividers>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <TextField
+                            <StyledTextFieldWrapTitle
                                 id="title"
                                 label="Title"
                                 style={{margin: 8}}
-                                className={classes.wrapTitleText}
                                 value={data.title}
                                 placeholder="Title"
                                 fullWidth
@@ -244,12 +240,11 @@ export default function NoticeAddDialogs(props: {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
+                            <StyledTextFieldWrap
                                 id="message"
                                 label="Message"
                                 placeholder="Message"
                                 style={{margin: 8}}
-                                className={classes.wrapText}
                                 value={data.data}
                                 multiline
                                 rows={10}
@@ -267,21 +262,18 @@ export default function NoticeAddDialogs(props: {
                             <h2>通知期間</h2>
                         </Grid>
                         <Grid item xs={3}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDateTimePicker
-                                    margin="normal"
-                                    id="begin-date-picker-dialog"
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
                                     label="掲示開始日"
-                                    format="yyyy/MM/dd HH:mm"
-                                    ampm={false}
-                                    minDate={nowDate}
+                                    key="begin-date-picker-dialog"
                                     value={data.start_time}
+                                    inputFormat="yyyy/MM/dd HH:mm"
                                     onChange={handleBeginDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} helperText="Clear Initial State"/>
+                                    )}
                                 />
-                            </MuiPickersUtilsProvider>
+                            </LocalizationProvider>
                         </Grid>
                         <Grid item xs={3}>
                             <FormControlLabel
@@ -298,21 +290,20 @@ export default function NoticeAddDialogs(props: {
                             <br/>
                             {
                                 !checkBoxEndDatePermanent &&
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardDateTimePicker
-                                        margin="normal"
-                                        id="begin-date-picker-dialog"
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DateTimePicker
+                                        clearable
+                                        key="finish-date-picker-dialog"
                                         label="掲示終了日"
-                                        format="yyyy/MM/dd HH:mm"
-                                        ampm={false}
-                                        minDate={data.start_time}
                                         value={data.end_time}
+                                        inputFormat="yyyy/MM/dd HH:mm"
+                                        // minDateTime={data.start_time}
                                         onChange={handleEndDateChange}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                        }}
+                                        renderInput={(params) => (
+                                            <TextField {...params} helperText={params?.inputProps?.placeholder}/>
+                                        )}
                                     />
-                                </MuiPickersUtilsProvider>
+                                </LocalizationProvider>
                             }
                         </Grid>
                         <Grid item xs={6}>
@@ -347,12 +338,12 @@ export default function NoticeAddDialogs(props: {
                                             }
                                             setData({...data, user_id: tmpData})
                                         }}
-                                        theme={(theme) => ({
-                                            ...theme,
-                                            colors: {
-                                                ...tmpSelectTheme
-                                            },
-                                        })}
+                                        // theme={(theme) => ({
+                                        //     ...theme,
+                                        //     colors: {
+                                        //         ...tmpSelectTheme
+                                        //     },
+                                        // })}
                                     />
                                     <h3>グループ</h3>
                                     <Select
@@ -368,12 +359,12 @@ export default function NoticeAddDialogs(props: {
                                             }
                                             setData({...data, group_id: tmpData});
                                         }}
-                                        theme={(theme) => ({
-                                            ...theme,
-                                            colors: {
-                                                ...tmpSelectTheme
-                                            },
-                                        })}
+                                        // theme={(theme) => ({
+                                        //     ...theme,
+                                        //     colors: {
+                                        //         ...tmpSelectTheme
+                                        //     },
+                                        // })}
                                     />
                                     <h3>NOC</h3>
                                     <Select
@@ -389,12 +380,12 @@ export default function NoticeAddDialogs(props: {
                                             }
                                             setData({...data, noc_id: tmpData});
                                         }}
-                                        theme={(theme) => ({
-                                            ...theme,
-                                            colors: {
-                                                ...tmpSelectTheme
-                                            },
-                                        })}
+                                        // theme={(theme) => ({
+                                        //     ...theme,
+                                        //     colors: {
+                                        //         ...tmpSelectTheme
+                                        //     },
+                                        // })}
                                     />
                                 </div>
                             }

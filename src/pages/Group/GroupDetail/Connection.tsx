@@ -9,19 +9,11 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Slide, Table, TableBody, TableCell, TableHead, TableRow,
+    Table, TableBody, TableCell, TableHead, TableRow,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {ConnectionDetailData, ServiceDetailData, TemplateData} from "../../../interface";
-import {TransitionProps} from "@material-ui/core/transitions";
 import ConnectionGetDialogs from "../../Connection/ConnectionDetail/ConnectionDialog";
-
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children?: React.ReactElement<any, any> },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export function RowConnectionCheck(props: {
     service: ServiceDetailData,
@@ -176,7 +168,6 @@ export function DeleteDialog(props: {
             <Button size="small" variant="outlined" color={"secondary"} onClick={handleClickOpen}>Delete</Button>
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-slide-title"
@@ -245,7 +236,7 @@ export function EnableDialog(props: {
             </Button>
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
+                // TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
                 aria-labelledby="connection-enable-dialog-title"

@@ -1,17 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from "../Dashboard/styles"
 import {
     Button,
-    Card,
     CardActions,
     CardContent,
     FormControl,
     FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
+    Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {Delete, GetAll} from "../../api/Notice";
 import {
     ConnectionDetailData,
@@ -27,7 +25,6 @@ import {GetAll as ConnectionGetAll} from "../../api/Connection";
 
 
 export default function Notice() {
-    const classes = useStyles();
     const [tickets, setTickets] = useState(DefaultNoticeDataArray);
     const [initTickets, setInitTickets] = useState(DefaultNoticeDataArray);
     const [template, setTemplate] = useState(DefaultTemplateData);
@@ -130,16 +127,15 @@ export default function Notice() {
 
     return (
         <Dashboard title="Notice Info">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             {
                 loaded && <NoticeAddDialogs key={"notice_add_dialogs"}
                                             setReload={setReload}
@@ -156,11 +152,11 @@ export default function Notice() {
             </FormControl>
             {
                 tickets.filter(notice => checkDate(notice.start_time, notice.end_time)).map((notice: NoticeData, index) => (
-                    <Card key={index} className={classes.root}>
+                    <StyledCard key={index}>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {notice.ID} ({getStringFromDate(notice.start_time)} - {getStringFromDate(notice.end_time)})
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {notice.title}
                             </Typography>
@@ -175,7 +171,7 @@ export default function Notice() {
                                 Delete
                             </Button>
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

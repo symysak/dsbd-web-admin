@@ -1,6 +1,5 @@
 import {JPNICData} from "../../../../interface";
 import React, {Dispatch, SetStateAction} from "react";
-import useStyles from "../styles";
 import {
     Box,
     Card,
@@ -11,10 +10,11 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-} from "@material-ui/core";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+} from "@mui/material";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {JPNICDetail, JPNICTechAdd} from "../../../../components/Dashboard/JPNIC/JPNIC";
+import {StyledCardRoot2, StyledTableRowRoot} from "../../../../style";
 
 export function ServiceJPNICTechBase(props: {
     serviceID: number,
@@ -48,10 +48,9 @@ export function ServiceJPNICTech(props: {
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {jpnicAdmin, jpnicTech, serviceID, reload} = props;
-    const classes = useStyles();
 
     return (
-        <Card className={classes.rootTable}>
+        <StyledCardRoot2>
             <CardContent>
                 <h3>JPNIC技術連絡担当者</h3>
                 <JPNICTechAdd key={"jpnic_tech_add"} serviceID={serviceID} jpnicAdmin={jpnicAdmin} reload={reload}/>
@@ -76,7 +75,7 @@ export function ServiceJPNICTech(props: {
                     </Table>
                 </TableContainer>
             </CardContent>
-        </Card>
+        </StyledCardRoot2>
     );
 }
 
@@ -87,11 +86,10 @@ export function ServiceJPNICTechRow(props: {
 }): any {
     const {jpnic, serviceID, reload} = props;
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
 
     return (
         <React.Fragment>
-            <TableRow className={classes.rootTable}>
+            <StyledTableRowRoot>
                 <TableCell>
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -102,7 +100,7 @@ export function ServiceJPNICTechRow(props: {
                 </TableCell>
                 <TableCell align="right">{jpnic.name}</TableCell>
                 <TableCell align="right">{jpnic.mail}</TableCell>
-            </TableRow>
+            </StyledTableRowRoot>
             <TableRow>
                 <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>

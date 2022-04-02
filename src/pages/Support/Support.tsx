@@ -1,18 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from "../Dashboard/styles"
 import {
     Button,
-    Card,
     CardActions,
     CardContent, Chip,
     FormControl, FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
+    Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll, Put} from "../../api/Support";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {DefaultTicketDataArray, TicketDetailData} from "../../interface";
 import {useSnackbar} from "notistack";
 import {Solved} from "../../components/Dashboard/Solved/Open";
@@ -20,10 +18,9 @@ import {SupportAddDialog} from "./SupportAddDialog";
 
 
 export default function Support() {
-    const classes = useStyles();
     const [tickets, setTickets] = useState(DefaultTicketDataArray);
     const [initTickets, setInitTickets] = useState(DefaultTicketDataArray);
-    const history = useHistory();
+    const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(false);
     const [reload, setReload] = React.useState(true);
@@ -69,23 +66,22 @@ export default function Support() {
     }
 
     const clickDetailPage = (id: number) => {
-        history.push('/dashboard/support/' + id);
+        navigate('/dashboard/support/' + id);
     }
 
     return (
         <Dashboard title="Ticket Info">
             <SupportAddDialog setReload={setReload}/>
             <br/>
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                     <FormControlLabel value={false} control={<Radio color="primary"/>} label="未解決"/>
@@ -94,11 +90,11 @@ export default function Support() {
             </FormControl>
             {
                 tickets.filter(ticket => ticket.solved === value).map((ticket: TicketDetailData, index) => (
-                    <Card className={classes.root}>
+                    <StyledCard>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {ticket.ID}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {ticket.title}
                             </Typography>
@@ -149,7 +145,7 @@ export default function Support() {
                                         onClick={() => clickSolvedStatus(ticket.ID, true)}>解決済み</Button>
                             }
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

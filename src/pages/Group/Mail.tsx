@@ -7,9 +7,9 @@ import {
     Dialog, DialogActions,
     DialogContent,
     DialogTitle,
-    Grid, MenuItem, Select,
+    Grid, MenuItem, Select, SelectChangeEvent,
     TextField
-} from "@material-ui/core";
+} from "@mui/material";
 
 export function MailAutoSendDialogs(props: {
     open: string,
@@ -176,7 +176,7 @@ export function MailSendDialogs(props: {
         setOpen(false);
     }
 
-    const handleChangeProcessID = (event: React.ChangeEvent<{ value: any }>) => {
+    const handleChangeProcessID = (event: SelectChangeEvent<any>) => {
         setProcessID(event.target.value);
         const mailSignature = template?.filter(item => item.process_id === "signature");
         const getMailTemplate = template?.filter(item => item.process_id === event.target.value);

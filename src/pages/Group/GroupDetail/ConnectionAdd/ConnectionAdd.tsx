@@ -14,18 +14,17 @@ import {
     Radio,
     RadioGroup,
     Select,
-    TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
     ConnectionAddData,
     DefaultConnectionAddData,
     GroupDetailData, ServiceDetailData,
     TemplateData,
 } from "../../../../interface";
-import useStyles from "../styles";
 import {check} from "./check";
 import {useSnackbar} from "notistack";
 import {Post} from "../../../../api/Connection";
+import {StyledFormControlFormSelect, StyledTextFieldLong} from "../../../../style";
 
 export default function ConnectionAddDialogs(props: {
     template: TemplateData,
@@ -136,7 +135,6 @@ export function ConnectionAddServiceSelect(props: {
 }) {
     const {baseData, template, data, setData, setServiceID, setServiceCode} = props;
     const [ipBGPRoute, setIPBGPRoute] = React.useState(false);
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     const selectData = (id: number) => {
@@ -160,7 +158,7 @@ export function ConnectionAddServiceSelect(props: {
                 <FormLabel component="legend">1. 接続情報を登録するサービスコードを選択してください。</FormLabel>
                 <br/>
                 <InputLabel>接続情報を登録するサービスコードを以下からお選びください。</InputLabel>
-                <FormControl className={classes.formSelect}>
+                <StyledFormControlFormSelect>
                     <InputLabel>Service Code</InputLabel>
                     <Select
                         labelId="service_code"
@@ -178,7 +176,7 @@ export function ConnectionAddServiceSelect(props: {
                             ))
                         }
                     </Select>
-                </FormControl>
+                </StyledFormControlFormSelect>
             </Grid>
             <Grid item xs={12}>
                 <br/>
@@ -190,7 +188,7 @@ export function ConnectionAddServiceSelect(props: {
             <Grid item xs={6}>
                 {
                     ipBGPRoute &&
-                    <FormControl className={classes.formSelect}>
+                    <StyledFormControlFormSelect>
                         <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
                         <Select
                             labelId="ipv4_route"
@@ -207,13 +205,13 @@ export function ConnectionAddServiceSelect(props: {
                                 ))
                             }
                         </Select>
-                    </FormControl>
+                    </StyledFormControlFormSelect>
                 }
             </Grid>
             <Grid item xs={6}>
                 {
                     ipBGPRoute &&
-                    <FormControl className={classes.formSelect}>
+                    <StyledFormControlFormSelect>
                         <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
                         <Select
                             labelId="ipv6_route"
@@ -230,7 +228,7 @@ export function ConnectionAddServiceSelect(props: {
                                 ))
                             }
                         </Select>
-                    </FormControl>
+                    </StyledFormControlFormSelect>
                 }
                 <br/>
             </Grid>
@@ -247,7 +245,6 @@ export function ConnectionAddType(props: {
 }) {
     const {template, data, setData, setInternet, serviceCode} = props
     const [comment, setComment] = React.useState(false);
-    const classes = useStyles();
 
     const getComment = (templateID: number) => {
         const con = template.connections?.filter(item => item.ID === templateID)
@@ -283,8 +280,7 @@ export function ConnectionAddType(props: {
                         <br/>
                         <FormLabel component="legend">2.1. その他</FormLabel>
                         <div> Cross Connectを選択された方は以下のフォームに詳しい情報(ラック情報など)をご記入ください。</div>
-                        <TextField
-                            className={classes.formLong}
+                        <StyledTextFieldLong
                             variant="outlined"
                             margin="normal"
                             required
@@ -309,7 +305,6 @@ export function ConnectionAddNOC(props: {
     setData: Dispatch<SetStateAction<ConnectionAddData>>
 }) {
     const {template, data, setData} = props;
-    const classes = useStyles();
 
     return (
         <div>
@@ -317,7 +312,7 @@ export function ConnectionAddNOC(props: {
             <br/>
             <div>当団体のNOC一覧は https://www.homenoc.ad.jp/en/tech/backbone/ をご覧ください</div>
             <br/>
-            <FormControl className={classes.formSelect}>
+            <StyledFormControlFormSelect>
                 <InputLabel>NOC</InputLabel>
                 <Select
                     labelId="noc"
@@ -333,7 +328,7 @@ export function ConnectionAddNOC(props: {
                         ))
                     }
                 </Select>
-            </FormControl>
+            </StyledFormControlFormSelect>
             <br/>
         </div>
     )
@@ -344,7 +339,6 @@ export function ConnectionAddAddress(props: {
     setData: Dispatch<SetStateAction<ConnectionAddData>>
 }) {
     const {data, setData} = props;
-    const classes = useStyles();
 
     return (
         <div>
@@ -352,8 +346,7 @@ export function ConnectionAddAddress(props: {
             <br/>
             <div>都道府県と市町村のみ記入してください。例) 大阪府貝塚市</div>
             <br/>
-            <TextField
-                className={classes.formLong}
+            <StyledTextFieldLong
                 variant="outlined"
                 margin="normal"
                 required
@@ -375,7 +368,6 @@ export function ConnectionAddTermIP(props: {
     setData: Dispatch<SetStateAction<ConnectionAddData>>
 }) {
     const {template, data, setData} = props;
-    const classes = useStyles();
 
     return (
         <div>
@@ -383,8 +375,7 @@ export function ConnectionAddTermIP(props: {
             <br/>
             <div>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</div>
             <br/>
-            <TextField
-                className={classes.formLong}
+            <StyledTextFieldLong
                 variant="outlined"
                 margin="normal"
                 required
@@ -402,7 +393,7 @@ export function ConnectionAddTermIP(props: {
             <br/>
             <div>当団体ではトンネル接続を利用する場合、フレッツのIPoE(IPv6)接続をご利用頂くことを推奨しております。</div>
             <br/>
-            <FormControl className={classes.formSelect}>
+            <StyledFormControlFormSelect>
                 <RadioGroup
                     aria-label="ntt"
                     name="ntt"
@@ -420,7 +411,7 @@ export function ConnectionAddTermIP(props: {
                         )
                     }
                 </RadioGroup>
-            </FormControl>
+            </StyledFormControlFormSelect>
             <br/>
         </div>
     )

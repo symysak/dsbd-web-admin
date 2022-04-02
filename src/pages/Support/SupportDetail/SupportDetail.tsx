@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {DefaultChatDataArray} from "../../../interface";
-import useStyles from "./styles";
-import {Paper} from "@material-ui/core";
+import {StyledDivContainer, StyledPaper, StyledPaperMessageBody} from "./styles";
 import {restfulApiConfig} from "../../../api/Config";
 import useWebSocket from "react-use-websocket";
 import {MessageLeft, MessageRight} from "./Message";
@@ -11,8 +10,7 @@ import {useSnackbar} from "notistack";
 import {useParams} from "react-router-dom";
 
 export default function SupportDetail() {
-    const classes = useStyles();
-    let id: string;
+    let id: string | undefined;
     ({id} = useParams());
     const {sendMessage, lastMessage} = useWebSocket(restfulApiConfig.wsURL + "/support" +
         '?id=' + id + '&user_token=' + sessionStorage.getItem('ClientID') + '&access_token=' +
@@ -76,7 +74,7 @@ export default function SupportDetail() {
     useEffect(() => {
         if (sendPush) {
             sendMessage(JSON.stringify({
-                access_token: sessionStorage.getItem('AccessToken'),
+                ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
                 message: inputChatData
             }));
             setSendPush(false);
@@ -84,26 +82,24 @@ export default function SupportDetail() {
     }, [sendPush]);
 
     return (
-        <div>
-            <div className={classes.container}>
-                <Paper className={classes.paper}>
-                    <Paper id="style-1" className={classes.messagesBody}>
-                        <b>このチャットはMarkdownに準拠しております。</b>
-                        {
-                            baseChatData.map((chat, index) =>
-                                chat.admin ?
-                                    <MessageRight key={index} message={chat.data} timestamp={chat.time}/>
-                                    :
-                                    <MessageLeft key={index} message={chat.data} timestamp={chat.time}
-                                                 displayName={chat.user_name}/>
-                            )
-                        }
-                        <div ref={ref}/>
-                    </Paper>
-                    <TextInput key={"textInput"} inputChat={inputChatData} setInputChat={setInputChatData}
-                               setSendPush={setSendPush}/>
-                </Paper>
-            </div>
-        </div>
+        <StyledDivContainer>
+            <StyledPaper>
+                <StyledPaperMessageBody id="style-1">
+                    <b>このチャットはMarkdownに準拠しております。</b>
+                    {
+                        baseChatData.map((chat, index) =>
+                            chat.admin ?
+                                <MessageRight key={index} message={chat.data} timestamp={chat.time}/>
+                                :
+                                <MessageLeft key={index} message={chat.data} timestamp={chat.time}
+                                             displayName={chat.user_name}/>
+                        )
+                    }
+                    <div ref={ref}/>
+                </StyledPaperMessageBody>
+                <TextInput key={"textInput"} inputChat={inputChatData} setInputChat={setInputChatData}
+                           setSendPush={setSendPush}/>
+            </StyledPaper>
+        </StyledDivContainer>
     );
 }

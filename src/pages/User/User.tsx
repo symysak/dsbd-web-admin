@@ -1,23 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles"
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from "../Dashboard/styles"
 import {
-    Card,
     CardActions,
     CardContent,
     FormControl,
     FormControlLabel,
-    InputBase,
-    Paper, Radio, RadioGroup,
+    Radio, RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {GetAll} from "../../api/User";
 import {DefaultUserDetailDataArray, UserDetailData} from "../../interface";
 import {useSnackbar} from "notistack";
 
 
 export default function User() {
-    const classes = useStyles();
     const [users, setUsers] = useState(DefaultUserDetailDataArray);
     const [initUsers, setInitUsers] = useState(DefaultUserDetailDataArray);
     const {enqueueSnackbar} = useSnackbar();
@@ -67,16 +64,15 @@ export default function User() {
 
     return (
         <Dashboard title="User Info">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     onChange={event => {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                     <FormControlLabel value={1} control={<Radio color="primary"/>} label="有効"/>
@@ -85,11 +81,11 @@ export default function User() {
             </FormControl>
             {
                 users.filter(user => checkUser(user)).map((user: UserDetailData) => (
-                    <Card className={classes.root}>
+                    <StyledCard>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {user.ID}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {user.name} ({user.name_en})
                             </Typography>
@@ -98,7 +94,7 @@ export default function User() {
                         <CardActions>
                             {/*<Button size="small" onClick={() => clickDetailPage(notice.ID)}>Detail</Button>*/}
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

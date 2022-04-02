@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import Dashboard from "../../components/Dashboard/Dashboard";
-import useStyles from "../Dashboard/styles";
 import {
     JPNICGetData,
     JPNICSearchData,
@@ -8,23 +7,20 @@ import {
 import {useSnackbar} from "notistack";
 import {GetAll} from "../../api/JPNIC";
 import {
-    Button,
-    Card, CardActions,
+    Button, CardActions,
     CardContent, Chip,
     FormControl,
     FormControlLabel,
-    InputBase,
-    Paper,
     Radio,
     RadioGroup,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {restfulApiConfig} from "../../api/Config";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {StyledCard, StyledInputBase, StyledPaperRootInput, StyledTypographyTitle} from '../Dashboard/styles';
 
 export default function JPNIC() {
-    const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [jpnics, setJpnics] = useState<JPNICGetData[]>();
     const [initJPNIC, setInitJPNIC] = useState<JPNICGetData[]>();
     const {enqueueSnackbar} = useSnackbar();
@@ -76,14 +72,13 @@ export default function JPNIC() {
         } else {
             return;
         }
-        history.push(url);
+        navigate(url);
     }
 
     return (
         <Dashboard title="JPNIC Info">
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     value={search.org}
@@ -91,7 +86,7 @@ export default function JPNIC() {
                         setSearch({...search, org: event.target.value})
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="ip_version" value={search.version} onChange={handleChange}>
                     <FormControlLabel value={4} control={<Radio color="primary"/>} label="IPv4"/>
@@ -100,9 +95,8 @@ export default function JPNIC() {
             </FormControl>
             <Button size="small" variant="outlined" color={"primary"} onClick={() => searchChange()}>検索</Button>
 
-            <Paper component="form" className={classes.rootInput}>
-                <InputBase
-                    className={classes.input}
+            <StyledPaperRootInput>
+                <StyledInputBase
                     placeholder="Search…"
                     inputProps={{'aria-label': 'search'}}
                     value={search1}
@@ -110,14 +104,14 @@ export default function JPNIC() {
                         handleFilter(event.target.value)
                     }}
                 />
-            </Paper>
+            </StyledPaperRootInput>
             {
                 jpnics?.map((jpnic: JPNICGetData) => (
-                    <Card className={classes.root}>
+                    <StyledCard>
                         <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                            <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 Org: {jpnic.org_name}
-                            </Typography>
+                            </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
                                 {jpnic.network_name}({jpnic.ip_address})
                             </Typography>
@@ -151,7 +145,7 @@ export default function JPNIC() {
                             <Button size="small" color={"primary"}
                                     onClick={() => clickDetail(search.version, jpnic.detail_link)}>詳細</Button>
                         </CardActions>
-                    </Card>
+                    </StyledCard>
                 ))
             }
         </Dashboard>

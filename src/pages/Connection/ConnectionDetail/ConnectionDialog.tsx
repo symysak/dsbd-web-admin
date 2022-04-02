@@ -1,11 +1,11 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
 import {
-    Button, Card, CardContent, Chip,
+    Button, CardContent, Chip,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, TextField,
-} from "@material-ui/core";
+    DialogTitle, Grid, InputLabel, MenuItem, Select,
+} from "@mui/material";
 import {
     BGPRouterDetailData,
     ConnectionDetailData, ServiceDetailData,
@@ -14,8 +14,14 @@ import {
 import classes from "./ConnectionDialog.module.scss";
 import {useSnackbar} from "notistack";
 import {Update} from "../../../api/Connection";
-import useStyles from "./styles";
 import {Open} from "../../../components/Dashboard/Open/Open";
+import {
+    StyledCardRoot3,
+    StyledChip1,
+    StyledFormControlFormLong, StyledFormControlFormMedium,
+    StyledTextFieldLong,
+    StyledTextFieldMedium
+} from "../../../style";
 
 export default function ConnectionGetDialogs(props: {
     service: ServiceDetailData,
@@ -133,7 +139,6 @@ export function ConnectionOpen(props: {
     const {service, connection, template, setReload} = props
     const [connectionCopy, setConnectionCopy] = useState(connection);
     const [lock, setLock] = React.useState(true);
-    const classes = useStyles();
 
 
     const clickLockInfo = () => {
@@ -146,14 +151,14 @@ export function ConnectionOpen(props: {
 
     return (
         <div>
-            <Card className={classes.root}>
+            <StyledCardRoot3>
                 <CardContent>
                     <br/>
                     <ConnectionOpenL3User key={"connection_open_l3_user"} connection={connectionCopy} service={service}
                                           setConnection={setConnectionCopy} lock={lock}/>
                     <ConnectionOpenVPN key={"Open_VPN"} connection={connectionCopy} setConnection={setConnectionCopy}
                                        lock={lock}/>
-                    <FormControl variant="outlined" className={classes.formMedium}>
+                    <StyledFormControlFormMedium variant="outlined">
                         <InputLabel id="bgp_router_input">BGP Router</InputLabel>
                         <Select
                             labelId="bgp_router_hostname"
@@ -176,9 +181,9 @@ export function ConnectionOpen(props: {
                                 )
                             }
                         </Select>
-                    </FormControl>
+                    </StyledFormControlFormMedium>
                     <br/>
-                    <FormControl variant="outlined" className={classes.formLong}>
+                    <StyledFormControlFormLong variant="outlined">
                         <InputLabel id="tunnel_endpoint_router_ip_input">Tunnel EndPoint Router IP</InputLabel>
                         <Select
                             labelId="tunnel_endpoint_router_ip"
@@ -207,14 +212,14 @@ export function ConnectionOpen(props: {
                                 )
                             }
                         </Select>
-                    </FormControl>
+                    </StyledFormControlFormLong>
                     <br/>
                     <Button size="small" color="secondary" disabled={!lock} onClick={clickLockInfo}>ロック解除</Button>
                     <Button size="small" disabled={lock} onClick={resetAction}>Reset</Button>
                     <ConnectionOpenButton key={"connection_open_button"} connection={connectionCopy} lock={lock}
                                           reload={setReload}/>
                 </CardContent>
-            </Card>
+            </StyledCardRoot3>
         </div>
     )
 }
@@ -225,15 +230,13 @@ export function ConnectionOpenVPN(props: {
     lock: boolean,
 }) {
     const {connection, setConnection, lock} = props
-    const classes = useStyles();
 
     if (!connection.connection_template) {
         return null
     } else {
         return (
             <div>
-                <TextField
-                    className={classes.formLong}
+                <StyledTextFieldLong
                     required
                     id="outlined-required"
                     label="対向終端アドレス"
@@ -259,7 +262,6 @@ export function ConnectionOpenL3User(props: {
     lock: boolean,
 }) {
     const {service, connection, setConnection, lock} = props
-    const classes = useStyles();
 
     console.log(connection)
     if (service === undefined || !service.service_template.need_route) {
@@ -267,8 +269,7 @@ export function ConnectionOpenL3User(props: {
     } else {
         return (
             <div>
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="L3 IPv4(HomeNOC側)"
@@ -281,8 +282,7 @@ export function ConnectionOpenL3User(props: {
                         setConnection({...connection, link_v4_our: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="L3 IPv4(ユーザ側)"
@@ -296,8 +296,7 @@ export function ConnectionOpenL3User(props: {
                     }}
                 />
                 <br/>
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="L3 IPv6(HomeNOC側)"
@@ -310,8 +309,7 @@ export function ConnectionOpenL3User(props: {
                         setConnection({...connection, link_v6_our: event.target.value});
                     }}
                 />
-                <TextField
-                    className={classes.formMedium}
+                <StyledTextFieldMedium
                     required
                     id="outlined-required"
                     label="L3 IPv6(ユーザ側)"
@@ -333,7 +331,6 @@ export function ConnectionStatus(props: {
     service: ServiceDetailData
     connection: ConnectionDetailData
 }): any {
-    const classes = useStyles();
     const {service, connection} = props;
     const serviceCode = service.group_id + "-" + service.service_template.type +
         ('000' + service.service_number).slice(-3) + "-" +
@@ -342,13 +339,12 @@ export function ConnectionStatus(props: {
     const updateDate = "更新日: " + connection.UpdatedAt;
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot3>
             <CardContent>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <h3>ServiceCode</h3>
-                        <Chip
-                            className={classes.date}
+                        <StyledChip1
                             size="small"
                             color="primary"
                             label={serviceCode}
@@ -365,7 +361,7 @@ export function ConnectionStatus(props: {
                     <Grid item xs={6}>
                         <h3>BGP IPv4</h3>
                         {
-                            connection.ipv4_route_template !== null&&
+                            connection.ipv4_route_template !== null &&
                             <Chip
                                 size="small"
                                 color="primary"
@@ -376,7 +372,7 @@ export function ConnectionStatus(props: {
                     <Grid item xs={6}>
                         <h3>BGP IPv6</h3>
                         {
-                            connection.ipv6_route_template !== null&&
+                            connection.ipv6_route_template !== null &&
                             <Chip
                                 size="small"
                                 color="primary"
@@ -386,8 +382,7 @@ export function ConnectionStatus(props: {
                     </Grid>
                     <Grid item xs={12}>
                         <h3>Date</h3>
-                        <Chip
-                            className={classes.date}
+                        <StyledChip1
                             size="small"
                             color="primary"
                             label={createDate}
@@ -400,12 +395,11 @@ export function ConnectionStatus(props: {
                     </Grid>
                 </Grid>
             </CardContent>
-        </Card>
+        </StyledCardRoot3>
     );
 }
 
 export function ConnectionEtc(props: { connection: ConnectionDetailData }): any {
-    const classes = useStyles();
     const {connection} = props;
 
     const getNOC = () => {
@@ -425,7 +419,7 @@ export function ConnectionEtc(props: { connection: ConnectionDetailData }): any 
     }
 
     return (
-        <Card className={classes.root}>
+        <StyledCardRoot3>
             <CardContent>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
@@ -450,7 +444,7 @@ export function ConnectionEtc(props: { connection: ConnectionDetailData }): any 
                     </Grid>
                 </Grid>
             </CardContent>
-        </Card>
+        </StyledCardRoot3>
     );
 }
 
@@ -514,7 +508,7 @@ export function ConnectionUserDisplay(props: {
 
     return (
         <div className={classes.contract}>
-            <Card className={classes.root}>
+            <StyledCardRoot3>
                 <CardContent>
                     <h2>User側の表示</h2>
 
@@ -580,7 +574,7 @@ export function ConnectionUserDisplay(props: {
                         </thead>
                     </table>
                 </CardContent>
-            </Card>
+            </StyledCardRoot3>
         </div>
     )
 }

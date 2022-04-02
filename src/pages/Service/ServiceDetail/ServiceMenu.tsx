@@ -1,13 +1,11 @@
-import {Button} from "@material-ui/core";
 import React, {Dispatch, SetStateAction} from "react";
-import useStyles from "./styles";
 import {useSnackbar} from "notistack";
 import {ServiceDetailData} from "../../../interface";
 import {Put} from "../../../api/Service";
+import {StyledButton1} from "../../../style";
 
 export function ServiceAddAllowButton(props: { service: ServiceDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
     const {service, reload} = props;
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     const changeLock = (add_allow: boolean) => {
@@ -28,8 +26,7 @@ export function ServiceAddAllowButton(props: { service: ServiceDetailData, reloa
 
     if (service.add_allow) {
         return (
-            <Button
-                className={classes.button1}
+            <StyledButton1
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={() => changeLock(false)}
@@ -37,12 +34,11 @@ export function ServiceAddAllowButton(props: { service: ServiceDetailData, reloa
                 variant="outlined"
             >
                 追加を禁止
-            </Button>
+            </StyledButton1>
         )
     } else {
         return (
-            <Button
-                className={classes.button1}
+            <StyledButton1
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={() => changeLock(true)}
@@ -50,14 +46,13 @@ export function ServiceAddAllowButton(props: { service: ServiceDetailData, reloa
                 variant="outlined"
             >
                 接続追加を許可
-            </Button>
+            </StyledButton1>
         )
     }
 }
 
 export function ServiceLockButton(props: { service: ServiceDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
     const {service, reload} = props;
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     const changeLock = (lock: boolean) => {
@@ -78,8 +73,7 @@ export function ServiceLockButton(props: { service: ServiceDetailData, reload: D
 
     if (service.lock) {
         return (
-            <Button
-                className={classes.button1}
+            <StyledButton1
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={() => changeLock(false)}
@@ -87,12 +81,11 @@ export function ServiceLockButton(props: { service: ServiceDetailData, reload: D
                 variant="outlined"
             >
                 ユーザ側の変更を禁止
-            </Button>
+            </StyledButton1>
         )
     } else {
         return (
-            <Button
-                className={classes.button1}
+            <StyledButton1
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={() => changeLock(true)}
@@ -100,7 +93,7 @@ export function ServiceLockButton(props: { service: ServiceDetailData, reload: D
                 variant="outlined"
             >
                 ユーザ側の変更を許可
-            </Button>
+            </StyledButton1>
         )
     }
 }

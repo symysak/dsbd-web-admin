@@ -3,7 +3,7 @@ import {
     GroupDetailData, PlanData,
     ServiceDetailData,
 } from "../../../interface";
-import React, {Dispatch, SetStateAction, useEffect} from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import {useSnackbar} from "notistack";
 import {Post} from "../../../api/JPNIC";
 import {
@@ -14,10 +14,16 @@ import {
     FormControl,
     FormLabel,
     Grid, MenuItem,
-    Select, TextField
-} from "@material-ui/core";
-import useStyles from "../../Service/ServiceDetail/styles";
+    Select
+} from "@mui/material";
 import {restfulApiConfig} from "../../../api/Config";
+import {
+    StyledRootForm,
+    StyledTextFieldLong,
+    StyledTextFieldMedium,
+    StyledTextFieldShort,
+    StyledTextFieldVeryShort1
+} from "../../../style";
 
 export default function JPNICRegistrationDialog(props: {
     open: boolean,
@@ -31,7 +37,6 @@ export default function JPNICRegistrationDialog(props: {
     const [tech2Data, setTech2Data] = React.useState(DefaultJPNICUserRegistrationData);
     const [serviceID, setServiceID] = React.useState(0);
     const {enqueueSnackbar} = useSnackbar();
-    const classes = useStyles();
 
     const request = () => {
         // JPNICハンドル名が書かれている場合/グループ名が書かれている場合、通知アドレスを自動付加
@@ -321,9 +326,8 @@ export default function JPNICRegistrationDialog(props: {
                             </FormControl>
                             <br/>
                             <br/>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formMedium}
+                            <StyledRootForm noValidate autoComplete="off">
+                                <StyledTextFieldMedium
                                     required
                                     id="network_ip_address"
                                     label="IPネットワークアドレス"
@@ -333,8 +337,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setData({...data, network: {...data.network, ip_address: event.target.value}});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="network_network_name"
                                     label="ネットワーク名"
@@ -348,8 +351,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="network_org_jp"
                                     label="Org"
@@ -359,8 +361,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setData({...data, network: {...data.network, org_jp_1: event.target.value}});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="network_org_en"
                                     label="Org(English)"
@@ -371,8 +372,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="network_postcode"
                                     label="郵便番号"
@@ -382,8 +382,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setData({...data, network: {...data.network, zip_code: event.target.value}});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="network_address_jp"
                                     label="住所"
@@ -393,8 +392,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setData({...data, network: {...data.network, addr_jp_1: event.target.value}});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="network_address_en"
                                     label="住所(English)"
@@ -405,8 +403,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formLong}
+                                <StyledTextFieldLong
                                     required
                                     id="network_plan"
                                     label="Plan"
@@ -418,8 +415,7 @@ export default function JPNICRegistrationDialog(props: {
                                 />
                                 <br/>
                                 <br/>
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="network_deli_no"
                                     label="審議番号"
@@ -432,8 +428,7 @@ export default function JPNICRegistrationDialog(props: {
                                         });
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="network_notify_email"
                                     label="通知アドレス"
@@ -446,13 +441,12 @@ export default function JPNICRegistrationDialog(props: {
                                         });
                                     }}
                                 />
-                            </form>
+                            </StyledRootForm>
                         </Grid>
                         <Grid item xs={6}>
                             <FormLabel component="legend">3. 管理者連絡窓口 </FormLabel>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formVeryShort}
+                            <StyledRootForm noValidate autoComplete="off">
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_jpnic_handle"
                                     label="JPNIC Handle"
@@ -466,8 +460,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_org_jp"
                                     label="Org"
@@ -480,8 +473,7 @@ export default function JPNICRegistrationDialog(props: {
                                         });
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_org_en"
                                     label="Org(English)"
@@ -495,8 +487,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_name_jp"
                                     label="名前"
@@ -509,8 +500,7 @@ export default function JPNICRegistrationDialog(props: {
                                         });
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_name_en"
                                     label="名前(English)"
@@ -524,8 +514,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_postcode"
                                     label="郵便番号"
@@ -539,8 +528,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="admin_address_jp"
                                     label="住所"
@@ -553,8 +541,7 @@ export default function JPNICRegistrationDialog(props: {
                                         });
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="admin_address_en"
                                     label="住所(English)"
@@ -568,8 +555,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_dept_jp"
                                     label="Dept"
@@ -582,8 +568,7 @@ export default function JPNICRegistrationDialog(props: {
                                         });
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_dept_en"
                                     label="Dept(English)"
@@ -597,8 +582,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_phone"
                                     label="電話番号"
@@ -611,8 +595,7 @@ export default function JPNICRegistrationDialog(props: {
                                         });
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_fax"
                                     label="Fax"
@@ -626,8 +609,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_email"
                                     label="ユーザEMail"
@@ -640,13 +622,12 @@ export default function JPNICRegistrationDialog(props: {
                                         });
                                     }}
                                 />
-                            </form>
+                            </StyledRootForm>
                         </Grid>
                         <Grid item xs={6}>
                             <FormLabel component="legend">4.1. 技術者連絡窓口1 </FormLabel>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formVeryShort}
+                            <StyledRootForm noValidate autoComplete="off">
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_jpnic_handle"
                                     label="JPNIC Handle"
@@ -657,8 +638,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_org_jp"
                                     label="Org"
@@ -668,8 +648,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech1Data({...tech1Data, org_jp_1: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_org_en"
                                     label="Org(English)"
@@ -680,8 +659,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_name_jp"
                                     label="名前"
@@ -691,8 +669,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech1Data({...tech1Data, name_jp: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_name_en"
                                     label="名前(English)"
@@ -703,8 +680,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_postcode"
                                     label="郵便番号"
@@ -715,8 +691,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="tech1_address_jp"
                                     label="住所"
@@ -726,8 +701,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech1Data({...tech1Data, addr_jp_1: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="tech1_address_en"
                                     label="住所(English)"
@@ -738,8 +712,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_dept_jp"
                                     label="Dept"
@@ -749,8 +722,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech1Data({...tech1Data, division_jp: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_dept_en"
                                     label="Dept(English)"
@@ -761,8 +733,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_phone"
                                     label="電話番号"
@@ -772,8 +743,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech1Data({...tech1Data, phone: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_fax"
                                     label="Fax"
@@ -784,8 +754,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech1_email"
                                     label="ユーザEMail"
@@ -795,11 +764,10 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech1Data({...tech1Data, email: event.target.value});
                                     }}
                                 />
-                            </form>
+                            </StyledRootForm>
                             <FormLabel component="legend">4.2. 技術者連絡窓口2 </FormLabel>
-                            <form className={classes.rootForm} noValidate autoComplete="off">
-                                <TextField
-                                    className={classes.formVeryShort}
+                            <StyledRootForm noValidate autoComplete="off">
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_jpnic_handle"
                                     label="JPNIC Handle"
@@ -810,8 +778,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="admin_org_jp"
                                     label="Org"
@@ -821,8 +788,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech2Data({...tech2Data, org_jp_1: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_org_en"
                                     label="Org(English)"
@@ -833,8 +799,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_name_jp"
                                     label="名前"
@@ -844,8 +809,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech2Data({...tech2Data, name_jp: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_name_en"
                                     label="名前(English)"
@@ -856,8 +820,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_postcode"
                                     label="郵便番号"
@@ -868,8 +831,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="tech2_address_jp"
                                     label="住所"
@@ -879,8 +841,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech2Data({...tech2Data, addr_jp_1: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formMedium}
+                                <StyledTextFieldMedium
                                     required
                                     id="tech2_address_en"
                                     label="住所(English)"
@@ -891,8 +852,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_dept_jp"
                                     label="Dept"
@@ -902,8 +862,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech2Data({...tech2Data, division_jp: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_dept_en"
                                     label="Dept(English)"
@@ -914,8 +873,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_phone"
                                     label="電話番号"
@@ -925,8 +883,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech2Data({...tech2Data, phone: event.target.value});
                                     }}
                                 />
-                                <TextField
-                                    className={classes.formVeryShort}
+                                <StyledTextFieldVeryShort1
                                     required
                                     id="tech2_fax"
                                     label="Fax"
@@ -937,8 +894,7 @@ export default function JPNICRegistrationDialog(props: {
                                     }}
                                 />
                                 <br/>
-                                <TextField
-                                    className={classes.formShort}
+                                <StyledTextFieldShort
                                     required
                                     id="tech2_email"
                                     label="ユーザEMail"
@@ -948,7 +904,7 @@ export default function JPNICRegistrationDialog(props: {
                                         setTech2Data({...tech2Data, email: event.target.value});
                                     }}
                                 />
-                            </form>
+                            </StyledRootForm>
                         </Grid>
                     </Grid>
                 </DialogContent>

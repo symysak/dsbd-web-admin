@@ -5,17 +5,16 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle, FormControlLabel,
-    Grid,
-    TextField,
-} from "@material-ui/core";
+    Grid, TextField,
+} from "@mui/material";
 import {
     NoticeData, TemplateData,
 } from "../../../interface";
-import useStyles from "./styles";
-import {KeyboardDateTimePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {Put} from "../../../api/Notice";
 import {useSnackbar} from "notistack";
+import {StyledTextFieldWrap, StyledTextFieldWrapTitle} from "../../../style";
+import {DateTimePicker, LocalizationProvider} from "@mui/lab";
 
 export default function NoticeDetailDialogs(props: {
     template: TemplateData,
@@ -28,7 +27,6 @@ export default function NoticeDetailDialogs(props: {
     const nowDate = new Date()
     const [checkBoxEndDatePermanent, setCheckBoxEndDatePermanent] = React.useState(false);
     const [data, setData] = React.useState<NoticeData>(noticeData);
-    const classes = useStyles();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -104,11 +102,10 @@ export default function NoticeDetailDialogs(props: {
                 <DialogContent dividers>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <TextField
+                            <StyledTextFieldWrapTitle
                                 id="title"
                                 label="Title"
                                 style={{margin: 8}}
-                                className={classes.wrapTitleText}
                                 value={data.title}
                                 placeholder="Title"
                                 fullWidth
@@ -123,12 +120,11 @@ export default function NoticeDetailDialogs(props: {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
+                            <StyledTextFieldWrap
                                 id="message"
                                 label="Message"
                                 placeholder="Message"
                                 style={{margin: 8}}
-                                className={classes.wrapText}
                                 value={data.data}
                                 multiline
                                 rows={10}
@@ -146,21 +142,18 @@ export default function NoticeDetailDialogs(props: {
                             <h2>通知期間</h2>
                         </Grid>
                         <Grid item xs={3}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDateTimePicker
-                                    margin="normal"
-                                    id="begin-date-picker-dialog"
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
                                     label="掲示開始日"
-                                    format="yyyy/MM/dd HH:mm"
-                                    ampm={false}
-                                    minDate={nowDate}
+                                    key="begin-date-picker-dialog"
                                     value={data.start_time}
+                                    inputFormat="yyyy/MM/dd HH:mm"
                                     onChange={handleBeginDateChange}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
+                                    renderInput={(params) => (
+                                        <TextField {...params} helperText="Clear Initial State"/>
+                                    )}
                                 />
-                            </MuiPickersUtilsProvider>
+                            </LocalizationProvider>
                         </Grid>
                         <Grid item xs={3}>
                             <FormControlLabel
@@ -177,21 +170,20 @@ export default function NoticeDetailDialogs(props: {
                             <br/>
                             {
                                 !checkBoxEndDatePermanent &&
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardDateTimePicker
-                                        margin="normal"
-                                        id="begin-date-picker-dialog"
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DateTimePicker
+                                        clearable
+                                        key="finish-date-picker-dialog"
                                         label="掲示終了日"
-                                        format="yyyy/MM/dd HH:mm"
-                                        ampm={false}
-                                        minDate={data.start_time}
                                         value={data.end_time}
+                                        inputFormat="yyyy/MM/dd HH:mm"
+                                        // minDate={data.start_time}
                                         onChange={handleEndDateChange}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                        }}
+                                        renderInput={(params) => (
+                                            <TextField {...params} helperText={params?.inputProps?.placeholder}/>
+                                        )}
                                     />
-                                </MuiPickersUtilsProvider>
+                                </LocalizationProvider>
                             }
                         </Grid>
                         <Grid item xs={6}>
