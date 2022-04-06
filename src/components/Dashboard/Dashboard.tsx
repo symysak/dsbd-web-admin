@@ -4,12 +4,12 @@ import {
     ThemeProvider,
     CssBaseline,
     Divider,
-    Drawer,
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
-    MenuItem, Menu, Fade, styled
+    MenuItem, Menu, Fade, styled, Toolbar, CSSObject, Theme, Box, Typography
 } from "@mui/material";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -29,15 +29,34 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import {
     StyledDivDashboardToolBarIcon,
     StyledDivDashboardRoot,
-    StyledToolBarDashboardRoot,
     StyledTypographyPageTitle, StyledMainContent, StyledDivAppBarShift, StyledContainer1, StyledListItemSideBarNested
 } from "./styles";
 import {useNavigate} from "react-router-dom";
 import {Logout} from "../../api/Auth";
 import {muiColorTheme} from "../Theme";
-import {StyledTypographyTitle} from "../../style";
 
 const drawerWidth = 240;
+
+const openedMixin = (theme: Theme): CSSObject => ({
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+    }),
+    overflowX: 'hidden',
+});
+
+const closedMixin = (theme: Theme): CSSObject => ({
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: `calc(${theme.spacing(7)} + 1px)`,
+    [theme.breakpoints.up('sm')]: {
+        width: `calc(${theme.spacing(9)} + 1px)`,
+    },
+});
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -45,20 +64,38 @@ interface AppBarProps extends MuiAppBarProps {
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-    transition: theme.transitions.create(['margin', 'width'], {
+})<AppBarProps>(({theme, open}) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
     ...(open && {
+        marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
     }),
 }));
+
+const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+    ({theme, open}) => ({
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
+        ...(open && {
+            ...openedMixin(theme),
+            '& .MuiDrawer-paper': openedMixin(theme),
+        }),
+        ...(!open && {
+            ...closedMixin(theme),
+            '& .MuiDrawer-paper': closedMixin(theme),
+        }),
+    }),
+);
 
 export default function Dashboard(props: any) {
     // Menu Bar
@@ -115,44 +152,37 @@ export default function Dashboard(props: any) {
 
     return (
         <ThemeProvider theme={muiColorTheme}>
-            <StyledDivDashboardRoot>
+            <Box sx={{display: 'flex'}}>
                 <CssBaseline/>
                 <AppBar position="fixed" open={open}>
-                    <StyledToolBarDashboardRoot>
+                    <Toolbar>
                         <IconButton
-                            edge="start"
                             color="inherit"
                             aria-label="open drawer"
                             onClick={handleDrawerOpen}
-                            // className={clsx(classesDashboard.menuButton, open && classesDashboard.menuButtonHidden)}
+                            edge="start"
+                            sx={{
+                                marginRight: 5,
+                                ...(open && {display: 'none'}),
+                            }}
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <StyledTypographyTitle variant="h6" color="inherit" noWrap>
+                        <Typography variant="h6" noWrap component="div">
                             AS59105 Admin Page
-                        </StyledTypographyTitle>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={0} color="secondary">
-                                <NotificationsIcon/>
-                            </Badge>
-                        </IconButton>
-                        <UserMenu key={"user_menu"}/>
-                    </StyledToolBarDashboardRoot>
+                        </Typography>
+                        <Box sx={{flexGrow: 1}}/>
+                        <Box sx={{display: {xs: 'none', md: 'flex'}}}>
+                            <IconButton color="inherit">
+                                <Badge badgeContent={0} color="secondary">
+                                    <NotificationsIcon/>
+                                </Badge>
+                            </IconButton>
+                            <UserMenu key={"user_menu"}/>
+                        </Box>
+                    </Toolbar>
                 </AppBar>
-                <Drawer
-                    sx={{
-                        width: drawerWidth,
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                            width: drawerWidth,
-                            boxSizing: 'border-box',
-                        },
-                    }}
-                    variant="persistent"
-                    anchor="left"
-                    // classes={{paper: clsx(classesDashboard.drawerPaper, !open && classesDashboard.drawerPaperClose),}}
-                    open={open}
-                >
+                <Drawer variant="permanent" open={open}>
                     <StyledDivDashboardToolBarIcon>
                         <IconButton onClick={handleDrawerClose}>
                             <ChevronLeftIcon/>
@@ -253,7 +283,7 @@ export default function Dashboard(props: any) {
                         {props.children}
                     </StyledContainer1>
                 </StyledMainContent>
-            </StyledDivDashboardRoot>
+            </Box>
         </ThemeProvider>
     );
 }
