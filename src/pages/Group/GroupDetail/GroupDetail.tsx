@@ -133,7 +133,7 @@ export default function GroupDetail() {
                         <Grid item xs={12}>
                             <Request key={"request_" + group.ID} data={group.tickets} setReload={setReload}/>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                             <Users key={"users_" + group.ID} data={group}/>
                         </Grid>
                         <Grid item xs={12}>

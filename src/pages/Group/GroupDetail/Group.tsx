@@ -77,7 +77,7 @@ export function GroupProfileInfo(props: {
         if (data.member_expired != null) {
             const tmp = data.member_expired.split('T');
             nowDate = new Date(tmp[0]);
-            setSelectedDate(new Date(tmp[0]));
+            setSelectedDate(nowDate);
             handleBeginDateChange(selectedDate);
         }
     }, []);
@@ -116,11 +116,11 @@ export function GroupProfileInfo(props: {
         })
     }
 
-    const handleBeginDateChange = (date: Date | null) => {
-        setSelectedDate(date);
-        if (date !== null) {
-            setMembershipDate(date.getFullYear() + '-' + ('00' + (date.getMonth() + 1)).slice(-2) +
-                '-' + ('00' + (date.getDate())).slice(-2) + 'T09:00:00Z');
+    const handleBeginDateChange = (newDate: Date | null) => {
+        setSelectedDate(newDate);
+        if (newDate !== null) {
+            setMembershipDate(newDate.getFullYear() + '-' + ('00' + (newDate.getMonth() + 1)).slice(-2) +
+                '-' + ('00' + (newDate.getDate())).slice(-2) + 'T09:00:00Z');
         }
     };
     const handleChangeMembershipPlan = (event: SelectChangeEvent<any>) => {
@@ -298,59 +298,54 @@ export function GroupProfileInfo(props: {
                                     value={membershipPlan}
                                     onChange={handleChangeMembershipPlan}
                                 >
-                                    <option key={"membership_template_0"} value={0}>自動課金無効</option>
+                                    <MenuItem key={"membership_template_0"} value={0}>自動課金無効</MenuItem>
                                     {
                                         template.payment_membership_template?.map(tmp =>
-                                            <option
+                                            <MenuItem
                                                 key={"membership_template_" + tmp.ID}
                                                 value={tmp.ID}
                                             >
                                                 {tmp.plan}
-                                            </option>
+                                            </MenuItem>
                                         )
                                     }
                                 </Select>
                             </FormControl>
                         </StyledFormControlFormSelect>
                         <StyledFormControlFormShort variant="filled">
-                            <InputLabel id="payment-coupon">Coupon</InputLabel>
                             <FormControl sx={{width: "100%"}}>
+                                <InputLabel id="payment-coupon-title">Coupon</InputLabel>
                                 <Select
-                                    labelId="payment-label"
+                                    labelId="payment-coupon-title"
                                     id="payment-coupon"
                                     value={paymentCoupon}
                                     onChange={handleChangeCoupon}
                                 >
-                                    <MenuItem value={0}>割引なし(0%割引)</MenuItem>
+                                    <MenuItem value={0} key={"payment_coupon_template_0"}>割引なし(0%割引)</MenuItem>
                                     {
                                         template.payment_coupon_template?.map(coupon =>
-                                            <FormControl
-                                                key={"payment_coupon_template_form_" + coupon.ID}
-                                                sx={{width: "100%"}}
+                                            <MenuItem
+                                                key={"payment_coupon_template_" + coupon.ID}
+                                                value={coupon.ID}
                                             >
-                                                <MenuItem
-                                                    key={"payment_coupon_template_" + coupon.ID}
-                                                    value={coupon.ID}
-                                                >
-                                                    {coupon.title}({coupon.discount_rate}%割引)
-                                                </MenuItem>
-                                            </FormControl>
+                                                {coupon.title}({coupon.discount_rate}%割引)
+                                            </MenuItem>
                                         )
                                     }
                                 </Select>
                             </FormControl>
                             <br/>
                             <FormControl sx={{width: "100%"}}>
-                                <LocalizationProvider key={"membership-localization-provider"} dateAdapter={AdapterDateFns}>
+                                <LocalizationProvider key={"membership-localization-provider"}
+                                                      dateAdapter={AdapterDateFns}>
                                     <DatePicker
+                                        mask="____/__/__"
                                         label="Membership期限"
-                                        key="membership-date-picker-dialog"
+                                        key="membership-date-picker-1"
                                         value={selectedDate}
                                         inputFormat="yyyy/MM/dd"
                                         onChange={handleBeginDateChange}
-                                        renderInput={(params) => (
-                                            <TextField key="membership-date-picker-dialog-text" {...params} helperText={params?.inputProps?.placeholder} />
-                                        )}
+                                        renderInput={(params) => (<TextField  {...params} helperText={null}/>)}
                                     />
                                 </LocalizationProvider>
                             </FormControl>
