@@ -137,7 +137,7 @@ export default function Notice() {
                 />
             </StyledPaperRootInput>
             {
-                loaded && <NoticeAddDialogs key={"notice_add_dialogs"}
+                loaded && <NoticeAddDialogs key={"notice_add_dialog"}
                                             setReload={setReload}
                                             connection={connection}
                                             template={template}
@@ -152,7 +152,7 @@ export default function Notice() {
             </FormControl>
             {
                 tickets.filter(notice => checkDate(notice.start_time, notice.end_time)).map((notice: NoticeData, index) => (
-                    <StyledCard key={index}>
+                    <StyledCard key={"notice_id_" + notice.ID}>
                         <CardContent>
                             <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {notice.ID} ({getStringFromDate(notice.start_time)} - {getStringFromDate(notice.end_time)})

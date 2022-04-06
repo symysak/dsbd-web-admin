@@ -85,7 +85,7 @@ export default function Group() {
             </FormControl>
             {
                 groups.filter(group => checkGroup(group)).map((group: GroupDetailData) => (
-                    <StyledCard>
+                    <StyledCard key={"group_id_" + group.ID}>
                         <CardContent>
                             <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {group.ID}

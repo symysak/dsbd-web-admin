@@ -90,7 +90,7 @@ export default function Support() {
             </FormControl>
             {
                 tickets.filter(ticket => ticket.solved === value).map((ticket: TicketDetailData, index) => (
-                    <StyledCard>
+                    <StyledCard key={"ticket_id_" + ticket.ID}>
                         <CardContent>
                             <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {ticket.ID}

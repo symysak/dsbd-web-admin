@@ -338,12 +338,6 @@ export default function NoticeAddDialogs(props: {
                                             }
                                             setData({...data, user_id: tmpData})
                                         }}
-                                        // theme={(theme) => ({
-                                        //     ...theme,
-                                        //     colors: {
-                                        //         ...tmpSelectTheme
-                                        //     },
-                                        // })}
                                     />
                                     <h3>グループ</h3>
                                     <Select
@@ -359,12 +353,6 @@ export default function NoticeAddDialogs(props: {
                                             }
                                             setData({...data, group_id: tmpData});
                                         }}
-                                        // theme={(theme) => ({
-                                        //     ...theme,
-                                        //     colors: {
-                                        //         ...tmpSelectTheme
-                                        //     },
-                                        // })}
                                     />
                                     <h3>NOC</h3>
                                     <Select
@@ -380,12 +368,6 @@ export default function NoticeAddDialogs(props: {
                                             }
                                             setData({...data, noc_id: tmpData});
                                         }}
-                                        // theme={(theme) => ({
-                                        //     ...theme,
-                                        //     colors: {
-                                        //         ...tmpSelectTheme
-                                        //     },
-                                        // })}
                                     />
                                 </div>
                             }
