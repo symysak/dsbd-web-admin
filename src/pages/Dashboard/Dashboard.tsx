@@ -61,9 +61,7 @@ export default function Dashboard() {
             })
             GetTemplate().then(res => {
                 if (res.error === "") {
-                    console.log(res);
                     setTemplate(res.data);
-                    console.log(template);
                 } else {
                     enqueueSnackbar("" + res.error, {variant: "error"});
                 }

@@ -39,6 +39,8 @@ export function Group(props: {
                     group={data.filter(item => {
                         if (item.member_expired === "" || item.member_expired == null) {
                             return true
+                        } else if (!item.pass) {
+                            return true
                         } else {
                             const tmp = item.member_expired.split('T');
                             const tmpDate = new Date(tmp[0]);
@@ -104,6 +106,10 @@ export function StatusTable(props: {
                                         {row.CreatedAt}
                                     </TableCell>
                                     <TableCell style={{width: 160}} align="right">
+                                        {
+                                            !row.pass &&
+                                            <Chip size="small" color="secondary" label="Group未承認"/>
+                                        }
                                         {
                                             row.member_expired == null &&
                                             <Chip size="small" color="secondary" label="未払い状態"/>
