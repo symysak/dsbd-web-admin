@@ -11,8 +11,6 @@ import {GroupStatusStr} from "../../../components/Dashboard/Status/Status";
 import {GroupAbolition, GroupLockButton, GroupStatusButton} from "./GroupMenu";
 import {DeleteSubscription, Put} from "../../../api/Group";
 import {useSnackbar} from "notistack";
-import ServiceAddDialogs from "./ServiceAdd/ServiceAdd";
-import ConnectionAddDialogs from "./ConnectionAdd/ConnectionAdd";
 import DatePicker from '@mui/lab/DatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import JPNICRegistrationDialog from "./JPNIC";
@@ -29,6 +27,7 @@ import {
     StyledTypographyHeading
 } from "../../../style";
 import {LocalizationProvider} from "@mui/lab";
+import {useNavigate} from "react-router-dom";
 
 function ChipAgree(props: { agree: boolean }) {
     const {agree} = props;
@@ -72,6 +71,7 @@ export function GroupProfileInfo(props: {
     let nowDate = new Date();
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(nowDate);
     const [membershipDate, setMembershipDate] = React.useState<string>("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (data.member_expired != null) {
@@ -397,7 +397,7 @@ export function GroupProfileInfo(props: {
                     size="small"
                     variant="contained"
                     color="primary"
-                    onClick={() => setOpenAddService(true)}
+                    onClick={() => navigate('/dashboard/group/' + data.ID + '/add/service')}
                 >
                     Service情報の追加
                 </StyledButtonSpaceRight>
@@ -405,7 +405,7 @@ export function GroupProfileInfo(props: {
                     size="small"
                     variant="contained"
                     color="primary"
-                    onClick={() => setOpenAddConnection(true)}
+                    onClick={() => navigate('/dashboard/group/' + data.ID + '/add/connection')}
                 >
                     接続情報の追加
                 </Button>
@@ -420,22 +420,6 @@ export function GroupProfileInfo(props: {
                 >
                     JPNIC登録(β)
                 </Button>
-                <ServiceAddDialogs
-                    key={"service_add_dialogs"}
-                    baseData={data}
-                    template={template}
-                    open={openAddService}
-                    setOpen={setOpenAddService}
-                    reload={setReload}
-                />
-                <ConnectionAddDialogs
-                    key={"connection_add_dialogs"}
-                    baseData={data}
-                    template={template}
-                    open={openAddConnection}
-                    setOpen={setOpenAddConnection}
-                    reload={setReload}
-                />
                 <JPNICRegistrationDialog
                     key={"jpnic_registration_dialogs"}
                     setOpen={setOpenJPNICRegistration}

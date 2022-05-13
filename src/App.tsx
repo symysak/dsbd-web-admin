@@ -16,6 +16,8 @@ import Token from "./pages/Token/Token";
 import JPNIC from "./pages/JPNIC/JPNIC";
 import JPNICDetail from "./pages/JPNIC/Detail/JPNICDetail";
 import JPNICHandle from "./pages/JPNIC/Handle/JPNICHandle";
+import ServiceAdd from "./pages/Add/ServiceAdd";
+import ConnectionAdd from "./pages/Add/ConnectionAdd";
 
 export default class App extends React.Component {
     render() {
@@ -28,6 +30,8 @@ export default class App extends React.Component {
                     <Route path="/dashboard/notice" element={<Notice/>}/>
                     <Route path="/dashboard/group" element={<Group/>}/>
                     <Route path="/dashboard/group/:id" element={<GroupDetail/>}/>
+                    <Route path="/dashboard/group/:id/add/service" element={<ServiceAdd/>}/>
+                    <Route path="/dashboard/group/:id/add/connection" element={<ConnectionAdd/>}/>
                     <Route path="/dashboard/support" element={<Support/>}/>
                     <Route path="/dashboard/support/:id" element={<SupportDetail/>}/>
                     <Route path="/dashboard/order" element={<Order/>}/>
