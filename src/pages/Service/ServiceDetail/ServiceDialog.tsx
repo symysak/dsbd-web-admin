@@ -122,22 +122,16 @@ export function ServiceStatus(props: { service: ServiceDetailData }): any {
         <StyledCardRoot1>
             <CardContent>
                 <Grid container spacing={3}>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                         <h3>Org</h3>
-                        <Chip
-                            size="small"
-                            color="primary"
-                            label={service.org}
-                        />
+                        {service.org}
                     </Grid>
-                    <Grid item xs={12}>
+                    <br/>
+                    <Grid item xs={6}>
                         <h3>Org(English)</h3>
-                        <Chip
-                            size="small"
-                            color="primary"
-                            label={service.org_en}
-                        />
+                        {service.org_en}
                     </Grid>
+                    <br/>
                     <Grid item xs={12}>
                         <h3>Date</h3>
                         <StyledChip1

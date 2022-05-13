@@ -430,13 +430,17 @@ export function ConnectionEtc(props: { connection: ConnectionDetailData }): any 
                         <h3>インターネット接続性</h3>
                         {getNTT()}
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={4}>
                         <h3>希望NOC</h3>
                         <Chip
                             size="small"
                             color="primary"
                             label={getNOC()}
                         />
+                    </Grid>
+                    <Grid item xs={8}>
+                        <h3>設置場所</h3>
+                        {connection.address}
                     </Grid>
                     <Grid item xs={12}>
                         <h3>監視要求</h3>
