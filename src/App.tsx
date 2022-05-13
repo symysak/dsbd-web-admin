@@ -18,12 +18,14 @@ import JPNICDetail from "./pages/JPNIC/Detail/JPNICDetail";
 import JPNICHandle from "./pages/JPNIC/Handle/JPNICHandle";
 import ServiceAdd from "./pages/Add/ServiceAdd";
 import ConnectionAdd from "./pages/Add/ConnectionAdd";
+import NotFound from "./pages/Etc/404";
 
 export default class App extends React.Component {
     render() {
         return (
             <BrowserRouter>
                 <Routes>
+                    <Route path="*" element={<NotFound/>}/>
                     <Route path='/' element={<SignIn/>}/> {}
                     <Route path="/login" element={<SignIn/>}/>
                     <Route path="/dashboard" element={<Dashboard/>}/>
