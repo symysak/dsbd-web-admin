@@ -1,15 +1,7 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
-import {
-    Button,
-    Card, CardContent, Chip,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Grid,
-} from "@mui/material";
+import {Button, Card, CardContent, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Grid,} from "@mui/material";
 import cssModule from "../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
-import {ServiceDetailData, TemplateData} from "../../../interface";
+import {ServiceDetailData} from "../../../interface";
 import {ServiceAddAllowButton, ServiceLockButton} from "./ServiceMenu";
 import {useSnackbar} from "notistack";
 import {Put} from "../../../api/Service";
@@ -17,19 +9,21 @@ import {ServiceJPNICTechBase} from "./JPNICTech/JPNICTech";
 import {ServiceJPNICAdminBase} from "./JPNICAdmin/JPNICAdmin";
 import {ServiceIPBase} from "./IP/IP";
 import {
-    StyledCardRoot1, StyledChip1,
+    StyledCardRoot1,
+    StyledChip1,
     StyledDivRoot1,
     StyledRootForm,
     StyledTextFieldMedium,
     StyledTextFieldVeryShort1
 } from "../../../style";
+import {GetServiceWithTemplate} from "../../../api/Tool";
+
 
 export default function ServiceGetDialogs(props: {
     service: ServiceDetailData,
     reload: Dispatch<SetStateAction<boolean>>
-    template: TemplateData
 }) {
-    const {service, reload, template} = props
+    const {service, reload} = props
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -83,7 +77,7 @@ export default function ServiceGetDialogs(props: {
                         </Grid>
                         <Grid item xs={6}>
                             <ServiceIPBase key={"ServiceIPBase"} ip={service.ip} serviceID={service.ID}
-                                           reload={reload} template={template}/>
+                                           reload={reload}/>
                         </Grid>
                         <Grid item xs={12}>
                             <ServiceJPNICBase key={"ServiceJPNICBase"} service={service} reload={reload}/>
@@ -209,7 +203,7 @@ export function ServiceOpenButton(props: {
 export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
     const {service, reload} = props;
     const [serviceCopy, setServiceCopy] = useState(service);
-    const serviceCode = service.group_id + "-" + service.service_template.type +
+    const serviceCode = service.group_id + "-" + service.service_type +
         ('000' + service.service_number).slice(-3);
     const [lock, setLockInfo] = React.useState(true);
 
@@ -235,19 +229,19 @@ export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatc
                 <h3>Pass</h3>
                 {
                     service.pass &&
-                    <Chip
-                        size="small"
-                        color="primary"
-                        label="審査OK"
-                    />
+                  <Chip
+                    size="small"
+                    color="primary"
+                    label="審査OK"
+                  />
                 }
                 {
                     !service.pass &&
-                    <Chip
-                        size="small"
-                        color="secondary"
-                        label="審査中/審査NG"
-                    />
+                  <Chip
+                    size="small"
+                    color="secondary"
+                    label="審査中/審査NG"
+                  />
                 }
                 <br/>
                 <br/>
@@ -325,7 +319,8 @@ export function ServiceJPNICBase(props: {
 }): any {
     const {service, reload} = props;
 
-    if (!service.service_template.need_jpnic) {
+
+    if (GetServiceWithTemplate(service.service_type)!.need_jpnic) {
         return (
             <Card>
                 <CardContent>

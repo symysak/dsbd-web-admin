@@ -149,7 +149,7 @@ export default function NoticeDetailDialogs(props: {
                                     value={data.start_time}
                                     inputFormat="yyyy/MM/dd HH:mm"
                                     onChange={handleBeginDateChange}
-                                    renderInput={(params) => (
+                                    renderInput={(params: any) => (
                                         <TextField {...params} helperText="Clear Initial State"/>
                                     )}
                                 />
@@ -170,20 +170,20 @@ export default function NoticeDetailDialogs(props: {
                             <br/>
                             {
                                 !checkBoxEndDatePermanent &&
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DateTimePicker
-                                        clearable
-                                        key="finish-date-picker-dialog"
-                                        label="掲示終了日"
-                                        value={data.end_time}
-                                        inputFormat="yyyy/MM/dd HH:mm"
-                                        // minDate={data.start_time}
-                                        onChange={handleEndDateChange}
-                                        renderInput={(params) => (
-                                            <TextField {...params} helperText={params?.inputProps?.placeholder}/>
-                                        )}
-                                    />
-                                </LocalizationProvider>
+                              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                  clearable
+                                  key="finish-date-picker-dialog"
+                                  label="掲示終了日"
+                                  value={data.end_time}
+                                  inputFormat="yyyy/MM/dd HH:mm"
+                                    // minDate={data.start_time}
+                                  onChange={handleEndDateChange}
+                                  renderInput={(params: any) => (
+                                      <TextField {...params} helperText={params?.inputProps?.placeholder}/>
+                                  )}
+                                />
+                              </LocalizationProvider>
                             }
                         </Grid>
                         <Grid item xs={6}>

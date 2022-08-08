@@ -14,20 +14,19 @@ import {Delete, GetAll} from "../../api/Notice";
 import {
     ConnectionDetailData,
     DefaultNoticeDataArray,
-    DefaultTemplateData,
     NoticeData
 } from "../../interface";
 import {useSnackbar} from "notistack";
-import {GetTemplate} from "../../api/Group";
 import NoticeAddDialogs from "./NoticeAdd/NoticeAdd";
 import NoticeDetailDialogs from "./NoticeDetail/NoticeDetail";
-import {GetAll as ConnectionGetAll} from "../../api/Connection";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../api/Recoil";
 
 
 export default function Notice() {
     const [tickets, setTickets] = useState(DefaultNoticeDataArray);
     const [initTickets, setInitTickets] = useState(DefaultNoticeDataArray);
-    const [template, setTemplate] = useState(DefaultTemplateData);
+    const template = useRecoilValue(TemplateState);
     const [connection, setConnection] = useState<ConnectionDetailData[]>()
     const [reload, setReload] = useState(true);
     const {enqueueSnackbar} = useSnackbar();
@@ -50,27 +49,6 @@ export default function Notice() {
         }
     }, [reload]);
 
-    useEffect(() => {
-        GetTemplate().then(res => {
-            if (res.error === "") {
-                console.log(res);
-                setTemplate(res.data);
-                ConnectionGetAll().then(res => {
-                    if (res.error === "") {
-                        console.log(res);
-                        setConnection(res.data);
-                        setLoaded(true);
-                    } else {
-                        enqueueSnackbar("" + res.error, {variant: "error"});
-                    }
-                })
-            } else {
-                enqueueSnackbar("" + res.error, {variant: "error"});
-            }
-        })
-    }, []);
-
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(Number((event.target as HTMLInputElement).value));
     };
@@ -83,7 +61,6 @@ export default function Notice() {
         Delete(id).then(res => {
             if (res.error === "") {
                 console.log(res);
-                setTemplate(res.data);
                 setReload(true);
                 enqueueSnackbar("OK", {variant: "success"});
             } else {
@@ -140,7 +117,6 @@ export default function Notice() {
                 loaded && <NoticeAddDialogs key={"notice_add_dialog"}
                                             setReload={setReload}
                                             connection={connection}
-                                            template={template}
                                             reload={reload}/>
             }
             <FormControl component="fieldset">

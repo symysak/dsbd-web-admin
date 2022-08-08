@@ -23,29 +23,29 @@ import NotFound from "./pages/Etc/404";
 export default class App extends React.Component {
     render() {
         return (
-            <BrowserRouter>
-                <Routes>
-                    <Route path="*" element={<NotFound/>}/>
-                    <Route path='/' element={<SignIn/>}/> {}
-                    <Route path="/login" element={<SignIn/>}/>
-                    <Route path="/dashboard" element={<Dashboard/>}/>
-                    <Route path="/dashboard/notice" element={<Notice/>}/>
-                    <Route path="/dashboard/group" element={<Group/>}/>
-                    <Route path="/dashboard/group/:id" element={<GroupDetail/>}/>
-                    <Route path="/dashboard/group/:id/add/service" element={<ServiceAdd/>}/>
-                    <Route path="/dashboard/group/:id/add/connection" element={<ConnectionAdd/>}/>
-                    <Route path="/dashboard/support" element={<Support/>}/>
-                    <Route path="/dashboard/support/:id" element={<SupportDetail/>}/>
-                    <Route path="/dashboard/order" element={<Order/>}/>
-                    <Route path="/dashboard/service" element={<Service/>}/>
-                    <Route path="/dashboard/connection" element={<Connection/>}/>
-                    <Route path="/dashboard/user" element={<User/>}/>
-                    <Route path="/dashboard/token" element={<Token/>}/>
-                    <Route path="/dashboard/jpnic" element={<JPNIC/>}/>
-                    <Route path="/dashboard/jpnic/:url" element={<JPNICDetail/>}/>
-                    <Route path="/dashboard/jpnic/handle/:handle" element={<JPNICHandle/>}/>
-                </Routes>
-            </BrowserRouter>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="*" element={<NotFound/>}/>
+                        <Route path='/' element={<SignIn/>}/> {}
+                        <Route path="/login" element={<SignIn/>}/>
+                        <Route path="/dashboard" element={<Dashboard/>}/>
+                        <Route path="/dashboard/notice" element={<Notice/>}/>
+                        <Route path="/dashboard/group" element={<Group/>}/>
+                        <Route path="/dashboard/group/:id" element={<GroupDetail/>}/>
+                        <Route path="/dashboard/group/:id/add/service" element={<ServiceAdd/>}/>
+                        <Route path="/dashboard/group/:id/add/connection" element={<ConnectionAdd/>}/>
+                        <Route path="/dashboard/support" element={<Support/>}/>
+                        <Route path="/dashboard/support/:id" element={<SupportDetail/>}/>
+                        <Route path="/dashboard/order" element={<Order/>}/>
+                        <Route path="/dashboard/service" element={<Service/>}/>
+                        <Route path="/dashboard/connection" element={<Connection/>}/>
+                        <Route path="/dashboard/user" element={<User/>}/>
+                        <Route path="/dashboard/token" element={<Token/>}/>
+                        <Route path="/dashboard/jpnic" element={<JPNIC/>}/>
+                        <Route path="/dashboard/jpnic/:url" element={<JPNICDetail/>}/>
+                        <Route path="/dashboard/jpnic/handle/:handle" element={<JPNICHandle/>}/>
+                    </Routes>
+                </BrowserRouter>
         );
     }
 }

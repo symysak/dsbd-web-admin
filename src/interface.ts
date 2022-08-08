@@ -111,6 +111,7 @@ export interface ServiceDetailData {
     max_downstream: number,
     max_upstream: number,
     max_bandwidth_as: number,
+    service_type: string,
     service_number: number,
     pass: boolean,
     enable: boolean,
@@ -119,7 +120,6 @@ export interface ServiceDetailData {
     ip?: IPData[],
     jpnic_admin?: JPNICData,
     jpnic_tech?: JPNICData[],
-    service_template: ServiceTemplateData
     connections?: ConnectionDetailData[]
 }
 
@@ -180,7 +180,6 @@ export interface JPNICData {
 }
 
 export interface ServiceTemplateData {
-    ID: number,
     name: string,
     comment: string,
     hidden: boolean,
@@ -210,13 +209,12 @@ export interface ConnectionDetailData {
     bgp_router?: BGPRouterDetailData,
     group?: GroupDetailData,
     service?: ServiceDetailData,
+    connection_type: string,
     connection_number: number,
     tunnel_endpoint_router_ip_id: number,
-    ntt_template_id: number,
-    ntt_template?: NTTTemplateData,
-    ipv4_route_template?: IPv4RouteTemplate,
-    ipv6_route_template?: IPv6RouteTemplate,
-    connection_template: ConnectionTemplateData,
+    ntt: string,
+    ipv4_route: string,
+    ipv6_route: string,
     tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData
 }
 
@@ -247,33 +245,10 @@ export interface NocTemplateData {
     location: string
 }
 
-export interface NTTTemplateData {
-    CreatedAt: string
-    DeletedAt: string
-    ID: number
-    UpdatedAt: string
-    name: string
-    comment: string
-    hidden: boolean
-}
-
 export interface MailTemplateData {
-    process_id: string
+    id: string
     subject: string
     message: string
-}
-
-export interface IPTemplateData {
-    name: any;
-    CreatedAt: string
-    DeletedAt: string
-    ID: number
-    UpdatedAt: string
-    comment: string
-    hide: boolean
-    quantity: number
-    subnet: string
-    title: string
 }
 
 export interface TunnelEndPointRouterTemplateData {
@@ -300,18 +275,14 @@ export interface TunnelEndPointRouterIPTemplateData {
 }
 
 export interface ConnectionTemplateData {
-    CreatedAt: string
-    DeletedAt: string
-    ID: number
-    UpdatedAt: string
     name: string,
     type: string
     comment: string
     need_comment: boolean
     need_cross_connect: boolean
     need_internet: boolean
-    l2: boolean
-    l3: boolean
+    is_l2: boolean
+    is_l3: boolean
 }
 
 export interface GroupDetailData {
@@ -319,8 +290,6 @@ export interface GroupDetailData {
     CreatedAt: string,
     UpdatedAt: string,
     memos?: MemoData[],
-    payment_coupon_template_id?: number,
-    payment_membership_template_id?: number,
     expired_status: number,
     status: number,
     pass: boolean,
@@ -337,31 +306,12 @@ export interface GroupDetailData {
     contract: string,
     student: boolean,
     student_expired: string,
-    fee: number,
     lock: boolean,
     paid: boolean,
     member_expired: string,
     users?: UserDetailData[],
     tickets?: TicketDetailData[],
-    services?: ServiceDetailData[],
-    payment_coupon_template?: PaymentCouponTemplateData
-    payment_membership_template?: PaymentMembershipTemplate
-}
-
-export interface IPv4RouteTemplate {
-    CreatedAt: string
-    DeletedAt: string
-    ID: number
-    UpdatedAt: string
-    name: string
-}
-
-export interface IPv6RouteTemplate {
-    CreatedAt: string
-    DeletedAt: string
-    ID: number
-    UpdatedAt: string
-    name: string
+    services?: ServiceDetailData[]
 }
 
 export interface MemoData {
@@ -374,51 +324,21 @@ export interface MemoData {
     message: string
 }
 
-export interface PaymentMembershipTemplate {
-    ID: number,
-    CreatedAt: string,
-    UpdatedAt: string,
-    title: string,
-    plan: string,
-    monthly: boolean,
-    yearly: boolean,
-    fee: number,
-    comment: string
-}
-
-export interface PaymentCouponTemplateData {
-    ID: number,
-    CreatedAt: string,
-    UpdatedAt: string,
-    title: string,
-    discount_rate: number,
-    comment: string
-}
-
 export interface TemplateData {
     bgp_router?: BGPRouterDetailData[]
     connections?: ConnectionTemplateData[]
     services?: ServiceTemplateData[]
-    ipv4?: IPTemplateData[]
-    ipv6?: IPTemplateData[]
+    ipv4?: string[]
+    ipv6?: string[]
     nocs?: NocTemplateData[]
-    ntts?: NTTTemplateData[]
+    ntts?: string[]
     tunnel_endpoint_router?: TunnelEndPointRouterTemplateData[]
     tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData[]
-    payment_membership_template?: PaymentMembershipTemplate[]
-    payment_coupon_template?: PaymentCouponTemplateData[]
-    ipv4_route?: IPRouteData[]
-    ipv6_route?: IPRouteData[]
+    ipv4_route?: string[]
+    ipv6_route?: string[]
     user?: UserDetailData[]
     group?: GroupDetailData[]
     mail_template?: MailTemplateData[]
-}
-
-export interface IPRouteData {
-    ID: number,
-    CreatedAt: string,
-    UpdatedAt: string,
-    name: string
 }
 
 export interface MemoAddData {
@@ -439,7 +359,7 @@ export interface TicketAddData {
 export interface ServiceAddData {
     jpnic_admin?: ServiceAddJPNICData,
     jpnic_tech?: ServiceAddJPNICData[],
-    service_template_id: number,
+    service_type: string,
     service_comment: string,
     org?: string,
     org_en?: string,
@@ -497,11 +417,11 @@ export interface ServiceAddIPv4PlanData {
 
 export interface ConnectionAddData {
     address: string,
-    connection_template_id: number,
+    connection_type: string,
     connection_comment: string,
-    ipv4_route_template_id?: number,
-    ipv6_route_template_id?: number,
-    ntt_template_id: number,
+    ipv4_route?: string,
+    ipv6_route?: string,
+    ntt: string,
     noc_id: number,
     term_ip: string,
     monitor: boolean
@@ -673,7 +593,6 @@ export const DefaultGroupDetailData: GroupDetailData = {
     ID: 0,
     CreatedAt: "",
     UpdatedAt: "",
-    payment_coupon_template_id: 0,
     org: "",
     org_en: "",
     status: 0,
@@ -690,7 +609,6 @@ export const DefaultGroupDetailData: GroupDetailData = {
     contract: "",
     student: false,
     student_expired: "",
-    fee: 0,
     member_expired: "",
     paid: false,
     lock: false,
@@ -703,7 +621,7 @@ export const DefaultGroupDetailDataArray: GroupDetailData[] = [DefaultGroupDetai
 export const DefaultServiceAddData: ServiceAddData = {
     jpnic_admin: undefined,
     jpnic_tech: undefined,
-    service_template_id: 0,
+    service_type: "",
     service_comment: "",
     org: undefined,
     org_en: undefined,
@@ -779,9 +697,9 @@ export const DefaultServiceAddIPv4PlanData: ServiceAddIPv4PlanData = {
 
 export const DefaultConnectionAddData: ConnectionAddData = {
     address: "",
-    connection_template_id: 0,
+    connection_type: "",
     connection_comment: "",
-    ntt_template_id: 0,
+    ntt: "",
     noc_id: 0,
     term_ip: "",
     monitor: false
@@ -852,6 +770,7 @@ export const DefaultServiceDetailData: ServiceDetailData = {
     max_downstream: 0,
     max_upstream: 0,
     max_bandwidth_as: 0,
+    service_type: "",
     service_number: 0,
     lock: false,
     pass: false,
@@ -860,17 +779,6 @@ export const DefaultServiceDetailData: ServiceDetailData = {
     ip: undefined,
     jpnic_admin: undefined,
     jpnic_tech: undefined,
-    service_template: {
-        ID: 0,
-        name: "",
-        comment: "",
-        hidden: false,
-        type: "",
-        need_comment: false,
-        need_global_as: false,
-        need_jpnic: false,
-        need_route: false
-    },
     connections: undefined
 }
 
@@ -893,25 +801,13 @@ export const DefaultConnectionDetailData: ConnectionDetailData = {
     noc_id: 0,
     bgp_router_id: 0,
     bgp_router: undefined,
+    connection_type: "",
     connection_number: 0,
     tunnel_endpoint_router_ip_id: 0,
-    ntt_template_id: 0,
-    ntt_template: undefined,
+    ntt: "",
+    ipv4_route: "",
+    ipv6_route: "",
     service: undefined,
-    connection_template: {
-        CreatedAt: "",
-        DeletedAt: "",
-        ID: 0,
-        UpdatedAt: "",
-        name: "",
-        type: "",
-        comment: "",
-        need_comment: false,
-        need_cross_connect: false,
-        need_internet: false,
-        l2: false,
-        l3: false
-    },
     tunnel_endpoint_router_ip: undefined
 }
 

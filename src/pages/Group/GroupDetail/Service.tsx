@@ -1,7 +1,17 @@
-import {GroupDetailData, ServiceDetailData, TemplateData} from "../../../interface";
+import {GroupDetailData, ServiceDetailData} from "../../../interface";
 import {
-    Accordion, AccordionSummary, Box, Button, Chip,
-    Collapse, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton,
+    Accordion,
+    AccordionSummary,
+    Box,
+    Button,
+    Chip,
+    Collapse,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -19,6 +29,8 @@ import {Delete, Put} from "../../../api/Service";
 import {useSnackbar} from "notistack";
 import {RowConnectionCheck} from "./Connection";
 import {StyledAccordionDetails, StyledDiv1, StyledTableRowRoot, StyledTypographyHeading} from "../../../style";
+import {GetServiceWithTemplate} from "../../../api/Tool";
+
 
 export function ChipGet(props: {
     open: boolean,
@@ -60,12 +72,11 @@ function RowService(props: {
     service: ServiceDetailData,
     autoMail: Dispatch<SetStateAction<string>>,
     groupID: number,
-    template: TemplateData,
     reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {service, autoMail, groupID, template, reload} = props;
+    const {service, autoMail, groupID, reload} = props;
     const [open, setOpen] = React.useState(false);
-    const serviceCode = groupID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3);
+    const serviceCode = groupID + "-" + service.service_type + ('000' + service.service_number).slice(-3);
 
     return (
         <React.Fragment>
@@ -79,17 +90,17 @@ function RowService(props: {
                     {service.ID}
                 </TableCell>
                 <TableCell align="left">{serviceCode}</TableCell>
-                <TableCell align="left">{service.service_template.name}</TableCell>
+                <TableCell align="left">{GetServiceWithTemplate(service.service_type)!.name}</TableCell>
                 <TableCell align="left">
                     <ChipGet open={service.pass} pass={service.pass} enable={service.enable}/>
                     &nbsp;
                     {
                         service.enable && service.add_allow &&
-                        <Chip
-                            size="small"
-                            color="primary"
-                            label="接続申請追加許可中"
-                        />
+                      <Chip
+                        size="small"
+                        color="primary"
+                        label="接続申請追加許可中"
+                      />
                     }
                 </TableCell>
                 <TableCell align="left">{service.asn}</TableCell>
@@ -110,7 +121,6 @@ function RowService(props: {
                             key={"service_get_dialog_" + service.ID}
                             service={service}
                             reload={reload}
-                            template={template}
                         />
                         &nbsp;
                         <DeleteDialog
@@ -133,7 +143,6 @@ function RowService(props: {
                         <Box margin={1}>
                             <RowConnectionCheck
                                 key={service.ID + "Connection"}
-                                template={template}
                                 service={service}
                                 groupID={groupID}
                                 reload={reload}
@@ -346,10 +355,9 @@ export function EnableDialog(props: {
 export default function Service(props: {
     data: GroupDetailData,
     autoMail: Dispatch<SetStateAction<string>>,
-    template: TemplateData,
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
-    const {data, autoMail, template, reload} = props;
+    const {data, autoMail, reload} = props;
 
     if (data.services !== undefined) {
         return (
@@ -381,8 +389,7 @@ export default function Service(props: {
                                 {
                                     data.services.map((row: ServiceDetailData) => (
                                         <RowService
-                                            key={"service_row_service_" + row.ID}
-                                            template={template}
+                                            key={"service_row_" + row.ID}
                                             autoMail={autoMail}
                                             service={row}
                                             groupID={data.ID}

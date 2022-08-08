@@ -76,7 +76,7 @@ export default function Service() {
             tmp = initServices;
         } else {
             tmp = initServices.filter((service: ServiceDetailData) => {
-                const code = service.group_id + "-" + service.service_template.type + ('000' + service.service_number).slice(-3)
+                const code = service.group_id + "-" + service.service_type + ('000' + service.service_number).slice(-3)
                 return code.toLowerCase().includes(search.toLowerCase())
             });
         }
@@ -108,12 +108,11 @@ export default function Service() {
                                 ID: {service.ID}
                             </StyledTypographyTitle>
                             <Typography variant="h5" component="h2">
-                                {serviceCode(service.group_id, service.service_template.type, service.service_number)}
+                                {serviceCode(service.group_id, service.service_type, service.service_number)}
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={setReload}
-                                               template={template}/>
+                            <ServiceGetDialogs key={service.ID + "Dialog"} service={service} reload={setReload}/>
                         </CardActions>
                     </StyledCard>
                 ))

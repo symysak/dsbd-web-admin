@@ -1,8 +1,16 @@
-import {GroupDetailData, TemplateData} from "../../../interface";
+import {GroupDetailData} from "../../../interface";
 import {
-    Accordion, AccordionDetails, AccordionSummary,
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Button,
-    CardContent, Chip, FormControl, Grid, InputLabel, MenuItem, PropTypes, Select, SelectChangeEvent, TextField,
+    CardContent,
+    Chip,
+    FormControl,
+    Grid,
+    InputLabel,
+    PropTypes,
+    TextField,
     Typography
 } from "@mui/material";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
@@ -15,10 +23,13 @@ import DatePicker from '@mui/lab/DatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import JPNICRegistrationDialog from "./JPNIC";
 import {
-    StyledButtonSpaceRight, StyledButtonSpaceTop,
+    StyledButtonSpaceRight,
+    StyledButtonSpaceTop,
     StyledCardRoot1,
-    StyledChip1, StyledDivLargeHeading,
-    StyledDivRoot1, StyledDivText,
+    StyledChip1,
+    StyledDivLargeHeading,
+    StyledDivRoot1,
+    StyledDivText,
     StyledFormControlFormSelect,
     StyledFormControlFormShort,
     StyledRootForm,
@@ -28,6 +39,8 @@ import {
 } from "../../../style";
 import {LocalizationProvider} from "@mui/lab";
 import {useNavigate} from "react-router-dom";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../../api/Recoil";
 
 function ChipAgree(props: { agree: boolean }) {
     const {agree} = props;
@@ -52,12 +65,12 @@ function ChipAgree(props: { agree: boolean }) {
 
 export function GroupProfileInfo(props: {
     data: GroupDetailData,
-    template: TemplateData,
     setOpenMailSendDialog: Dispatch<SetStateAction<boolean>>
     setReload: Dispatch<SetStateAction<boolean>>
 }): any {
-    const {data, template, setOpenMailSendDialog, setReload} = props;
+    const {data, setOpenMailSendDialog, setReload} = props;
     const [lockPersonalInformation, setLockPersonalInformation] = React.useState(true);
+    const template = useRecoilValue(TemplateState);
     const [group, setGroup] = useState(data);
     const [openAddService, setOpenAddService] = React.useState(false);
     const [openAddConnection, setOpenAddConnection] = React.useState(false);
@@ -123,20 +136,20 @@ export function GroupProfileInfo(props: {
                 '-' + ('00' + (newDate.getDate())).slice(-2) + 'T09:00:00Z');
         }
     };
-    const handleChangeMembershipPlan = (event: SelectChangeEvent<any>) => {
-        setMembershipPlan(event.target.value as number);
-    };
-    const handleChangeCoupon = (event: SelectChangeEvent<any>) => {
-        setPaymentCoupon(event.target.value as number);
-        const coupon = template.payment_coupon_template?.filter(coupon => coupon.ID === event.target.value as number)
-        if (coupon != null) {
-            if (coupon.length === 0) {
-                setDiscountRate(0);
-            } else {
-                setDiscountRate(coupon[0].discount_rate);
-            }
-        }
-    };
+    // const handleChangeMembershipPlan = (event: SelectChangeEvent<any>) => {
+    //     setMembershipPlan(event.target.value as number);
+    // };
+    // const handleChangeCoupon = (event: SelectChangeEvent<any>) => {
+    //     setPaymentCoupon(event.target.value as number);
+    //     const coupon = template.payment_coupon_template?.filter(coupon => coupon.ID === event.target.value as number)
+    //     if (coupon != null) {
+    //         if (coupon.length === 0) {
+    //             setDiscountRate(0);
+    //         } else {
+    //             setDiscountRate(coupon[0].discount_rate);
+    //         }
+    //     }
+    // };
 
     const clickPersonalInfoLock = () => {
         setLockPersonalInformation(!lockPersonalInformation);
@@ -292,48 +305,48 @@ export function GroupProfileInfo(props: {
                         <StyledFormControlFormSelect variant="filled">
                             <FormControl sx={{width: "100%"}}>
                                 <InputLabel id="membership-plan-label">Membership Plan</InputLabel>
-                                <Select
-                                    labelId="membership-plan-label"
-                                    id="membership-plan"
-                                    value={membershipPlan}
-                                    onChange={handleChangeMembershipPlan}
-                                >
-                                    <MenuItem key={"membership_template_0"} value={0}>自動課金無効</MenuItem>
-                                    {
-                                        template.payment_membership_template?.map(tmp =>
-                                            <MenuItem
-                                                key={"membership_template_" + tmp.ID}
-                                                value={tmp.ID}
-                                            >
-                                                {tmp.plan}
-                                            </MenuItem>
-                                        )
-                                    }
-                                </Select>
+                                {/*<Select*/}
+                                {/*    labelId="membership-plan-label"*/}
+                                {/*    id="membership-plan"*/}
+                                {/*    value={membershipPlan}*/}
+                                {/*    onChange={handleChangeMembershipPlan}*/}
+                                {/*>*/}
+                                {/*    <MenuItem key={"membership_template_0"} value={0}>自動課金無効</MenuItem>*/}
+                                {/*    {*/}
+                                {/*        template.payment_membership_template?.map(tmp =>*/}
+                                {/*            <MenuItem*/}
+                                {/*                key={"membership_template_" + tmp.ID}*/}
+                                {/*                value={tmp.ID}*/}
+                                {/*            >*/}
+                                {/*                {tmp.plan}*/}
+                                {/*            </MenuItem>*/}
+                                {/*        )*/}
+                                {/*    }*/}
+                                {/*</Select>*/}
                             </FormControl>
                         </StyledFormControlFormSelect>
                         <StyledFormControlFormShort variant="filled">
-                            <FormControl sx={{width: "100%"}}>
-                                <InputLabel id="payment-coupon-title">Coupon</InputLabel>
-                                <Select
-                                    labelId="payment-coupon-title"
-                                    id="payment-coupon"
-                                    value={paymentCoupon}
-                                    onChange={handleChangeCoupon}
-                                >
-                                    <MenuItem value={0} key={"payment_coupon_template_0"}>割引なし(0%割引)</MenuItem>
-                                    {
-                                        template.payment_coupon_template?.map(coupon =>
-                                            <MenuItem
-                                                key={"payment_coupon_template_" + coupon.ID}
-                                                value={coupon.ID}
-                                            >
-                                                {coupon.title}({coupon.discount_rate}%割引)
-                                            </MenuItem>
-                                        )
-                                    }
-                                </Select>
-                            </FormControl>
+                            {/*<FormControl sx={{width: "100%"}}>*/}
+                            {/*    <InputLabel id="payment-coupon-title">Coupon</InputLabel>*/}
+                            {/*<Select*/}
+                            {/*    labelId="payment-coupon-title"*/}
+                            {/*    id="payment-coupon"*/}
+                            {/*    value={paymentCoupon}*/}
+                            {/*    onChange={handleChangeCoupon}*/}
+                            {/*>*/}
+                            {/*    <MenuItem value={0} key={"payment_coupon_template_0"}>割引なし(0%割引)</MenuItem>*/}
+                            {/*    {*/}
+                            {/*        template.payment_coupon_template?.map(coupon =>*/}
+                            {/*            <MenuItem*/}
+                            {/*                key={"payment_coupon_template_" + coupon.ID}*/}
+                            {/*                value={coupon.ID}*/}
+                            {/*            >*/}
+                            {/*                {coupon.title}({coupon.discount_rate}%割引)*/}
+                            {/*            </MenuItem>*/}
+                            {/*        )*/}
+                            {/*    }*/}
+                            {/*</Select>*/}
+                            {/*</FormControl>*/}
                             <br/>
                             <FormControl sx={{width: "100%"}}>
                                 <LocalizationProvider key={"membership-localization-provider"}
@@ -345,7 +358,7 @@ export function GroupProfileInfo(props: {
                                         value={selectedDate}
                                         inputFormat="yyyy/MM/dd"
                                         onChange={handleBeginDateChange}
-                                        renderInput={(params) => (<TextField  {...params} helperText={null}/>)}
+                                        renderInput={(params: any) => (<TextField  {...params} helperText={null}/>)}
                                     />
                                 </LocalizationProvider>
                             </FormControl>
@@ -474,17 +487,17 @@ export function GroupStatus(props: {
             const tmp = data.member_expired.split('T');
             const groupMemberExpired = new Date(tmp[0]);
 
-            if (data.payment_coupon_template_id !== 0) {
-                setMembershipLabel({
-                    color: "primary",
-                    label: data.payment_coupon_template?.title + ": " + tmp[0] + "まで"
-                });
-            } else {
-                setMembershipLabel({
-                    color: "primary",
-                    label: "会員: " + tmp[0] + "まで"
-                });
-            }
+            // if (data.payment_coupon_template_id !== 0) {
+            //     setMembershipLabel({
+            //         color: "primary",
+            //         label: data.payment_coupon_template?.title + ": " + tmp[0] + "まで"
+            //     });
+            // } else {
+            //     setMembershipLabel({
+            //         color: "primary",
+            //         label: "会員: " + tmp[0] + "まで"
+            //     });
+            // }
             if (groupMemberExpired < nowDate) {
                 setMembershipLabel({
                     color: "secondary",
@@ -498,22 +511,22 @@ export function GroupStatus(props: {
             })
         }
 
-        if (data.payment_membership_template?.yearly) {
-            setAutomaticUpdate({
-                color: membershipLabel.color,
-                label: "(年更新)"
-            })
-        } else if (data.payment_membership_template?.monthly) {
-            setAutomaticUpdate({
-                color: membershipLabel.color,
-                label: "(月更新)"
-            })
-        } else {
-            setAutomaticUpdate({
-                color: membershipLabel.color,
-                label: "(更新無効)"
-            })
-        }
+        // if (data.payment_membership_template?.yearly) {
+        //     setAutomaticUpdate({
+        //         color: membershipLabel.color,
+        //         label: "(年更新)"
+        //     })
+        // } else if (data.payment_membership_template?.monthly) {
+        //     setAutomaticUpdate({
+        //         color: membershipLabel.color,
+        //         label: "(月更新)"
+        //     })
+        // } else {
+        //     setAutomaticUpdate({
+        //         color: membershipLabel.color,
+        //         label: "(更新無効)"
+        //     })
+        // }
     }, [reload]);
 
     return (

@@ -2,14 +2,24 @@ import {
     DefaultAddIP,
     DefaultServiceAddIPv4PlanData,
     ServiceAddIPData,
-    ServiceAddIPv4PlanData, TemplateData
+    ServiceAddIPv4PlanData,
 } from "../../../../interface";
 import React, {Dispatch, SetStateAction} from "react";
 import {useSnackbar} from "notistack";
 import {
-    Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel,
-    FormLabel, Grid, MenuItem,
-    Paper, Select,
+    Button,
+    Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    MenuItem,
+    Paper,
+    Select,
     TableBody,
     TableCell,
     TableContainer,
@@ -18,13 +28,15 @@ import {
 } from "@mui/material";
 import {PostIP} from "../../../../api/Service";
 import {StyledRootForm, StyledTableRoot, StyledTextFieldMedium, StyledTextFieldTooVeryShort} from "../../../../style";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../../../api/Recoil";
 
 export function AddAssignIPDialog(props: {
     serviceID: number
     reload: Dispatch<SetStateAction<boolean>>
-    template: TemplateData
 }) {
-    const {serviceID, reload, template} = props;
+    const {serviceID, reload} = props;
+    const template = useRecoilValue(TemplateState)
     const [checkBoxIPv4, setCheckBoxIPv4] = React.useState(false);
     const [data, setData] = React.useState(DefaultAddIP);
     const [ipv4PlanSubnetCount, setIPv4PlanSubnetCount] = React.useState(0);
@@ -55,12 +67,12 @@ export function AddAssignIPDialog(props: {
         } else {
             //Todo データ不正検知
             if (type === 4) {
-                const dataCheck = template.ipv4?.filter(item => item.subnet === data.ip);
+                const dataCheck = template.ipv4?.filter(item => item === data.ip);
                 if (dataCheck === undefined || dataCheck.length !== 1) {
                     console.log("Warning: Illegal data\n")
                 }
             } else if (type === 6) {
-                const dataCheck = template.ipv6?.filter(item => item.subnet === data.ip);
+                const dataCheck = template.ipv6?.filter(item => item === data.ip);
                 if (dataCheck === undefined || dataCheck.length !== 1) {
                     console.log("Warning: Illegal data\n")
                 }
@@ -138,9 +150,9 @@ export function AddAssignIPDialog(props: {
                                             <FormControl component="fieldset">
                                                 <Select aria-label="gender" id="ipv4_subnet" value={getSubnetID(4)}
                                                         onChange={(event) => {
-                                                            const dataCheck = template.ipv4?.find(item => item.subnet === String(event.target.value));
-                                                            if (dataCheck !== undefined) {
-                                                                setIPv4PlanSubnetCount(dataCheck.quantity);
+                                                            const tmpPrefix = template.ipv4?.find(item => item === event.target.value);
+                                                            if (tmpPrefix !== undefined) {
+                                                                setIPv4PlanSubnetCount(Math.pow(2, 32 - parseInt(tmpPrefix.substr(1))));
                                                             }
                                                             setData({...data, ip: String(event.target.value)})
                                                         }}
@@ -148,9 +160,7 @@ export function AddAssignIPDialog(props: {
                                                     <MenuItem value={"None"} disabled={true}>なし</MenuItem>
                                                     {
                                                         template.ipv4?.map((map, index) => (
-                                                            !map.hide &&
-                                                            <MenuItem key={index}
-                                                                      value={map.subnet}>{(map.subnet)}</MenuItem>
+                                                            <MenuItem key={index} value={map}>{(map)}</MenuItem>
                                                         ))
                                                     }
                                                 </Select>
@@ -184,9 +194,7 @@ export function AddAssignIPDialog(props: {
                                                     <MenuItem value={"None"} disabled={true}>なし</MenuItem>
                                                     {
                                                         template.ipv6?.map((map, index) => (
-                                                            !map.hide &&
-                                                            <MenuItem key={index}
-                                                                      value={map.subnet}>{(map.subnet)}</MenuItem>
+                                                            <MenuItem key={index} value={map}>{(map)}</MenuItem>
                                                         ))
                                                     }
                                                 </Select>
@@ -279,102 +287,102 @@ export function AddJPNICIPv4Plan(props: {
         <div>
             {
                 subnetCount !== 0 &&
-                <div>
-                    <FormLabel component="legend">1.1.2. IPv4のネットワークプランをお知らせください</FormLabel>
-                    <br/>
-                    <div> IPv4アドレスの割り当てには、JPNICの定めるIPアドレスの利用率を満たして頂く必要がございます。</div>
-                    <div>最低でも割り当てから3カ月以内に25%、6カ月以内に25%、1年以内に50％をご利用いただく必要があります。</div>
-                    <div>以下のフォームにIPアドレスの利用計画をご記入ください。</div>
-                    <br/>
-                    <StyledRootForm noValidate autoComplete="off">
-                        <StyledTextFieldMedium
-                            required
-                            id="outlined-required"
-                            label="Name"
-                            value={inputPlan.name}
-                            variant="outlined"
-                            onChange={event => {
-                                setInputPlan({...inputPlan, name: event.target.value});
-                            }}
-                        />
-                        <StyledTextFieldTooVeryShort
-                            required
-                            id="outlined-required"
-                            label="直後"
-                            value={inputPlan.after}
-                            type="number"
-                            variant="outlined"
-                            onChange={event => {
-                                setInputPlan({...inputPlan, after: parseInt(event.target.value)});
-                            }}
-                        />
-                        <StyledTextFieldTooVeryShort
-                            required
-                            id="outlined-required"
-                            label="半年後"
-                            value={inputPlan.half_year}
-                            type="number"
-                            variant="outlined"
-                            onChange={event => {
-                                setInputPlan({...inputPlan, half_year: parseInt(event.target.value)});
-                            }}
-                        />
-                        <StyledTextFieldTooVeryShort
-                            required
-                            id="outlined-required"
-                            label="1年後"
-                            value={inputPlan.one_year}
-                            type="number"
-                            variant="outlined"
-                            onChange={event => {
-                                setInputPlan({...inputPlan, one_year: parseInt(event.target.value)});
-                            }}
-                        />
-                        <br/>
-                        <Button size="small" variant="contained" color="primary" onClick={add}>追加</Button>
-                    </StyledRootForm>
-                    <TableContainer component={Paper}>
-                        <StyledTableRoot size="small" aria-label="a dense table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell align="right">直後</TableCell>
-                                    <TableCell align="right">半年後</TableCell>
-                                    <TableCell align="right">１年後</TableCell>
-                                    <TableCell>Action</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {data.plan?.map((row, index) => (
-                                    <TableRow key={row.name}>
-                                        <TableCell component="th" scope="row">
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell align="right">{row.after}</TableCell>
-                                        <TableCell align="right">{row.half_year}</TableCell>
-                                        <TableCell align="right">{row.one_year}</TableCell>
-                                        <TableCell>
-                                            <Button size="small" color="secondary"
-                                                    onClick={() => deletePlan(index)}>削除</Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                                <TableRow key={"sum"}>
-                                    <TableCell component="th" scope="row"><b>合計</b></TableCell>
-                                    <TableCell align="right"><b>{planSum.after}</b></TableCell>
-                                    <TableCell align="right"><b>{planSum.half_year}</b></TableCell>
-                                    <TableCell align="right"><b>{planSum.one_year}</b></TableCell>
-                                </TableRow>
-                                <TableRow key={"min_and_max"}>
-                                    <TableCell component="th" scope="row"><b>(必要最低IP数/最大IP数)</b></TableCell>
-                                    <TableCell align="right"><b>{subnetCount / 4}/{subnetCount}</b></TableCell>
-                                    <TableCell align="right"><b>{subnetCount / 4}/{subnetCount}</b></TableCell>
-                                    <TableCell align="right"><b>{subnetCount / 2}/{subnetCount}</b></TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </StyledTableRoot>
-                    </TableContainer>
-                </div>
+              <div>
+                <FormLabel component="legend">1.1.2. IPv4のネットワークプランをお知らせください</FormLabel>
+                <br/>
+                <div> IPv4アドレスの割り当てには、JPNICの定めるIPアドレスの利用率を満たして頂く必要がございます。</div>
+                <div>最低でも割り当てから3カ月以内に25%、6カ月以内に25%、1年以内に50％をご利用いただく必要があります。</div>
+                <div>以下のフォームにIPアドレスの利用計画をご記入ください。</div>
+                <br/>
+                <StyledRootForm noValidate autoComplete="off">
+                  <StyledTextFieldMedium
+                    required
+                    id="outlined-required"
+                    label="Name"
+                    value={inputPlan.name}
+                    variant="outlined"
+                    onChange={event => {
+                        setInputPlan({...inputPlan, name: event.target.value});
+                    }}
+                  />
+                  <StyledTextFieldTooVeryShort
+                    required
+                    id="outlined-required"
+                    label="直後"
+                    value={inputPlan.after}
+                    type="number"
+                    variant="outlined"
+                    onChange={event => {
+                        setInputPlan({...inputPlan, after: parseInt(event.target.value)});
+                    }}
+                  />
+                  <StyledTextFieldTooVeryShort
+                    required
+                    id="outlined-required"
+                    label="半年後"
+                    value={inputPlan.half_year}
+                    type="number"
+                    variant="outlined"
+                    onChange={event => {
+                        setInputPlan({...inputPlan, half_year: parseInt(event.target.value)});
+                    }}
+                  />
+                  <StyledTextFieldTooVeryShort
+                    required
+                    id="outlined-required"
+                    label="1年後"
+                    value={inputPlan.one_year}
+                    type="number"
+                    variant="outlined"
+                    onChange={event => {
+                        setInputPlan({...inputPlan, one_year: parseInt(event.target.value)});
+                    }}
+                  />
+                  <br/>
+                  <Button size="small" variant="contained" color="primary" onClick={add}>追加</Button>
+                </StyledRootForm>
+                <TableContainer component={Paper}>
+                  <StyledTableRoot size="small" aria-label="a dense table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell align="right">直後</TableCell>
+                        <TableCell align="right">半年後</TableCell>
+                        <TableCell align="right">１年後</TableCell>
+                        <TableCell>Action</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.plan?.map((row, index) => (
+                            <TableRow key={row.name}>
+                                <TableCell component="th" scope="row">
+                                    {row.name}
+                                </TableCell>
+                                <TableCell align="right">{row.after}</TableCell>
+                                <TableCell align="right">{row.half_year}</TableCell>
+                                <TableCell align="right">{row.one_year}</TableCell>
+                                <TableCell>
+                                    <Button size="small" color="secondary"
+                                            onClick={() => deletePlan(index)}>削除</Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                      <TableRow key={"sum"}>
+                        <TableCell component="th" scope="row"><b>合計</b></TableCell>
+                        <TableCell align="right"><b>{planSum.after}</b></TableCell>
+                        <TableCell align="right"><b>{planSum.half_year}</b></TableCell>
+                        <TableCell align="right"><b>{planSum.one_year}</b></TableCell>
+                      </TableRow>
+                      <TableRow key={"min_and_max"}>
+                        <TableCell component="th" scope="row"><b>(必要最低IP数/最大IP数)</b></TableCell>
+                        <TableCell align="right"><b>{subnetCount / 4}/{subnetCount}</b></TableCell>
+                        <TableCell align="right"><b>{subnetCount / 4}/{subnetCount}</b></TableCell>
+                        <TableCell align="right"><b>{subnetCount / 2}/{subnetCount}</b></TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </StyledTableRoot>
+                </TableContainer>
+              </div>
             }
         </div>
     )

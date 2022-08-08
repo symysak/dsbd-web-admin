@@ -100,7 +100,7 @@ export function StatusTable(props: {
                             ).map((row, index) => (
                                 <TableRow key={"service_detail_" + index}>
                                     <TableCell style={{width: 300}} component="th" scope="row">
-                                        {row.ID}: {getServiceCode(row.group_id, row.service_template.type, row.service_number)}
+                                        {row.ID}: {getServiceCode(row.group_id, row.service_type, row.service_number)}
                                     </TableCell>
                                     <TableCell style={{width: 300}} align="right">
                                         {row.CreatedAt}
@@ -131,7 +131,6 @@ export function StatusTable(props: {
                                                 key={"service_get_dialog_" + index}
                                                 service={row}
                                                 reload={setReload}
-                                                template={template}
                                             />
                                             &nbsp;
                                             <DeleteDialog

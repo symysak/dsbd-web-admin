@@ -1,24 +1,25 @@
 import React, {Dispatch, SetStateAction, useEffect} from "react";
 import {
-    Button, Checkbox,
+    Button,
+    Checkbox,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle, FormControlLabel,
-    Grid, TextField,
+    DialogTitle,
+    FormControlLabel,
+    Grid,
+    TextField,
 } from "@mui/material";
 import Select from 'react-select';
-import {
-    ConnectionDetailData,
-    DefaultNoticeRegisterData,
-    TemplateData,
-} from "../../../interface";
+import {ConnectionDetailData, DefaultNoticeRegisterData} from "../../../interface";
 import {Post} from "../../../api/Notice";
 import {useSnackbar} from "notistack";
 import {MailAutoNoticeSendDialogs} from "../../Group/Mail";
 import {StyledTextFieldWrap, StyledTextFieldWrapTitle} from "../../../style";
 import {DateTimePicker, LocalizationProvider} from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../../api/Recoil";
 
 type OptionType = {
     label: string
@@ -26,12 +27,12 @@ type OptionType = {
 }
 
 export default function NoticeAddDialogs(props: {
-    template: TemplateData,
     connection: ConnectionDetailData[] | undefined,
     setReload: Dispatch<SetStateAction<boolean>>
     reload: boolean
 }) {
-    const {template, connection, reload, setReload} = props
+    const {connection, reload, setReload} = props
+    const template = useRecoilValue(TemplateState);
     const [open, setOpen] = React.useState(false);
     const nowDate = new Date()
     const [checkBoxEndDatePermanent, setCheckBoxEndDatePermanent] = React.useState(true);
@@ -135,8 +136,8 @@ export default function NoticeAddDialogs(props: {
                     if (tmpUser !== undefined) {
                         if (emails.indexOf(tmpUser[0].email) === -1) {
                             emails += "," + tmpUser[0].email;
-                            const serviceCode = tmpUser[0].group_id + "-" + tmpConnection.service?.service_template.type + ('000' + tmpConnection.service?.service_number).slice(-3) +
-                                "-" + tmpConnection.connection_template?.type + ('000' + tmpConnection.connection_number).slice(-3);
+                            const serviceCode = tmpUser[0].group_id + "-" + tmpConnection.service?.service_type + ('000' + tmpConnection.service?.service_number).slice(-3) +
+                                "-" + tmpConnection.connection_type + ('000' + tmpConnection.connection_number).slice(-3);
                             const tmpGroup = template.group?.filter(d => d.ID === tmpUser[0].group_id);
                             if (tmpGroup !== undefined) {
                                 console.log(tmpUser[0].name + "," + tmpUser[0].email + "," + tmpGroup[0].org + "," + serviceCode);
@@ -269,7 +270,7 @@ export default function NoticeAddDialogs(props: {
                                     value={data.start_time}
                                     inputFormat="yyyy/MM/dd HH:mm"
                                     onChange={handleBeginDateChange}
-                                    renderInput={(params) => (
+                                    renderInput={(params: any) => (
                                         <TextField {...params} helperText="Clear Initial State"/>
                                     )}
                                 />
@@ -290,20 +291,20 @@ export default function NoticeAddDialogs(props: {
                             <br/>
                             {
                                 !checkBoxEndDatePermanent &&
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DateTimePicker
-                                        clearable
-                                        key="finish-date-picker-dialog"
-                                        label="掲示終了日"
-                                        value={data.end_time}
-                                        inputFormat="yyyy/MM/dd HH:mm"
-                                        // minDateTime={data.start_time}
-                                        onChange={handleEndDateChange}
-                                        renderInput={(params) => (
-                                            <TextField {...params} helperText={params?.inputProps?.placeholder}/>
-                                        )}
-                                    />
-                                </LocalizationProvider>
+                              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateTimePicker
+                                  clearable
+                                  key="finish-date-picker-dialog"
+                                  label="掲示終了日"
+                                  value={data.end_time}
+                                  inputFormat="yyyy/MM/dd HH:mm"
+                                    // minDateTime={data.start_time}
+                                  onChange={handleEndDateChange}
+                                  renderInput={(params: any) => (
+                                      <TextField {...params} helperText={params?.inputProps?.placeholder}/>
+                                  )}
+                                />
+                              </LocalizationProvider>
                             }
                         </Grid>
                         <Grid item xs={6}>
@@ -322,54 +323,54 @@ export default function NoticeAddDialogs(props: {
                             />
                             {
                                 !data.everyone && <div>
-                                    <div>優先度は<b>{"User > Group > NOC"}</b>の順に通知処理を行います。</div>
-                                    <br/>
-                                    <h3>ユーザ</h3>
-                                    <Select
-                                        isMulti
-                                        name="colors"
-                                        options={templateUser}
-                                        className="basic-multi-select"
-                                        classNamePrefix="user"
-                                        onChange={event => {
-                                            let tmpData: number[] = [];
-                                            for (const tmp of event) {
-                                                tmpData.push(tmp.value);
-                                            }
-                                            setData({...data, user_id: tmpData})
-                                        }}
-                                    />
-                                    <h3>グループ</h3>
-                                    <Select
-                                        isMulti
-                                        name="colors"
-                                        options={templateGroup}
-                                        className="basic-multi-select"
-                                        classNamePrefix="group"
-                                        onChange={event => {
-                                            let tmpData: number[] = [];
-                                            for (const tmp of event) {
-                                                tmpData.push(tmp.value);
-                                            }
-                                            setData({...data, group_id: tmpData});
-                                        }}
-                                    />
-                                    <h3>NOC</h3>
-                                    <Select
-                                        isMulti
-                                        name="colors"
-                                        options={templateNOC}
-                                        className="basic-multi-select"
-                                        classNamePrefix="noc"
-                                        onChange={event => {
-                                            let tmpData: number[] = [];
-                                            for (const tmp of event) {
-                                                tmpData.push(tmp.value);
-                                            }
-                                            setData({...data, noc_id: tmpData});
-                                        }}
-                                    />
-                                </div>
+                                <div>優先度は<b>{"User > Group > NOC"}</b>の順に通知処理を行います。</div>
+                                <br/>
+                                <h3>ユーザ</h3>
+                                <Select
+                                  isMulti
+                                  name="colors"
+                                  options={templateUser}
+                                  className="basic-multi-select"
+                                  classNamePrefix="user"
+                                  onChange={event => {
+                                      let tmpData: number[] = [];
+                                      for (const tmp of event) {
+                                          tmpData.push(tmp.value);
+                                      }
+                                      setData({...data, user_id: tmpData})
+                                  }}
+                                />
+                                <h3>グループ</h3>
+                                <Select
+                                  isMulti
+                                  name="colors"
+                                  options={templateGroup}
+                                  className="basic-multi-select"
+                                  classNamePrefix="group"
+                                  onChange={event => {
+                                      let tmpData: number[] = [];
+                                      for (const tmp of event) {
+                                          tmpData.push(tmp.value);
+                                      }
+                                      setData({...data, group_id: tmpData});
+                                  }}
+                                />
+                                <h3>NOC</h3>
+                                <Select
+                                  isMulti
+                                  name="colors"
+                                  options={templateNOC}
+                                  className="basic-multi-select"
+                                  classNamePrefix="noc"
+                                  onChange={event => {
+                                      let tmpData: number[] = [];
+                                      for (const tmp of event) {
+                                          tmpData.push(tmp.value);
+                                      }
+                                      setData({...data, noc_id: tmpData});
+                                  }}
+                                />
+                              </div>
                             }
                         </Grid>
                         <Grid item xs={12}>

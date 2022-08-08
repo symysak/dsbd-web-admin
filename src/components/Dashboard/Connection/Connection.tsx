@@ -42,7 +42,6 @@ export default function Connection(props: {
                 <StatusTable
                     key={"connection_status_table"}
                     setReload={setReload}
-                    template={template}
                     connection={data.sort((a, b) => b.ID - a.ID)}
                 />
             }
@@ -52,10 +51,9 @@ export default function Connection(props: {
 
 export function StatusTable(props: {
     connection: ConnectionDetailData[]
-    template: TemplateData
     setReload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {template, connection, setReload} = props;
+    const {connection, setReload} = props;
     const navigate = useNavigate();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -111,8 +109,8 @@ export function StatusTable(props: {
                             ).map((row) => (
                                 <TableRow key={"service_detail_" + row.ID}>
                                     <TableCell style={{width: 300}} component="th" scope="row">
-                                        {row.ID}: {getServiceCode(row.service?.group_id, row.service?.service_template.type, row.service?.service_number,
-                                        row.connection_template.type, row.connection_number)}
+                                        {row.ID}: {getServiceCode(row.service?.group_id, row.service?.service_type, row.service?.service_number,
+                                        row.connection_type, row.connection_number)}
                                     </TableCell>
                                     <TableCell style={{width: 300}} align="right">
                                         {row.CreatedAt}
@@ -143,11 +141,11 @@ export function StatusTable(props: {
                                                     key={"connection_get_dialog_" + row.ID}
                                                     connection={row}
                                                     service={row.service}
-                                                    template={template}
                                                     reload={setReload}
                                                 />
                                             }
                                             &nbsp;
+                                            {/* eslint-disable-next-line react/jsx-no-undef */}
                                             <DeleteDialog
                                                 key={"connection_delete_alert_dialog_" + row.ID}
                                                 id={row.ID}

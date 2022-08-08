@@ -25,6 +25,8 @@ import {
     StyledTextFieldShort,
     StyledTextFieldTooVeryShort
 } from "../../../../style";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../../../api/Recoil";
 
 export function IPOpenButton(props: {
     ip: IPData,
@@ -72,9 +74,9 @@ export function ServiceIPBase(props: {
     serviceID: number,
     ip: IPData[] | undefined,
     reload: Dispatch<SetStateAction<boolean>>
-    template: TemplateData
 }): any {
-    const {ip, serviceID, reload, template} = props;
+    const {ip, serviceID, reload} = props;
+    const template = useRecoilValue(TemplateState)
 
     if (ip === undefined) {
         return (
@@ -105,8 +107,7 @@ export function ServiceIP(props: {
             <CardContent>
                 <h3>IP</h3>
                 <TableContainer component={Paper}>
-                    <AddAssignIPDialog key={"add_assign_ip_dialog"} serviceID={serviceID} reload={reload}
-                                       template={template}/>
+                    <AddAssignIPDialog key={"add_assign_ip_dialog"} serviceID={serviceID} reload={reload}/>
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>

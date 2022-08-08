@@ -13,14 +13,15 @@ import ConnectionGetDialogs from "./ConnectionDetail/ConnectionDialog";
 import {
     ConnectionDetailData,
     DefaultConnectionDetailDataArray,
-    DefaultTemplateData,
 } from "../../interface";
 import {GetTemplate} from "../../api/Group";
+import {useRecoilState} from "recoil";
+import {TemplateState} from "../../api/Recoil";
 
 
 export default function Connection() {
     const [connections, setConnections] = useState(DefaultConnectionDetailDataArray);
-    const [template, setTemplate] = useState(DefaultTemplateData);
+    const [template, setTemplate] = useRecoilState(TemplateState);
     const [initConnections, setInitConnections] = useState(DefaultConnectionDetailDataArray);
     const [reload, setReload] = useState(true)
     const {enqueueSnackbar} = useSnackbar();
@@ -53,8 +54,8 @@ export default function Connection() {
     }, []);
 
     const serviceCode = (connection: ConnectionDetailData) => {
-        return connection.service?.group_id + "-" + connection.service?.service_template.type +
-            ('000' + connection.service?.service_number).slice(-3) + "-" + connection.connection_template.type +
+        return connection.service?.group_id + "-" + connection.service?.service_type +
+            ('000' + connection.service?.service_number).slice(-3) + "-" + connection.connection_type +
             ('000' + connection.connection_number).slice(-3)
     }
 
@@ -117,9 +118,9 @@ export default function Connection() {
                         <CardActions>
                             {
                                 connection.service !== undefined &&
-                                <ConnectionGetDialogs key={"connection_get_dialog"} connection={connection}
-                                                      template={template} reload={setReload}
-                                                      service={connection.service}/>
+                              <ConnectionGetDialogs key={"connection_get_dialog"} connection={connection}
+                                                    reload={setReload}
+                                                    service={connection.service}/>
                             }
                         </CardActions>
                     </StyledCard>

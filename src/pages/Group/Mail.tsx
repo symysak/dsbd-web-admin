@@ -10,15 +10,17 @@ import {
     Grid, MenuItem, Select, SelectChangeEvent,
     TextField
 } from "@mui/material";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../api/Recoil";
 
 export function MailAutoSendDialogs(props: {
     open: string,
     setOpen: Dispatch<SetStateAction<string>>
     mails: string
-    template: MailTemplateData[] | undefined
     org: string
 }) {
-    const {open, setOpen, template, mails, org} = props
+    const {open, setOpen, mails, org} = props
+    const template = useRecoilValue(TemplateState)
     const [data, setData] = React.useState(DefaultMailSendData);
     const [toMail, setToMail] = React.useState("");
     const {enqueueSnackbar} = useSnackbar();
@@ -27,9 +29,9 @@ export function MailAutoSendDialogs(props: {
         if (open !== "") {
             setToMail(mails);
 
-            if (template !== undefined) {
-                const getMailTemplate = template.filter(item => item.process_id === open);
-                const mailSignature = template.filter(item => item.process_id === "signature");
+            if (template.mail_template !== undefined) {
+                const getMailTemplate = template.mail_template.filter(item => item.id === open);
+                const mailSignature = template.mail_template.filter(item => item.id === "signature");
                 if (getMailTemplate !== undefined && mailSignature !== undefined) {
                     let message = getMailTemplate[0].message.replace('{GROUP_NAME}', org);
                     message += mailSignature[0].message;
@@ -146,10 +148,10 @@ export function MailSendDialogs(props: {
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>
     mails: string
-    template: MailTemplateData[] | undefined
     org: string
 }) {
-    const {open, setOpen, template, mails, org} = props
+    const {open, setOpen, mails, org} = props
+    const template = useRecoilValue(TemplateState)
     const [data, setData] = React.useState(DefaultMailSendData);
     const [processID, setProcessID] = React.useState("");
     const [toMail, setToMail] = React.useState(mails);
@@ -178,8 +180,8 @@ export function MailSendDialogs(props: {
 
     const handleChangeProcessID = (event: SelectChangeEvent<any>) => {
         setProcessID(event.target.value);
-        const mailSignature = template?.filter(item => item.process_id === "signature");
-        const getMailTemplate = template?.filter(item => item.process_id === event.target.value);
+        const mailSignature = template.mail_template?.filter(item => item.id === "signature");
+        const getMailTemplate = template.mail_template?.filter(item => item.id === event.target.value);
         if (getMailTemplate !== undefined && mailSignature !== undefined) {
             let message = getMailTemplate[0].message.replace('{GROUP_NAME}', org);
             message += mailSignature[0].message;
@@ -217,12 +219,12 @@ export function MailSendDialogs(props: {
                                 onChange={handleChangeProcessID}
                             >
                                 {
-                                    template?.map(tmp =>
+                                    template.mail_template?.map(tmp =>
                                         <MenuItem
-                                            key={"mail_template_" + tmp.process_id}
-                                            value={tmp.process_id}
+                                            key={"mail_template_" + tmp.id}
+                                            value={tmp.id}
                                         >
-                                            {tmp.process_id}({tmp.subject})
+                                            {tmp.id}({tmp.subject})
                                         </MenuItem>
                                     )
                                 }
@@ -304,8 +306,8 @@ export function MailAutoNoticeSendDialogs(props: {
             setToMail(mails);
 
             if (template !== undefined) {
-                const getMailTemplate = template.filter(item => item.process_id === templateID);
-                const mailSignature = template.filter(item => item.process_id === "signature");
+                const getMailTemplate = template.filter(item => item.id === templateID);
+                const mailSignature = template.filter(item => item.id === "signature");
                 if (getMailTemplate !== undefined && mailSignature !== undefined) {
                     let message = getMailTemplate[0].message.replace('{TITLE}', title);
                     message = message.replace('{BODY}', body);

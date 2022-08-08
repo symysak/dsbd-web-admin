@@ -12,16 +12,16 @@ import {
     Table, TableBody, TableCell, TableHead, TableRow,
     Typography
 } from "@mui/material";
-import {ConnectionDetailData, ServiceDetailData, TemplateData} from "../../../interface";
+import {ConnectionDetailData, ServiceDetailData} from "../../../interface";
 import ConnectionGetDialogs from "../../Connection/ConnectionDetail/ConnectionDialog";
+import {GetConnectionWithTemplate} from "../../../api/Tool";
 
 export function RowConnectionCheck(props: {
     service: ServiceDetailData,
     groupID: number,
-    template: TemplateData,
     reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {service, groupID, template, reload} = props;
+    const {service, groupID, reload} = props;
 
     if (service.connections === undefined) {
         return (
@@ -50,7 +50,6 @@ export function RowConnectionCheck(props: {
                             service.connections.map((rowConnection: ConnectionDetailData) => (
                                 <RowConnection
                                     key={rowConnection.ID}
-                                    template={template}
                                     service={service}
                                     connection={rowConnection}
                                     groupID={groupID}
@@ -69,12 +68,11 @@ function RowConnection(props: {
     service: ServiceDetailData,
     connection: ConnectionDetailData,
     groupID: number,
-    template: TemplateData,
     reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {service, connection, groupID, template, reload} = props;
-    const serviceCode = groupID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3) +
-        "-" + connection.connection_template.type + ('000' + connection.connection_number).slice(-3);
+    const {service, connection, groupID, reload} = props;
+    const serviceCode = groupID + "-" + service.service_type + ('000' + service.service_number).slice(-3) +
+        "-" + connection.connection_type + ('000' + connection.connection_number).slice(-3);
 
     return (
         <TableRow key={connection.ID}>
@@ -82,31 +80,31 @@ function RowConnection(props: {
                 {connection.ID}
             </TableCell>
             <TableCell align="left">{serviceCode}</TableCell>
-            <TableCell align="left">{connection.connection_template.name}</TableCell>
+            <TableCell align="left">{GetConnectionWithTemplate(connection.connection_type)!.name}</TableCell>
             <TableCell align="left">
                 {
                     !connection.enable &&
-                    <Chip
-                        size="small"
-                        color="secondary"
-                        label="無効"
-                    />
+                  <Chip
+                    size="small"
+                    color="secondary"
+                    label="無効"
+                  />
                 }
                 {
                     connection.enable && connection.open &&
-                    <Chip
-                        size="small"
-                        color="primary"
-                        label="開通"
-                    />
+                  <Chip
+                    size="small"
+                    color="primary"
+                    label="開通"
+                  />
                 }
                 {
                     connection.enable && !connection.open &&
-                    <Chip
-                        size="small"
-                        color="secondary"
-                        label="未開通"
-                    />
+                  <Chip
+                    size="small"
+                    color="secondary"
+                    label="未開通"
+                  />
                 }
             </TableCell>
             <TableCell align="right">
@@ -115,7 +113,6 @@ function RowConnection(props: {
                         key={"connection_get_dialog"}
                         connection={connection}
                         service={service}
-                        template={template}
                         reload={reload}/>
                     &nbsp;
                     <DeleteDialog

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Badge, Collapse,
     ThemeProvider,
@@ -34,6 +34,10 @@ import {
 import {useNavigate} from "react-router-dom";
 import {Logout} from "../../api/Auth";
 import {muiColorTheme} from "../Theme";
+import {useRecoilState} from "recoil";
+import {TemplateState} from "../../api/Recoil";
+import {GetTemplate} from "../../api/Group";
+import {useSnackbar} from "notistack";
 
 const drawerWidth = 240;
 
@@ -98,8 +102,23 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
 );
 
 export default function Dashboard(props: any) {
+
     // Menu Bar
     const [open, setOpen] = React.useState(false);
+    const [template, setTemplate] = useRecoilState(TemplateState)
+    const {enqueueSnackbar} = useSnackbar();
+
+    useEffect(() => {
+        GetTemplate().then(res => {
+            if (res.error === "") {
+                setTemplate(res.data);
+                console.log(template)
+            } else {
+                enqueueSnackbar("" + res.error, {variant: "error"});
+            }
+        })
+    }, [])
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };

@@ -7,17 +7,17 @@ import {GetAll as ConnectionGetAll} from "../../api/Connection";
 import {
     ConnectionDetailData,
     ServiceDetailData,
-    TemplateData,
     TicketDetailData
 } from "../../interface";
 import {Grid} from "@mui/material";
 import Ticket from "../../components/Dashboard/Ticket/Ticket";
 import Request from "../../components/Dashboard/Request/Request";
-import {GetTemplate} from "../../api/Group";
 import Service from "../../components/Dashboard/Service/Service";
 import Connection from "../../components/Dashboard/Connection/Connection";
 import {Group} from "../../components/Dashboard/Group/Group";
 import {MemoGroup} from "../../components/Dashboard/Group/Memo";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../api/Recoil";
 
 
 export default function Dashboard() {
@@ -27,7 +27,7 @@ export default function Dashboard() {
     const [request, setRequest] = useState<TicketDetailData[]>()
     const [service, setService] = useState<ServiceDetailData[]>()
     const [connection, setConnection] = useState<ConnectionDetailData[]>()
-    const [template, setTemplate] = useState<TemplateData>()
+    const template = useRecoilValue(TemplateState)
 
     useEffect(() => {
         if (reload) {
@@ -55,13 +55,6 @@ export default function Dashboard() {
                     const data = res.data;
                     setConnection(data.filter((item: ConnectionDetailData) => item.enable && !item.open));
                     setReload(false);
-                } else {
-                    enqueueSnackbar("" + res.error, {variant: "error"});
-                }
-            })
-            GetTemplate().then(res => {
-                if (res.error === "") {
-                    setTemplate(res.data);
                 } else {
                     enqueueSnackbar("" + res.error, {variant: "error"});
                 }

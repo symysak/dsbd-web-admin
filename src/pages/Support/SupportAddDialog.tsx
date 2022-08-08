@@ -183,7 +183,6 @@ export function SupportAddDialog(props: {
                     <MailAutoSendDialogs
                         setOpen={setOpenMailAutoSendDialog}
                         mails={sendAutoEmail}
-                        template={template?.mail_template}
                         open={openMailAutoSendDialog}
                         org={name}
                     />

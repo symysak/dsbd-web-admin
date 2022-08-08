@@ -1,6 +1,8 @@
 import {
-    DefaultJPNICRegistrationData, DefaultJPNICUserRegistrationData,
-    GroupDetailData, PlanData,
+    DefaultJPNICRegistrationData,
+    DefaultJPNICUserRegistrationData,
+    GroupDetailData,
+    PlanData,
     ServiceDetailData,
 } from "../../../interface";
 import React, {Dispatch, SetStateAction} from "react";
@@ -8,12 +10,14 @@ import {useSnackbar} from "notistack";
 import {Post} from "../../../api/JPNIC";
 import {
     Button,
-    Dialog, DialogActions,
+    Dialog,
+    DialogActions,
     DialogContent,
     DialogTitle,
     FormControl,
     FormLabel,
-    Grid, MenuItem,
+    Grid,
+    MenuItem,
     Select
 } from "@mui/material";
 import {restfulApiConfig} from "../../../api/Config";
@@ -73,7 +77,7 @@ export default function JPNICRegistrationDialog(props: {
     }
 
     const serviceCode = (service: ServiceDetailData) => {
-        return baseData.ID + "-" + service.service_template.type + ('000' + service.service_number).slice(-3);
+        return baseData.ID + "-" + service.service_type + ('000' + service.service_number).slice(-3);
     };
 
     const toStrPlan = (plans: PlanData[] | undefined) => {

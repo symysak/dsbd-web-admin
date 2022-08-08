@@ -1,15 +1,22 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
 import {
-    Button, CardContent, Chip,
+    Button,
+    CardContent,
+    Chip,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle, Grid, InputLabel, MenuItem, Select,
+    DialogTitle,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
 } from "@mui/material";
 import {
     BGPRouterDetailData,
-    ConnectionDetailData, ServiceDetailData,
-    TemplateData, TunnelEndPointRouterIPTemplateData
+    ConnectionDetailData,
+    ServiceDetailData,
+    TunnelEndPointRouterIPTemplateData
 } from "../../../interface";
 import classes from "./ConnectionDialog.module.scss";
 import {useSnackbar} from "notistack";
@@ -18,18 +25,21 @@ import {Open} from "../../../components/Dashboard/Open/Open";
 import {
     StyledCardRoot3,
     StyledChip1,
-    StyledFormControlFormLong, StyledFormControlFormMedium,
+    StyledFormControlFormLong,
+    StyledFormControlFormMedium,
     StyledTextFieldLong,
     StyledTextFieldMedium
 } from "../../../style";
+import {GetConnectionWithTemplate, GetServiceWithTemplate} from "../../../api/Tool";
+import {useRecoilState} from "recoil";
+import {TemplateState} from "../../../api/Recoil";
 
 export default function ConnectionGetDialogs(props: {
     service: ServiceDetailData,
     connection: ConnectionDetailData,
-    template: TemplateData,
     reload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {service, connection, template, reload} = props
+    const {service, connection, reload} = props
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -66,7 +76,6 @@ export default function ConnectionGetDialogs(props: {
                                 key={"connection_open"}
                                 connection={connection}
                                 service={service}
-                                template={template}
                                 setReload={reload}
                             />
                         </Grid>
@@ -133,10 +142,10 @@ export function ConnectionOpenButton(props: {
 export function ConnectionOpen(props: {
     service: ServiceDetailData
     connection: ConnectionDetailData,
-    template: TemplateData,
     setReload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {service, connection, template, setReload} = props
+    const {service, connection, setReload} = props
+    const [template] = useRecoilState(TemplateState)
     const [connectionCopy, setConnectionCopy] = useState(connection);
     const [lock, setLock] = React.useState(true);
 
@@ -231,7 +240,7 @@ export function ConnectionOpenVPN(props: {
 }) {
     const {connection, setConnection, lock} = props
 
-    if (!connection.connection_template) {
+    if (connection.connection_type === "") {
         return null
     } else {
         return (
@@ -264,7 +273,7 @@ export function ConnectionOpenL3User(props: {
     const {service, connection, setConnection, lock} = props
 
     console.log(connection)
-    if (service === undefined || !service.service_template.need_route) {
+    if (service === undefined || GetServiceWithTemplate(service.service_type)!.need_route) {
         return null
     } else {
         return (
@@ -332,9 +341,9 @@ export function ConnectionStatus(props: {
     connection: ConnectionDetailData
 }): any {
     const {service, connection} = props;
-    const serviceCode = service.group_id + "-" + service.service_template.type +
+    const serviceCode = service.group_id + "-" + service.service_type +
         ('000' + service.service_number).slice(-3) + "-" +
-        connection.connection_template.type + ('000' + connection.connection_number).slice(-3);
+        connection.connection_type + ('000' + connection.connection_number).slice(-3);
     const createDate = "作成日: " + connection.CreatedAt;
     const updateDate = "更新日: " + connection.UpdatedAt;
 
@@ -355,29 +364,29 @@ export function ConnectionStatus(props: {
                         <Chip
                             size="small"
                             color="primary"
-                            label={connection.connection_template.name}
+                            label={GetConnectionWithTemplate(connection.connection_type)!.name}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <h3>BGP IPv4</h3>
                         {
-                            connection.ipv4_route_template !== null &&
-                            <Chip
-                                size="small"
-                                color="primary"
-                                label={connection.ipv4_route_template?.name}
-                            />
+                            connection.ipv4_route !== "" &&
+                          <Chip
+                            size="small"
+                            color="primary"
+                            label={connection.ipv4_route}
+                          />
                         }
                     </Grid>
                     <Grid item xs={6}>
                         <h3>BGP IPv6</h3>
                         {
-                            connection.ipv6_route_template !== null &&
-                            <Chip
-                                size="small"
-                                color="primary"
-                                label={connection.ipv6_route_template?.name}
-                            />
+                            connection.ipv6_route !== "" &&
+                          <Chip
+                            size="small"
+                            color="primary"
+                            label={connection.ipv6_route}
+                          />
                         }
                     </Grid>
                     <Grid item xs={12}>
@@ -410,14 +419,6 @@ export function ConnectionEtc(props: { connection: ConnectionDetailData }): any 
         }
     }
 
-    const getNTT = () => {
-        if (connection.ntt_template_id === 0 || connection.ntt_template === undefined) {
-            return "入力なし"
-        } else {
-            return connection.ntt_template?.name
-        }
-    }
-
     return (
         <StyledCardRoot3>
             <CardContent>
@@ -428,7 +429,7 @@ export function ConnectionEtc(props: { connection: ConnectionDetailData }): any 
                     </Grid>
                     <Grid item xs={12}>
                         <h3>インターネット接続性</h3>
-                        {getNTT()}
+                        {connection.ntt}
                     </Grid>
                     <Grid item xs={4}>
                         <h3>希望NOC</h3>
@@ -523,7 +524,7 @@ export function ConnectionUserDisplay(props: {
                         </tr>
                         <tr>
                             <th>サービス種別</th>
-                            <td>{connection.connection_template.name}</td>
+                            <td>{GetConnectionWithTemplate(connection.connection_type)!.name}</td>
                         </tr>
                         <tr>
                             <th>利用料金</th>
@@ -531,7 +532,7 @@ export function ConnectionUserDisplay(props: {
                         </tr>
                         <tr>
                             <th>当団体からのIPアドレスの割当</th>
-                            {distinctionIPAssign(service.service_template.need_jpnic)}
+                            {distinctionIPAssign(GetServiceWithTemplate(service.service_type)!.need_jpnic)}
                         </tr>
                         </thead>
                     </table>
@@ -543,7 +544,7 @@ export function ConnectionUserDisplay(props: {
                         </tr>
                         <tr>
                             <th>接続方式</th>
-                            <td colSpan={2}>{connection.connection_template.name}</td>
+                            <td colSpan={2}>{GetConnectionWithTemplate(connection.connection_type)!.name}</td>
                         </tr>
                         <tr>
                             <th>接続NOC</th>
