@@ -1373,6 +1373,7 @@ export default function ServiceAdd() {
                                         render={({field: {onChange, value},}) => (
                                             <DesktopDatePicker
                                                 label="Date of start date"
+                                                inputFormat="yyyy/MM/dd"
                                                 disablePast
                                                 value={value}
                                                 onChange={(value: any) =>
