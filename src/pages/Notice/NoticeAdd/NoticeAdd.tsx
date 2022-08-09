@@ -16,8 +16,8 @@ import {Post} from "../../../api/Notice";
 import {useSnackbar} from "notistack";
 import {MailAutoNoticeSendDialogs} from "../../Group/Mail";
 import {StyledTextFieldWrap, StyledTextFieldWrapTitle} from "../../../style";
-import {DateTimePicker, LocalizationProvider} from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {LocalizationProvider, DateTimePicker} from "@mui/x-date-pickers";
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {useRecoilValue} from "recoil";
 import {TemplateState} from "../../../api/Recoil";
 
@@ -293,7 +293,6 @@ export default function NoticeAddDialogs(props: {
                                 !checkBoxEndDatePermanent &&
                               <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
-                                  clearable
                                   key="finish-date-picker-dialog"
                                   label="掲示終了日"
                                   value={data.end_time}

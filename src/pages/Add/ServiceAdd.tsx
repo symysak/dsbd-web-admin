@@ -21,6 +21,7 @@ import {
     TableHead,
     TableRow,
     TextField,
+    TextFieldProps,
     Typography
 } from "@mui/material";
 import {Controller, useFieldArray, useForm} from "react-hook-form";
@@ -38,9 +39,8 @@ import {
     StyledTextFieldVeryShort1
 } from "./style";
 import {ObjectShape} from "yup/lib/object";
-import {LocalizationProvider} from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import DatePicker from "@mui/lab/DatePicker";
+import {LocalizationProvider, DesktopDatePicker} from "@mui/x-date-pickers";
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import moment from "moment";
 import {phoneRegExp, v4NetworkNameRegExp, v6NetworkNameRegExp} from "./reg";
 import {Post} from "../../api/Service";
@@ -1332,9 +1332,27 @@ export default function ServiceAdd() {
                               size="small"
                               variant="contained"
                               color="primary"
-                              // onClick={() =>
-                              //     appendJpnicTech({})
-                              // }
+                              onClick={() =>
+                                  appendJpnicTech({
+                                      hidden: false,
+                                      is_group: false,
+                                      org: "",
+                                      org_en: "",
+                                      mail: "",
+                                      postcode: "",
+                                      address: "",
+                                      address_en: "",
+                                      name: "",
+                                      name_en: "",
+                                      dept: "",
+                                      dept_en: "",
+                                      title: "",
+                                      title_en: "",
+                                      country: "",
+                                      tel: "",
+                                      fax: "",
+                                  })
+                              }
                             >
                               追加
                             </Button>
@@ -1352,11 +1370,8 @@ export default function ServiceAdd() {
                                     <Controller
                                         name="start_date"
                                         control={control}
-                                        render={({
-                                                     field: {onChange, value},
-                                                     fieldState: {error, invalid}
-                                                 }) => (
-                                            <DatePicker
+                                        render={({field: {onChange, value},}) => (
+                                            <DesktopDatePicker
                                                 label="Date of start date"
                                                 disablePast
                                                 value={value}
@@ -1394,16 +1409,18 @@ export default function ServiceAdd() {
                                     render={
                                         ({
                                              field: {onChange, value},
-                                             fieldState: {error, invalid}
+                                             fieldState: {}
                                          }) => (
-                                            <DatePicker
+                                            <DesktopDatePicker
                                                 disablePast
                                                 label="Date of end date"
+                                                inputFormat="yyyy/MM/dd"
                                                 value={value}
                                                 onChange={(value: any) =>
                                                     onChange(moment(value).format("YYYY-MM-DD"))
                                                 }
-                                                renderInput={(params: any) => <TextField {...params} />}
+                                                renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) =>
+                                                    <TextField {...params} />}
                                             />
                                         )}
                                   />

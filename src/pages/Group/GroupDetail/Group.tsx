@@ -19,8 +19,6 @@ import {GroupStatusStr} from "../../../components/Dashboard/Status/Status";
 import {GroupAbolition, GroupLockButton, GroupStatusButton} from "./GroupMenu";
 import {DeleteSubscription, Put} from "../../../api/Group";
 import {useSnackbar} from "notistack";
-import DatePicker from '@mui/lab/DatePicker';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import JPNICRegistrationDialog from "./JPNIC";
 import {
     StyledButtonSpaceRight,
@@ -37,7 +35,8 @@ import {
     StyledTextFieldVeryShort1,
     StyledTypographyHeading
 } from "../../../style";
-import {LocalizationProvider} from "@mui/lab";
+import {LocalizationProvider, DesktopDatePicker} from "@mui/x-date-pickers";
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {useNavigate} from "react-router-dom";
 import {useRecoilValue} from "recoil";
 import {TemplateState} from "../../../api/Recoil";
@@ -351,7 +350,7 @@ export function GroupProfileInfo(props: {
                             <FormControl sx={{width: "100%"}}>
                                 <LocalizationProvider key={"membership-localization-provider"}
                                                       dateAdapter={AdapterDateFns}>
-                                    <DatePicker
+                                    <DesktopDatePicker
                                         mask="____/__/__"
                                         label="Membership期限"
                                         key="membership-date-picker-1"
