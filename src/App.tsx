@@ -13,9 +13,6 @@ import Service from "./pages/Service/Service";
 import Connection from "./pages/Connection/Connection";
 import User from "./pages/User/User";
 import Token from "./pages/Token/Token";
-import JPNIC from "./pages/JPNIC/JPNIC";
-import JPNICDetail from "./pages/JPNIC/Detail/JPNICDetail";
-import JPNICHandle from "./pages/JPNIC/Handle/JPNICHandle";
 import ServiceAdd from "./pages/Add/ServiceAdd";
 import ConnectionAdd from "./pages/Add/ConnectionAdd";
 import NotFound from "./pages/Etc/404";
@@ -41,9 +38,6 @@ export default class App extends React.Component {
                         <Route path="/dashboard/connection" element={<Connection/>}/>
                         <Route path="/dashboard/user" element={<User/>}/>
                         <Route path="/dashboard/token" element={<Token/>}/>
-                        <Route path="/dashboard/jpnic" element={<JPNIC/>}/>
-                        <Route path="/dashboard/jpnic/:url" element={<JPNICDetail/>}/>
-                        <Route path="/dashboard/jpnic/handle/:handle" element={<JPNICHandle/>}/>
                     </Routes>
                 </BrowserRouter>
         );

@@ -18,7 +18,6 @@ import {GroupStatusStr} from "../../../components/Dashboard/Status/Status";
 import {GroupAbolition, GroupLockButton, GroupStatusButton} from "./GroupMenu";
 import {DeleteSubscription, Put} from "../../../api/Group";
 import {useSnackbar} from "notistack";
-import JPNICRegistrationDialog from "./JPNIC";
 import {
     StyledButtonSpaceRight,
     StyledButtonSpaceTop,
@@ -413,13 +412,6 @@ export function GroupProfileInfo(props: {
                 >
                     JPNIC登録(β)
                 </Button>
-                <JPNICRegistrationDialog
-                    key={"jpnic_registration_dialogs"}
-                    setOpen={setOpenJPNICRegistration}
-                    open={openJPNICRegistration}
-                    baseData={data}
-                    setReload={setReload}
-                />
             </CardContent>
         </StyledCardRoot1>
     )

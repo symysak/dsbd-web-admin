@@ -147,9 +147,6 @@ export default function Dashboard(props: any) {
     const GroupPage = () => {
         navigate("/dashboard/group");
     }
-    const JPNICPage = () => {
-        navigate("/dashboard/jpnic");
-    }
     const OrderPage = () => {
         navigate("/dashboard/order");
     }
@@ -225,12 +222,6 @@ export default function Dashboard(props: any) {
                             <PeopleIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Group"/>
-                    </ListItem>
-                    <ListItem button onClick={JPNICPage}>
-                        <ListItemIcon>
-                            <PeopleAltIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="JPNIC"/>
                     </ListItem>
                     <ListItem button onClick={OrderPage}>
                         <ListItemIcon>
