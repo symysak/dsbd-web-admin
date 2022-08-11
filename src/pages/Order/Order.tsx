@@ -118,12 +118,6 @@ export default function Order() {
                                         {payment.group?.org} ({payment.group?.org_en})
                                     </div>
                                 }
-                                {
-                                    !payment.is_membership &&
-                                    <div>
-                                        {payment.user?.name} ({payment.user?.name_en})
-                                    </div>
-                                }
                             </Typography>
                             <br/>
                             {
