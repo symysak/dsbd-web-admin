@@ -87,17 +87,15 @@ export default function GroupDetail() {
                         <Grid item xs={3}>
                             <GroupStatus key={"group_status"} data={group} reload={reload}/>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={3}>
+                            <GroupMemo key={"group_memo"} data={group} reload={setReload}/>
                             <GroupMainMenu
                                 key={"group_main_menu"}
                                 data={group}
                                 autoMail={setOpenMailAutoSendDialog}
                                 reload={setReload}/>
                         </Grid>
-                        <Grid item xs={3}>
-                            <GroupMemo key={"group_memo"} data={group} reload={setReload}/>
-                        </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={6}>
                             <GroupProfileInfo
                                 key={"group_profile_info"}
                                 data={group}

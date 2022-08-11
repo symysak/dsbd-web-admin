@@ -90,7 +90,7 @@ function RowService(props: {
                     {service.ID}
                 </TableCell>
                 <TableCell align="left">{serviceCode}</TableCell>
-                <TableCell align="left">{GetServiceWithTemplate(service.service_type)!.name}</TableCell>
+                <TableCell align="left">{GetServiceWithTemplate(service.service_type)?.name}</TableCell>
                 <TableCell align="left">
                     <ChipGet open={service.pass} pass={service.pass} enable={service.enable}/>
                     &nbsp;

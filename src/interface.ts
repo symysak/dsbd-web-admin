@@ -51,7 +51,6 @@ export interface PaymentDetailData {
     ID: number,
     CreatedAt: string,
     UpdatedAt: string,
-    user?: UserDetailData,
     group?: GroupDetailData,
     is_membership: boolean,
     paid: boolean,
@@ -251,6 +250,11 @@ export interface MailTemplateData {
     message: string
 }
 
+export interface MemberTypeTemplateData {
+    id: string
+    name: string
+}
+
 export interface TunnelEndPointRouterTemplateData {
     CreatedAt: string
     DeletedAt: string
@@ -304,10 +308,8 @@ export interface GroupDetailData {
     tel: string,
     country: string,
     contract: string,
-    student: boolean,
-    student_expired: string,
-    lock: boolean,
-    paid: boolean,
+    coupon_id: string,
+    member_type: number,
     member_expired: string,
     users?: UserDetailData[],
     tickets?: TicketDetailData[],
@@ -339,6 +341,7 @@ export interface TemplateData {
     user?: UserDetailData[]
     group?: GroupDetailData[]
     mail_template?: MailTemplateData[]
+    member_type?: MemberTypeTemplateData[]
 }
 
 export interface MemoAddData {
@@ -587,6 +590,7 @@ export const DefaultTemplateData: TemplateData = {
     tunnel_endpoint_router_ip: undefined,
     user: undefined,
     group: undefined,
+    member_type: undefined,
 }
 
 export const DefaultGroupDetailData: GroupDetailData = {
@@ -607,39 +611,15 @@ export const DefaultGroupDetailData: GroupDetailData = {
     tel: "",
     country: "",
     contract: "",
-    student: false,
-    student_expired: "",
+    coupon_id: "",
     member_expired: "",
-    paid: false,
-    lock: false,
+    member_type: 1,
     users: undefined,
     tickets: undefined,
     services: undefined,
 };
 
 export const DefaultGroupDetailDataArray: GroupDetailData[] = [DefaultGroupDetailData]
-export const DefaultServiceAddData: ServiceAddData = {
-    jpnic_admin: undefined,
-    jpnic_tech: undefined,
-    service_type: "",
-    service_comment: "",
-    org: undefined,
-    org_en: undefined,
-    postcode: undefined,
-    address: undefined,
-    address_en: undefined,
-    route_v4: undefined,
-    route_v6: undefined,
-    avg_upstream: 10,
-    max_upstream: 100,
-    avg_downstream: 10,
-    max_downstream: 100,
-    max_bandwidth_as: undefined,
-    asn: undefined,
-    ip: undefined,
-    start_date: "",
-    end_date: undefined
-}
 
 export const DefaultServiceJPNICData: JPNICData = {
     ID: 0,
@@ -668,25 +648,6 @@ export const DefaultServiceJPNICData: JPNICData = {
     lock: false
 }
 
-export const DefaultServiceAddJPNICData: ServiceAddJPNICData = {
-    is_group: false,
-    hidden: false,
-    org: "",
-    org_en: "",
-    mail: "",
-    postcode: "",
-    address: "",
-    address_en: "",
-    name: "",
-    name_en: "",
-    dept: "",
-    dept_en: "",
-    title: "",
-    title_en: "",
-    country: "",
-    tel: "",
-    fax: "",
-}
 
 export const DefaultServiceAddIPv4PlanData: ServiceAddIPv4PlanData = {
     name: "",
@@ -695,15 +656,6 @@ export const DefaultServiceAddIPv4PlanData: ServiceAddIPv4PlanData = {
     one_year: 0,
 }
 
-export const DefaultConnectionAddData: ConnectionAddData = {
-    address: "",
-    connection_type: "",
-    connection_comment: "",
-    ntt: "",
-    noc_id: 0,
-    term_ip: "",
-    monitor: false
-}
 
 export const DefaultChatData: ChatData = {
     time: "",
@@ -862,21 +814,6 @@ export const DefaultNoticeRegisterData: NoticeRegisterData = {
     fault: false,
     info: false
 }
-
-export const DefaultNOCTemplateData: NocTemplateData = {
-    CreatedAt: "",
-    DeletedAt: "",
-    ID: 0,
-    UpdatedAt: "",
-    name: "",
-    bandwidth: "",
-    bgp_router: undefined,
-    comment: "",
-    enable: false,
-    location: ""
-}
-
-export const DefaultNOCTemplateDataArray: NocTemplateData[] = [DefaultNOCTemplateData]
 
 export const DefaultAddIP: ServiceAddIPData = {
     version: 0,

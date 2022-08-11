@@ -6,7 +6,7 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle, FormControl, FormControlLabel, FormLabel,
+    DialogTitle, Divider, FormControl, FormControlLabel, FormLabel,
     Grid, Radio, RadioGroup, TextField
 } from "@mui/material";
 import React, {Dispatch, SetStateAction} from "react";
@@ -56,7 +56,6 @@ export function GroupMemo(props: {
     return (
         <StyledCardRoot1>
             <CardContent>
-                <h3>Memo</h3>
                 <StyledDivMemo>
                     {
                         data.memos?.map(memo => (
@@ -99,6 +98,7 @@ export function GroupMemo(props: {
                     />
                 }
             </CardContent>
+            <Divider />
         </StyledCardRoot1>
     );
 }

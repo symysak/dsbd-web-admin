@@ -4,6 +4,7 @@ import {
     Button,
     Card,
     Chip, Container, FormControl, InputBase, Paper,
+    Select,
     styled,
     Table,
     TableRow,
@@ -262,6 +263,12 @@ export const StyledTextFieldWrap = styled(TextField)(({theme}) => ({
     width: "95%",
     margin: `${theme.spacing(0)} auto`,
     height: "150px"
+}))
+
+export const StyledSelect1 = styled(Select)(({theme}) => ({
+    width: '30ch',
+    marginTop: 10,
+    marginRight: 5,
 }))
 
 export const StyledTextFieldShort = styled(TextField)(({theme}) => ({

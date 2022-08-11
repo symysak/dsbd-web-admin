@@ -95,8 +95,8 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
     const {data, reload} = props;
     const {enqueueSnackbar} = useSnackbar();
 
-    const changeLock = (lock: boolean) => {
-        data.lock = lock;
+    const changeLock = (pass: boolean) => {
+        data.pass = pass;
 
         Put(data.ID, data).then(res => {
             if (res.error === "") {
@@ -111,7 +111,7 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
     };
 
 
-    if (data.lock) {
+    if (data.pass) {
         return (
             <StyledButton1
                 aria-controls="simple-menu"

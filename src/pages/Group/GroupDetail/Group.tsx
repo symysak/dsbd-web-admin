@@ -7,8 +7,7 @@ import {
     CardContent,
     Chip,
     FormControl,
-    Grid,
-    InputLabel,
+    Grid, InputLabel, MenuItem,
     PropTypes,
     TextField,
     Typography
@@ -24,11 +23,10 @@ import {
     StyledButtonSpaceRight,
     StyledButtonSpaceTop,
     StyledCardRoot1,
-    StyledChip1,
+    StyledChip2,
     StyledDivLargeHeading,
     StyledDivRoot1,
     StyledDivText,
-    StyledFormControlFormSelect,
     StyledFormControlFormShort,
     StyledRootForm,
     StyledTextFieldMedium,
@@ -40,6 +38,7 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {useNavigate} from "react-router-dom";
 import {useRecoilValue} from "recoil";
 import {TemplateState} from "../../../api/Recoil";
+import {StyledSelect1, StyledTextFieldShort} from "../../Add/style";
 
 function ChipAgree(props: { agree: boolean }) {
     const {agree} = props;
@@ -71,34 +70,41 @@ export function GroupProfileInfo(props: {
     const [lockPersonalInformation, setLockPersonalInformation] = React.useState(true);
     const template = useRecoilValue(TemplateState);
     const [group, setGroup] = useState(data);
-    const [openAddService, setOpenAddService] = React.useState(false);
-    const [openAddConnection, setOpenAddConnection] = React.useState(false);
     const [openJPNICRegistration, setOpenJPNICRegistration] = React.useState(false);
     const {enqueueSnackbar} = useSnackbar();
-    const [paymentCoupon, setPaymentCoupon] = React.useState(0);
-    const [discountRate, setDiscountRate] = React.useState(0);
-    const [membershipPlan, setMembershipPlan] = React.useState(0);
-    const monthly = 1000;
-    const yearly = 12000;
+    const [paymentCoupon, setPaymentCoupon] = React.useState("");
+    const [memberType, setMemberType] = React.useState(0);
     let nowDate = new Date();
-    const [selectedDate, setSelectedDate] = React.useState<Date | null>(nowDate);
-    const [membershipDate, setMembershipDate] = React.useState<string>("");
+    const [memberExpiredDate, setMemberExpiredDate] = React.useState<Date | null>(nowDate);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (data.member_expired != null) {
             const tmp = data.member_expired.split('T');
             nowDate = new Date(tmp[0]);
-            setSelectedDate(nowDate);
-            handleBeginDateChange(selectedDate);
+            handleMemberExpiredDateChange(memberExpiredDate);
+        }
+
+        if (data.coupon_id != null) {
+            setPaymentCoupon(data.coupon_id)
+        }
+
+        if (data.member_type != null) {
+            setMemberType(data.member_type)
         }
     }, []);
 
     const membershipUpdate = () => {
+        let dateStr = null
+        if (memberExpiredDate != null) {
+            dateStr = memberExpiredDate.getFullYear() + '-' + ('00' + (memberExpiredDate.getMonth() + 1)).slice(-2) +
+                '-' + ('00' + (memberExpiredDate.getDate())).slice(-2) + 'T00:00:00+09:00'
+
+        }
         const req = {
-            payment_coupon_template_id: paymentCoupon,
-            payment_membership_template_id: membershipPlan,
-            member_expired: membershipDate
+            coupon_id: paymentCoupon,
+            member_type: memberType,
+            member_expired: dateStr
         };
 
         console.log(req);
@@ -128,27 +134,9 @@ export function GroupProfileInfo(props: {
         })
     }
 
-    const handleBeginDateChange = (newDate: Date | null) => {
-        setSelectedDate(newDate);
-        if (newDate !== null) {
-            setMembershipDate(newDate.getFullYear() + '-' + ('00' + (newDate.getMonth() + 1)).slice(-2) +
-                '-' + ('00' + (newDate.getDate())).slice(-2) + 'T09:00:00Z');
-        }
+    const handleMemberExpiredDateChange = (newDate: Date | null) => {
+        setMemberExpiredDate(newDate);
     };
-    // const handleChangeMembershipPlan = (event: SelectChangeEvent<any>) => {
-    //     setMembershipPlan(event.target.value as number);
-    // };
-    // const handleChangeCoupon = (event: SelectChangeEvent<any>) => {
-    //     setPaymentCoupon(event.target.value as number);
-    //     const coupon = template.payment_coupon_template?.filter(coupon => coupon.ID === event.target.value as number)
-    //     if (coupon != null) {
-    //         if (coupon.length === 0) {
-    //             setDiscountRate(0);
-    //         } else {
-    //             setDiscountRate(coupon[0].discount_rate);
-    //         }
-    //     }
-    // };
 
     const clickPersonalInfoLock = () => {
         setLockPersonalInformation(!lockPersonalInformation);
@@ -298,77 +286,54 @@ export function GroupProfileInfo(props: {
                         aria-controls="payment"
                         id="payment"
                     >
-                        <StyledTypographyHeading>学生会員・支払い</StyledTypographyHeading>
+                        <StyledTypographyHeading>会員種別・会費関連</StyledTypographyHeading>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <StyledFormControlFormSelect variant="filled">
-                            <FormControl sx={{width: "100%"}}>
-                                <InputLabel id="membership-plan-label">Membership Plan</InputLabel>
-                                {/*<Select*/}
-                                {/*    labelId="membership-plan-label"*/}
-                                {/*    id="membership-plan"*/}
-                                {/*    value={membershipPlan}*/}
-                                {/*    onChange={handleChangeMembershipPlan}*/}
-                                {/*>*/}
-                                {/*    <MenuItem key={"membership_template_0"} value={0}>自動課金無効</MenuItem>*/}
-                                {/*    {*/}
-                                {/*        template.payment_membership_template?.map(tmp =>*/}
-                                {/*            <MenuItem*/}
-                                {/*                key={"membership_template_" + tmp.ID}*/}
-                                {/*                value={tmp.ID}*/}
-                                {/*            >*/}
-                                {/*                {tmp.plan}*/}
-                                {/*            </MenuItem>*/}
-                                {/*        )*/}
-                                {/*    }*/}
-                                {/*</Select>*/}
-                            </FormControl>
-                        </StyledFormControlFormSelect>
                         <StyledFormControlFormShort variant="filled">
-                            {/*<FormControl sx={{width: "100%"}}>*/}
-                            {/*    <InputLabel id="payment-coupon-title">Coupon</InputLabel>*/}
-                            {/*<Select*/}
-                            {/*    labelId="payment-coupon-title"*/}
-                            {/*    id="payment-coupon"*/}
-                            {/*    value={paymentCoupon}*/}
-                            {/*    onChange={handleChangeCoupon}*/}
-                            {/*>*/}
-                            {/*    <MenuItem value={0} key={"payment_coupon_template_0"}>割引なし(0%割引)</MenuItem>*/}
-                            {/*    {*/}
-                            {/*        template.payment_coupon_template?.map(coupon =>*/}
-                            {/*            <MenuItem*/}
-                            {/*                key={"payment_coupon_template_" + coupon.ID}*/}
-                            {/*                value={coupon.ID}*/}
-                            {/*            >*/}
-                            {/*                {coupon.title}({coupon.discount_rate}%割引)*/}
-                            {/*            </MenuItem>*/}
-                            {/*        )*/}
-                            {/*    }*/}
-                            {/*</Select>*/}
-                            {/*</FormControl>*/}
-                            <br/>
-                            <FormControl sx={{width: "100%"}}>
-                                <LocalizationProvider key={"membership-localization-provider"}
-                                                      dateAdapter={AdapterDateFns}>
-                                    <DesktopDatePicker
-                                        mask="____/__/__"
-                                        label="Membership期限"
-                                        key="membership-date-picker-1"
-                                        value={selectedDate}
-                                        inputFormat="yyyy/MM/dd"
-                                        onChange={handleBeginDateChange}
-                                        renderInput={(params: any) => (<TextField  {...params} helperText={null}/>)}
-                                    />
-                                </LocalizationProvider>
+                            <StyledTextFieldShort
+                                id="coupon_code"
+                                label="クーポンコード"
+                                multiline
+                                value={paymentCoupon}
+                                onChange={(event) => setPaymentCoupon(event.target.value)}
+                                variant="outlined"
+                            />
+                            <LocalizationProvider key={"membership-localization-provider"}
+                                                  dateAdapter={AdapterDateFns}>
+                                <DesktopDatePicker
+                                    mask="____/__/__"
+                                    label="Membership期限"
+                                    key="membership-date-picker"
+                                    value={memberExpiredDate}
+                                    inputFormat="yyyy/MM/dd"
+                                    onChange={handleMemberExpiredDateChange}
+                                    renderInput={(params: any) => (<TextField  {...params} helperText={null}/>)}
+                                />
+                            </LocalizationProvider>
+                            <FormControl variant="standard">
+                                <InputLabel id="member_type-label">Member Type</InputLabel>
+                                <StyledSelect1
+                                    id="member_type"
+                                    label="member type"
+                                    onChange={(e) => {
+                                        const value = Number(e.target.value)
+                                        if (!isNaN(value)) {
+                                            setMemberType(value)
+                                        }
+                                    }}
+                                    value={memberType}
+                                >
+                                    {
+                                        template.member_type?.map((row, index) => (
+                                            <MenuItem key={"member_type_" + index}
+                                                      value={row.id}>{row.id}: {row.name}</MenuItem>
+                                        ))
+
+                                    }
+                                </StyledSelect1>
                             </FormControl>
                             <br/>
                             <Grid container spacing={3}>
-                                <Grid item xs={6}>
-                                    <b>{monthly - (discountRate / 100) * monthly}円/月</b>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <b>{yearly - (discountRate / 100) * yearly}円/年</b>
-                                </Grid>
                                 <Grid item xs={12}>
                                     <StyledButtonSpaceRight
                                         size="small"
@@ -383,6 +348,22 @@ export function GroupProfileInfo(props: {
                                         variant="contained"
                                         color={"secondary"}
                                         onClick={cancelSubscription}
+                                    >
+                                        解約
+                                    </StyledButtonSpaceRight>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <StyledButtonSpaceRight
+                                        size="small"
+                                        variant="contained"
+                                        color="primary"
+                                    >
+                                        支払い画面(User)
+                                    </StyledButtonSpaceRight>
+                                    <StyledButtonSpaceRight
+                                        size="small"
+                                        variant="contained"
+                                        color={"primary"}
                                     >
                                         解約
                                     </StyledButtonSpaceRight>
@@ -454,7 +435,6 @@ export function GroupMainMenu(props: {
     return (
         <StyledCardRoot1>
             <CardContent>
-                <h3>Menu</h3>
                 <GroupStatusButton key={"group_status_button"} data={data} autoMail={autoMail} reload={reload}/>
                 <GroupLockButton key={"group_lock_button"} data={data} reload={reload}/>
                 <GroupAbolition key={"group_abolition"}/>
@@ -468,8 +448,8 @@ export function GroupStatus(props: {
     reload: boolean
 }): any {
     const {data, reload} = props;
-    const createDate = "作成日: " + data.CreatedAt;
-    const updateDate = "更新日: " + data.UpdatedAt;
+    const [createDate, setCreateDate] = useState("");
+    const [updateDate, setUpdateDate] = useState("");
     const [membershipLabel, setMembershipLabel] = useState<{ color: Exclude<PropTypes.Color, 'inherit'>, label: string }>({
         color: "primary",
         label: ""
@@ -480,52 +460,70 @@ export function GroupStatus(props: {
     });
     const nowDate = new Date();
 
+
     useEffect(() => {
+        // create date
+        const tmpCreateDate = new Date(Date.parse(data.CreatedAt))
+        setCreateDate("作成日: " +
+            tmpCreateDate.getFullYear() + "-" + ('00' + (tmpCreateDate.getMonth() + 1)).slice(-2) +
+            '-' + ('00' + (tmpCreateDate.getDate())).slice(-2) + " " +
+            ('00' + (tmpCreateDate.getHours())).slice(-2) + ":" + ('00' + (tmpCreateDate.getMinutes())).slice(-2) +
+            ":" + ('00' + (tmpCreateDate.getSeconds())).slice(-2)
+        )
+
+        // update date
+        const tmpUpdateDate = new Date(Date.parse(data.UpdatedAt))
+        setUpdateDate("更新日: " + tmpUpdateDate.getFullYear() + "-" + ('00' + (tmpUpdateDate.getMonth() + 1)).slice(-2) +
+            '-' + ('00' + (tmpUpdateDate.getDate())).slice(-2) + " " +
+            ('00' + (tmpUpdateDate.getHours())).slice(-2) + ":" + ('00' + (tmpUpdateDate.getMinutes())).slice(-2) +
+            ":" + ('00' + (tmpUpdateDate.getSeconds())).slice(-2))
+
+        // member expired
         setMembershipLabel({color: "primary", label: ""});
         if (data.member_expired != null) {
             const tmp = data.member_expired.split('T');
-            const groupMemberExpired = new Date(tmp[0]);
+            const memberExpired = new Date(tmp[0]);
+            const expiredDate = memberExpired.getFullYear() + '-' + ('00' + (memberExpired.getMonth() + 1)).slice(-2) +
+                '-' + ('00' + (memberExpired.getDate())).slice(-2)
 
-            // if (data.payment_coupon_template_id !== 0) {
-            //     setMembershipLabel({
-            //         color: "primary",
-            //         label: data.payment_coupon_template?.title + ": " + tmp[0] + "まで"
-            //     });
-            // } else {
-            //     setMembershipLabel({
-            //         color: "primary",
-            //         label: "会員: " + tmp[0] + "まで"
-            //     });
-            // }
-            if (groupMemberExpired < nowDate) {
-                setMembershipLabel({
+            nowDate.setDate(nowDate.getDate() + 1)
+            if (Date.UTC(memberExpired.getFullYear(), memberExpired.getMonth() + 1, memberExpired.getDate(), 0, 0, 0)
+                >=
+                Date.UTC(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate(), 0, 0, 0)
+            ) {
+                setAutomaticUpdate({
+                    color: "primary",
+                    label: expiredDate
+                })
+            } else {
+                setAutomaticUpdate({
                     color: "secondary",
-                    label: "(未払い) " + membershipLabel.label
+                    label: "未払い " + expiredDate
                 })
             }
         } else {
-            setMembershipLabel({
+            setAutomaticUpdate({
                 color: "secondary",
-                label: "未払い状態"
+                label: "-----"
             })
         }
 
-        // if (data.payment_membership_template?.yearly) {
-        //     setAutomaticUpdate({
-        //         color: membershipLabel.color,
-        //         label: "(年更新)"
-        //     })
-        // } else if (data.payment_membership_template?.monthly) {
-        //     setAutomaticUpdate({
-        //         color: membershipLabel.color,
-        //         label: "(月更新)"
-        //     })
-        // } else {
-        //     setAutomaticUpdate({
-        //         color: membershipLabel.color,
-        //         label: "(更新無効)"
-        //     })
-        // }
+        let paymentMemberStatus = ""
+        switch (data.member_type) {
+            case 1:
+                paymentMemberStatus += "通常会員"
+                break;
+            case 70:
+                paymentMemberStatus += "学生会員"
+                break;
+            case 90:
+                paymentMemberStatus += "運営委員"
+                break;
+        }
+        setMembershipLabel({
+            color: "primary",
+            label: paymentMemberStatus
+        })
     }, [reload]);
 
     return (
@@ -533,22 +531,18 @@ export function GroupStatus(props: {
             <CardContent>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <h3>Status</h3>
+                        <h4>Status</h4>
                         <Chip
                             size="small"
                             color="primary"
                             label={GroupStatusStr(data)}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <h3>Membership</h3>
+                        <h4>Membership</h4>
                         <Chip size="small" color={membershipLabel.color} label={membershipLabel.label}/>
                         &nbsp;
                         <Chip size="small" color={automaticUpdate.color} label={automaticUpdate.label}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <h3>Date</h3>
-                        <StyledChip1
+                        <h4>Date</h4>
+                        <StyledChip2
                             size="small"
                             color="primary"
                             label={createDate}
