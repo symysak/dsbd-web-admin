@@ -39,6 +39,6 @@ export const StyledContainer1 = styled(Container)(({theme}) => ({
 }))
 
 export const StyledListItemSideBarNested = styled(ListItem)(({theme}) => ({
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
 }))
