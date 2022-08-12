@@ -25,6 +25,7 @@ import {Open} from "../../../components/Dashboard/Open/Open";
 import {
     StyledCardRoot3,
     StyledChip1,
+    StyledChip2,
     StyledFormControlFormLong,
     StyledFormControlFormMedium,
     StyledTextFieldLong,
@@ -353,15 +354,13 @@ export function ConnectionStatus(props: {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <h3>ServiceCode</h3>
-                        <StyledChip1
+                        <StyledChip2
                             size="small"
                             color="primary"
                             label={serviceCode}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
                         <h3>Service Info</h3>
-                        <Chip
+                        <StyledChip2
                             size="small"
                             color="primary"
                             label={GetConnectionWithTemplate(connection.connection_type)!.name}
@@ -411,14 +410,6 @@ export function ConnectionStatus(props: {
 export function ConnectionEtc(props: { connection: ConnectionDetailData }): any {
     const {connection} = props;
 
-    const getNOC = () => {
-        if (connection.noc_id === 0 || connection.noc === undefined) {
-            return "どこでもOK"
-        } else {
-            return connection.noc?.name
-        }
-    }
-
     return (
         <StyledCardRoot3>
             <CardContent>
@@ -426,17 +417,15 @@ export function ConnectionEtc(props: { connection: ConnectionDetailData }): any 
                     <Grid item xs={12}>
                         <h3>開通情報</h3>
                         <Open open={connection.open}/>
-                    </Grid>
-                    <Grid item xs={12}>
                         <h3>インターネット接続性</h3>
                         {connection.ntt}
                     </Grid>
                     <Grid item xs={4}>
-                        <h3>希望NOC</h3>
+                        <h3>希望接続</h3>
                         <Chip
                             size="small"
                             color="primary"
-                            label={getNOC()}
+                            label={connection.preferred_ap}
                         />
                     </Grid>
                     <Grid item xs={8}>
@@ -547,7 +536,7 @@ export function ConnectionUserDisplay(props: {
                             <td colSpan={2}>{GetConnectionWithTemplate(connection.connection_type)!.name}</td>
                         </tr>
                         <tr>
-                            <th>接続NOC</th>
+                            <th>接続接続場所</th>
                             <td colSpan={2}>{getNOCName()}</td>
                         </tr>
                         <tr>

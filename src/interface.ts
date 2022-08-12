@@ -204,6 +204,7 @@ export interface ConnectionDetailData {
     monitor: boolean,
     noc?: NocTemplateData,
     noc_id: number,
+    preferred_ap: string,
     bgp_router_id: number,
     bgp_router?: BGPRouterDetailData,
     group?: GroupDetailData,
@@ -338,6 +339,7 @@ export interface TemplateData {
     tunnel_endpoint_router_ip?: TunnelEndPointRouterIPTemplateData[]
     ipv4_route?: string[]
     ipv6_route?: string[]
+    preferred_ap?: string[]
     user?: UserDetailData[]
     group?: GroupDetailData[]
     mail_template?: MailTemplateData[]
@@ -751,6 +753,7 @@ export const DefaultConnectionDetailData: ConnectionDetailData = {
     monitor: false,
     noc: undefined,
     noc_id: 0,
+    preferred_ap: "",
     bgp_router_id: 0,
     bgp_router: undefined,
     connection_type: "",
