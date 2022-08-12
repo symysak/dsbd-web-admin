@@ -78,15 +78,24 @@ export default function ConnectionAdd() {
         }
 
         if ((template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_route)) {
-            if ((group.services?.find(service => service.ID === serviceID)!.ip!.map(ip => ip.version === 4)?.length ?? 0) > 0) {
+            if (
+                (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0
+                ||
+                template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+            ) {
                 obj["ipv4_route"] = Yup.string()
                     .required('IPv4経路広告方法を選択してください')
                     .min(1, "正しく選択してください")
                 obj["ipv4_route_comment"] = Yup.string()
             }
-            if ((group.services?.find(service => service.ID === serviceID)!.ip!.map(ip => ip.version === 6)?.length ?? 0) > 0) {
+            console.log(group.services?.find(service => service.ID === serviceID)!.ip!)
+            if (
+                (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0) > 0
+                ||
+                template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+            ) {
                 obj["ipv6_route"] = Yup.string()
-                    .required('IPv4経路広告方法を選択してください')
+                    .required('IPv6経路広告方法を選択してください')
                     .min(1, "正しく選択してください")
                 obj["ipv6_route_comment"] = Yup.string()
             }
@@ -141,7 +150,11 @@ export default function ConnectionAdd() {
         }
 
         if ((template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_route)) {
-            if ((group.services?.find(service => service.ID === serviceID)!.ip!.map(ip => ip.version === 4)?.length ?? 0) > 0) {
+            if (
+                (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0
+                ||
+                template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+            ) {
                 // check ipv4_route(etc) form
                 if (data.ipv4_route === "etc") {
                     request.ipv4_route = data.ipv4_route_comment
@@ -149,13 +162,18 @@ export default function ConnectionAdd() {
                     request.ipv4_route = data.ipv4_route
                 }
             }
-            if ((group.services?.find(service => service.ID === serviceID)!.ip!.map(ip => ip.version === 6)?.length ?? 0) > 0) {
+            if (
+                (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0) > 0
+                ||
+                template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+            ) {
                 // check ipv4_route(etc) form
                 if (data.ipv6_route === "etc") {
                     request.ipv6_route = data.ipv6_route_comment
                 } else {
                     request.ipv6_route = data.ipv6_route
-                }            }
+                }
+            }
         }
 
         // check
@@ -223,7 +241,12 @@ export default function ConnectionAdd() {
                       <Grid item xs={12}>
                         <FormLabel component="legend">1.1. BGPで当団体から広報する経路種類を選択してください。</FormLabel>
                           {
-                              (group.services?.find(service => service.ID === serviceID)!.ip!.map(ip => ip.version === 4)?.length ?? 0) > 0 &&
+                              (
+                                  (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0
+                                  ||
+                                  template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+                              )
+                              &&
                             <StyledFormControlFormSelect>
                               <FormLabel component="legend">IPv4 BGP広報経路</FormLabel>
                               <FormHelperText>
@@ -252,7 +275,11 @@ export default function ConnectionAdd() {
                             </StyledFormControlFormSelect>
                           }
                           {
-                              (group.services?.find(service => service.ID === serviceID)!.ip!.map(ip => ip.version === 6)?.length ?? 0) > 0 &&
+                              (
+                                  (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0
+                                  ||
+                                  template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
+                              ) &&
                             <StyledFormControlFormSelect>
                               <FormLabel component="legend">IPv6 BGP広報経路</FormLabel>
                               <FormHelperText>
