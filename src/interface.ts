@@ -189,6 +189,13 @@ export interface ServiceTemplateData {
     need_route: boolean
 }
 
+export interface PaymentMembershipTemplate {
+    title: string
+    plan: string
+    price_id: string
+    fee: string
+}
+
 export interface ConnectionDetailData {
     ID: number,
     CreatedAt: string,
@@ -312,6 +319,8 @@ export interface GroupDetailData {
     coupon_id: string,
     member_type: number,
     member_expired: string,
+    stripe_customer_id?: string,
+    stripe_subscription_id?: string,
     users?: UserDetailData[],
     tickets?: TicketDetailData[],
     services?: ServiceDetailData[]
@@ -344,6 +353,7 @@ export interface TemplateData {
     group?: GroupDetailData[]
     mail_template?: MailTemplateData[]
     member_type?: MemberTypeTemplateData[]
+    payment_membership?: PaymentMembershipTemplate[]
 }
 
 export interface MemoAddData {

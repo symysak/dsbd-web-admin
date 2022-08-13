@@ -38,6 +38,7 @@ import {useNavigate} from "react-router-dom";
 import {useRecoilValue} from "recoil";
 import {TemplateState} from "../../../api/Recoil";
 import {StyledSelect1, StyledTextFieldShort} from "../../Add/style";
+import {GetPayment, PostSubscribe} from "../../../api/Payment";
 
 function ChipAgree(props: { agree: boolean }) {
     const {agree} = props;
@@ -73,15 +74,14 @@ export function GroupProfileInfo(props: {
     const {enqueueSnackbar} = useSnackbar();
     const [paymentCoupon, setPaymentCoupon] = React.useState("");
     const [memberType, setMemberType] = React.useState(0);
-    let nowDate = new Date();
-    const [memberExpiredDate, setMemberExpiredDate] = React.useState<Date | null>(nowDate);
+    const [memberExpiredDate, setMemberExpiredDate] = React.useState<Date | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (data.member_expired != null) {
             const tmp = data.member_expired.split('T');
-            nowDate = new Date(tmp[0]);
-            handleMemberExpiredDateChange(memberExpiredDate);
+            const expiredDate = new Date(tmp[0]);
+            setMemberExpiredDate(expiredDate)
         }
 
         if (data.coupon_id != null) {
@@ -130,6 +130,28 @@ export function GroupProfileInfo(props: {
             }
 
             setReload(true);
+        })
+    }
+
+    const subscribe = (plan: string) => {
+        PostSubscribe(data.ID, plan).then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                window.open(res.data, '_blank');
+            } else {
+                enqueueSnackbar(String(res.error), {variant: "error"});
+            }
+        })
+    }
+
+    const getPayment = () => {
+        GetPayment(data.ID).then(res => {
+            if (res.error === "") {
+                console.log(res.data);
+                window.open(res.data, '_blank');
+            } else {
+                enqueueSnackbar(String(res.error), {variant: "error"});
+            }
         })
     }
 
@@ -289,6 +311,8 @@ export function GroupProfileInfo(props: {
                     </AccordionSummary>
                     <AccordionDetails>
                         <StyledFormControlFormShort variant="filled">
+                            <p>CusID: {data.stripe_customer_id}</p>
+                            <p>SubID: {data.stripe_subscription_id}</p>
                             <StyledTextFieldShort
                                 id="coupon_code"
                                 label="クーポンコード"
@@ -356,15 +380,27 @@ export function GroupProfileInfo(props: {
                                         size="small"
                                         variant="contained"
                                         color="primary"
+                                        onClick={() => subscribe("yearly")}
                                     >
-                                        支払い画面(User)
+                                        支払い(Yearly)
                                     </StyledButtonSpaceRight>
                                     <StyledButtonSpaceRight
                                         size="small"
                                         variant="contained"
-                                        color={"primary"}
+                                        color="primary"
+                                        onClick={() => subscribe("monthly")}
                                     >
-                                        解約
+                                        支払い(Monthly)
+                                    </StyledButtonSpaceRight>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <StyledButtonSpaceRight
+                                        size="small"
+                                        variant="contained"
+                                        color={"primary"}
+                                        onClick={getPayment}
+                                    >
+                                        Subscribe管理
                                     </StyledButtonSpaceRight>
                                 </Grid>
                             </Grid>
