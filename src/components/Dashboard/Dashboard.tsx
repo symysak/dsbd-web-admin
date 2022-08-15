@@ -147,9 +147,6 @@ export default function Dashboard(props: any) {
     const GroupPage = () => {
         navigate("/dashboard/group");
     }
-    const OrderPage = () => {
-        navigate("/dashboard/order");
-    }
     const SupportPage = () => {
         navigate("/dashboard/support");
     }
@@ -222,12 +219,6 @@ export default function Dashboard(props: any) {
                             <PeopleIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Group"/>
-                    </ListItem>
-                    <ListItem button onClick={OrderPage}>
-                        <ListItemIcon>
-                            <ShoppingCartIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Orders"/>
                     </ListItem>
                     <ListItem button onClick={SupportPage}>
                         <ListItemIcon>

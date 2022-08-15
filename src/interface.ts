@@ -47,19 +47,6 @@ export interface UserDetailData {
     tokens?: TokenDetailData[]
 }
 
-export interface PaymentDetailData {
-    ID: number,
-    CreatedAt: string,
-    UpdatedAt: string,
-    group?: GroupDetailData,
-    is_membership: boolean,
-    paid: boolean,
-    refund: boolean,
-    fee: number,
-    payment_intent_id: string,
-    comment: string,
-}
-
 export interface TokenDetailData {
     CreatedAt: string,
     ID: number,

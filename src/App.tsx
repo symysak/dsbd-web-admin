@@ -5,7 +5,6 @@ import SignIn from './pages/Login/SignIn';
 import Group from "./pages/Group/Group";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Notice from './pages/Notice/Notice';
-import Order from "./pages/Order/Order";
 import GroupDetail from './pages/Group/GroupDetail/GroupDetail';
 import SupportDetail from "./pages/Support/SupportDetail/SupportDetail";
 import Support from "./pages/Support/Support";
@@ -33,7 +32,6 @@ export default class App extends React.Component {
                         <Route path="/dashboard/group/:id/add/connection" element={<ConnectionAdd/>}/>
                         <Route path="/dashboard/support" element={<Support/>}/>
                         <Route path="/dashboard/support/:id" element={<SupportDetail/>}/>
-                        <Route path="/dashboard/order" element={<Order/>}/>
                         <Route path="/dashboard/service" element={<Service/>}/>
                         <Route path="/dashboard/connection" element={<Connection/>}/>
                         <Route path="/dashboard/user" element={<User/>}/>
