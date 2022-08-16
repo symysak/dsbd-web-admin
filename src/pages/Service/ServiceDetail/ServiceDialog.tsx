@@ -402,7 +402,7 @@ export function ServiceJPNICBase(props: {
         <Card className={cssModule.contract}>
             <CardContent>
                 <h3>JPNIC基本情報</h3>
-                <ServiceJPNICDetail key={"service_admin_info"} service={service} reload={reload}/>
+                <ServiceJPNICDetail key={"ServiceJPNICDetail"} service={service} reload={reload}/>
             </CardContent>
         </Card>
     )
