@@ -502,6 +502,11 @@ export default function ServiceAdd() {
             request.ip = ip;
         }
 
+        // Transit AS
+        if (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as) {
+            request.bgp_comment = data.bgp_comment;
+        }
+
         console.log(request)
 
         if (groupID == null) {
