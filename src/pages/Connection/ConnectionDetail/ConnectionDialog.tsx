@@ -32,7 +32,7 @@ import {
     StyledTextFieldMedium
 } from "../../../style";
 import {GetConnectionWithTemplate, GetServiceWithTemplate} from "../../../api/Tool";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {TemplateState} from "../../../api/Recoil";
 
 export default function ConnectionGetDialogs(props: {
@@ -272,9 +272,9 @@ export function ConnectionOpenL3User(props: {
     lock: boolean,
 }) {
     const {service, connection, setConnection, lock} = props
+    const template = useRecoilValue(TemplateState);
 
-    console.log(connection)
-    if (service === undefined || GetServiceWithTemplate(service.service_type)!.need_route) {
+    if (service === undefined || !(template.services?.find(ser => ser.type === service.service_type)!.need_route)) {
         return null
     } else {
         return (
