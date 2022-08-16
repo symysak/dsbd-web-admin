@@ -390,10 +390,7 @@ export default function ServiceAdd() {
     });
 
     const getBool = (dataBool: boolean | undefined) => {
-        if (dataBool === true) {
-            return true
-        }
-        return false
+        return !!dataBool;
     };
 
     const serviceType = watch("service_type");

@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useState} from "react";
 import {Button, Card, CardContent, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Grid,} from "@mui/material";
 import cssModule from "../../Connection/ConnectionDetail/ConnectionDialog.module.scss";
 import {ServiceDetailData} from "../../../interface";
-import {ServiceAddAllowButton, ServiceLockButton} from "./ServiceMenu";
+import {ServiceAddAllowButton} from "./ServiceMenu";
 import {useSnackbar} from "notistack";
 import {Put} from "../../../api/Service";
 import {ServiceJPNICTechBase} from "./JPNICTech/JPNICTech";
@@ -16,8 +16,6 @@ import {
     StyledTextFieldMedium,
     StyledTextFieldVeryShort1
 } from "../../../style";
-import {useRecoilValue} from "recoil";
-import {TemplateState} from "../../../api/Recoil";
 
 
 export default function ServiceGetDialogs(props: {
@@ -81,7 +79,7 @@ export default function ServiceGetDialogs(props: {
                                            reload={reload}/>
                         </Grid>
                         <Grid item xs={12}>
-                            <ServiceJPNICBase key={"ServiceJPNICBase"} service={service} reload={reload}/>
+                            <ServiceAdminBase key={"ServiceAdminBase"} service={service} reload={reload}/>
                         </Grid>
                         <Grid item xs={6}>
                             <ServiceJPNICAdminBase key={"ServiceJPNICAdminBase"} serviceID={service.ID}
@@ -154,8 +152,6 @@ export function ServiceMainMenu(props: { service: ServiceDetailData, reload: Dis
             <CardContent>
                 <h3>Menu</h3>
                 <ServiceAddAllowButton key={"serviceAddAllowButton"} service={service} reload={reload}/>
-                <br/>
-                <ServiceLockButton key={"serviceLockButton"} service={service} reload={reload}/>
                 <br/>
             </CardContent>
         </StyledCardRoot1>
@@ -314,41 +310,70 @@ export function ServiceEtc(props: { service: ServiceDetailData }): any {
     );
 }
 
-export function ServiceJPNICBase(props: {
+export function ServiceAdminBase(props: {
     service: ServiceDetailData,
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {service, reload} = props;
-    const template = useRecoilValue(TemplateState)
 
-
-    if (template.services?.find(ser => ser.type === service.service_type)!.need_route) {
-        return (
-            <Card>
-                <CardContent>
-                    <h3>サービス管理者情報</h3>
-                    <p><b>情報なし</b></p>
-                </CardContent>
-            </Card>
-        )
-    } else {
-        return (
-            <Card className={cssModule.contract}>
-                <CardContent>
-                    <h3>サービス管理者情報</h3>
+    return (
+        <Card className={cssModule.contract}>
+            <CardContent>
+                <h3>サービス管理者情報</h3>
+                <ServiceDetail key={"service_admin_info"} service={service} reload={reload}/>
+                <br/>
+                <Grid container spacing={3}>
                     {
-                        template.services?.find(ser => ser.type === service.service_type)!.need_route &&
-                      <p><b>情報なし</b></p>
+                        service.service_comment !== "" &&
+                      <Grid item xs={12}>
+                        <h3>ServiceTypeの追加情報(ServiceComment)</h3>
+                          {service.service_comment}
+                      </Grid>
                     }
                     {
-                        !(template.services?.find(ser => ser.type === service.service_type)!.need_route)
-                        &&
-                      <ServiceDetail key={"service_admin_info"} service={service} reload={reload}/>
+                        service.bgp_comment !== "" &&
+                      <Grid item xs={12}>
+                        <h3>BGPの追加情報(BGPComment)</h3>
+                          {service.bgp_comment}
+                      </Grid>
                     }
-                </CardContent>
-            </Card>
-        )
-    }
+                    <Grid item xs={12}>
+                        <h3>その他情報(Comment)</h3>
+                        {
+                            service.comment !== "" &&
+                          <p>{service.comment}</p>
+                        }
+                        {
+                            service.comment === "" &&
+                          <p>なし</p>
+                        }
+                    </Grid>
+                    <Grid item xs={12}>
+                        <table aria-colspan={2}>
+                            <thead>
+                            <tr>
+                                <th colSpan={1}>利用開始日</th>
+                                <th colSpan={1}>利用終了日</th>
+                            </tr>
+                            <tr>
+                                {/*<th>利用開始日</th>*/}
+                                <td>{service.start_date}</td>
+                                {
+                                    service.end_date == null &&
+                                  <td>未定</td>
+                                }
+                                {
+                                    service.end_date != null &&
+                                  <td>{service.end_date}</td>
+                                }
+                            </tr>
+                            </thead>
+                        </table>
+                    </Grid>
+                </Grid>
+            </CardContent>
+        </Card>
+    )
 }
 
 export function ServiceDetail(props: {

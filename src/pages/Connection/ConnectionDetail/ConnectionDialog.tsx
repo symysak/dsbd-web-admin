@@ -87,6 +87,13 @@ export default function ConnectionGetDialogs(props: {
                                 connection={connection}
                             />
                         </Grid>
+                        <Grid item xs={6}>
+                            <ConnectionEtc2
+                                key={"connection_etc2"}
+                                service={service}
+                                connection={connection}
+                            />
+                        </Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>
@@ -506,7 +513,7 @@ export function ConnectionUserDisplay(props: {
                         </tr>
                         <tr>
                             <th>利用料金</th>
-                            0円
+                            <td>0円</td>
                         </tr>
                         <tr>
                             <th>当団体からのIPアドレスの割当</th>
@@ -525,7 +532,7 @@ export function ConnectionUserDisplay(props: {
                             <td colSpan={2}>{GetConnectionWithTemplate(connection.connection_type)!.name}</td>
                         </tr>
                         <tr>
-                            <th>接続接続場所</th>
+                            <th>接続NOC</th>
                             <td colSpan={2}>{getNOCName()}</td>
                         </tr>
                         <tr>
@@ -560,4 +567,38 @@ export function ConnectionUserDisplay(props: {
             </StyledCardRoot3>
         </div>
     )
+}
+
+export function ConnectionEtc2(props: {
+    service: ServiceDetailData,
+    connection: ConnectionDetailData,
+}): any {
+    const {connection} = props;
+
+    return (
+        <StyledCardRoot3>
+            <CardContent>
+                <Grid container spacing={3}>
+                    {
+                        connection.connection_comment !== "" &&
+                      <Grid item xs={12}>
+                        <h3>ラックなどの追加情報(Connection Type Comment)</h3>
+                          {connection.connection_comment}
+                      </Grid>
+                    }
+                    <Grid item xs={12}>
+                        <h3>その他情報(Comment)</h3>
+                        {
+                            connection.comment !== "" &&
+                          <p>{connection.comment}</p>
+                        }
+                        {
+                            connection.comment === "" &&
+                          <p>なし</p>
+                        }
+                    </Grid>
+                </Grid>
+            </CardContent>
+        </StyledCardRoot3>
+    );
 }
