@@ -407,7 +407,7 @@ export default function ServiceAdd() {
             end_date = data.end_date.getFullYear() + '-' + ('00' + (data.end_date.getMonth() + 1)).slice(-2) +
                 '-' + ('00' + (data.end_date.getDate())).slice(-2)
             // error process
-            if (data.start_date > data.end_date) {
+            if (data.start_date >= data.end_date) {
                 enqueueSnackbar("終了時間を修正してください。", {variant: "error"});
                 return;
             }
@@ -436,7 +436,7 @@ export default function ServiceAdd() {
         // error process
         let base_start_date = new Date();
         base_start_date.setDate(base_start_date.getDate() + 7);
-        if (data.start_date >= base_start_date) {
+        if (data.start_date < base_start_date) {
             enqueueSnackbar("開始時間を修正してください。", {variant: "error"});
             return;
         }
@@ -502,25 +502,6 @@ export default function ServiceAdd() {
             request.ip = ip;
         }
 
-        // Transit AS
-        if (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as) {
-            request.bgp_comment = data.bgp_comment;
-            const ip = [{
-                version: 4,
-                ip: "",
-                name: "",
-                start_date: start_date,
-                end_date: end_date,
-            }, {
-                version: 6,
-                ip: "",
-                name: "",
-                start_date: start_date,
-                end_date: end_date,
-            }]
-
-            request.ip = ip;
-        }
         console.log(request)
 
         if (groupID == null) {
