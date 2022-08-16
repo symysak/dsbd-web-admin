@@ -488,17 +488,6 @@ export function ConnectionUserDisplay(props: {
             return connection.bgp_router?.noc.name;
         }
     };
-    const getFee = (fee: number | null) => {
-        if (fee === null || fee === 0) {
-            return (
-                <td>無料</td>
-            );
-        } else {
-            return (
-                <td>{fee}円</td>
-            );
-        }
-    };
 
     return (
         <div className={classes.contract}>
@@ -517,7 +506,7 @@ export function ConnectionUserDisplay(props: {
                         </tr>
                         <tr>
                             <th>利用料金</th>
-                            {getFee(service.fee)}
+                            0円
                         </tr>
                         <tr>
                             <th>当団体からのIPアドレスの割当</th>
