@@ -167,7 +167,7 @@ export default function ConnectionAdd() {
                 ||
                 template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
             ) {
-                // check ipv4_route(etc) form
+                // check ipv6_route(etc) form
                 if (data.ipv6_route === "etc") {
                     request.ipv6_route = data.ipv6_route_comment
                 } else {
@@ -276,7 +276,7 @@ export default function ConnectionAdd() {
                           }
                           {
                               (
-                                  (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 4)?.length ?? 0) > 0
+                                  (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0) > 0
                                   ||
                                   template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
                               ) &&
