@@ -16,7 +16,8 @@ import {
     StyledTextFieldMedium,
     StyledTextFieldVeryShort1
 } from "../../../style";
-import {GetServiceWithTemplate} from "../../../api/Tool";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../../api/Recoil";
 
 
 export default function ServiceGetDialogs(props: {
@@ -318,13 +319,14 @@ export function ServiceJPNICBase(props: {
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
     const {service, reload} = props;
+    const template = useRecoilValue(TemplateState)
 
 
-    if (GetServiceWithTemplate(service.service_type)!.need_jpnic) {
+    if (template.services?.find(ser => ser.type === service.service_type)!.need_route) {
         return (
             <Card>
                 <CardContent>
-                    <h3>JPNIC記入情報</h3>
+                    <h3>サービス管理者情報</h3>
                     <p><b>情報なし</b></p>
                 </CardContent>
             </Card>
@@ -333,8 +335,16 @@ export function ServiceJPNICBase(props: {
         return (
             <Card className={cssModule.contract}>
                 <CardContent>
-                    <h3>JPNIC記入情報</h3>
-                    <ServiceDetail key={"JPNICInfo"} service={service} reload={reload}/>
+                    <h3>サービス管理者情報</h3>
+                    {
+                        template.services?.find(ser => ser.type === service.service_type)!.need_route &&
+                      <p><b>情報なし</b></p>
+                    }
+                    {
+                        !(template.services?.find(ser => ser.type === service.service_type)!.need_route)
+                        &&
+                      <ServiceDetail key={"service_admin_info"} service={service} reload={reload}/>
+                    }
                 </CardContent>
             </Card>
         )
