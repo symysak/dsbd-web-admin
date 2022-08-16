@@ -390,10 +390,7 @@ export default function ServiceAdd() {
     });
 
     const getBool = (dataBool: boolean | undefined) => {
-        if (dataBool === true) {
-            return true
-        }
-        return false
+        return !!dataBool;
     };
 
     const serviceType = watch("service_type");
@@ -500,6 +497,11 @@ export default function ServiceAdd() {
             }
 
             request.ip = ip;
+        }
+
+        // Transit AS
+        if (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as) {
+            request.bgp_comment = data.bgp_comment;
         }
 
         console.log(request)
