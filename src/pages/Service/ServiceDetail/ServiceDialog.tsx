@@ -16,6 +16,8 @@ import {
     StyledTextFieldMedium,
     StyledTextFieldVeryShort1
 } from "../../../style";
+import {useRecoilValue} from "recoil";
+import {TemplateState} from "../../../api/Recoil";
 
 
 export default function ServiceGetDialogs(props: {
@@ -24,6 +26,7 @@ export default function ServiceGetDialogs(props: {
 }) {
     const {service, reload} = props
     const [open, setOpen] = React.useState(false);
+    const template = useRecoilValue(TemplateState)
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -71,25 +74,40 @@ export default function ServiceGetDialogs(props: {
                         </Grid>
                         <Grid item xs={6}>
                             <div className={cssModule.contract}>
-                                <ServiceEtc key={"ServiceEtc"} service={service}/>
+                                <ServiceEtc1 key={"ServiceEtc1"} service={service}/>
                             </div>
                         </Grid>
-                        <Grid item xs={6}>
+                        {
+                            template.services!.find(ser => ser.type === service.service_type)!.need_jpnic &&
+                          <Grid item xs={6}>
                             <ServiceIPBase key={"ServiceIPBase"} ip={service.ip} serviceID={service.ID}
                                            reload={reload}/>
-                        </Grid>
+                          </Grid>
+                        }
                         <Grid item xs={12}>
-                            <ServiceAdminBase key={"ServiceAdminBase"} service={service} reload={reload}/>
+                            <ServiceEtc2 key={"ServiceEtc2"} service={service} reload={reload}/>
                         </Grid>
-                        <Grid item xs={6}>
+                        {
+                            template.services!.find(ser => ser.type === service.service_type)!.need_jpnic &&
+                          <Grid item xs={12}>
+                            <ServiceJPNICBase key={"ServiceJPNICBase"} service={service} reload={reload}/>
+                          </Grid>
+                        }
+                        {
+                            template.services!.find(ser => ser.type === service.service_type)!.need_jpnic &&
+                          <Grid item xs={6}>
                             <ServiceJPNICAdminBase key={"ServiceJPNICAdminBase"} serviceID={service.ID}
                                                    jpnic={service.jpnic_admin} reload={reload}/>
-                        </Grid>
-                        <Grid item xs={6}>
+                          </Grid>
+                        }
+                        {
+                            template.services!.find(ser => ser.type === service.service_type)!.need_jpnic &&
+                          <Grid item xs={6}>
                             <ServiceJPNICTechBase key={"ServiceJPNICTechBase"} serviceID={service.ID}
                                                   jpnicAdmin={service.jpnic_admin}
                                                   jpnicTech={service.jpnic_tech} reload={reload}/>
-                        </Grid>
+                          </Grid>
+                        }
                         <Grid>
                             <div className={cssModule.contract}>
                             </div>
@@ -267,7 +285,7 @@ export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatc
 }
 
 
-export function ServiceEtc(props: { service: ServiceDetailData }): any {
+export function ServiceEtc1(props: { service: ServiceDetailData }): any {
     const {service} = props;
 
     return (
@@ -310,7 +328,7 @@ export function ServiceEtc(props: { service: ServiceDetailData }): any {
     );
 }
 
-export function ServiceAdminBase(props: {
+export function ServiceEtc2(props: {
     service: ServiceDetailData,
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
@@ -319,9 +337,7 @@ export function ServiceAdminBase(props: {
     return (
         <Card className={cssModule.contract}>
             <CardContent>
-                <h3>サービス管理者情報</h3>
-                <ServiceDetail key={"service_admin_info"} service={service} reload={reload}/>
-                <br/>
+                <h3>サービスその他情報</h3>
                 <Grid container spacing={3}>
                     {
                         service.service_comment !== "" &&
@@ -376,7 +392,23 @@ export function ServiceAdminBase(props: {
     )
 }
 
-export function ServiceDetail(props: {
+export function ServiceJPNICBase(props: {
+    service: ServiceDetailData,
+    reload: Dispatch<SetStateAction<boolean>>
+}): any {
+    const {service, reload} = props;
+
+    return (
+        <Card className={cssModule.contract}>
+            <CardContent>
+                <h3>JPNIC基本情報</h3>
+                <ServiceJPNICDetail key={"service_admin_info"} service={service} reload={reload}/>
+            </CardContent>
+        </Card>
+    )
+}
+
+export function ServiceJPNICDetail(props: {
     service: ServiceDetailData,
     reload: Dispatch<SetStateAction<boolean>>
 }): any {
