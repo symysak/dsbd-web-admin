@@ -77,10 +77,13 @@ export default function ServiceGetDialogs(props: {
                                 <ServiceEtc1 key={"ServiceEtc1"} service={service}/>
                             </div>
                         </Grid>
-                        <Grid item xs={6}>
+                        {
+                            template.services!.find(ser => ser.type === service.service_type)!.need_jpnic &&
+                          <Grid item xs={6}>
                             <ServiceIPBase key={"ServiceIPBase"} ip={service.ip} serviceID={service.ID}
                                            reload={reload}/>
-                        </Grid>
+                          </Grid>
+                        }
                         <Grid item xs={12}>
                             <ServiceEtc2 key={"ServiceEtc2"} service={service} reload={reload}/>
                         </Grid>
