@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# dsbd-web-admin
+[![Publish Docker image(prod)](https://github.com/homenoc/dsbd-web-admin/actions/workflows/build-prod.yaml/badge.svg)](https://github.com/homenoc/dsbd-web-admin/actions/workflows/build-prod.yaml)
+[![Publish Docker image(dev)](https://github.com/homenoc/dsbd-web-admin/actions/workflows/build-dev.yaml/badge.svg)](https://github.com/homenoc/dsbd-web-admin/actions/workflows/build-dev.yaml)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
