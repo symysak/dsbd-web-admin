@@ -238,9 +238,8 @@ export default function ConnectionAdd() {
                         </FormControl>
                     </Grid>
                     {
-
                         serviceID !== 0 &&
-                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)!.need_route &&
+                        template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)!.need_bgp &&
                       <Grid item xs={12}>
                         <FormLabel component="legend">1.1. BGPで当団体から広報する経路種類を選択してください。</FormLabel>
                           {

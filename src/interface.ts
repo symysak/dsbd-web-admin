@@ -175,7 +175,8 @@ export interface ServiceTemplateData {
     need_comment: boolean,
     need_global_as: boolean,
     need_jpnic: boolean,
-    need_route: boolean
+    need_route: boolean,
+    need_bgp: boolean
 }
 
 export interface PaymentMembershipTemplate {
