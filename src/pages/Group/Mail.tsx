@@ -35,10 +35,10 @@ export function MailAutoSendDialogs(props: {
                 if (getMailTemplate !== undefined && mailSignature !== undefined) {
                     let message = getMailTemplate[0].message.replace('{GROUP_NAME}', org);
                     message += mailSignature[0].message;
-                    console.log(getMailTemplate[0].subject)
+                    console.log(getMailTemplate[0].title)
                     setData({
                         to_mail: "",
-                        subject: getMailTemplate[0].subject,
+                        subject: getMailTemplate[0].title,
                         content: message,
                     });
                 }
@@ -188,7 +188,7 @@ export function MailSendDialogs(props: {
 
             setData({
                 to_mail: "",
-                subject: getMailTemplate[0].subject,
+                subject: getMailTemplate[0].title,
                 content: message
             })
         }
@@ -224,7 +224,7 @@ export function MailSendDialogs(props: {
                                             key={"mail_template_" + tmp.id}
                                             value={tmp.id}
                                         >
-                                            {tmp.id}({tmp.subject})
+                                            {tmp.id}({tmp.title})
                                         </MenuItem>
                                     )
                                 }
@@ -310,10 +310,12 @@ export function MailAutoNoticeSendDialogs(props: {
                 const mailSignature = template.filter(item => item.id === "signature");
                 if (getMailTemplate !== undefined && mailSignature !== undefined) {
                     let message = getMailTemplate[0].message.replace('{TITLE}', title);
+                    console.log(getMailTemplate[0].message)
+                    console.log(message)
                     message = message.replace('{BODY}', body);
                     message += mailSignature[0].message;
-                    console.log(getMailTemplate[0].subject)
-                    let subject = getMailTemplate[0].subject.replace('{TITLE}', title);
+                    console.log(getMailTemplate[0].title)
+                    let subject = getMailTemplate[0].title.replace('{TITLE}', title);
                     setData({
                         to_mail: "",
                         subject: subject,

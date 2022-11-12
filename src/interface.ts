@@ -22,7 +22,7 @@ export interface NoticeRegisterData {
     start_time: string,
     end_time?: string,
     title: string,
-    data: string,
+    body: string,
     everyone: boolean,
     important: boolean,
     fault: boolean
@@ -246,7 +246,7 @@ export interface NocTemplateData {
 
 export interface MailTemplateData {
     id: string
-    subject: string
+    title: string
     message: string
 }
 
@@ -817,7 +817,7 @@ export const DefaultNoticeRegisterData: NoticeRegisterData = {
     start_time: "",
     end_time: undefined,
     title: "",
-    data: "",
+    body: "",
     everyone: false,
     important: false,
     fault: false,

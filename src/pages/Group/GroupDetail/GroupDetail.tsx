@@ -73,7 +73,6 @@ export default function GroupDetail() {
         })
     }, []);
 
-
     return (
         <Dashboard title={getTitle(group.ID, group.org, group.org_en, loading)}>
             {
