@@ -6,7 +6,7 @@ import {
     Divider,
     IconButton,
     List, ListItem, ListItemIcon, ListItemText,
-    MenuItem, Menu, Fade, styled, Toolbar, CSSObject, Theme, Box, Typography
+    MenuItem, Menu, Fade, styled, Toolbar, CSSObject, Theme, Box, Typography, Container
 } from "@mui/material";
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
@@ -17,7 +17,6 @@ import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import PeopleIcon from "@mui/icons-material/People";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LayersIcon from "@mui/icons-material/Layers";
 import ClassIcon from '@mui/icons-material/Class';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
@@ -25,11 +24,10 @@ import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import ChatIcon from "@mui/icons-material/Chat";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import {
     StyledDivDashboardToolBarIcon,
     StyledDivDashboardRoot,
-    StyledTypographyPageTitle, StyledMainContent, StyledDivAppBarShift, StyledContainer1, StyledListItemSideBarNested
+    StyledListItemSideBarNested
 } from "./styles";
 import {useNavigate} from "react-router-dom";
 import {Logout} from "../../api/Auth";
@@ -270,20 +268,13 @@ export default function Dashboard(props: any) {
                     <Divider/>
                     {/*<List>{secondaryList}</List>*/}
                 </Drawer>
-                <StyledMainContent>
-                    <StyledDivAppBarShift/>
-                    <StyledContainer1 maxWidth="lg">
-                        <StyledTypographyPageTitle
-                            // component="h2"
-                            variant="h5"
-                            color="inherit"
-                            noWrap
-                        >
-                            {props.title}
-                        </StyledTypographyPageTitle>
-                        {props.children}
-                    </StyledContainer1>
-                </StyledMainContent>
+                <Container component="main" sx={{mt: 10}}>
+                    <Typography variant="h5" component="h3">
+                        {props.title}
+                    </Typography>
+                    <br/>
+                    {props.children}
+                </Container>
             </Box>
         </ThemeProvider>
     );

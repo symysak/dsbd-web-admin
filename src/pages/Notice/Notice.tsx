@@ -31,7 +31,6 @@ export default function Notice() {
     const [reload, setReload] = useState(true);
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(2);
-    const [loaded, setLoaded] = React.useState(false);
     const now = new Date();
 
     useEffect(() => {
@@ -113,12 +112,10 @@ export default function Notice() {
                     }}
                 />
             </StyledPaperRootInput>
-            {
-                loaded && <NoticeAddDialogs key={"notice_add_dialog"}
-                                            setReload={setReload}
-                                            connection={connection}
-                                            reload={reload}/>
-            }
+            <NoticeAddDialogs key={"notice_add_dialog"}
+                              setReload={setReload}
+                              connection={connection}
+                              reload={reload}/>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                     <FormControlLabel value={2} control={<Radio color="primary"/>} label="通知中"/>
