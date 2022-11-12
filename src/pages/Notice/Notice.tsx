@@ -26,8 +26,7 @@ import {TemplateState} from "../../api/Recoil";
 export default function Notice() {
     const [tickets, setTickets] = useState(DefaultNoticeDataArray);
     const [initTickets, setInitTickets] = useState(DefaultNoticeDataArray);
-    const template = useRecoilValue(TemplateState);
-    const [connection, setConnection] = useState<ConnectionDetailData[]>()
+    const template = useRecoilValue(TemplateState)
     const [reload, setReload] = useState(true);
     const {enqueueSnackbar} = useSnackbar();
     const [value, setValue] = React.useState(2);
@@ -114,7 +113,6 @@ export default function Notice() {
             </StyledPaperRootInput>
             <NoticeAddDialogs key={"notice_add_dialog"}
                               setReload={setReload}
-                              connection={connection}
                               reload={reload}/>
             <FormControl component="fieldset">
                 <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>

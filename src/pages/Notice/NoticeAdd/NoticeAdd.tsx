@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect} from "react";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {
     Button,
     Checkbox,
@@ -11,7 +11,7 @@ import {
     TextField,
 } from "@mui/material";
 import Select from 'react-select';
-import {ConnectionDetailData, DefaultNoticeRegisterData} from "../../../interface";
+import {ConnectionDetailData, DefaultNoticeRegisterData, ServiceDetailData} from "../../../interface";
 import {Post} from "../../../api/Notice";
 import {useSnackbar} from "notistack";
 import {MailAutoNoticeSendDialogs} from "../../Group/Mail";
@@ -20,6 +20,8 @@ import {LocalizationProvider, DateTimePicker} from "@mui/x-date-pickers";
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {useRecoilValue} from "recoil";
 import {TemplateState} from "../../../api/Recoil";
+import {GetAll as ServiceGetAll} from "../../../api/Service";
+import {GetAll as ConnectionGetAll} from "../../../api/Connection";
 
 type OptionType = {
     label: string
@@ -27,11 +29,10 @@ type OptionType = {
 }
 
 export default function NoticeAddDialogs(props: {
-    connection: ConnectionDetailData[] | undefined,
     setReload: Dispatch<SetStateAction<boolean>>
     reload: boolean
 }) {
-    const {connection, reload, setReload} = props
+    const {reload, setReload} = props
     const template = useRecoilValue(TemplateState);
     const [open, setOpen] = React.useState(false);
     const nowDate = new Date()
@@ -42,6 +43,7 @@ export default function NoticeAddDialogs(props: {
     const [templateUser, setTemplateUser] = React.useState<OptionType[]>([]);
     const [templateGroup, setTemplateGroup] = React.useState <OptionType[]>([]);
     const [templateNOC, setTemplateNOC] = React.useState<OptionType[]>([]);
+    const [connections, setConnections] = useState<ConnectionDetailData[]>();
     const {enqueueSnackbar} = useSnackbar();
 
     useEffect(() => {
@@ -72,6 +74,16 @@ export default function NoticeAddDialogs(props: {
                 }
                 setTemplateNOC(templateTmp);
             }
+            ConnectionGetAll().then(res => {
+                if (res.error === "") {
+                    const data = res.data;
+                    console.log(data)
+                    setConnections(data.filter((item: ConnectionDetailData) => item.enable && item.open));
+                    setReload(false);
+                } else {
+                    enqueueSnackbar("" + res.error, {variant: "error"});
+                }
+            })
         }
         setReload(false);
     }, [reload]);
@@ -129,7 +141,7 @@ export default function NoticeAddDialogs(props: {
         }
         for (const tmpNOCID of data.noc_id) {
             // const tmpBGP
-            const tmpConnections = connection?.filter(d => d.bgp_router?.noc_id === tmpNOCID && d.enable);
+            const tmpConnections = connections?.filter(d => d.bgp_router?.noc_id === tmpNOCID && d.service?.pass && d.service?.enable);
             if (tmpConnections !== undefined) {
                 for (const tmpConnection of tmpConnections) {
                     const tmpUser = template.user?.filter(d => d.group_id === tmpConnection.service?.group_id && d.level < 3);
@@ -173,10 +185,11 @@ export default function NoticeAddDialogs(props: {
         }
         for (const tmpNOCID of data.noc_id) {
             // const tmpBGP
-            const tmpConnections = connection?.filter(d => d.bgp_router?.noc_id === tmpNOCID && d.enable);
+            const tmpConnections = connections?.filter(d => d.bgp_router?.noc_id === tmpNOCID && d.service?.pass && d.service?.enable);
             if (tmpConnections !== undefined) {
                 for (const tmpConnection of tmpConnections) {
                     const tmpUser = template.user?.filter(d => d.group_id === tmpConnection.service?.group_id && d.level < 3);
+                    console.log("tmpUser", tmpUser)
                     if (tmpUser !== undefined) {
                         if (emails.indexOf(tmpUser[0].email) === -1) {
                             emails += "," + tmpUser[0].email;
@@ -246,11 +259,11 @@ export default function NoticeAddDialogs(props: {
                                 label="Message"
                                 placeholder="Message"
                                 style={{margin: 8}}
-                                value={data.data}
+                                value={data.body}
                                 multiline
                                 rows={10}
                                 onChange={event => {
-                                    setData({...data, data: event.target.value});
+                                    setData({...data, body: event.target.value});
                                 }}
                                 variant="outlined"
                             />
@@ -429,7 +442,7 @@ export default function NoticeAddDialogs(props: {
                 mails={email}
                 template={template?.mail_template}
                 title={data.title}
-                body={data.data}
+                body={data.body}
             />
         </div>
     );
