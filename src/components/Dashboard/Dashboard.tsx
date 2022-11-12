@@ -103,6 +103,7 @@ export default function Dashboard(props: any) {
 
     // Menu Bar
     const [open, setOpen] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
     const [template, setTemplate] = useRecoilState(TemplateState)
     const {enqueueSnackbar} = useSnackbar();
 
@@ -111,6 +112,7 @@ export default function Dashboard(props: any) {
             if (res.error === "") {
                 setTemplate(res.data);
                 console.log(template)
+                setLoading(false);
             } else {
                 enqueueSnackbar("" + res.error, {variant: "error"});
             }
@@ -268,13 +270,16 @@ export default function Dashboard(props: any) {
                     <Divider/>
                     {/*<List>{secondaryList}</List>*/}
                 </Drawer>
-                <Container component="main" sx={{mt: 10}}>
+                {
+                    !loading &&
+                  <Container component="main" sx={{mt: 10}}>
                     <Typography variant="h5" component="h3">
                         {props.title}
                     </Typography>
                     <br/>
-                    {props.children}
-                </Container>
+                      {props.children}
+                  </Container>
+                }
             </Box>
         </ThemeProvider>
     );

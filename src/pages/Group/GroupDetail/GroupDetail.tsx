@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Dashboard from "../../../components/Dashboard/Dashboard";
-import {Get, GetTemplate} from "../../../api/Group";
+import {Get} from "../../../api/Group";
 import Users from "./User";
 import {
     CircularProgress, Grid
@@ -15,8 +15,6 @@ import {useSnackbar} from "notistack";
 import {GroupMemo} from "./Memo";
 import {MailAutoSendDialogs, MailSendDialogs} from "../Mail";
 import {StyledDivRoot1} from "../../../style";
-import {useRecoilState, useRecoilValue} from "recoil";
-import {TemplateState} from "../../../api/Recoil";
 
 
 function getTitle(id: number, org: string, org_en: string, loading: boolean): string {
@@ -35,7 +33,6 @@ export default function GroupDetail() {
     const [loading, setLoading] = useState(true)
     const [group, setGroup] = useState(DefaultGroupDetailData);
     const [openMailSendDialog, setOpenMailSendDialog] = useState(false);
-    const [template, setTemplate] = useRecoilState(TemplateState)
     const [openMailAutoSendDialog, setOpenMailAutoSendDialog] = useState("");
     const [sendAutoEmail, setSendAutoEmail] = useState("");
     let id: string | undefined;
@@ -67,30 +64,14 @@ export default function GroupDetail() {
                         }
                     }
                 }
-
-                if (template === undefined || template.services === undefined) {
-                    GetTemplate().then(res => {
-                        if (res.error === "") {
-                            setTemplate(res.data);
-                            changeStatus(mails)
-                        } else {
-                            enqueueSnackbar("" + res.error, {variant: "error"});
-                        }
-                    })
-                } else {
-                    changeStatus(mails)
-                }
+                setSendAutoEmail(mails);
+                setLoading(false);
+                setReload(false);
             } else {
                 enqueueSnackbar("" + res.error, {variant: "error"});
             }
         })
     }, []);
-
-    const changeStatus = (mails: string) => {
-        setSendAutoEmail(mails);
-        setLoading(false);
-        setReload(false);
-    }
 
     return (
         <Dashboard title={getTitle(group.ID, group.org, group.org_en, loading)}>
