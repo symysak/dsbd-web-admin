@@ -84,7 +84,7 @@ export default function Token() {
             </FormControl>
             {
                 tokens.filter(token => checkToken(token)).map((token: TokenDetailData) => (
-                    <StyledCard>
+                    <StyledCard key={"token_" + token.ID}>
                         <CardContent>
                             <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {token.ID}

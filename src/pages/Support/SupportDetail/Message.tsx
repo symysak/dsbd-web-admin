@@ -44,7 +44,7 @@ export const MessageRight = (props: { message: string; timestamp: string; }) => 
     const timestamp = props.timestamp ? props.timestamp : '';
     const divRef = useRef<HTMLDivElement>(null);
 
-    // @ts-ignore
+    // eslint-disable @ts-ignore
     return (
         <StyledMessageRowRight>
             <StyledMessageOrange>

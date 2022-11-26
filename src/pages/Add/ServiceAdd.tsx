@@ -101,25 +101,25 @@ export default function ServiceAdd() {
 
         // L2, L3 Static, L3 BGP, CoLocation
         if (template.services?.find(serviceTemplate => serviceTemplate.type === values.service_type)!.need_jpnic) {
-            obj["org"] = Yup.string()
+            obj.org = Yup.string()
                 .required('Org is required')
                 .max(255, 'Org must not exceed 255 characters')
-            obj["org_en"] = Yup.string()
+            obj.org_en = Yup.string()
                 .required('Org(English) is required')
                 .max(255, 'Org(English) must not exceed 255 characters')
-            obj["postcode"] = Yup.string()
+            obj.postcode = Yup.string()
                 .required('PostCode is required')
                 .min(8, 'PostCode must be at least 8 characters')
                 .max(8, 'PostCode must not exceed 8 characters')
-            obj["address"] = Yup.string()
+            obj.address = Yup.string()
                 .required('Address is required')
                 .min(6, 'Address must be at least 6 characters')
                 .max(255, 'Address must not exceed 255 characters')
-            obj["address_en"] = Yup.string()
+            obj.address_en = Yup.string()
                 .required('Address(English) is required')
                 .min(6, 'Address(English) must be at least 6 characters')
                 .max(255, 'Address(English) must not exceed 255 characters')
-            obj["jpnic_admin"] = Yup.object().shape({
+            obj.jpnic_admin = Yup.object().shape({
                 hidden: Yup.bool(),
                 is_group: Yup.bool(),
                 org: Yup.string()
@@ -170,7 +170,7 @@ export default function ServiceAdd() {
                 fax: Yup.string(),
                 // .matches(phoneRegExp, '電話番号の形式に誤りがあります'),
             })
-            obj["jpnic_tech"] = Yup.array().of(
+            obj.jpnic_tech = Yup.array().of(
                 Yup.object().shape({
                     hidden: Yup.bool(),
                     is_group: Yup.bool(),
@@ -226,19 +226,19 @@ export default function ServiceAdd() {
         }
         // Transit AS
         if (values.service_type === "IP3B") {
-            obj["bgp_comment"] = Yup.string()
+            obj.bgp_comment = Yup.string()
                 .required(`入力してください`)
         }
         // is_ipv4
         if (isIpv4) {
-            obj["route_v4"] = Yup.string()
+            obj.route_v4 = Yup.string()
                 .required('ネットワーク名を入力してください')
                 .min(1, 'Network Name must be at least 1 characters')
                 .max(12, 'Network Name must not exceed 12 characters')
                 .matches(v4NetworkNameRegExp, '文字形式に誤りがあります。')
             // L2, L3 Static, L3 BGP, CoLocation
             if (template.services?.find(serviceTemplate => serviceTemplate.type === values.service_type)!.need_jpnic) {
-                obj["plan"] = Yup.array().of(
+                obj.plan = Yup.array().of(
                     Yup.object().shape({
                         name: Yup.string()
                             .min(1, '文字を入力してください'),
@@ -255,7 +255,7 @@ export default function ServiceAdd() {
 
         // is_ipv6
         if (isIpv6) {
-            obj["route_v6"] = Yup.string()
+            obj.route_v6 = Yup.string()
                 .required('ネットワーク名を入力してください')
                 .min(1, 'Network Name must be at least 1 characters')
                 .max(12, 'Network Name must not exceed 12 characters')
@@ -518,13 +518,14 @@ export default function ServiceAdd() {
         enqueueSnackbar("入力した内容を確認してください。", {variant: "error"});
     };
 
-    // @ts-ignore
+    // eslint-disable @ts-ignore
     return (
         <Dashboard title={"サービス情報の追加"}>
             <Fragment>
                 <Grid container spacing={3}>
                     <br/>
                     <Grid item xs={12}>
+                        {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("service_type")}>
                             <FormLabel>1. ご希望のサービスをお選びください</FormLabel>
                             <FormHelperText>
@@ -576,6 +577,7 @@ export default function ServiceAdd() {
                                 isIpv4 &&
                                 getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                               <div>
+                                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                                 <p>(英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)</p>
                                 <Box sx={{minWidth: 20}}>
                                   <Select aria-label="gender" id="ipv4_subnet" value={ipv4Prefix}
@@ -583,7 +585,7 @@ export default function ServiceAdd() {
                                               setIpv4Prefix(event.target.value)
                                               const tmpPrefix = template.ipv4?.find(item => item === event.target.value);
                                               if (tmpPrefix != null) {
-                                                  const addressCount = Math.pow(2, 32 - parseInt(tmpPrefix.substr(1)))
+                                                  const addressCount = Math.pow(2, 32 - parseInt(tmpPrefix.substr(1), 10))
                                                   setIpv4Count(addressCount)
                                               }
                                           }}
@@ -624,6 +626,7 @@ export default function ServiceAdd() {
                                 isIpv6 &&
                                 getBool(template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) &&
                               <div>
+                                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                                 <p>(英大文字, 数字, "-" (ハイフン) のみを用いて12文字以上)</p>
                                 <Box sx={{minWidth: 20}}>
                                   <Select aria-label="gender" id="ipv6_subnet" value={ipv6Prefix}
@@ -662,7 +665,7 @@ export default function ServiceAdd() {
                               <br/>
                                 {controlledPlanFields.map((field, index) => {
                                     return (
-                                        <StyledRootForm1 noValidate autoComplete="off">
+                                        <StyledRootForm1 noValidate autoComplete="off" key={"ipv4_plan"}>
                                             <StyledTextFieldMedium
                                                 required
                                                 key={"name_" + index}
@@ -1104,7 +1107,7 @@ export default function ServiceAdd() {
                           <div>（注意：郵便番号はハイフンを入力してください。）</div>
                             {controlledJpnicTechFields.map((field, index) => {
                                 return (
-                                    <StyledRootForm1 noValidate autoComplete="off">
+                                    <StyledRootForm1 noValidate autoComplete="off" key={"tech"}>
                                         <FormControlLabel
                                             control={<Controller
                                                 control={control}
@@ -1384,7 +1387,6 @@ export default function ServiceAdd() {
                                     render={
                                         ({
                                              field: {onChange, value},
-                                             fieldState: {}
                                          }) => (
                                             <DesktopDatePicker
                                                 disablePast

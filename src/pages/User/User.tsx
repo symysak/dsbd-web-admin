@@ -81,7 +81,7 @@ export default function User() {
             </FormControl>
             {
                 users.filter(user => checkUser(user)).map((user: UserDetailData) => (
-                    <StyledCard>
+                    <StyledCard key={"user_" + user.ID}>
                         <CardContent>
                             <StyledTypographyTitle color="textSecondary" gutterBottom>
                                 ID: {user.ID}

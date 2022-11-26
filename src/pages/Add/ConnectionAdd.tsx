@@ -62,18 +62,18 @@ export default function ConnectionAdd() {
         }
 
         if ((template.connections?.find(ct => ct.type === values.connection_type)?.need_comment ?? false)) {
-            obj["connection_comment"] = Yup.string()
+            obj.connection_comment = Yup.string()
                 .required('その他の項目を入力してください')
         }
 
         if ((template.connections?.find(ct => ct.type === values.connection_type)?.need_internet ?? false)) {
-            obj["ntt"] = Yup.string()
+            obj.ntt = Yup.string()
                 .required('接続情報(NTT)を選択してください')
                 .min(1, "正しく選択してください")
-            obj["ntt_comment"] = Yup.string()
-            obj["address"] = Yup.string()
+            obj.ntt_comment = Yup.string()
+            obj.address = Yup.string()
                 .required("終端先ユーザの市町村を入力してください")
-            obj["term_ip"] = Yup.string()
+            obj.term_ip = Yup.string()
                 .required("終端アドレスを入力してください")
         }
 
@@ -83,10 +83,10 @@ export default function ConnectionAdd() {
                 ||
                 template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
             ) {
-                obj["ipv4_route"] = Yup.string()
+                obj.ipv4_route = Yup.string()
                     .required('IPv4経路広告方法を選択してください')
                     .min(1, "正しく選択してください")
-                obj["ipv4_route_comment"] = Yup.string()
+                obj.ipv4_route_comment = Yup.string()
             }
             // console.log(group.services?.find(service => service.ID === serviceID)!.ip!)
             if (
@@ -94,10 +94,10 @@ export default function ConnectionAdd() {
                 ||
                 template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_global_as
             ) {
-                obj["ipv6_route"] = Yup.string()
+                obj.ipv6_route = Yup.string()
                     .required('IPv6経路広告方法を選択してください')
                     .min(1, "正しく選択してください")
-                obj["ipv6_route_comment"] = Yup.string()
+                obj.ipv6_route_comment = Yup.string()
             }
         }
 
@@ -206,6 +206,7 @@ export default function ConnectionAdd() {
             <Fragment>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
+                        {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("service_code")}>
                             <FormLabel component="legend">1. 接続情報を登録するサービスコードを選択してください。</FormLabel>
                             <div>接続情報を登録するサービスコードを以下からお選びください。</div>
@@ -306,6 +307,7 @@ export default function ConnectionAdd() {
                     {
                         ipv4Route === "etc" &&
                       <Grid item xs={12}>
+                          {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
                           <FormLabel component="legend">1.1.1. IPv4 BGP広報経路(その他)</FormLabel>
                           <StyledTextFieldLong
@@ -321,6 +323,7 @@ export default function ConnectionAdd() {
                     {
                         ipv6Route === "etc" &&
                       <Grid item xs={12}>
+                          {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
                           <FormLabel component="legend">1.1.2. IPv6 BGP広報経路(その他)</FormLabel>
                           <StyledTextFieldLong
@@ -336,6 +339,7 @@ export default function ConnectionAdd() {
                     {
                         serviceType !== "" &&
                       <Grid item xs={12}>
+                          {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("connection_template_id")}>
                           <FormLabel>2. 接続方式をお選びください</FormLabel>
                           <div>接続情報を登録するサービスコードを以下からお選びください。</div>
@@ -373,6 +377,7 @@ export default function ConnectionAdd() {
                     {
                         (template.connections?.find(ct => ct.type === connectionType)?.need_comment ?? false) &&
                       <Grid item xs={12}>
+                          {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("comment")}>
                           <FormLabel component="legend">2.1. その他</FormLabel>
                           <div> Cross Connectを選択された方は以下のフォームに詳しい情報(ラック情報など)をご記入ください。</div>
@@ -392,6 +397,7 @@ export default function ConnectionAdd() {
                       </Grid>
                     }
                     <Grid item xs={12}>
+                        {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("preferred_ap")}>
                             <FormLabel component="legend">3.1. 希望接続場所をお選びください</FormLabel>
                             <FormHelperText>
@@ -422,6 +428,7 @@ export default function ConnectionAdd() {
                     {
                         (template.connections?.find(ct => ct.type === connectionType)?.need_internet ?? false) &&
                       <Grid item xs={12}>
+                          {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("address")}>
                           <FormLabel component="legend">3.2. 終端先ユーザの都道府県市町村</FormLabel>
                           <div>都道府県と市町村のみ記入してください。例) 大阪府貝塚市</div>
@@ -441,6 +448,7 @@ export default function ConnectionAdd() {
                     {
                         (template.connections?.find(ct => ct.type === connectionType)?.need_internet ?? false) &&
                       <Grid item xs={12}>
+                          {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
                           <FormLabel component="legend">3.3. トンネル終端IPアドレス</FormLabel>
                           <div>トンネル接続をご希望の方はトンネル終端先のIPv6アドレスをご記入ください</div>
@@ -460,6 +468,7 @@ export default function ConnectionAdd() {
                     {
                         (template.connections?.find(ct => ct.type === connectionType)?.need_internet ?? false) &&
                       <Grid item xs={12}>
+                          {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("ntt_template_id")}>
                           <FormLabel component="legend">3.4.
                             接続終端場所にNTTフレッツ光が利用可能かをお知らせください</FormLabel>
@@ -494,6 +503,7 @@ export default function ConnectionAdd() {
                     {
                         ntt === "etc" &&
                       <Grid item xs={12}>
+                          {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("term_ip")}>
                           <FormLabel component="legend">3.4.1. 接続終端場所の利用状況(その他)</FormLabel>
                           <StyledTextFieldLong
@@ -507,6 +517,7 @@ export default function ConnectionAdd() {
                       </Grid>
                     }
                     <Grid item xs={12}>
+                        {/* eslint-disable-next-line no-prototype-builtins */}
                         <FormControl component="fieldset" error={errors?.hasOwnProperty("monitor")}>
                             <FormLabel component="legend">4. ネットワーク監視</FormLabel>
                             <div>当団体によるネットワーク監視をご希望の場合はチェックを入れて下さい</div>

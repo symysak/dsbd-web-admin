@@ -298,13 +298,9 @@ export function UserMenu() {
     };
 
     const clickLogout = () => {
-        Logout().then(res => {
+        Logout().then(() => {
                 sessionStorage.removeItem('ACCESS_TOKEN');
                 navigate('/login');
-                if (res === "") {
-                } else {
-
-                }
             }
         );
     }

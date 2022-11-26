@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import {Delete, GetAll} from "../../api/Notice";
 import {
-    ConnectionDetailData,
     DefaultNoticeDataArray,
     NoticeData
 } from "../../interface";
@@ -120,7 +119,7 @@ export default function Notice() {
                 </RadioGroup>
             </FormControl>
             {
-                tickets.filter(notice => checkDate(notice.start_time, notice.end_time)).map((notice: NoticeData, index) => (
+                tickets.filter(notice => checkDate(notice.start_time, notice.end_time)).map((notice: NoticeData) => (
                     <StyledCard key={"notice_id_" + notice.ID}>
                         <CardContent>
                             <StyledTypographyTitle color="textSecondary" gutterBottom>

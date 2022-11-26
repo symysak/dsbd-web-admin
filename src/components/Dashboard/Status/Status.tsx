@@ -50,13 +50,12 @@ export function GroupStudent(props: { student: boolean, date: string }): any {
                 label={label}
             />
         );
-    } else {
-        return (
-            <Chip
-                size="small"
-                color="secondary"
-                label="社会人"
-            />
-        );
     }
+    return (
+        <Chip
+            size="small"
+            color="secondary"
+            label="社会人"
+        />
+    );
 }

@@ -12,15 +12,14 @@ export function Open(props: { open: boolean }): any {
                 label="開通"
             />
         );
-    } else {
-        return (
-            <Chip
-                size="small"
-                color="secondary"
-                label="未開通"
-            />
-        );
     }
+    return (
+        <Chip
+            size="small"
+            color="secondary"
+            label="未開通"
+        />
+    );
 }
 
 
@@ -34,14 +33,13 @@ export function Enable(props: { open: boolean }): any {
                 label="有効"
             />
         );
-    } else {
-        return (
-            <Chip
-                size="small"
-                color="secondary"
-                label="無効"
-            />
-        );
     }
+    return (
+        <Chip
+            size="small"
+            color="secondary"
+            label="無効"
+        />
+    );
 }
 
