@@ -358,8 +358,6 @@ export default function ServiceAdd() {
         const subscription = watch((value, {name, type}) => {
             // Plan計算
             if (name?.match(/plan./)) {
-                console.log("plan")
-                console.log(value.plan)
                 let after = 0;
                 let half_year = 0;
                 let one_year = 0;
@@ -396,7 +394,6 @@ export default function ServiceAdd() {
     const serviceType = watch("service_type");
 
     const onSubmit = (data: any, e: any) => {
-        console.log(data, e)
         const start_date = data.start_date.getFullYear() + '-' + ('00' + (data.start_date.getMonth() + 1)).slice(-2) +
             '-' + ('00' + (data.start_date.getDate())).slice(-2)
         let end_date = undefined;
@@ -504,25 +501,20 @@ export default function ServiceAdd() {
             request.bgp_comment = data.bgp_comment;
         }
 
-        console.log(request)
-
         if (groupID == null) {
             enqueueSnackbar("Group IDのフォーマットが異なります。", {variant: "error"});
         }
         Post(Number(groupID), request).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
                 navigate("/dashboard/group/" + groupID);
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
         })
 
     };
     const onError = (errors: any, e: any) => {
-        console.log(errors, e)
         enqueueSnackbar("入力した内容を確認してください。", {variant: "error"});
     };
 
@@ -592,7 +584,6 @@ export default function ServiceAdd() {
                                               const tmpPrefix = template.ipv4?.find(item => item === event.target.value);
                                               if (tmpPrefix != null) {
                                                   const addressCount = Math.pow(2, 32 - parseInt(tmpPrefix.substr(1)))
-                                                  console.log("addressCount: " + addressCount)
                                                   setIpv4Count(addressCount)
                                               }
                                           }}

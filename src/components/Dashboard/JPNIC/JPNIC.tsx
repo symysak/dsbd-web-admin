@@ -7,7 +7,6 @@ import {
     DialogTitle,
     FormControlLabel,
     Grid,
-    TextField
 } from "@mui/material";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {DefaultServiceJPNICData, JPNICData} from "../../../interface";
@@ -50,11 +49,9 @@ export function JPNICDetail(props: {
             if (jpnic.ID === 0) {
                 PostJPNICAdmin(serviceID, jpnicCopy).then(res => {
                     if (res.error === "") {
-                        console.log(res.data);
                         enqueueSnackbar('Request Success', {variant: "success"});
                         setLockInfo(true)
                     } else {
-                        console.log(res.error);
                         enqueueSnackbar(res.error, {variant: "error"});
                     }
 
@@ -64,11 +61,9 @@ export function JPNICDetail(props: {
             } else {
                 PutJPNICAdmin(jpnicCopy.ID, jpnicCopy).then(res => {
                     if (res.error === "") {
-                        console.log(res.data);
                         enqueueSnackbar('Request Success', {variant: "success"});
                         setLockInfo(true)
                     } else {
-                        console.log(res.error);
                         enqueueSnackbar(String(res.error), {variant: "error"});
                     }
 
@@ -79,11 +74,9 @@ export function JPNICDetail(props: {
         } else {
             PutJPNICTech(jpnicCopy.ID, jpnicCopy).then(res => {
                 if (res.error === "") {
-                    console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
                     setLockInfo(true)
                 } else {
-                    console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});
                 }
 
@@ -97,11 +90,9 @@ export function JPNICDetail(props: {
         if (deleteJPNICTech) {
             DeleteJPNICTech(jpnicCopy.ID).then(res => {
                 if (res.error === "") {
-                    console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
                     setLockInfo(true)
                 } else {
-                    console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});
                 }
                 reload(true);
@@ -115,21 +106,21 @@ export function JPNICDetail(props: {
             <StyledRootForm noValidate autoComplete="off">
                 <FormControlLabel
                     value="グループハンドル"
-                    control={<Checkbox />}
+                    control={<Checkbox/>}
                     label="グループハンドル"
                     labelPlacement="end"
                     checked={jpnicCopy.is_group}
-                    onChange={event => {
+                    onChange={() => {
                         setJPNICCopy({...jpnicCopy, hidden: !jpnicCopy.is_group});
                     }}
                 />
                 <FormControlLabel
                     value="非公開"
-                    control={<Checkbox />}
+                    control={<Checkbox/>}
                     label="非公開"
                     labelPlacement="end"
                     checked={jpnicCopy.hidden}
-                    onChange={event => {
+                    onChange={() => {
                         setJPNICCopy({...jpnicCopy, hidden: !jpnicCopy.hidden});
                     }}
                 />
@@ -373,10 +364,10 @@ export function JPNICDetail(props: {
                 </Grid>
                 {
                     !jpnicAdmin &&
-                    <Grid item xs={12} sm={4}>
-                        <DeleteAlertDialog key={"delete_alert_dialog_" + jpnicCopy.ID}
-                                           setDeleteProcess={setDeleteJPNICTech}/>
-                    </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <DeleteAlertDialog key={"delete_alert_dialog_" + jpnicCopy.ID}
+                                       setDeleteProcess={setDeleteJPNICTech}/>
+                  </Grid>
                 }
             </Grid>
 
@@ -404,10 +395,8 @@ export function JPNICTechAdd(props: {
     const addInfo = () => {
         PostJPNICTech(serviceID, jpnic).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
@@ -435,21 +424,21 @@ export function JPNICTechAdd(props: {
                     <StyledRootForm noValidate autoComplete="off">
                         <FormControlLabel
                             value="グループハンドル"
-                            control={<Checkbox />}
+                            control={<Checkbox/>}
                             label="グループハンドル"
                             labelPlacement="end"
                             checked={jpnic.is_group}
-                            onChange={event => {
+                            onChange={() => {
                                 setJPNIC({...jpnic, is_group: !jpnic.is_group});
                             }}
                         />
                         <FormControlLabel
                             value="非公開"
-                            control={<Checkbox />}
+                            control={<Checkbox/>}
                             label="非公開"
                             labelPlacement="end"
                             checked={jpnic.hidden}
-                            onChange={event => {
+                            onChange={() => {
                                 setJPNIC({...jpnic, hidden: !jpnic.hidden});
                             }}
                         />

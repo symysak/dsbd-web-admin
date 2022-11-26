@@ -9,11 +9,9 @@ export function Login(username: string, password: string): Promise<string> {
             'PASS': password
         }
     }).then(res => {
-        console.log(res.data.token[0]);
         sessionStorage.setItem("ACCESS_TOKEN", res.data.token[0].access_token);
         return "";
     }).catch(err => {
-        console.log(err);
         return err;
     })
 }
@@ -24,11 +22,9 @@ export function Logout(): Promise<string> {
             'Content-Type': 'application/json',
             'ACCESS_TOKEN': sessionStorage.getItem('ACCESS_TOKEN')!,
         }
-    }).then(res => {
-        console.log(res.data.token[0]);
+    }).then(() => {
         return "";
     }).catch(err => {
-        console.log(err);
         return err;
     })
 }

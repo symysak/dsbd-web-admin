@@ -21,9 +21,7 @@ export function GroupStatusButton(props: {
         data.pass = pass;
         Put(data.ID, data).then(res => {
             if (res.error === "") {
-                console.log(res.data);
-            } else {
-                console.log(res.error);
+                // console.log(res.error);
             }
 
             if (pass) {
@@ -39,9 +37,7 @@ export function GroupStatusButton(props: {
         data.add_allow = add_allow;
         Put(data.ID, data).then(res => {
             if (res.error === "") {
-                console.log(res.data);
-            } else {
-                console.log(res.error);
+                // console.log(res.error);
             }
 
             handleClose();
@@ -100,7 +96,6 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
 
         Put(data.ID, data).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
                 enqueueSnackbar(String(res.error), {variant: "error"});
@@ -123,19 +118,19 @@ export function GroupLockButton(props: { data: GroupDetailData, reload: Dispatch
                 変更を禁止
             </StyledButton1>
         )
-    } else {
-        return (
-            <StyledButton1
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={() => changeLock(true)}
-                color={"primary"}
-                variant="outlined"
-            >
-                変更を許可
-            </StyledButton1>
-        )
     }
+    return (
+        <StyledButton1
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={() => changeLock(true)}
+            color={"primary"}
+            variant="outlined"
+        >
+            変更を許可
+        </StyledButton1>
+    )
+
 }
 
 export function GroupAbolition(): any {

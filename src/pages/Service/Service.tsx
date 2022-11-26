@@ -29,7 +29,6 @@ export default function Service() {
         if (reload) {
             GetAll().then(res => {
                 if (res.error === "") {
-                    console.log(res);
                     setServices(res.data);
                     setInitServices(res.data);
                     setReload(false);
@@ -43,9 +42,7 @@ export default function Service() {
     useEffect(() => {
         GetTemplate().then(res => {
             if (res.error === "") {
-                console.log(res);
                 setTemplate(res.data);
-                console.log(template);
             } else {
                 enqueueSnackbar("" + res.error, {variant: "error"});
             }
@@ -59,11 +56,12 @@ export default function Service() {
     const checkConnection = (service: ServiceDetailData) => {
         if (value === 1) {
             return service.pass
-        } else if (value === 2) {
-            return !service.pass
-        } else {
-            return true;
         }
+        if (value === 2) {
+            return !service.pass
+        }
+        return true;
+
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

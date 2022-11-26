@@ -28,16 +28,16 @@ export const StyledAvatar = styled(Avatar)(({theme}) => ({
 }))
 
 // paper
-export const StyledPaperRootInput = styled(Paper)(({theme}) => ({
+export const StyledPaperRootInput = styled(Paper)(() => ({
     minWidth: 100,
     marginBottom: 20,
 }))
 
-export const StyledDisplayName = styled(Paper)(({theme}) => ({
+export const StyledDisplayName = styled(Paper)(() => ({
     marginLeft: "20px",
 }))
 
-export const StyledPaper1 = styled(Paper)(({theme}) => ({
+export const StyledPaper1 = styled(Paper)(() => ({
     width: '100vw',
     height: '100vh',
     // maxWidth: '1000px',
@@ -48,7 +48,7 @@ export const StyledPaper1 = styled(Paper)(({theme}) => ({
     position: 'relative'
 }))
 
-export const StyledPaperMessage = styled(Paper)(({theme}) => ({
+export const StyledPaperMessage = styled(Paper)(() => ({
     width: 'calc( 100% - 20px )',
     margin: 10,
     backgroundColor: "rgb(113, 147, 193)",
@@ -57,7 +57,7 @@ export const StyledPaperMessage = styled(Paper)(({theme}) => ({
     height: 'calc( 100% - 80px )'
 }))
 
-export const StyledBlueMessage = styled('div')(({theme}) => ({
+export const StyledBlueMessage = styled('div')(() => ({
     position: "relative",
     marginLeft: "20px",
     marginBottom: "10px",
@@ -92,7 +92,7 @@ export const StyledBlueMessage = styled('div')(({theme}) => ({
     },
 }))
 
-export const StyledOrangeMessage = styled('div')(({theme}) => ({
+export const StyledOrangeMessage = styled('div')(() => ({
     position: "relative",
     marginRight: "20px",
     marginBottom: "10px",
@@ -132,16 +132,16 @@ export const StyledTypographyHeading = styled(Typography)(({theme}) => ({
     fontSize: theme.typography.pxToRem(15),
 }))
 
-export const StyledTypographyTitle = styled(Typography)(({theme}) => ({
+export const StyledTypographyTitle = styled(Typography)(() => ({
     fontSize: 14,
 }))
 
 // table
-export const StyledTable1 = styled(Table)(({theme}) => ({
+export const StyledTable1 = styled(Table)(() => ({
     minWidth: 400,
 }))
 
-export const StyledTable2 = styled(Table)(({theme}) => ({
+export const StyledTable2 = styled(Table)(() => ({
     minWidth: 500,
 }))
 
@@ -155,7 +155,7 @@ export const StyledWrapForm = styled('form')(({theme}) => ({
 }))
 
 // container
-export const StyledDivContainer = styled('div')(({theme}) => ({
+export const StyledDivContainer = styled('div')(() => ({
     width: '100vw',
     height: '100vh',
     display: 'flex',
@@ -168,44 +168,44 @@ export const StyledContainer1 = styled(Container)(({theme}) => ({
 }))
 
 // TextField
-export const StyledWrapText = styled(TextField)(({theme}) => ({
+export const StyledWrapText = styled(TextField)(() => ({
     width: "100%"
 }))
 
-export const StyledButton1 = styled(Button)(({theme}) => ({
+export const StyledButton1 = styled(Button)(() => ({
     marginBottom: 10
 }))
 
-export const StyledButtonSpaceLeft = styled(Button)(({theme}) => ({
+export const StyledButtonSpaceLeft = styled(Button)(() => ({
     marginLeft: 5,
 }))
 
-export const StyledButtonSpaceRight = styled(Button)(({theme}) => ({
+export const StyledButtonSpaceRight = styled(Button)(() => ({
     marginRight: 5,
 }))
 
-export const StyledButtonSpaceTop = styled(Button)(({theme}) => ({
+export const StyledButtonSpaceTop = styled(Button)(() => ({
     marginTop: 5,
 }))
 
 // card
-export const StyledCardRoot1 = styled(Card)(({theme}) => ({
+export const StyledCardRoot1 = styled(Card)(() => ({
     width: '100%',
 }))
 
-export const StyledCardRoot2 = styled(Card)(({theme}) => ({
+export const StyledCardRoot2 = styled(Card)(() => ({
     '& > *': {
         borderBottom: 'unset',
     },
 }))
 
-export const StyledCardRoot3 = styled(Card)(({theme}) => ({
+export const StyledCardRoot3 = styled(Card)(() => ({
     minWidth: 275,
     marginBottom: 5,
 }))
 
 // div
-export const StyledDivRoot1 = styled('div')(({theme}) => ({
+export const StyledDivRoot1 = styled('div')(() => ({
     width: '100%',
 }))
 
@@ -228,7 +228,7 @@ export const StyledDivRoot2 = styled("div")(({theme}) => ({
     marginLeft: theme.spacing(2.5),
 }));
 
-export const StyledDiv1 = styled("div")(({theme}) => ({
+export const StyledDiv1 = styled("div")(() => ({
     flexBasis: '33.33%',
 }));
 
@@ -238,7 +238,7 @@ export const StyledDivLargeHeading = styled('div')(({theme}) => ({
     marginBottom: 10
 }))
 
-export const StyledDivText = styled('div')(({theme}) => ({
+export const StyledDivText = styled('div')(() => ({
     whiteSpace: 'pre-line',
 }))
 
@@ -265,44 +265,44 @@ export const StyledTextFieldWrap = styled(TextField)(({theme}) => ({
     height: "150px"
 }))
 
-export const StyledSelect1 = styled(Select)(({theme}) => ({
+export const StyledSelect1 = styled(Select)(() => ({
     width: '30ch',
     marginTop: 10,
     marginRight: 5,
 }))
 
-export const StyledTextFieldShort = styled(TextField)(({theme}) => ({
+export const StyledTextFieldShort = styled(TextField)(() => ({
     width: '30ch',
     marginBottom: 10,
     marginRight: 5,
 }))
 
-export const StyledTextFieldVeryShort1 = styled(TextField)(({theme}) => ({
+export const StyledTextFieldVeryShort1 = styled(TextField)(() => ({
     width: '20ch',
     marginBottom: 10,
     marginRight: 5,
 }))
 
-export const StyledTextFieldVeryShort2 = styled(TextField)(({theme}) => ({
+export const StyledTextFieldVeryShort2 = styled(TextField)(() => ({
     width: '20ch',
     marginBottom: 10,
     marginLeft: 5,
     marginRight: 5,
 }))
 
-export const StyledTextFieldTooVeryShort = styled(TextField)(({theme}) => ({
+export const StyledTextFieldTooVeryShort = styled(TextField)(() => ({
     width: '10ch',
     marginBottom: 10,
     marginRight: 5,
 }))
 
-export const StyledTextFieldMedium = styled(TextField)(({theme}) => ({
+export const StyledTextFieldMedium = styled(TextField)(() => ({
     width: '35ch',
     marginBottom: 10,
     marginRight: 5,
 }))
 
-export const StyledTextFieldLong = styled(TextField)(({theme}) => ({
+export const StyledTextFieldLong = styled(TextField)(() => ({
     "@media screen and (min-width:781px)": {
         width: '60ch',
         marginBottom: 10,
@@ -310,7 +310,7 @@ export const StyledTextFieldLong = styled(TextField)(({theme}) => ({
     }
 }))
 
-export const StyledTextFieldVeryLong = styled(TextField)(({theme}) => ({
+export const StyledTextFieldVeryLong = styled(TextField)(() => ({
     "@media screen and (min-width:1001px)": {
         width: '100ch',
         marginBottom: 10,
@@ -319,28 +319,28 @@ export const StyledTextFieldVeryLong = styled(TextField)(({theme}) => ({
 }))
 
 // chip
-export const StyledChip1 = styled(Chip)(({theme}) => ({
+export const StyledChip1 = styled(Chip)(() => ({
     marginBottom: 10,
 }))
 
-export const StyledChip2 = styled(Chip)(({theme}) => ({
+export const StyledChip2 = styled(Chip)(() => ({
     marginRight: 5,
 }))
 
 // table row
-export const StyledTableRowRoot = styled(TableRow)(({theme}) => ({
+export const StyledTableRowRoot = styled(TableRow)(() => ({
     '& > *': {
         borderBottom: 'unset',
     },
 }))
 
 // table
-export const StyledTableRoot = styled(Table)(({theme}) => ({
+export const StyledTableRoot = styled(Table)(() => ({
     minWidth: 400,
 }))
 
 // AccordionDetails
-export const StyledAccordionDetails = styled(AccordionDetails)(({theme}) => ({
+export const StyledAccordionDetails = styled(AccordionDetails)(() => ({
     alignItems: 'center',
 }))
 
@@ -350,19 +350,19 @@ export const StyledFormControlFormSelect = styled(FormControl)(({theme}) => ({
     minWidth: 200,
 }))
 
-export const StyledFormControlFormShort = styled(FormControl)(({theme}) => ({
+export const StyledFormControlFormShort = styled(FormControl)(() => ({
     width: '30ch',
     marginBottom: 10,
     marginRight: 5,
 }))
 
-export const StyledFormControlFormMedium = styled(FormControl)(({theme}) => ({
+export const StyledFormControlFormMedium = styled(FormControl)(() => ({
     width: '35ch',
     marginBottom: 10,
     marginRight: 10,
 }))
 
-export const StyledFormControlFormLong = styled(FormControl)(({theme}) => ({
+export const StyledFormControlFormLong = styled(FormControl)(() => ({
     "@media screen and (min-width:781px)": {
         width: '60ch',
         marginBottom: 10,

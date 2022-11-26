@@ -111,7 +111,6 @@ export default function Dashboard(props: any) {
         GetTemplate().then(res => {
             if (res.error === "") {
                 setTemplate(res.data);
-                console.log(template)
                 setLoading(false);
             } else {
                 enqueueSnackbar("" + res.error, {variant: "error"});
@@ -302,7 +301,6 @@ export function UserMenu() {
         Logout().then(res => {
                 sessionStorage.removeItem('ACCESS_TOKEN');
                 navigate('/login');
-                console.log(res)
                 if (res === "") {
                 } else {
 

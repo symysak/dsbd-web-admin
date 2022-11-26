@@ -27,7 +27,6 @@ export default function Group() {
     useEffect(() => {
         GetAll().then(res => {
             if (res.error === "") {
-                console.log(res);
                 setGroups(res.data);
                 setInitGroups(res.data);
             } else {
@@ -43,11 +42,12 @@ export default function Group() {
     const checkGroup = (group: GroupDetailData) => {
         if (value === 1) {
             return group.expired_status === 0;
-        } else if (value === 2) {
-            return group.expired_status !== 0;
-        } else {
-            return true;
         }
+        if (value === 2) {
+            return group.expired_status !== 0;
+        }
+        return true;
+
     }
 
     const handleFilter = (search: string) => {

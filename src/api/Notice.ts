@@ -14,7 +14,6 @@ export function Post(data: NoticeRegisterData): Promise<{ error: string; data: a
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -34,7 +33,6 @@ export function Delete(id: number): Promise<{ error: string; data: any }> {
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -54,7 +52,6 @@ export function Put(id: number, data: NoticeData): Promise<{ error: string; data
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -69,13 +66,11 @@ export function GetAll(): Promise<{ error: string, data: any }> {
             ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
-        console.log(res.data);
         return {
             error: "",
             data: res.data.notice
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null

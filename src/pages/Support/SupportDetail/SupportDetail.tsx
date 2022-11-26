@@ -27,10 +27,8 @@ export default function SupportDetail() {
 
     useEffect(() => {
         setBaseChatData([]);
-        console.log(id);
         Get(Number(id)).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 setBaseChatData([]);
                 const tmpChat = []
 
@@ -42,7 +40,6 @@ export default function SupportDetail() {
                     tmpChat.push({admin: tmp.admin, data: tmp.data, time: tmp.CreatedAt, user_name: userName})
                 }
                 setBaseChatData(tmpChat);
-                console.log(baseChatData);
                 ref.current?.scrollIntoView()
             } else {
                 enqueueSnackbar("" + res.error, {variant: "error"});
@@ -51,11 +48,8 @@ export default function SupportDetail() {
     }, []);
 
     useEffect(() => {
-        console.log(lastMessage)
         if (lastMessage !== null) {
-            console.log(lastMessage?.data)
             const obj = JSON.parse(lastMessage?.data);
-            console.log(obj)
             setBaseChatData(tmpChat => [...tmpChat, {
                 admin: obj.admin,
                 data: obj.message,

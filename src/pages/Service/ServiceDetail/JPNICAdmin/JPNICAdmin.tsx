@@ -20,14 +20,13 @@ export function ServiceJPNICAdminBase(props: {
                 </CardContent>
             </Card>
         )
-    } else {
-        return (
-            <Card className={cssModule.contract}>
-                <CardContent>
-                    <h3>JPNIC管理者連絡窓口</h3>
-                    <JPNICDetail key={serviceID} jpnicAdmin={true} serviceID={serviceID} jpnic={jpnic} reload={reload}/>
-                </CardContent>
-            </Card>
-        )
     }
+    return (
+        <Card className={cssModule.contract}>
+            <CardContent>
+                <h3>JPNIC管理者連絡窓口</h3>
+                <JPNICDetail key={serviceID} jpnicAdmin={true} serviceID={serviceID} jpnic={jpnic} reload={reload}/>
+            </CardContent>
+        </Card>
+    )
 }

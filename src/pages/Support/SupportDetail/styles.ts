@@ -1,7 +1,7 @@
 import {Paper, styled} from "@mui/material";
 import ReactMarkdown from "react-markdown";
 
-export const StyledMessageTimeStampRight = styled("div")(({theme}) => ({
+export const StyledMessageTimeStampRight = styled("div")(() => ({
     color: "black",
     position: "absolute",
     fontSize: ".85em",
@@ -11,7 +11,7 @@ export const StyledMessageTimeStampRight = styled("div")(({theme}) => ({
     right: "5px"
 }))
 
-export const StyledReactMarkdownMessageContent = styled(ReactMarkdown)(({theme}) => ({
+export const StyledReactMarkdownMessageContent = styled(ReactMarkdown)(() => ({
     padding: 0,
     margin: 0,
     color: "black",
@@ -20,20 +20,20 @@ export const StyledReactMarkdownMessageContent = styled(ReactMarkdown)(({theme})
     overflowX: 'auto',
 }))
 
-export const StyledMessageRowLeft = styled("div")(({theme}) => ({
+export const StyledMessageRowLeft = styled("div")(() => ({
     display: "flex",
 }))
 
-export const StyledMessageRowRight = styled("div")(({theme}) => ({
+export const StyledMessageRowRight = styled("div")(() => ({
     display: "flex",
     justifyContent: "flex-end"
 }))
 
-export const StyledDisplayName = styled("div")(({theme}) => ({
+export const StyledDisplayName = styled("div")(() => ({
     marginLeft: "20px"
 }))
 
-export const StyledMessageBlue = styled("div")(({theme}) => ({
+export const StyledMessageBlue = styled("div")(() => ({
     position: "relative",
     marginLeft: "20px",
     marginBottom: "10px",
@@ -68,7 +68,7 @@ export const StyledMessageBlue = styled("div")(({theme}) => ({
     },
 }))
 
-export const StyledMessageOrange = styled("div")(({theme}) => ({
+export const StyledMessageOrange = styled("div")(() => ({
     position: "relative",
     marginRight: "20px",
     marginBottom: "10px",
@@ -103,7 +103,7 @@ export const StyledMessageOrange = styled("div")(({theme}) => ({
     },
 }))
 
-export const StyledPaper = styled(Paper)(({theme}) => ({
+export const StyledPaper = styled(Paper)(() => ({
     width: '100vw',
     height: '100vh',
     // maxWidth: '1000px',
@@ -114,7 +114,7 @@ export const StyledPaper = styled(Paper)(({theme}) => ({
     position: 'relative'
 }))
 
-export const StyledPaperMessageBody = styled(Paper)(({theme}) => ({
+export const StyledPaperMessageBody = styled(Paper)(() => ({
     width: 'calc( 100% - 20px )',
     margin: 10,
     backgroundColor: "rgb(113, 147, 193)",
@@ -123,7 +123,7 @@ export const StyledPaperMessageBody = styled(Paper)(({theme}) => ({
     height: 'calc( 100% - 80px )'
 }))
 
-export const StyledDivContainer = styled("div")(({theme}) => ({
+export const StyledDivContainer = styled("div")(() => ({
     width: '100vw',
     height: '100vh',
     display: 'flex',

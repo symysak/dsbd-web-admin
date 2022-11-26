@@ -32,9 +32,7 @@ export default function Connection() {
         if (reload) {
             GetTemplate().then(res => {
                 if (res.error === "") {
-                    console.log(res);
                     setTemplate(res.data);
-                    console.log(template);
                 } else {
                     enqueueSnackbar("" + res.error, {variant: "error"});
                 }
@@ -42,7 +40,6 @@ export default function Connection() {
 
             GetAll().then(res => {
                 if (res.error === "") {
-                    console.log(res);
                     setConnections(res.data);
                     setInitConnections(res.data);
                     setReload(false);
@@ -66,11 +63,12 @@ export default function Connection() {
     const checkConnection = (connection: ConnectionDetailData) => {
         if (value === 1) {
             return connection.open
-        } else if (value === 2) {
-            return !connection.open
-        } else {
-            return true;
         }
+        if (value === 2) {
+            return !connection.open
+        }
+        return true;
+
     }
 
     const handleFilter = (search: string) => {

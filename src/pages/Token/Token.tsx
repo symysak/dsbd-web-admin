@@ -28,7 +28,6 @@ export default function Token() {
     useEffect(() => {
         GetAll().then(res => {
             if (res.error === "") {
-                console.log(res);
                 setTokens(res.data);
                 setInitTokens(res.data);
             } else {
@@ -45,11 +44,12 @@ export default function Token() {
     const checkToken = (token: TokenDetailData) => {
         if (value === 1) {
             return token.admin;
-        } else if (value === 2) {
-            return !token.admin;
-        } else {
-            return true;
         }
+        if (value === 2) {
+            return !token.admin;
+        }
+        return true;
+
     }
 
     const handleFilter = (search: string) => {

@@ -12,14 +12,14 @@ export function Solved(props: { solved: boolean }): any {
                 label="解決済"
             />
         );
-    } else {
-        return (
-            <Chip
-                size="small"
-                color="secondary"
-                label="未解決"
-            />
-        );
     }
+    return (
+        <Chip
+            size="small"
+            color="secondary"
+            label="未解決"
+        />
+    );
+
 }
 

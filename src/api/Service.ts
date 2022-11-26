@@ -14,7 +14,6 @@ export function Post(id: number, data: ServiceAddData): Promise<{ error: string;
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -34,7 +33,6 @@ export function Delete(id: number): Promise<{ error: string; data: any }> {
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -54,7 +52,6 @@ export function Put(id: number, data: ServiceDetailData): Promise<{ error: strin
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -74,7 +71,6 @@ export function DeleteIP(id: number): Promise<{ error: string; data: any }> {
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -94,7 +90,6 @@ export function PostIP(id: number, data: ServiceAddIPData): Promise<{ error: str
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -115,7 +110,6 @@ export function PutIP(data: IPData): Promise<{ error: string; data: any }> {
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -135,7 +129,6 @@ export function DeletePlan(id: number): Promise<{ error: string; data: any }> {
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -156,7 +149,6 @@ export function PutPlan(data: PlanData): Promise<{ error: string; data: any }> {
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -176,7 +168,6 @@ export function PostJPNICAdmin(serviceID: number, data: JPNICData): Promise<{ er
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -196,7 +187,6 @@ export function PutJPNICAdmin(id: number, data: JPNICData): Promise<{ error: str
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -216,7 +206,6 @@ export function PostJPNICTech(id: number, data: JPNICData): Promise<{ error: str
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -236,7 +225,6 @@ export function DeleteJPNICTech(id: number): Promise<{ error: string; data: any 
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -256,7 +244,6 @@ export function PutJPNICTech(id: number, data: JPNICData): Promise<{ error: stri
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -276,7 +263,6 @@ export function Get(id: string): Promise<{ error: string, data: any }> {
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -296,7 +282,6 @@ export function GetAll(): Promise<{ error: string, data: any }> {
             data: res.data.service
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null

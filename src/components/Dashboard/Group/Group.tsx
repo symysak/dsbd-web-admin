@@ -33,22 +33,22 @@ export function Group(props: {
             }
             {
                 data !== undefined &&
-                <StatusTable
-                    key={"group_status_table"}
-                    setReload={setReload}
-                    group={data.filter(item => {
-                        if (item.member_expired === "" || item.member_expired == null) {
-                            return true
-                        } else if (!item.pass) {
-                            return true
-                        } else {
-                            const tmp = item.member_expired.split('T');
-                            const tmpDate = new Date(tmp[0]);
+              <StatusTable
+                key={"group_status_table"}
+                setReload={setReload}
+                group={data.filter(item => {
+                    if (item.member_expired === "" || item.member_expired == null) {
+                        return true
+                    }
+                    if (!item.pass) {
+                        return true
+                    }
+                    const tmp = item.member_expired.split('T');
+                    const tmpDate = new Date(tmp[0]);
 
-                            return !(nowDate < tmpDate)
-                        }
-                    })}
-                />
+                    return !(nowDate < tmpDate)
+                })}
+              />
             }
         </TableContainer>
     )
@@ -108,15 +108,16 @@ export function StatusTable(props: {
                                     <TableCell style={{width: 160}} align="right">
                                         {
                                             !row.pass &&
-                                            <Chip size="small" color="secondary" label="Group未承認"/>
+                                          <Chip size="small" color="secondary" label="Group未承認"/>
                                         }
                                         {
                                             row.member_expired == null &&
-                                            <Chip size="small" color="secondary" label="未払い状態"/>
+                                          <Chip size="small" color="secondary" label="未払い状態"/>
                                         }
                                         {
                                             row.member_expired != null && new Date(row.member_expired) < nowDate &&
-                                            <Chip size="small" color="secondary" label={"期限切れ: " + row.member_expired}/>
+                                          <Chip size="small" color="secondary"
+                                                label={"期限切れ: " + row.member_expired}/>
                                         }
                                     </TableCell>
                                     <TableCell style={{width: 300}} align="right">

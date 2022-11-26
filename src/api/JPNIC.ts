@@ -14,7 +14,6 @@ export function Post(data: JPNICRegistrationData): Promise<{ error: string; data
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -34,7 +33,6 @@ export function Get(url: string): Promise<{ error: string; data: any }> {
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -54,7 +52,6 @@ export function ReturnAddress(data: JPNICReturnData): Promise<{ error: string; d
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -74,7 +71,6 @@ export function GetHandle(handle: string): Promise<{ error: string; data: any }>
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -94,7 +90,6 @@ export function GetAll(data: JPNICSearchData): Promise<{ error: string; data: an
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null

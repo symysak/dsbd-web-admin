@@ -9,7 +9,7 @@ export default function NotFound() {
 
     return (
         <div>
-            <h1>　404 Not Found</h1>
+            <h1>404 Not Found</h1>
             <br/>
             <br/>
             <Button variant="text" onClick={() => navigate('/dashboard')}>Dashboardに戻る（ログイン後）</Button>

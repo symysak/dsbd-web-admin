@@ -25,7 +25,6 @@ export function SupportAddDialog(props: {
     useEffect(() => {
         GetTemplate().then(res => {
             if (res.error === "") {
-                console.log(res);
                 setTemplate(res.data);
             } else {
                 enqueueSnackbar("" + res.error, {variant: "error"});
@@ -41,8 +40,6 @@ export function SupportAddDialog(props: {
     }, [openMailAutoSendDialog])
 
     const request = () => {
-        console.log(data);
-
         if (data.is_group && data.group_id === 0) {
             enqueueSnackbar("Groupが指定されていません。", {variant: "error"});
             return;
@@ -65,9 +62,9 @@ export function SupportAddDialog(props: {
                 enqueueSnackbar("OK", {variant: "success"});
                 setOpenMailAutoSendDialog("new_ticket_from_admin");
                 return;
-            } else {
-                enqueueSnackbar(res.error, {variant: "error"});
             }
+            enqueueSnackbar(res.error, {variant: "error"});
+
         })
     }
 
@@ -103,60 +100,59 @@ export function SupportAddDialog(props: {
                             <br/>
                             {
                                 data.is_group &&
-                                <StyledFormControl>
-                                    <InputLabel>Group指定</InputLabel>
-                                    <Select
-                                        labelId="group_id"
-                                        id="group_id"
-                                        onChange={(event) => {
-                                            const grp = template.group?.filter(res => res.ID === Number(event.target.value));
-                                            if (grp !== undefined) {
-                                                setName(grp[0].org);
-                                                console.log(grp[0].users);
-                                                let mails = "";
-                                                if (grp[0].users != undefined) {
-                                                    for (const user of grp[0].users) {
-                                                        if (user.level < 3) {
-                                                            mails += user.email + ",";
-                                                        }
-                                                    }
-                                                }
-                                                setSendAutoEmail(mails);
-                                            }
-                                            setData({...data, group_id: Number(event.target.value)});
-                                        }}
-                                    >
-                                        {
-                                            template.group?.map((row, index) => (
-                                                <MenuItem key={index} value={row.ID}>{row.ID}: {row.org}</MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                </StyledFormControl>
+                              <StyledFormControl>
+                                <InputLabel>Group指定</InputLabel>
+                                <Select
+                                  labelId="group_id"
+                                  id="group_id"
+                                  onChange={(event) => {
+                                      const grp = template.group?.filter(res => res.ID === Number(event.target.value));
+                                      if (grp !== undefined) {
+                                          setName(grp[0].org);
+                                          let mails = "";
+                                          if (grp[0].users !== undefined) {
+                                              for (const user of grp[0].users) {
+                                                  if (user.level < 3) {
+                                                      mails += user.email + ",";
+                                                  }
+                                              }
+                                          }
+                                          setSendAutoEmail(mails);
+                                      }
+                                      setData({...data, group_id: Number(event.target.value)});
+                                  }}
+                                >
+                                    {
+                                        template.group?.map((row, index) => (
+                                            <MenuItem key={index} value={row.ID}>{row.ID}: {row.org}</MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                              </StyledFormControl>
                             }
                             {
                                 !data.is_group &&
-                                <StyledFormControl>
-                                    <InputLabel>User指定</InputLabel>
-                                    <Select
-                                        labelId="user_id"
-                                        id="user_id"
-                                        onChange={(event) => {
-                                            const usr = template.user?.filter(res => res.ID === Number(event.target.value));
-                                            if (usr !== undefined) {
-                                                setName(usr[0].name);
-                                                setSendAutoEmail(usr[0].email);
-                                            }
-                                            setData({...data, user_id: Number(event.target.value)});
-                                        }}
-                                    >
-                                        {
-                                            template.user?.map((row, index) => (
-                                                <MenuItem key={index} value={row.ID}>{row.ID}: {row.name}</MenuItem>
-                                            ))
-                                        }
-                                    </Select>
-                                </StyledFormControl>
+                              <StyledFormControl>
+                                <InputLabel>User指定</InputLabel>
+                                <Select
+                                  labelId="user_id"
+                                  id="user_id"
+                                  onChange={(event) => {
+                                      const usr = template.user?.filter(res => res.ID === Number(event.target.value));
+                                      if (usr !== undefined) {
+                                          setName(usr[0].name);
+                                          setSendAutoEmail(usr[0].email);
+                                      }
+                                      setData({...data, user_id: Number(event.target.value)});
+                                  }}
+                                >
+                                    {
+                                        template.user?.map((row, index) => (
+                                            <MenuItem key={index} value={row.ID}>{row.ID}: {row.name}</MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                              </StyledFormControl>
                             }
                             <br/>
                             <StyledTextFieldVeryLong

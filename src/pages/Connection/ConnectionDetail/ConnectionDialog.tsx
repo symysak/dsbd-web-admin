@@ -121,10 +121,8 @@ export function ConnectionOpenButton(props: {
         connection.tunnel_endpoint_router_ip = undefined;
         Update(connection).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
@@ -138,13 +136,13 @@ export function ConnectionOpenButton(props: {
                 開通
             </Button>
         )
-    } else {
-        return (
-            <Button size="small" color="secondary" disabled={lock} onClick={() => updateInfo(false)}>
-                未開通
-            </Button>
-        )
     }
+    return (
+        <Button size="small" color="secondary" disabled={lock} onClick={() => updateInfo(false)}>
+            未開通
+        </Button>
+    )
+
 }
 
 export function ConnectionOpen(props: {
@@ -250,26 +248,26 @@ export function ConnectionOpenVPN(props: {
 
     if (connection.connection_type === "") {
         return null
-    } else {
-        return (
-            <div>
-                <StyledTextFieldLong
-                    required
-                    id="outlined-required"
-                    label="対向終端アドレス"
-                    InputProps={{
-                        readOnly: lock,
-                    }}
-                    value={connection.term_ip}
-                    variant="outlined"
-                    onChange={event => {
-                        setConnection({...connection, term_ip: event.target.value});
-                    }}
-                />
-                <br/>
-            </div>
-        )
     }
+    return (
+        <div>
+            <StyledTextFieldLong
+                required
+                id="outlined-required"
+                label="対向終端アドレス"
+                InputProps={{
+                    readOnly: lock,
+                }}
+                value={connection.term_ip}
+                variant="outlined"
+                onChange={event => {
+                    setConnection({...connection, term_ip: event.target.value});
+                }}
+            />
+            <br/>
+        </div>
+    )
+
 }
 
 export function ConnectionOpenL3User(props: {
@@ -283,65 +281,65 @@ export function ConnectionOpenL3User(props: {
 
     if (service === undefined || !(template.services?.find(ser => ser.type === service.service_type)!.need_route)) {
         return null
-    } else {
-        return (
-            <div>
-                <StyledTextFieldMedium
-                    required
-                    id="outlined-required"
-                    label="L3 IPv4(HomeNOC側)"
-                    InputProps={{
-                        readOnly: lock,
-                    }}
-                    value={connection.link_v4_our}
-                    variant="outlined"
-                    onChange={event => {
-                        setConnection({...connection, link_v4_our: event.target.value});
-                    }}
-                />
-                <StyledTextFieldMedium
-                    required
-                    id="outlined-required"
-                    label="L3 IPv4(ユーザ側)"
-                    InputProps={{
-                        readOnly: lock,
-                    }}
-                    value={connection.link_v4_your}
-                    variant="outlined"
-                    onChange={event => {
-                        setConnection({...connection, link_v4_your: event.target.value});
-                    }}
-                />
-                <br/>
-                <StyledTextFieldMedium
-                    required
-                    id="outlined-required"
-                    label="L3 IPv6(HomeNOC側)"
-                    InputProps={{
-                        readOnly: lock,
-                    }}
-                    value={connection.link_v6_our}
-                    variant="outlined"
-                    onChange={event => {
-                        setConnection({...connection, link_v6_our: event.target.value});
-                    }}
-                />
-                <StyledTextFieldMedium
-                    required
-                    id="outlined-required"
-                    label="L3 IPv6(ユーザ側)"
-                    InputProps={{
-                        readOnly: lock,
-                    }}
-                    value={connection.link_v6_your}
-                    variant="outlined"
-                    onChange={event => {
-                        setConnection({...connection, link_v6_your: event.target.value});
-                    }}
-                />
-            </div>
-        )
     }
+    return (
+        <div>
+            <StyledTextFieldMedium
+                required
+                id="outlined-required"
+                label="L3 IPv4(HomeNOC側)"
+                InputProps={{
+                    readOnly: lock,
+                }}
+                value={connection.link_v4_our}
+                variant="outlined"
+                onChange={event => {
+                    setConnection({...connection, link_v4_our: event.target.value});
+                }}
+            />
+            <StyledTextFieldMedium
+                required
+                id="outlined-required"
+                label="L3 IPv4(ユーザ側)"
+                InputProps={{
+                    readOnly: lock,
+                }}
+                value={connection.link_v4_your}
+                variant="outlined"
+                onChange={event => {
+                    setConnection({...connection, link_v4_your: event.target.value});
+                }}
+            />
+            <br/>
+            <StyledTextFieldMedium
+                required
+                id="outlined-required"
+                label="L3 IPv6(HomeNOC側)"
+                InputProps={{
+                    readOnly: lock,
+                }}
+                value={connection.link_v6_our}
+                variant="outlined"
+                onChange={event => {
+                    setConnection({...connection, link_v6_our: event.target.value});
+                }}
+            />
+            <StyledTextFieldMedium
+                required
+                id="outlined-required"
+                label="L3 IPv6(ユーザ側)"
+                InputProps={{
+                    readOnly: lock,
+                }}
+                value={connection.link_v6_your}
+                variant="outlined"
+                onChange={event => {
+                    setConnection({...connection, link_v6_your: event.target.value});
+                }}
+            />
+        </div>
+    )
+
 }
 
 export function ConnectionStatus(props: {
@@ -460,15 +458,15 @@ export function ConnectionMonitorDisplay(props: { monitor: boolean }) {
                 label="必要"
             />
         );
-    } else {
-        return (
-            <Chip
-                size="small"
-                color="secondary"
-                label="不必要"
-            />
-        );
     }
+    return (
+        <Chip
+            size="small"
+            color="secondary"
+            label="不必要"
+        />
+    );
+
 }
 
 export function ConnectionUserDisplay(props: {
@@ -482,18 +480,18 @@ export function ConnectionUserDisplay(props: {
             return (
                 <td>当団体からアドレスを割当</td>
             );
-        } else {
-            return (
-                <td>貴団体からアドレスを割当</td>
-            );
         }
+        return (
+            <td>貴団体からアドレスを割当</td>
+        );
+
     };
     const getNOCName = () => {
         if (connection.bgp_router_id === 0 || connection.bgp_router === undefined) {
             return "希望NOCなし";
-        } else {
-            return connection.bgp_router?.noc.name;
         }
+        return connection.bgp_router?.noc.name;
+
     };
 
     return (

@@ -13,7 +13,6 @@ export function ServiceAddAllowButton(props: { service: ServiceDetailData, reloa
 
         Put(service.ID, service).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
                 enqueueSnackbar(String(res.error), {variant: "error"});
@@ -36,17 +35,17 @@ export function ServiceAddAllowButton(props: { service: ServiceDetailData, reloa
                 追加を禁止
             </StyledButton1>
         )
-    } else {
-        return (
-            <StyledButton1
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={() => changeLock(true)}
-                color={"primary"}
-                variant="outlined"
-            >
-                接続追加を許可
-            </StyledButton1>
-        )
     }
+    return (
+        <StyledButton1
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={() => changeLock(true)}
+            color={"primary"}
+            variant="outlined"
+        >
+            接続追加を許可
+        </StyledButton1>
+    )
+
 }

@@ -41,7 +41,6 @@ export default function ConnectionAdd() {
 
     useEffect(() => {
         Get(groupID!).then(res => {
-            console.log(res.data);
             if (res.error === "") {
                 setGroup(res.data);
             } else {
@@ -89,7 +88,7 @@ export default function ConnectionAdd() {
                     .min(1, "正しく選択してください")
                 obj["ipv4_route_comment"] = Yup.string()
             }
-            console.log(group.services?.find(service => service.ID === serviceID)!.ip!)
+            // console.log(group.services?.find(service => service.ID === serviceID)!.ip!)
             if (
                 (group.services?.find(service => service.ID === serviceID)!.ip!.filter(ip => ip.version === 6)?.length ?? 0) > 0
                 ||
@@ -130,7 +129,6 @@ export default function ConnectionAdd() {
     const ntt = watch("ntt");
 
     const onSubmit = (data: any, e: any) => {
-        console.log(data, e)
         const request: any = {
             connection_type: data.connection_type,
             preferred_ap: data.preferred_ap,
@@ -185,26 +183,20 @@ export default function ConnectionAdd() {
             return
         }
 
-        console.log("service_id: ", serviceID);
-        console.log("send_data: ", request);
-
         if (groupID == null) {
             enqueueSnackbar("Group IDのフォーマットが異なります。", {variant: "error"});
         }
         Post(serviceID, request).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
                 navigate("/dashboard/group/" + groupID);
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
         })
     };
 
-    const onError = (errors: any, e: any) => {
-        console.log(errors, e);
+    const onError = () => {
         enqueueSnackbar("入力した内容を確認してください。", {variant: "error"});
     };
 

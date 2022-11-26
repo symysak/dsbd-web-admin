@@ -35,7 +35,6 @@ export function MailAutoSendDialogs(props: {
                 if (getMailTemplate !== undefined && mailSignature !== undefined) {
                     let message = getMailTemplate[0].message.replace('{GROUP_NAME}', org);
                     message += mailSignature[0].message;
-                    console.log(getMailTemplate[0].title)
                     setData({
                         to_mail: "",
                         subject: getMailTemplate[0].title,
@@ -49,7 +48,6 @@ export function MailAutoSendDialogs(props: {
 
     const request = () => {
         // data.group_id = baseData.ID
-        console.log(data);
         const mailArray = mails.split(',');
         for (const mail of mailArray) {
             if (mail !== "") {
@@ -59,7 +57,6 @@ export function MailAutoSendDialogs(props: {
                     content: data.content
                 }).then(res => {
                     if (res.error === "") {
-                        console.log(res.data);
                         enqueueSnackbar('Request Success', {variant: "success"});
                     } else {
                         enqueueSnackbar(res.error, {variant: "error"});
@@ -159,7 +156,6 @@ export function MailSendDialogs(props: {
 
     const request = () => {
         // data.group_id = baseData.ID
-        console.log(data);
         const mailArray = mails.split(',');
         for (const mail of mailArray) {
             Post({
@@ -168,7 +164,6 @@ export function MailSendDialogs(props: {
                 content: data.content
             }).then(res => {
                 if (res.error === "") {
-                    console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
                 } else {
                     enqueueSnackbar(res.error, {variant: "error"});
@@ -310,11 +305,8 @@ export function MailAutoNoticeSendDialogs(props: {
                 const mailSignature = template.filter(item => item.id === "signature");
                 if (getMailTemplate !== undefined && mailSignature !== undefined) {
                     let message = getMailTemplate[0].message.replace('{TITLE}', title);
-                    console.log(getMailTemplate[0].message)
-                    console.log(message)
                     message = message.replace('{BODY}', body);
                     message += mailSignature[0].message;
-                    console.log(getMailTemplate[0].title)
                     const subject = getMailTemplate[0].title.replace('{TITLE}', title);
                     setData({
                         to_mail: "",
@@ -328,7 +320,6 @@ export function MailAutoNoticeSendDialogs(props: {
 
     const request = () => {
         // data.group_id = baseData.ID
-        console.log(data);
         const mailArray = mails.split(',');
         for (const mail of mailArray) {
             if (mail !== "") {
@@ -338,7 +329,6 @@ export function MailAutoNoticeSendDialogs(props: {
                     content: data.content
                 }).then(res => {
                     if (res.error === "") {
-                        console.log(res.data);
                         enqueueSnackbar('Request Success', {variant: "success"});
                     } else {
                         enqueueSnackbar(res.error, {variant: "error"});

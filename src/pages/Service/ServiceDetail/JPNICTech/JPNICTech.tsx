@@ -33,12 +33,12 @@ export function ServiceJPNICTechBase(props: {
                 </CardContent>
             </Card>
         )
-    } else {
-        return (
-            <ServiceJPNICTech key={serviceID} serviceID={serviceID} jpnicAdmin={jpnicAdmin} jpnicTech={jpnicTech}
-                              reload={reload}/>
-        )
     }
+    return (
+        <ServiceJPNICTech key={serviceID} serviceID={serviceID} jpnicAdmin={jpnicAdmin} jpnicTech={jpnicTech}
+                          reload={reload}/>
+    )
+
 }
 
 export function ServiceJPNICTech(props: {

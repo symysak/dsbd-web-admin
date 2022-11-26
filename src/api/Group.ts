@@ -13,7 +13,6 @@ export function Put(id: number, data: any): Promise<{ error: string; data: any }
             data: res.data.group
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -33,7 +32,6 @@ export function DeleteSubscription(id: number): Promise<{ error: string; data: a
             data: res.data.group
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -53,7 +51,6 @@ export function Get(id: string): Promise<{ error: string, data: any }> {
             data: res.data.group
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: err,
             data: null
@@ -73,7 +70,6 @@ export function GetTemplate(): Promise<{ error: string, data: any }> {
             data: res.data
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -93,7 +89,6 @@ export function GetAll(): Promise<{ error: string, data: any }> {
             data: res.data.group
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: err,
             data: null

@@ -40,12 +40,11 @@ export default function Service(props: {
             }
             {
                 data !== undefined && template !== undefined &&
-                <StatusTable
-                    key={"service_status_table"}
-                    setReload={setReload}
-                    template={template}
-                    service={data.sort((a, b) => b.ID - a.ID)}
-                />
+              <StatusTable
+                key={"service_status_table"}
+                setReload={setReload}
+                service={data.sort((a, b) => b.ID - a.ID)}
+              />
             }
         </TableContainer>
     )
@@ -53,10 +52,9 @@ export default function Service(props: {
 
 export function StatusTable(props: {
     service: ServiceDetailData[]
-    template: TemplateData
     setReload: Dispatch<SetStateAction<boolean>>
 }) {
-    const {service, template, setReload} = props;
+    const {service, setReload} = props;
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const navigate = useNavigate();
@@ -108,23 +106,23 @@ export function StatusTable(props: {
                                     <TableCell style={{width: 160}} align="right">
                                         {
                                             !row.pass &&
-                                            <Chip size="small" color="secondary" label="未審査"/>
+                                          <Chip size="small" color="secondary" label="未審査"/>
                                         }
                                         {
                                             row.pass &&
-                                            <Chip size="small" color="primary" label="審査済み"/>
+                                          <Chip size="small" color="primary" label="審査済み"/>
                                         }
                                     </TableCell>
                                     <TableCell style={{width: 300}} align="right">
                                         <Box display="flex" justifyContent="flex-end">
                                             {
                                                 !row.pass &&
-                                                <ExaminationDialog
-                                                    key={"service_examination_dialog_" + index}
-                                                    id={row.ID}
-                                                    service={row}
-                                                    reload={setReload}
-                                                />
+                                              <ExaminationDialog
+                                                key={"service_examination_dialog_" + index}
+                                                id={row.ID}
+                                                service={row}
+                                                reload={setReload}
+                                              />
                                             }
                                             &nbsp;
                                             <ServiceGetDialogs

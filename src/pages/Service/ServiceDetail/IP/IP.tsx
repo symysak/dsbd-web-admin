@@ -43,10 +43,8 @@ export function IPOpenButton(props: {
         ip.open = open;
         PutIP(ip).then((res) => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
@@ -61,13 +59,13 @@ export function IPOpenButton(props: {
                 有効
             </Button>
         )
-    } else {
-        return (
-            <Button size="small" color="secondary" disabled={lockInfo} onClick={() => updateInfo(false)}>
-                無効
-            </Button>
-        )
     }
+    return (
+        <Button size="small" color="secondary" disabled={lockInfo} onClick={() => updateInfo(false)}>
+            無効
+        </Button>
+    )
+
 }
 
 export function ServiceIPBase(props: {
@@ -87,11 +85,10 @@ export function ServiceIPBase(props: {
                 </CardContent>
             </Card>
         )
-    } else {
-        return (
-            <ServiceIP key={serviceID} serviceID={serviceID} ip={ip} reload={reload} template={template}/>
-        )
     }
+    return (
+        <ServiceIP key={serviceID} serviceID={serviceID} ip={ip} reload={reload} template={template}/>
+    )
 }
 
 export function ServiceIP(props: {
@@ -157,10 +154,8 @@ export function ServiceIPRow(props: {
     const updateInfo = () => {
         PutIP(ip).then((res) => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
@@ -173,10 +168,8 @@ export function ServiceIPRow(props: {
         if (deleteIP) {
             DeleteIP(ip.ID).then(res => {
                 if (res.error === "") {
-                    console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
                 } else {
-                    console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});
                 }
                 reload(true);
@@ -282,13 +275,12 @@ export function ServiceIPPlanBase(props: {
         return (
             <p><b>情報なし</b></p>
         )
-    } else {
-        return (
-            plan.map((row) => (
-                <ServiceIPPlanRow key={row.ID} serviceID={serviceID} plan={row} reload={reload}/>
-            ))
-        )
     }
+    return (
+        plan.map((row) => (
+            <ServiceIPPlanRow key={row.ID} serviceID={serviceID} plan={row} reload={reload}/>
+        ))
+    )
 }
 
 export function ServiceIPPlanRow(props: {
@@ -315,10 +307,8 @@ export function ServiceIPPlanRow(props: {
     const updateInfo = () => {
         PutPlan(ipPlanCopy).then((res) => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
@@ -331,11 +321,9 @@ export function ServiceIPPlanRow(props: {
         if (deleteIPPlan) {
             DeletePlan(plan.ID).then((res) => {
                 if (res.error === "") {
-                    console.log(res.data);
                     enqueueSnackbar('Request Success', {variant: "success"});
                     setLockInfo(true)
                 } else {
-                    console.log(res.error);
                     enqueueSnackbar(String(res.error), {variant: "error"});
                 }
                 reload(true);

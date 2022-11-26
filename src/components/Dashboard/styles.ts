@@ -1,6 +1,6 @@
 import {FormControl, ListItem, styled} from "@mui/material";
 
-export const StyledDivDashboardRoot = styled(FormControl)(({theme}) => ({
+export const StyledDivDashboardRoot = styled(FormControl)(() => ({
     display: 'flex',
 }))
 

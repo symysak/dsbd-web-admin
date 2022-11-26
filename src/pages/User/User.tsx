@@ -25,7 +25,6 @@ export default function User() {
     useEffect(() => {
         GetAll().then(res => {
             if (res.error === "") {
-                console.log(res);
                 setUsers(res.data);
                 setInitUsers(res.data);
             } else {
@@ -42,11 +41,12 @@ export default function User() {
     const checkUser = (user: UserDetailData) => {
         if (value === 1) {
             return user.expired_status === 0;
-        } else if (value === 2) {
-            return user.expired_status !== 0;
-        } else {
-            return true;
         }
+        if (value === 2) {
+            return user.expired_status !== 0;
+        }
+        return true;
+
     }
 
     const handleFilter = (search: string) => {

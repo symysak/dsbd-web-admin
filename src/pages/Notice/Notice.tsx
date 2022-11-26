@@ -36,7 +36,6 @@ export default function Notice() {
         if (reload) {
             GetAll().then(res => {
                 if (res.error === "") {
-                    console.log(res);
                     setTickets(res.data);
                     setInitTickets(res.data);
                     setReload(false);
@@ -58,7 +57,6 @@ export default function Notice() {
     const noticeDelete = (id: number) => {
         Delete(id).then(res => {
             if (res.error === "") {
-                console.log(res);
                 setReload(true);
                 enqueueSnackbar("OK", {variant: "success"});
             } else {
@@ -82,11 +80,11 @@ export default function Notice() {
     const checkDate = (startTime: string, endTime: string) => {
         if (value === 1) {
             return toDate(startTime) > now
-        } else if (value === 2) {
-            return toDate(startTime) < now && now < toDate(endTime)
-        } else {
-            return now > toDate(endTime)
         }
+        if (value === 2) {
+            return toDate(startTime) < now && now < toDate(endTime)
+        }
+        return now > toDate(endTime)
     }
 
     const getStringFromDate = (before: string): string => {

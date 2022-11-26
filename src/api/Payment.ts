@@ -14,7 +14,6 @@ export function PostSubscribe(groupID: number, plan: string): Promise<{ error: s
             data: res.data.url
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null
@@ -29,13 +28,11 @@ export function GetPayment(groupID: number): Promise<{ error: string; data: any 
             ACCESS_TOKEN: sessionStorage.getItem('AccessToken')!,
         }
     }).then(res => {
-        console.log(res.data);
         return {
             error: "",
             data: res.data.url
         };
     }).catch(err => {
-        console.log(err);
         return {
             error: "[" + err.response.status + "] " + err.response.data.error,
             data: null

@@ -85,7 +85,7 @@ export default function ServiceGetDialogs(props: {
                           </Grid>
                         }
                         <Grid item xs={12}>
-                            <ServiceEtc2 key={"ServiceEtc2"} service={service} reload={reload}/>
+                            <ServiceEtc2 key={"ServiceEtc2"} service={service}/>
                         </Grid>
                         {
                             template.services!.find(ser => ser.type === service.service_type)!.need_jpnic &&
@@ -94,14 +94,14 @@ export default function ServiceGetDialogs(props: {
                           </Grid>
                         }
                         {
-                            template.services!.find(ser => ser.type === service.service_type)!.need_jpnic &&
+                            template.services?.find(ser => ser.type === service.service_type)?.need_jpnic &&
                           <Grid item xs={6}>
                             <ServiceJPNICAdminBase key={"ServiceJPNICAdminBase"} serviceID={service.ID}
                                                    jpnic={service.jpnic_admin} reload={reload}/>
                           </Grid>
                         }
                         {
-                            template.services!.find(ser => ser.type === service.service_type)!.need_jpnic &&
+                            template.services!.find(ser => ser.type === service.service_type)?.need_jpnic &&
                           <Grid item xs={6}>
                             <ServiceJPNICTechBase key={"ServiceJPNICTechBase"} serviceID={service.ID}
                                                   jpnicAdmin={service.jpnic_admin}
@@ -189,10 +189,8 @@ export function ServiceOpenButton(props: {
         service.pass = pass;
         Put(service.ID, service).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
@@ -206,13 +204,12 @@ export function ServiceOpenButton(props: {
                 審査済に変更
             </Button>
         )
-    } else {
-        return (
-            <Button size="small" color="secondary" disabled={lockInfo} onClick={() => updateInfo(false)}>
-                審査中に変更
-            </Button>
-        )
     }
+    return (
+        <Button size="small" color="secondary" disabled={lockInfo} onClick={() => updateInfo(false)}>
+            審査中に変更
+        </Button>
+    )
 }
 
 export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatch<SetStateAction<boolean>> }): any {
@@ -272,7 +269,7 @@ export function ServiceOpen(props: { service: ServiceDetailData, reload: Dispatc
                         type="number"
                         variant="outlined"
                         onChange={event => {
-                            setServiceCopy({...serviceCopy, asn: parseInt(event.target.value)});
+                            setServiceCopy({...serviceCopy, asn: parseInt(event.target.value, 10)});
                         }}
                     />
                 </StyledRootForm>
@@ -330,9 +327,8 @@ export function ServiceEtc1(props: { service: ServiceDetailData }): any {
 
 export function ServiceEtc2(props: {
     service: ServiceDetailData,
-    reload: Dispatch<SetStateAction<boolean>>
 }): any {
-    const {service, reload} = props;
+    const {service} = props;
 
     return (
         <Card className={cssModule.contract}>
@@ -430,11 +426,9 @@ export function ServiceJPNICDetail(props: {
     const updateInfo = () => {
         Put(service.ID, serviceCopy).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
                 setLockInfo(true);
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 

@@ -20,11 +20,11 @@ import {StyledDivRoot1} from "../../../style";
 function getTitle(id: number, org: string, org_en: string, loading: boolean): string {
     if (loading) {
         return "Loading...";
-    } else if (!loading && org === "" && org_en === "") {
-        return "No Data...";
-    } else {
-        return "id: " + id + " " + org + "(" + org_en + ")";
     }
+    if (!loading && org === "" && org_en === "") {
+        return "No Data...";
+    }
+    return "id: " + id + " " + org + "(" + org_en + ")";
 }
 
 export default function GroupDetail() {
@@ -54,7 +54,6 @@ export default function GroupDetail() {
     useEffect(() => {
         Get(id!).then(res => {
             if (res.error === "") {
-                console.log(res);
                 setGroup(res.data);
                 let mails = "";
                 if (res.data.users != null) {

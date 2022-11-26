@@ -27,11 +27,9 @@ export function GroupMemo(props: {
     const handleDelete = (id: number) => {
         Delete(id).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
                 reload(true);
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
         })
@@ -45,9 +43,11 @@ export function GroupMemo(props: {
     const getColor = (type: number) => {
         if (type === 1) {
             return "secondary"
-        } else if (type === 2) {
+        }
+        if (type === 2) {
             return "primary"
-        } else if (type === 3) {
+        }
+        if (type === 3) {
             return "default"
         }
         return "default"
@@ -90,15 +90,15 @@ export function GroupMemo(props: {
                 />
                 {
                     memoData !== undefined &&
-                    <MemoDetailDialogs
-                        key={"memo_detail_dialog"}
-                        open={detailOpenMemoDialog}
-                        setOpen={setDetailOpenMemoDialog}
-                        data={memoData}
-                    />
+                  <MemoDetailDialogs
+                    key={"memo_detail_dialog"}
+                    open={detailOpenMemoDialog}
+                    setOpen={setDetailOpenMemoDialog}
+                    data={memoData}
+                  />
                 }
             </CardContent>
-            <Divider />
+            <Divider/>
         </StyledCardRoot1>
     );
 }
@@ -115,10 +115,8 @@ export function MemoAddDialogs(props: {
 
     const request = () => {
         data.group_id = baseData.ID
-        console.log(data);
         Post(baseData.ID, data).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
                 setOpen(false);
                 reload(true);

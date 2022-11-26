@@ -77,7 +77,6 @@ export default function NoticeAddDialogs(props: {
             ConnectionGetAll().then(res => {
                 if (res.error === "") {
                     const data = res.data;
-                    console.log(data)
                     setConnections(data.filter((item: ConnectionDetailData) => item.enable && item.open));
                     setReload(false);
                 } else {
@@ -95,7 +94,6 @@ export default function NoticeAddDialogs(props: {
                     '-' + ('00' + (date.getDate())).slice(-2) + " " + ('00' + (date.getHours())).slice(-2) +
                     ":" + ('00' + (date.getMinutes())).slice(-2) + ":00"
             });
-            console.log()
         }
     };
 
@@ -126,7 +124,6 @@ export default function NoticeAddDialogs(props: {
             const u = template.user?.filter(d => d.ID === tmpUserID);
             if (u !== undefined) {
                 if (emails.indexOf(u[0].email) === -1) {
-                    console.log(u[0].email)
                     emails += "," + u[0].email;
                 }
             }
@@ -152,14 +149,13 @@ export default function NoticeAddDialogs(props: {
                                 "-" + tmpConnection.connection_type + ('000' + tmpConnection.connection_number).slice(-3);
                             const tmpGroup = template.group?.filter(d => d.ID === tmpUser[0].group_id);
                             if (tmpGroup !== undefined) {
-                                console.log(tmpUser[0].name + "," + tmpUser[0].email + "," + tmpGroup[0].org + "," + serviceCode);
+                                // console.log(tmpUser[0].name + "," + tmpUser[0].email + "," + tmpGroup[0].org + "," + serviceCode);
                             }
                         }
                     }
                 }
             }
         }
-        console.log(emails.slice(1));
     }
 
     const getEMail = () => {
@@ -170,7 +166,6 @@ export default function NoticeAddDialogs(props: {
             const u = template.user?.filter(d => d.ID === tmpUserID);
             if (u !== undefined) {
                 if (emails.indexOf(u[0].email) === -1) {
-                    console.log(u[0].email)
                     emails += "," + u[0].email;
                 }
             }
@@ -189,7 +184,6 @@ export default function NoticeAddDialogs(props: {
             if (tmpConnections !== undefined) {
                 for (const tmpConnection of tmpConnections) {
                     const tmpUser = template.user?.filter(d => d.group_id === tmpConnection.service?.group_id && d.level < 3);
-                    console.log("tmpUser", tmpUser)
                     if (tmpUser !== undefined) {
                         if (emails.indexOf(tmpUser[0].email) === -1) {
                             emails += "," + tmpUser[0].email;
@@ -202,8 +196,6 @@ export default function NoticeAddDialogs(props: {
     }
 
     const request = () => {
-        console.log(data);
-
         setEmail(getEMail());
 
         Post(data).then(res => {

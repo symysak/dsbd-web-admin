@@ -50,15 +50,15 @@ function ChipAgree(props: { agree: boolean }) {
                 label="規約に同意する"
             />
         )
-    } else {
-        return (
-            <Chip
-                size="small"
-                color="secondary"
-                label="規約に同意していない"
-            />
-        )
     }
+    return (
+        <Chip
+            size="small"
+            color="secondary"
+            label="規約に同意していない"
+        />
+    )
+
 }
 
 export function GroupProfileInfo(props: {
@@ -106,11 +106,8 @@ export function GroupProfileInfo(props: {
             member_expired: dateStr
         };
 
-        console.log(req);
-
         Put(data.ID, req).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
                 enqueueSnackbar(String(res.error), {variant: "error"});
@@ -123,7 +120,6 @@ export function GroupProfileInfo(props: {
     const cancelSubscription = () => {
         DeleteSubscription(data.ID).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
                 enqueueSnackbar(String(res.error), {variant: "error"});
@@ -136,7 +132,6 @@ export function GroupProfileInfo(props: {
     const subscribe = (plan: string) => {
         PostSubscribe(data.ID, plan).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 window.open(res.data, '_blank');
             } else {
                 enqueueSnackbar(String(res.error), {variant: "error"});
@@ -147,7 +142,6 @@ export function GroupProfileInfo(props: {
     const getPayment = () => {
         GetPayment(data.ID).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 window.open(res.data, '_blank');
             } else {
                 enqueueSnackbar(String(res.error), {variant: "error"});
@@ -167,10 +161,8 @@ export function GroupProfileInfo(props: {
     const updateGroupInfo = () => {
         Put(group.ID, group).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
@@ -330,7 +322,7 @@ export function GroupProfileInfo(props: {
                                     value={memberExpiredDate}
                                     inputFormat="yyyy/MM/dd"
                                     onChange={handleMemberExpiredDateChange}
-                                    renderInput={(params: any) => (<TextField  {...params} helperText={null}/>)}
+                                    renderInput={(params: any) => (<TextField {...params} helperText={null}/>)}
                                 />
                             </LocalizationProvider>
                             <FormControl variant="standard">
@@ -546,6 +538,8 @@ export function GroupStatus(props: {
                 break;
             case 90:
                 paymentMemberStatus += "運営委員"
+                break;
+            default:
                 break;
         }
         setMembershipLabel({

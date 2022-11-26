@@ -28,7 +28,6 @@ export default function Support() {
     useEffect(() => {
         GetAll().then(res => {
             if (res.error === "") {
-                console.log(res);
                 setTickets(res.data);
                 setInitTickets(res.data);
             } else {

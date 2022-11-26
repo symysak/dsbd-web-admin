@@ -47,25 +47,25 @@ export function ChipGet(props: {
                 label="無効"
             />
         )
-    } else {
-        if (!pass) {
-            return (
-                <Chip
-                    size="small"
-                    color="secondary"
-                    label="未審査"
-                />
-            )
-        } else {
-            return (
-                <Chip
-                    size="small"
-                    color="primary"
-                    label="審査OK"
-                />
-            )
-        }
     }
+    if (!pass) {
+        return (
+            <Chip
+                size="small"
+                color="secondary"
+                label="未審査"
+            />
+        )
+    }
+    return (
+        <Chip
+            size="small"
+            color="primary"
+            label="審査OK"
+        />
+    )
+
+
 }
 
 function RowService(props: {
@@ -108,13 +108,13 @@ function RowService(props: {
                     <Box display="flex" justifyContent="flex-end">
                         {
                             !service.pass &&
-                            <ExaminationDialog
-                                key={"service_examination_dialog_" + service.ID}
-                                autoMail={autoMail}
-                                id={service.ID}
-                                service={service}
-                                reload={reload}
-                            />
+                          <ExaminationDialog
+                            key={"service_examination_dialog_" + service.ID}
+                            autoMail={autoMail}
+                            id={service.ID}
+                            service={service}
+                            reload={reload}
+                          />
                         }
                         &nbsp;
                         <ServiceGetDialogs
@@ -169,10 +169,8 @@ export function ExaminationDialog(props: {
         service.pass = true;
         Put(id, service).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
             if (autoMail !== undefined) {
@@ -231,10 +229,8 @@ export function DeleteDialog(props: {
     const deleteService = () => {
         Delete(id).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
             setOpen(false);
@@ -292,10 +288,8 @@ export function EnableDialog(props: {
         tmp.enable = !service.enable
         Put(service.ID, tmp).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
             setOpen(false);

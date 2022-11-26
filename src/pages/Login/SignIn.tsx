@@ -18,15 +18,10 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
 
     const handleSubmit = (e: FormEvent) => {
-        console.log(mail);
-        console.log(password);
         e.preventDefault();
         Login(mail, password).then(res => {
             if (res === "") {
-                console.log("OK");
                 navigate('/dashboard');
-            } else {
-                console.log("NG");
             }
         });
     }

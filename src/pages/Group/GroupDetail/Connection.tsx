@@ -29,39 +29,39 @@ export function RowConnectionCheck(props: {
                 <p>データがありません。</p>
             </div>
         )
-    } else {
-        return (
-            <div>
-                <Typography variant="h6" gutterBottom component="div">
-                    Connection
-                </Typography>
-                <Table size="small" aria-label="purchases">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Service Code</TableCell>
-                            <TableCell align="left">Type</TableCell>
-                            <TableCell align="left">Tag</TableCell>
-                            <TableCell align="right">Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {
-                            service.connections.map((rowConnection: ConnectionDetailData) => (
-                                <RowConnection
-                                    key={rowConnection.ID}
-                                    service={service}
-                                    connection={rowConnection}
-                                    groupID={groupID}
-                                    reload={reload}
-                                />
-                            ))
-                        }
-                    </TableBody>
-                </Table>
-            </div>
-        )
     }
+    return (
+        <div>
+            <Typography variant="h6" gutterBottom component="div">
+                Connection
+            </Typography>
+            <Table size="small" aria-label="purchases">
+                <TableHead>
+                    <TableRow>
+                        <TableCell align="left">ID</TableCell>
+                        <TableCell align="left">Service Code</TableCell>
+                        <TableCell align="left">Type</TableCell>
+                        <TableCell align="left">Tag</TableCell>
+                        <TableCell align="right">Action</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        service.connections.map((rowConnection: ConnectionDetailData) => (
+                            <RowConnection
+                                key={rowConnection.ID}
+                                service={service}
+                                connection={rowConnection}
+                                groupID={groupID}
+                                reload={reload}
+                            />
+                        ))
+                    }
+                </TableBody>
+            </Table>
+        </div>
+    )
+
 }
 
 function RowConnection(props: {
@@ -141,10 +141,8 @@ export function DeleteDialog(props: {
     const deleteConnection = () => {
         Delete(id).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
             setOpen(false);
@@ -202,10 +200,8 @@ export function EnableDialog(props: {
         tmp.enable = !connection.enable
         Put(connection.ID, tmp).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
             setOpen(false);

@@ -64,31 +64,30 @@ export function AddAssignIPDialog(props: {
     const getSubnetID = (type: number) => {
         if (data.ip === undefined || data.ip.length === 0) {
             return "None";
-        } else {
-            //Todo データ不正検知
-            if (type === 4) {
-                const dataCheck = template.ipv4?.filter(item => item === data.ip);
-                if (dataCheck === undefined || dataCheck.length !== 1) {
-                    console.log("Warning: Illegal data\n")
-                }
-            } else if (type === 6) {
-                const dataCheck = template.ipv6?.filter(item => item === data.ip);
-                if (dataCheck === undefined || dataCheck.length !== 1) {
-                    console.log("Warning: Illegal data\n")
-                }
-            }
-
-            return data.ip
         }
+
+        //Todo データ不正検知
+        if (type === 4) {
+            const dataCheck = template.ipv4?.filter(item => item === data.ip);
+            if (dataCheck === undefined || dataCheck.length !== 1) {
+                // console.log("Warning: Illegal data\n")
+            }
+        } else if (type === 6) {
+            const dataCheck = template.ipv6?.filter(item => item === data.ip);
+            if (dataCheck === undefined || dataCheck.length !== 1) {
+                // console.log("Warning: Illegal data\n")
+            }
+        }
+
+        return data.ip
+
     }
 
     const request = () => {
         PostIP(serviceID, data).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
 
@@ -152,7 +151,7 @@ export function AddAssignIPDialog(props: {
                                                         onChange={(event) => {
                                                             const tmpPrefix = template.ipv4?.find(item => item === event.target.value);
                                                             if (tmpPrefix !== undefined) {
-                                                                setIPv4PlanSubnetCount(Math.pow(2, 32 - parseInt(tmpPrefix.substr(1))));
+                                                                setIPv4PlanSubnetCount(Math.pow(2, 32 - parseInt(tmpPrefix.substr(1), 10)));
                                                             }
                                                             setData({...data, ip: String(event.target.value)})
                                                         }}
@@ -253,8 +252,9 @@ export function AddJPNICIPv4Plan(props: {
             tmpPlan = [inputPlan];
         } else {
             tmpPlan = data.plan;
-            if (tmpPlan !== undefined)
+            if (tmpPlan !== undefined) {
                 tmpPlan.push(inputPlan);
+            }
         }
         setData({...data, plan: tmpPlan});
         setPlanSum({
@@ -313,7 +313,7 @@ export function AddJPNICIPv4Plan(props: {
                     type="number"
                     variant="outlined"
                     onChange={event => {
-                        setInputPlan({...inputPlan, after: parseInt(event.target.value)});
+                        setInputPlan({...inputPlan, after: parseInt(event.target.value, 10)});
                     }}
                   />
                   <StyledTextFieldTooVeryShort
@@ -324,7 +324,7 @@ export function AddJPNICIPv4Plan(props: {
                     type="number"
                     variant="outlined"
                     onChange={event => {
-                        setInputPlan({...inputPlan, half_year: parseInt(event.target.value)});
+                        setInputPlan({...inputPlan, half_year: parseInt(event.target.value, 10)});
                     }}
                   />
                   <StyledTextFieldTooVeryShort
@@ -335,7 +335,7 @@ export function AddJPNICIPv4Plan(props: {
                     type="number"
                     variant="outlined"
                     onChange={event => {
-                        setInputPlan({...inputPlan, one_year: parseInt(event.target.value)});
+                        setInputPlan({...inputPlan, one_year: parseInt(event.target.value, 10)});
                     }}
                   />
                   <br/>

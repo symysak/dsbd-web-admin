@@ -35,19 +35,19 @@ export function MemoGroup(props: {
             }
             {
                 data !== undefined &&
-                <StatusTable
-                    key={"group_memo_status_table"}
-                    setReload={setReload}
-                    group={data.filter(grp => {
-                            const tmp = grp.memos?.filter(memo => memo.type === 1);
-                            if (tmp === undefined) {
-                                return false;
-                            } else {
-                                return tmp.length !== 0;
-                            }
+              <StatusTable
+                key={"group_memo_status_table"}
+                setReload={setReload}
+                group={data.filter(grp => {
+                        const tmp = grp.memos?.filter(memo => memo.type === 1);
+                        if (tmp === undefined) {
+                            return false;
                         }
-                    )}
-                />
+                        return tmp.length !== 0;
+
+                    }
+                )}
+              />
             }
         </TableContainer>
     )
@@ -83,11 +83,9 @@ export function StatusTable(props: {
     const handleDelete = (id: number) => {
         Delete(id).then(res => {
             if (res.error === "") {
-                console.log(res.data);
                 enqueueSnackbar('Request Success', {variant: "success"});
                 setReload(true);
             } else {
-                console.log(res.error);
                 enqueueSnackbar(String(res.error), {variant: "error"});
             }
         })
@@ -156,12 +154,12 @@ export function StatusTable(props: {
                 </StyledTable2>
                 {
                     memoData !== undefined &&
-                    <MemoDetailDialogs
-                        key={"memo_detail_dialog"}
-                        open={detailOpenMemoDialog}
-                        setOpen={setDetailOpenMemoDialog}
-                        data={memoData}
-                    />
+                  <MemoDetailDialogs
+                    key={"memo_detail_dialog"}
+                    open={detailOpenMemoDialog}
+                    setOpen={setDetailOpenMemoDialog}
+                    data={memoData}
+                  />
                 }
             </TableContainer>
             <FormControl sx={{width: "100%"}}>

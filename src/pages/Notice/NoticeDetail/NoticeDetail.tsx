@@ -70,9 +70,6 @@ export default function NoticeDetailDialogs(props: {
     }
 
     const request = () => {
-        console.log(data);
-        const tmp = new Date(data.start_time);
-        console.log(tmp);
         Put(noticeData.ID, data).then(res => {
             if (res.error === "") {
                 enqueueSnackbar("登録しました。", {variant: "success"});
