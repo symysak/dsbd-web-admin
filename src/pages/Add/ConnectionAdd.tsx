@@ -51,7 +51,7 @@ export default function ConnectionAdd() {
     }, [])
 
     const validationSchema = Yup.lazy(values => {
-        let obj: ObjectShape = {
+        const obj: ObjectShape = {
             connection_type: Yup.string()
                 .required('接続情報を選択してください')
                 .min(1, "正しく選択してください"),
@@ -131,7 +131,7 @@ export default function ConnectionAdd() {
 
     const onSubmit = (data: any, e: any) => {
         console.log(data, e)
-        let request: any = {
+        const request: any = {
             connection_type: data.connection_type,
             preferred_ap: data.preferred_ap,
             monitor: data.monitor,

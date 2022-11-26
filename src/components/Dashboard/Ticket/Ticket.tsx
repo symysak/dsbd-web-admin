@@ -43,7 +43,7 @@ export default function Ticket(props: {
             }
         </TableContainer>
     )
-};
+}
 
 export function StatusTable(props: {
     ticket: TicketDetailData[]

@@ -47,7 +47,7 @@ export default function Connection(props: {
             }
         </TableContainer>
     )
-};
+}
 
 export function StatusTable(props: {
     connection: ConnectionDetailData[]

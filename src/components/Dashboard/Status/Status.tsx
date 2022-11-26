@@ -3,7 +3,7 @@ import React from "react";
 import {GroupDetailData} from "../../../interface";
 
 export function GroupStatusStr(data: GroupDetailData): string {
-    let str: string = "";
+    let str = "";
 
     if (!data.pass) {
         str = "グループの審査中"

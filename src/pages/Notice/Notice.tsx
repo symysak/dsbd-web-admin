@@ -92,7 +92,7 @@ export default function Notice() {
     const getStringFromDate = (before: string): string => {
         let str = '無期限';
         if (!before.match(/9999-12-31/)) {
-            let date = new Date(Date.parse(before));
+            const date = new Date(Date.parse(before));
             str = date.getFullYear() + '-' + ('0' + (1 + date.getMonth())).slice(-2) + '-' +
                 ('0' + date.getDate()).slice(-2) + ' ' + ('0' + date.getHours()).slice(-2) + ':' +
                 ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);

@@ -198,7 +198,7 @@ export function EnableDialog(props: {
     const {enqueueSnackbar} = useSnackbar();
 
     const updateConnection = () => {
-        let tmp = connection;
+        const tmp = connection;
         tmp.enable = !connection.enable
         Put(connection.ID, tmp).then(res => {
             if (res.error === "") {

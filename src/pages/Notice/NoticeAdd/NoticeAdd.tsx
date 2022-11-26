@@ -54,21 +54,21 @@ export default function NoticeAddDialogs(props: {
                     ":" + ('00' + (nowDate.getMinutes())).slice(-2) + ":00"
             });
             if (template.user !== undefined) {
-                let templateTmp: OptionType[] = []
+                const templateTmp: OptionType[] = []
                 for (const tmp of template.user) {
                     templateTmp.push({value: tmp.ID, label: tmp.name + "(" + tmp.name_en + ")"})
                 }
                 setTemplateUser(templateTmp);
             }
             if (template.group !== undefined) {
-                let templateTmp: OptionType[] = []
+                const templateTmp: OptionType[] = []
                 for (const tmp of template.group) {
                     templateTmp.push({value: tmp.ID, label: tmp.org + "(" + tmp.org_en + ")"})
                 }
                 setTemplateGroup(templateTmp);
             }
             if (template.nocs !== undefined) {
-                let templateTmp: OptionType[] = []
+                const templateTmp: OptionType[] = []
                 for (const tmp of template.nocs) {
                     templateTmp.push({value: tmp.ID, label: tmp.name})
                 }
@@ -345,7 +345,7 @@ export default function NoticeAddDialogs(props: {
                                   className="basic-multi-select"
                                   classNamePrefix="user"
                                   onChange={event => {
-                                      let tmpData: number[] = [];
+                                      const tmpData: number[] = [];
                                       for (const tmp of event) {
                                           tmpData.push(tmp.value);
                                       }
@@ -360,7 +360,7 @@ export default function NoticeAddDialogs(props: {
                                   className="basic-multi-select"
                                   classNamePrefix="group"
                                   onChange={event => {
-                                      let tmpData: number[] = [];
+                                      const tmpData: number[] = [];
                                       for (const tmp of event) {
                                           tmpData.push(tmp.value);
                                       }
@@ -375,7 +375,7 @@ export default function NoticeAddDialogs(props: {
                                   className="basic-multi-select"
                                   classNamePrefix="noc"
                                   onChange={event => {
-                                      let tmpData: number[] = [];
+                                      const tmpData: number[] = [];
                                       for (const tmp of event) {
                                           tmpData.push(tmp.value);
                                       }

@@ -315,7 +315,7 @@ export function MailAutoNoticeSendDialogs(props: {
                     message = message.replace('{BODY}', body);
                     message += mailSignature[0].message;
                     console.log(getMailTemplate[0].title)
-                    let subject = getMailTemplate[0].title.replace('{TITLE}', title);
+                    const subject = getMailTemplate[0].title.replace('{TITLE}', title);
                     setData({
                         to_mail: "",
                         subject: subject,

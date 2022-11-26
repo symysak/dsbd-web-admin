@@ -54,8 +54,8 @@ export default function ServiceAdd() {
     const {enqueueSnackbar} = useSnackbar();
     const navigate = useNavigate();
     const today = new Date();
-    let start_date = new Date();
-    let end_date = new Date();
+    const start_date = new Date();
+    const end_date = new Date();
 
     const [isIpv4, setIsIpv4] = React.useState(false);
     const [ipv4Prefix, setIpv4Prefix] = React.useState("None");
@@ -71,7 +71,7 @@ export default function ServiceAdd() {
     ({id: groupID} = useParams());
 
     const validationSchema = Yup.lazy(values => {
-        let obj: ObjectShape = {
+        const obj: ObjectShape = {
             service_type: Yup.string()
                 .min(1)
                 .required('service template is required'),
@@ -410,7 +410,7 @@ export default function ServiceAdd() {
             }
         }
 
-        let request: any = {
+        const request: any = {
             service_type: data.service_type,
             org: data.org,
             org_en: data.org_en,
@@ -431,7 +431,7 @@ export default function ServiceAdd() {
         }
 
         // error process
-        let base_start_date = new Date();
+        const base_start_date = new Date();
         base_start_date.setDate(base_start_date.getDate() + 7);
         if (data.start_date < base_start_date) {
             enqueueSnackbar("開始時間を修正してください。", {variant: "error"});
@@ -442,7 +442,7 @@ export default function ServiceAdd() {
         if (template.services?.find(serviceTemplate => serviceTemplate.type === serviceType)?.need_jpnic) {
             request.jpnic_admin = data.jpnic_admin;
             request.jpnic_tech = data.jpnic_tech;
-            let ip: any[] = [];
+            const ip: any[] = [];
 
             // plan check
             // after
@@ -591,7 +591,7 @@ export default function ServiceAdd() {
                                               setIpv4Prefix(event.target.value)
                                               const tmpPrefix = template.ipv4?.find(item => item === event.target.value);
                                               if (tmpPrefix != null) {
-                                                  let addressCount = Math.pow(2, 32 - parseInt(tmpPrefix.substr(1)))
+                                                  const addressCount = Math.pow(2, 32 - parseInt(tmpPrefix.substr(1)))
                                                   console.log("addressCount: " + addressCount)
                                                   setIpv4Count(addressCount)
                                               }

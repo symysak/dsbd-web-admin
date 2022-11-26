@@ -49,7 +49,7 @@ export default function Service(props: {
             }
         </TableContainer>
     )
-};
+}
 
 export function StatusTable(props: {
     service: ServiceDetailData[]

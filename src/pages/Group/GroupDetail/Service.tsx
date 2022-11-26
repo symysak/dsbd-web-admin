@@ -288,7 +288,7 @@ export function EnableDialog(props: {
     const {enqueueSnackbar} = useSnackbar();
 
     const updateService = () => {
-        let tmp = service;
+        const tmp = service;
         tmp.enable = !service.enable
         Put(service.ID, tmp).then(res => {
             if (res.error === "") {
@@ -403,4 +403,4 @@ export default function Service(props: {
             </Accordion>
         )
     }
-};
+}

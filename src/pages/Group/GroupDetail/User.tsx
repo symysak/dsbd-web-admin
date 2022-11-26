@@ -32,7 +32,7 @@ export default function User(props: { data: GroupDetailData }): any {
             }
         </TableContainer>
     )
-};
+}
 
 export function StatusTable(props: {
     user: UserDetailData[]

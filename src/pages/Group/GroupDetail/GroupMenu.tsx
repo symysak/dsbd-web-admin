@@ -53,39 +53,39 @@ export function GroupStatusButton(props: {
         <div>
             {
                 !data.pass &&
-                <StyledButton1
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={() => changePassStatus(true)}
-                    color={"primary"}
-                    variant="contained"
-                >
-                    審査OK
-                </StyledButton1>
+              <StyledButton1
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={() => changePassStatus(true)}
+                color={"primary"}
+                variant="contained"
+              >
+                審査OK
+              </StyledButton1>
             }
             {
                 !data.add_allow &&
-                <StyledButton1
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={() => changeAddAllowStatus(true)}
-                    color={"primary"}
-                    variant="contained"
-                >
-                    サービス申請許可
-                </StyledButton1>
+              <StyledButton1
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={() => changeAddAllowStatus(true)}
+                color={"primary"}
+                variant="contained"
+              >
+                サービス申請許可
+              </StyledButton1>
             }
             {
                 data.add_allow &&
-                <StyledButton1
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    onClick={() => changeAddAllowStatus(false)}
-                    color={"secondary"}
-                    variant="outlined"
-                >
-                    サービス新規申請を禁止
-                </StyledButton1>
+              <StyledButton1
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={() => changeAddAllowStatus(false)}
+                color={"secondary"}
+                variant="outlined"
+              >
+                サービス新規申請を禁止
+              </StyledButton1>
             }
         </div>
     )
