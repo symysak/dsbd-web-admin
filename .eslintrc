@@ -232,6 +232,9 @@
       }
     ],
     "react/no-children-prop": "warn",
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+
+    "no-prototype-builtins": "off",
+    "react/no-unescaped-entities": "off"
   }
 }
