@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.10.6",
     "@hookform/resolvers": "^2.9.11",
     "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.11",
     "@mui/x-date-pickers": "^5.0.20",
     "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.5",
@@ -28,7 +29,6 @@
     "react-hook-form": "^7.43.2",
     "react-markdown": "^8.0.5",
     "react-router-dom": "^6.8.2",
-    "react-scripts": "^5.0.1",
     "react-select": "^5.7.0",
     "react-use-websocket": "^3.0.0",
     "recoil": "^0.7.6",
@@ -38,13 +38,13 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "REACT_APP_NODE_ENV=dev react-scripts start",
-    "start-prod": "REACT_APP_NODE_ENV=prod react-scripts start",
-    "build": "REACT_APP_NODE_ENV=dev react-scripts build",
-    "build-staging": "REACT_APP_NODE_ENV=staging react-scripts build",
-    "build-prod": "REACT_APP_NODE_ENV=prod react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite --mode development",
+    "start-prod": "vite --mode production",
+    "build": "vite build --mode development",
+    "build-staging": "vite build --mode staging",
+    "build-prod": "vite build",
+    "test": "jest",
+    "eject": "vite eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:conflict": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"
@@ -68,10 +68,10 @@
     ]
   },
   "devDependencies": {
-    "@mui/material": "^5.11.11",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
+    "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.2",
@@ -80,7 +80,10 @@
     "react-dev-utils": "^12.0.1",
     "stylelint": "^14.16.1",
     "stylelint-config-prettier": "^9.0.5",
-    "stylelint-prettier": "^3.0.0"
+    "stylelint-prettier": "^3.0.0",
+    "vite": "^4.1.4",
+    "vite-plugin-pwa": "^0.14.4",
+    "vite-tsconfig-paths": "^4.0.5"
   },
   "husky": {
     "hooks": {
