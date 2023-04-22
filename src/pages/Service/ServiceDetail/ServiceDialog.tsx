@@ -24,6 +24,7 @@ import {
   StyledDivRoot1,
   StyledRootForm,
   StyledTextFieldMedium,
+  StyledTextFieldLong,
   StyledTextFieldVeryShort1,
 } from '../../../style'
 import { useRecoilValue } from 'recoil'
@@ -546,6 +547,20 @@ export function ServiceJPNICDetail(props: {
           variant="outlined"
           onChange={(event) => {
             setServiceCopy({ ...serviceCopy, address_en: event.target.value })
+          }}
+        />
+        <br/>
+        <StyledTextFieldLong
+          required
+          id="outlined-required"
+          label="Abuse"
+          InputProps={{
+            readOnly: lock,
+          }}
+          value={serviceCopy.abuse}
+          variant="outlined"
+          onChange={(event) => {
+            setServiceCopy({ ...serviceCopy, abuse: event.target.value })
           }}
         />
       </StyledRootForm>
