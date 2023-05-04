@@ -12,6 +12,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  Typography,
 } from '@mui/material'
 import {
   DefaultTemplateData,
@@ -132,6 +133,10 @@ export function SupportAddDialog(props: {
                   label="グループチャット"
                 />
               </RadioGroup>
+              <br />
+              <Typography variant="inherit">
+                このチャットはMarkdownに準拠しております。
+              </Typography>
               <br />
               {data.is_group && (
                 <StyledFormControl>
