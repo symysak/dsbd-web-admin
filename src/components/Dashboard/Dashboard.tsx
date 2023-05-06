@@ -305,7 +305,7 @@ export default function Dashboard(props: DashboardProps) {
           </List>
         </Drawer>
         {!loading && (
-          <Container component="main" sx={{ mt: 10, minWidth: "calc(100% - 57px)", ...props.sx }}>
+          <Container component="main" sx={{ mt: 10, minWidth: "calc(100% - 240px)", ...props.sx }}>
             <Typography variant="h5" component="h3">
               {props.title}
             </Typography>
