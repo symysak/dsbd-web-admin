@@ -82,7 +82,7 @@ export default function Dashboard() {
       <Grid container spacing={3}>
         {!reload && (
           <Grid item xs={12}>
-            <Card sx={{ minWidth: 275 }}>
+            <Card sx={{ minWidth: 200 }}>
               <CardContent>
                 <Stack direction={{ xs: "column", sm: "row"}} spacing={1} useFlexGap flexWrap="wrap">
                   <Chip
