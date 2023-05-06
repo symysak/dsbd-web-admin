@@ -24,6 +24,8 @@ import { Post } from '../../api/Support'
 import { GetTemplate } from '../../api/Group'
 import { MailAutoSendDialogs } from '../Group/Mail'
 import { StyledFormControl, StyledTextFieldVeryLong } from '../Dashboard/styles'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 export function SupportAddDialog(props: {
   setReload: Dispatch<SetStateAction<boolean>>
@@ -220,6 +222,16 @@ export function SupportAddDialog(props: {
                 }
                 variant="outlined"
               />
+            </Grid>
+            <Grid item xs={12}>
+              <h3>内容のプレビュー ↓</h3>
+              <ReactMarkdown
+                skipHtml={true}
+                remarkPlugins={[remarkGfm]}
+              >
+                {data.data}
+              </ReactMarkdown>
+              内容のプレビュー ↑
             </Grid>
           </Grid>
           <MailAutoSendDialogs
