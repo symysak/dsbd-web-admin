@@ -518,7 +518,11 @@ export function GroupMainMenu(props: {
           data={data}
           setReload={setReload}
         />
-        <GroupAbolition key={'group_abolition'} />
+        <GroupAbolition
+          key={'group_abolition'}
+          data={data}
+          setReload={setReload}
+        />
       </CardContent>
     </StyledCardRoot1>
   )
@@ -658,6 +662,15 @@ export function GroupStatus(props: {
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12}>
+            {data.expired_status === 1 && (
+              <Chip size="small" color="secondary" label={'ユーザより廃止'} />
+            )}
+            {data.expired_status === 2 && (
+              <Chip size="small" color="secondary" label={'運営委員より廃止'} />
+            )}
+            {data.expired_status === 3 && (
+              <Chip size="small" color="secondary" label={'審査落ち'} />
+            )}
             <h4>Status</h4>
             <Chip size="small" color="primary" label={GroupStatusStr(data)} />
             <h4>Membership</h4>
